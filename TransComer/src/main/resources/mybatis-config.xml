@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"></setting>
+		<!--
+			만약 null로 데이터가 전달되었다면 빈칸이 아닌 "NULL"로 인식하라고 설정
+			value 설정 시 NULL은 반드시 대문자로 작성
+			(소문자인 경우 지정되지 않은 실제 null로 인식되어 에러 발생)
+		-->
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.tc.spring.member.domain.Member" alias="Member"/>
+		<typeAlias type="com.tc.spring.member.domain.PointChange" alias="PointChange"/>
+		<typeAlias type="com.tc.spring.member.domain.PointRefund" alias="PointRefund"/>
+		<typeAlias type="com.tc.spring.member.domain.Profile" alias="Profile"/>
+		
+		<typeAlias type="com.tc.spring.alarm.domain.Alarm" alias="Alarm"/>
+		
+		<typeAlias type="com.tc.spring.chat.domain.Chat" alias="Chat"/>
+		
+		<typeAlias type="com.tc.spring.comment.domain.Comment" alias="Comment"/>
+		
+		<typeAlias type="com.tc.spring.files.domain.Files" alias="Files"/>
+		
+		<typeAlias type="com.tc.spring.personal.domain.Personal" alias="Personal"/>
+		<typeAlias type="com.tc.spring.personal.domain.PersonalRequestAndResult" alias="PersonalRequestAndResult"/>
+		<typeAlias type="com.tc.spring.personal.domain.PersonalSearch" alias="PersonalSearch"/>
+		
+		<typeAlias type="com.tc.spring.qna.domain.Qna" alias="Qna"/>
+		<typeAlias type="com.tc.spring.qna.domain.QnaSearch" alias="QnaSearch"/>
+		
+		<typeAlias type="com.tc.spring.report.domain.Report" alias="Report"/>
+		
+		<typeAlias type="com.tc.spring.review.domain.Review" alias="Review"/>
+		
+		<typeAlias type="com.tc.spring.share.domain.Share" alias="Share"/>
+		<typeAlias type="com.tc.spring.share.domain.ShareSearch" alias="ShareSearch"/>
+		
+		<typeAlias type="com.tc.spring.simple.domain.SimpleRequest" alias="SimpleRequest"/>
+		<typeAlias type="com.tc.spring.simple.domain.SimpleResponse" alias="SimpleResponse"/>
+		<typeAlias type="com.tc.spring.simple.domain.SimpleSearch" alias="SimpleSearch"/>
+		
+		<typeAlias type="com.tc.spring.study.domain.Study" alias="Study"/>
+		<typeAlias type="com.tc.spring.study.domain.StudySearch" alias="StudySearch"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mappers/member-mapper.xml" />
+		<mapper resource="mappers/alarm-mapper.xml" />
+		<mapper resource="mappers/chat-mapper.xml" />
+		<mapper resource="mappers/comment-mapper.xml" />
+		<mapper resource="mappers/files-mapper.xml" />
+		<mapper resource="mappers/personal-mapper.xml" />
+		<mapper resource="mappers/qna-mapper.xml" />
+		<mapper resource="mappers/report-mapper.xml" />
+		<mapper resource="mappers/review-mapper.xml" />
+		<mapper resource="mappers/share-mapper.xml" />
+		<mapper resource="mappers/simple-mapper.xml" />
+		<mapper resource="mappers/study-mapper.xml" />
+	</mappers>
+
+</configuration>
