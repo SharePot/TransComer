@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("chatStore")
-public class ChatStoreLogic {
+public class ChatStoreLogic implements ChatStore{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;

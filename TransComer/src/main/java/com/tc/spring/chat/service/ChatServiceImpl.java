@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.tc.spring.chat.store.ChatStore;
 
 @Service("chatService")
-public class ChatServiceImpl {
+public class ChatServiceImpl implements ChatService {
 
 	@Autowired
 	private ChatStore chatStore;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.tc.spring.study.store.StudyStore;
 
 @Service("studyService")
-public class StudyServiceImpl {
+public class StudyServiceImpl implements StudyService {
 
 	@Autowired
 	private StudyStore studyStore;

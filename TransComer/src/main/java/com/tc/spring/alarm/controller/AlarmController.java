@@ -31,4 +31,5 @@ public class AlarmController {
 	public String deleteAlarm(int alarmNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
 		return null;
 	}
+	
 }

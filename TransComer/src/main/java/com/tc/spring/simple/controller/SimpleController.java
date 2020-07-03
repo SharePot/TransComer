@@ -24,34 +24,29 @@ public class SimpleController {
 	// -------------------- 단순의뢰 질문 --------------------
 	
 	// 단순의뢰 질문 전체 조회
-	@RequestMapping("")
 	public ModelAndView selectSimpleReqList(ModelAndView mv) {
 		
 		return null;
 	}
 	
 	// 단순의뢰 질문 상세 조회
-	@RequestMapping("")
 	public ModelAndView simpleReqDetail(ModelAndView mv, int simpleNo) {
 		return null;
 	}
 	
 	// 단순의뢰 질문 작성
-	@RequestMapping("")
 	public String simpleReqInsert(SimpleRequest simpleReq, Model model) {
 		
 		return null;
 	}
 	
 	// 단순의뢰 질문 수정
-	@RequestMapping("")
 	public String simpleReqUpdate(SimpleRequest simpleReq, Model model) {
 		
 		return null;
 	}
 	
 	// 단순의뢰 질문 삭제
-	@RequestMapping("")
 	public String simpleReqDelete(int simpleNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
 		
 		return null;
@@ -60,25 +55,21 @@ public class SimpleController {
 	// -------------------- 단순의뢰 답변 --------------------
 	
 	// 단순의뢰 답변 전체 조회
-	@RequestMapping("")
 	public ModelAndView getSimpleResList(HttpServletResponse response, int simpleReplyNo) {
 		return null;
 	}
 	
 	// 단순의뢰 답변 작성
-	@RequestMapping("")
 	public String simpleResInsert(SimpleResponse simpleRes, HttpSession session ) {
 		return null;
 	}
 	
 	// 단순의뢰 답변 수정
-	@RequestMapping("")
 	public String simpleResUpdate(SimpleResponse simpleRes) {
 		return null;
 	}
 	
 	// 단순의뢰 답변 삭제
-	@RequestMapping("")
 	public String simpleResDelete(int simpleReplyNo) {
 		return null;
 	}
