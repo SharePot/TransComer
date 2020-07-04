@@ -3,6 +3,7 @@ package com.tc.spring.study.store;
 import java.util.ArrayList;
 
 import com.tc.spring.study.domain.Study;
+import com.tc.spring.study.domain.StudySearch;
 
 public interface StudyStore {
 	
@@ -29,11 +30,19 @@ public interface StudyStore {
 	 * @param studyNo
 	 * @return
 	 */
-	public int updateStudy(int studyNo);
+	public int updateStudy(Study study);
 	/**
 	 * 스터디 삭제
 	 * @param studyNo
 	 * @return
 	 */
 	public int deleteStudy(int studyNo);
+	
+	/**
+	 * 스터디 검색
+	 * @param search
+	 * @return
+	 */
+	public ArrayList SearchStudyList(StudySearch search);
 }
+

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.study.domain.Study;
+import com.tc.spring.study.domain.StudySearch;
 
 @Repository("studyStore")
 public class StudyStoreLogic implements StudyStore{
@@ -16,13 +17,11 @@ public class StudyStoreLogic implements StudyStore{
 
 	@Override
 	public ArrayList<Study> selectStudyList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList)sqlSession.selectList("studyMapper.selectStudyList");
 	}
 
 	@Override
 	public Study selectStudyOne(int studyNo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -33,14 +32,17 @@ public class StudyStoreLogic implements StudyStore{
 	}
 
 	@Override
-	public int updateStudy(int studyNo) {
-		// TODO Auto-generated method stub
+	public int updateStudy(Study study) {
 		return 0;
 	}
 
 	@Override
 	public int deleteStudy(int studyNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("studyMapper.deleteStudy",studyNo);
+	}
+
+	@Override
+	public ArrayList SearchStudyList(StudySearch search) {
+		return (ArrayList)sqlSession.selectList("studyMapper.searchStudyList",search);
 	}
 }
