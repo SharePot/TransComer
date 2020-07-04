@@ -17,7 +17,6 @@ public class StudyServiceImpl implements StudyService {
 
 	@Override
 	public ArrayList<Study> selectStudyList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
