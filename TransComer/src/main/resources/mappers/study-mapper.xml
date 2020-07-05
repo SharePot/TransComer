@@ -58,12 +58,12 @@
 	
 	<!-- 게시글 등록 쿼리-->
 	<insert id="insertStudy" parameterType="Study">
-	INSERT INTO STUDY VALUE(STUDY_NO_SEQ.NEXTVAL,#{studyCategory},#{studyTitle},#{studyContent},SYSDATE,DEFAULT,#{memberId})
+	INSERT INTO STUDY VALUE(STUDY_NO_SEQ.NEXTVAL,#{studyCategory},#{studyTitle},#{studyContent},SYSDATE,DEFAULT,#{studyFilePath},#{memberId})
 	</insert>
 	
 	<!-- 게시글 수정 쿼리 -->
 	<update id="updateStudy" parameterType="Study">
-	UPDATE STUDY SET STUDY_TITLE=#{studyTitle},STUDY_CONTENT=#{STUDY_CONTENT}, STUDY_WRITE_DATE=SYSDATE WHERE STUDY_NO=#{studyNo}
+	UPDATE STUDY SET STUDY_TITLE=#{studyTitle},STUDY_CONTENT=#{STUDY_CONTENT}, STUDY_WRITE_DATE=SYSDATE,STUDY_FILE_PATH=#{studyFilePath} WHERE STUDY_NO=#{studyNo}
 	</update>
 
 	<!-- 게시글 삭제 쿼리 -->

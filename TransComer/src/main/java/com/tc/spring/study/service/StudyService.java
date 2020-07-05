@@ -2,6 +2,10 @@ package com.tc.spring.study.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.tc.spring.study.domain.Study;
 import com.tc.spring.study.domain.StudyPageInfo;
 import com.tc.spring.study.domain.StudySearch;
@@ -40,7 +44,7 @@ public interface StudyService {
 	 * @param study
 	 * @return
 	 */
-	public int insertStudy(Study study);
+	public int insertStudy(Study study, MultipartFile file, HttpServletRequest request);
 	/**
 	 * 스터디 수정
 	 * @param study
@@ -60,5 +64,8 @@ public interface StudyService {
 	 * @return
 	 */
 	public ArrayList searchStudyList(StudySearch search);
+
+
+
 	
 }

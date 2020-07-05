@@ -1,5 +1,7 @@
 package com.tc.spring.study.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,9 +35,9 @@ public class StudyController {
 		
 		int currentPage=(page!=null) ? page : 1;
 		int listCount = studyService.getListCount();
-		/*
-		StudyPageInfo pi=Pagination.getPageInfo(currentPage,listCount);
-		ArrayList<Study> list=studyService.selectStudyList();
+	
+		StudyPageInfo pi=Pagination.getStudyPageInfo(currentPage,listCount);
+		ArrayList<Study> list=studyService.selectStudyList(pi);
 		if(!list.isEmpty()) {
 			mv.addObject("list",list);
 			mv.addObject("pi",pi);
@@ -42,7 +45,7 @@ public class StudyController {
 		}else {
 			mv.addObject("msg","스터디 게시판 조회 실패");
 			mv.setViewName("common/errorPage");
-		}*/
+		}
 		return mv;
 	}
 
@@ -58,39 +61,130 @@ public class StudyController {
 
 	//스터디 게시물 상세
 	@RequestMapping("studyDetail.tc")
-	public String studyDetail(int studyNo, Model model) {
+	public ModelAndView studyDetail(ModelAndView mv,int studyNo,@RequestParam("page")Integer page) {
+		
+		int currentPage=page !=null ? page : 1;
+		studyService.addReadCount(studyNo);//조회수 증가
+		
 		Study study=studyService.selectStudyOne(studyNo);
 		if(study !=null) {
-			model.addAttribute("study",study);
-			return "study/studyDetailView";
+			mv.addObject("study",study)
+			.addObject("currentPage",currentPage)
+			.setViewName("study/studyDetailView");
 		}else {
-			model.addAttribute("msg","스터디 게시물 조회 실패");
-			return "common/errorPage";
+			mv.addObject("msg","스터디 게시물 조회 실패")
+			.setViewName("common.errorPage");
 		}
+		return mv;
 	}
 
 	//스터디 게시물 등록 화면
 	@RequestMapping("studyWriterView.tc")
-	public String studyWrigerView() {
+	public String studyWriterView() {
 		return "study/studyWriteForm";
 	}
 	
 	
 	//스터디 게시물 등록
 	@RequestMapping(value="studyInsert.tc",method=RequestMethod.POST)
-	public String insertStudy(Study study, Model model) {
-		int result=studyService.insertStudy(study);
-		if(result>0) {
-			//model.addAttribute(arg0)
+	public String insertStudy(Study study, Model model,@RequestParam(name="uploadFile",required=false)MultipartFile uploadFile,HttpServletRequest request) {
+		
+		if(!uploadFile.getOriginalFilename().equals("")) {
+			String filePath=saveFile(uploadFile, request);
+			if(filePath !=null) {
+				study.setStudyFilePath(uploadFile.getOriginalFilename());
+			}
 		}
-		return "";
+		
+		
+		int result=0;
+		String path=null;
+		result=studyService.insertStudy(study,uploadFile,request);
+		if(result>0) {
+			path="redirect:studyList.tc";
+		}else {
+			model.addAttribute("msg","스터디 게시물 등록 실패");
+			path="common/errorPage";
+		}
+		return path;
+	}
+	
+	
+	
+	//파일저장
+		public String saveFile(MultipartFile file, HttpServletRequest request) {
+		String root=request.getSession().getServletContext().getRealPath("resources");
+		String savePath=root+ "\\nuploadFiles";
+		
+		File folder = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		
+		String filePath=folder+"\\"+file.getOriginalFilename();
+		
+		try {
+			file.transferTo(new File(filePath));
+		}catch (IllegalStateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return filePath;
+		
+		}
+		
+		//스터디 수정
+	@RequestMapping(value="studyUpdate.tc",method=RequestMethod.POST)	
+	public String updateStudy(Study study, Model model, HttpServletRequest request,MultipartFile reloadFile) {
+		
+		if(reloadFile !=null && reloadFile.isEmpty()) {
+			if(study.getStudyFilePath() !=null) {
+				deleteFile(study.getStudyFilePath(),request);
+			}
+			
+			String savePath=saveFile(reloadFile,request);
+			
+			if(savePath!=null) {
+				study.setStudyFilePath(reloadFile.getOriginalFilename());
+			}
+		}
+		int result=studyService.updateStudy(study);
+		if(result>0) {
+			return "redirect:studyDetail.tc?studyNo="+study.getStudyNo();
+		}else {
+			model.addAttribute("msg","스터디 게시물 수정 실패");
+			return "common/errorPage";
+			
+		}
 	}
 
-	public String updateStudy(Study study, Model model, HttpServletRequest request) {
-		return "";
+	//스터디 삭제
+	@RequestMapping("studyDelete.tc")
+	public String deleteStudy(int studyNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
+		Study study=studyService.selectStudyOne(studyNo);
+		int result=studyService.deleteStudy(studyNo);
+		if(result>0) {
+			if(study.getStudyFilePath() !=null) {
+				deleteFile(study.getStudyFilePath(), request);
+			}
+			rd.addFlashAttribute("msg","스터디 삭제 성공");
+			return "redirect:studyList.tc";
+		}else {
+			model.addAttribute("msg","스터디 삭제 성공");
+		}
+		return "common/errorPage";
 	}
-
-	public String deleteStudy(int shareNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
-		return "";
+	
+	public void deleteFile(String fileName, HttpServletRequest request) {
+		String root=request.getSession().getServletContext().getRealPath("resources");
+		
+		String savePath=root+"\\studyUploadFiles";
+		
+		File deleteFile= new File(savePath+"\\"+fileName);
+		
+		if(deleteFile.exists()) {
+			deleteFile.delete();
+		}
 	}
 }

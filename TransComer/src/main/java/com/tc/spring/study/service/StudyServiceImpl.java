@@ -2,8 +2,11 @@ package com.tc.spring.study.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.study.domain.Study;
 import com.tc.spring.study.domain.StudyPageInfo;
@@ -32,7 +35,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public int insertStudy(Study study) {
+	public int insertStudy(Study study, MultipartFile file, HttpServletRequest request) {
 		study.setStudyContent(study.getStudyContent().replace("\n", "<br>"));
 		return studyStore.insertStudy(study);
 	}
