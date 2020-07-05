@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tc.spring.study.domain.Study;
+import com.tc.spring.study.domain.StudyPageInfo;
 import com.tc.spring.study.domain.StudySearch;
 import com.tc.spring.study.store.StudyStore;
 
@@ -16,37 +17,46 @@ public class StudyServiceImpl implements StudyService {
 	private StudyStore studyStore;
 
 	@Override
-	public ArrayList<Study> selectStudyList() {
-		return null;
+	public int getListCount() {
+		return studyStore.getListCount();
+	}
+	
+	@Override
+	public ArrayList<Study> selectStudyList(StudyPageInfo pi) {
+		return studyStore.selectStudyList(pi);
 	}
 
 	@Override
 	public Study selectStudyOne(int studyNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return studyStore.selectStudyOne(studyNo);
 	}
 
 	@Override
 	public int insertStudy(Study study) {
-		// TODO Auto-generated method stub
-		return 0;
+		study.setStudyContent(study.getStudyContent().replace("\n", "<br>"));
+		return studyStore.insertStudy(study);
 	}
 
 	@Override
-	public int updateStudy(int studyNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateStudy(Study study) {
+		study.setStudyContent(study.getStudyContent().replace("\n", "<br>"));
+		return studyStore.updateStudy(study);
 	}
 
 	@Override
 	public int deleteStudy(int studyNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return studyStore.deleteStudy(studyNo);
 	}
 
 	@Override
-	public ArrayList SearchStudyList(StudySearch search) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList searchStudyList(StudySearch search) {
+		return studyStore.SearchStudyList(search);
 	}
+
+	@Override
+	public int addReadCount(int studyNo) {
+		return studyStore.addReadCount(studyNo);
+	}
+
+
 }

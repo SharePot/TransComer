@@ -2,11 +2,13 @@ package com.tc.spring.study.store;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.study.domain.Study;
+import com.tc.spring.study.domain.StudyPageInfo;
 import com.tc.spring.study.domain.StudySearch;
 
 @Repository("studyStore")
@@ -15,25 +17,37 @@ public class StudyStoreLogic implements StudyStore{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+
 	@Override
-	public ArrayList<Study> selectStudyList() {
-		return (ArrayList)sqlSession.selectList("studyMapper.selectStudyList");
+	public int getListCount() {
+		return sqlSession.selectOne("studyMapper.getStudyListCount");
+	}
+
+	@Override
+	public int addReadCount(int studyNo) {
+		return sqlSession.update("studyMapper.updateStudyCount",studyNo);
+	}
+
+	@Override
+	public ArrayList<Study> selectStudyList(StudyPageInfo pi) {
+		int offset=(pi.getStudyCurrentPage() -1)* pi.getStudyBoardLimit();
+		RowBounds rowbounds =new RowBounds(offset,pi.getStudyBoardLimit());
+		return (ArrayList)sqlSession.selectList("studyMapper.selectStudyList",null,rowbounds);
 	}
 
 	@Override
 	public Study selectStudyOne(int studyNo) {
-		return null;
+		return sqlSession.selectOne("studyMapper.selectStudyOne",studyNo);
 	}
 
 	@Override
 	public int insertStudy(Study study) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("studyMapper.insertStudy",study);
 	}
 
 	@Override
 	public int updateStudy(Study study) {
-		return 0;
+		return sqlSession.update("studyMapper.updateStudy",study);
 	}
 
 	@Override
@@ -45,4 +59,6 @@ public class StudyStoreLogic implements StudyStore{
 	public ArrayList SearchStudyList(StudySearch search) {
 		return (ArrayList)sqlSession.selectList("studyMapper.searchStudyList",search);
 	}
+
+	
 }
