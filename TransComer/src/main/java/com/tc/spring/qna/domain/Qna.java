@@ -7,7 +7,7 @@ public class Qna {
 	private int qnaNo;
 	private String memberId;
 	private String qnaCategory;
-	private String qnaTiitle;
+	private String qnaTitle;
 	private String qnaContent;
 	private Date qnaWriteDate;
 	private int qnaCount;
@@ -20,7 +20,7 @@ public class Qna {
 		this.qnaNo = qnaNo;
 		this.memberId = memberId;
 		this.qnaCategory = qnaCategory;
-		this.qnaTiitle = qnaTiitle;
+		this.qnaTitle = qnaTiitle;
 		this.qnaContent = qnaContent;
 		this.qnaWriteDate = qnaWriteDate;
 		this.qnaCount = qnaCount;
@@ -51,11 +51,11 @@ public class Qna {
 	}
 
 	public String getQnaTiitle() {
-		return qnaTiitle;
+		return qnaTitle;
 	}
 
-	public void setQnaTiitle(String qnaTiitle) {
-		this.qnaTiitle = qnaTiitle;
+	public void setQnaTiitle(String qnaTitle) {
+		this.qnaTitle = qnaTitle;
 	}
 
 	public String getQnaContent() {
@@ -84,8 +84,8 @@ public class Qna {
 
 	@Override
 	public String toString() {
-		return "Qna [qnaNo=" + qnaNo + ", memberId=" + memberId + ", qnaCategory=" + qnaCategory + ", qnaTiitle="
-				+ qnaTiitle + ", qnaContent=" + qnaContent + ", qnaWriteDate=" + qnaWriteDate + ", qnaCount=" + qnaCount
+		return "Qna [qnaNo=" + qnaNo + ", memberId=" + memberId + ", qnaCategory=" + qnaCategory + ", qnaTitle="
+				+ qnaTitle + ", qnaContent=" + qnaContent + ", qnaWriteDate=" + qnaWriteDate + ", qnaCount=" + qnaCount
 				+ "]";
 	}
 

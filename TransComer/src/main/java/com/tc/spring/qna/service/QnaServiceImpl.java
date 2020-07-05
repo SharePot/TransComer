@@ -2,11 +2,15 @@ package com.tc.spring.qna.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.qna.domain.Qna;
 import com.tc.spring.qna.domain.QnaPageInfo;
+import com.tc.spring.qna.domain.QnaSearch;
 import com.tc.spring.qna.store.QnaStore;
 
 @Service("qnaService")
@@ -16,32 +20,47 @@ public class QnaServiceImpl implements QnaService{
 	private QnaStore qnaStore;
 
 	@Override
-	public ArrayList<Qna> selectList(QnaPageInfo qPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public int getListCount() {
+		return qnaStore.getListCount();
 	}
-
+	
 	@Override
-	public int insertQna(Qna qna) {
-		// TODO Auto-generated method stub
-		return 0;
+	public ArrayList<Qna> selectList(QnaPageInfo qPi) {
+		return qnaStore.selectList(qPi);
 	}
-
+	
+	@Override
+	public int addReadCount(int qnaNo) {
+		return qnaStore.addReadCount(qnaNo);
+	}
+	
+	@Override
+	public ArrayList<Qna> searchList(QnaPageInfo qPi, QnaSearch qnaSearch) {
+		return qnaStore.searchList(qPi, qnaSearch);
+	}
+	
 	@Override
 	public Qna selectQna(int qnaNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return qnaStore.selectQna(qnaNo);
 	}
+
+	@Override
+	public int insertQna(Qna qna, MultipartFile file, HttpServletRequest request) {
+		return qnaStore.insertQna(qna);
+	}
+
 
 	@Override
 	public int updateQna(Qna qna) {
-		// TODO Auto-generated method stub
-		return 0;
+		return qnaStore.updateQna(qna);
 	}
 
 	@Override
 	public int deleteQna(int qnaNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return qnaStore.deleteQna(qnaNo);
 	}
+
+	
+
+	
 }

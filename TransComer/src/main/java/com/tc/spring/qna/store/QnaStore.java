@@ -5,13 +5,24 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.qna.domain.Qna;
+import com.tc.spring.qna.domain.QnaPageInfo;
+import com.tc.spring.qna.domain.QnaSearch;
 
 /*@Repository("qnaStore")*/
 public interface QnaStore {
 
+	// 전체 게시글 수
+	public int getListCount();
+	
 	// 전체 조회
-	public ArrayList<Qna> selectList();
+	public ArrayList<Qna> selectList(QnaPageInfo qPi);
 
+	// 조회수 증가
+	public int addReadCount(int qnaNo);
+	
+	// 글 검색
+	public ArrayList<Qna> searchList(QnaPageInfo qPi, QnaSearch qnaSearch);
+	
 	// QnA 등록
 	public int insertQna(Qna qna);
 
