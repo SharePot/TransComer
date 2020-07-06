@@ -7,11 +7,13 @@ import com.tc.spring.comment.domain.CommentPageInfo;
 
 public interface CommentService {
 
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi);
+	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi,int shareNo,int qnaNo,int studyNo);
 
-	public int insertAlarm(Comment comment);
+	public int getCommentListCount();
+	
+	public int insertComment(Comment comment);
 	
 	public int updateComment(Comment comment);
 	
-	public int deleteAlarm(int commentNo);
+	public int deleteComment(int commentNo);
 }

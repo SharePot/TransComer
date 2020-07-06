@@ -16,26 +16,27 @@ public class CommentServiceImpl implements CommentService{
 	private CommentStore commentStore;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi,int shareNo,int qnaNo,int studyNo) {
+		return commentStore.selectCommentList(cPi, shareNo, qnaNo, studyNo);
 	}
 
 	@Override
-	public int insertAlarm(Comment comment) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertComment(Comment comment) {
+		return commentStore.insertComment(comment);
 	}
 
 	@Override
 	public int updateComment(Comment comment) {
-		// TODO Auto-generated method stub
-		return 0;
+		return commentStore.updateComment(comment);
 	}
 
 	@Override
-	public int deleteAlarm(int commentNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteComment(int commentNo) {
+		return commentStore.deleteComment(commentNo);
+	}
+
+	@Override
+	public int getCommentListCount() {
+		return commentStore.getCommentListCount();
 	}
 }
