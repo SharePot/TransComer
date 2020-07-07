@@ -113,13 +113,13 @@
 				                                <tr>
 				                                    <td>
 				                                        <div class="dropdown">
-				                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+				                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
 				                                                <span id="search_concept">검색 조건</span>
 				                                            </button>
 				                                            <div class="dropdown-menu searchSelect">
-				                                                <a class="dropdown-item" href="#title" style="width:120px; background:light;">제목</a>
-				                                                <a class="dropdown-item" href="#content" style="width:120px;">내용</a>
-				                                                <a class="dropdown-item" href="#writer" style="width:120px;">작성자</a>
+				                                                <a class="dropdown-item" href="#title">제목</a>
+				                                                <a class="dropdown-item" href="#content">내용</a>
+				                                                <a class="dropdown-item" href="#writer">작성자</a>
 				                                            </div>
 				                                        </div>
 				                                    </td>
@@ -127,7 +127,7 @@
 				                                        <div class="input-group mb3 searchDiv">
 				                                            <input type="text" class="form-control" name="qnaSearch" placeholder="검색어 입력" size="50" autocomplete="off">
 				                                            <div class="input-group-append">
-				                                                <button class="btn btn-outline-secondary btn-filter" type="submit"><span class="fas fa-search"></span></button>
+				                                                <button class="btn btn-secondary btn-filter" type="submit"><span class="fas fa-search"></span></button>
 				                                            </div>
 				                                            <input type="hidden" name="type" value="all" id="search_param">
 				                                        </div>
@@ -138,24 +138,6 @@
 				                	</div>
 				                </div>
 				                
-				                <script>
-					        	    $(document).ready(function(e) {
-					        	        $('.searchSelect').find('a').click(function(e) {
-					        	            e.preventDefault();
-					        	            var param = $(this).attr("href").replace("#", "");
-					        	            var concept = $(this).text();
-					        	            $('#search_concept').text(concept);
-					        	            $('.input-group #search_param').val(param);
-					        	        });
-					        	        $('.btn-filter').click(function(e) {
-					        	            if ($('.input-group #search_param').val() == "all") {
-					        	                alert("검색조건을 선택해주세요");
-					        	                e.preventDefault();
-					        	            }
-					        	        });
-					        	    });
-					        	</script>
-
 				                <div class="container d-flex justify-content-center">
 				                    <!-- 페이징 처리 -->
 				                    <ul class="pagination">
@@ -221,12 +203,30 @@
 		</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script src="/resources/js/jquery.min.js"></script>
+		<script src="/resources/js/jquery.dropotron.min.js"></script>
+		<script src="/resources/js/browser.min.js"></script>
+		<script src="/resources/js/breakpoints.min.js"></script>
+		<script src="/resources/js/util.js"></script>
+		<script src="/resources/js/main.js"></script>
+		
+		<script>
+       	    $(document).ready(function(e) {
+       	        $('.searchSelect').find('a').click(function(e) {
+       	            e.preventDefault();
+       	            var param = $(this).attr("href").replace("#", "");
+       	            var concept = $(this).text();
+       	            $('#search_concept').text(concept);
+       	            $('.input-group #search_param').val(param);
+       	        });
+       	        $('.btn-filter').click(function(e) {
+       	            if ($('.input-group #search_param').val() == "all") {
+       	                alert("검색조건을 선택해주세요");
+       	                e.preventDefault();
+       	            }
+       	        });
+       	    });
+       	</script>
 
 	</body>
 </html>
