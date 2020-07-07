@@ -17,10 +17,8 @@ public class CommentStoreLogic implements CommentStore {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi,int shareNo,int qnaNo,int studyNo) {
-		int offset=(cPi.getCommentCurrentPage()-1) * cPi.getCommentBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, cPi.getCommentBoardLimit());
-		return (ArrayList)sqlSession.selectList("commentMapper.selectCommentList",null,rowBounds);
+	public ArrayList<Comment> selectCommentList(int shareNo,int qnaNo,int studyNo) {
+		return (ArrayList)sqlSession.selectList("commentMapper.selectCommentList");
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public class Comment {
 	private String commentYN;
 	private String commentContent;
 	private Date commentWriteDate;
+	private String commentCondition;
 	private int shareNo;
 	private int qnaNo;
 	private int studyNo;
@@ -16,7 +17,7 @@ public class Comment {
 	public Comment() {}
 
 	public Comment(int commentNo, String memberId, String commentYN, String commentContent, Date commentWriteDate,
-			int shareNo, int qnaNo, int studyNo) {
+			int shareNo, int qnaNo, int studyNo,String commentCondition) {
 		super();
 		this.commentNo = commentNo;
 		this.memberId = memberId;
@@ -26,6 +27,7 @@ public class Comment {
 		this.shareNo = shareNo;
 		this.qnaNo = qnaNo;
 		this.studyNo = studyNo;
+		this.commentCondition=commentCondition;
 	}
 
 	/**
@@ -140,15 +142,34 @@ public class Comment {
 		this.studyNo = studyNo;
 	}
 
+	
+	
+	/**
+	 * @return the commentCondition
+	 */
+	public String getCommentCondition() {
+		return commentCondition;
+	}
+
+	/**
+	 * @param commentCondition the commentCondition to set
+	 */
+	public void setCommentCondition(String commentCondition) {
+		this.commentCondition = commentCondition;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Comment [commentNo=" + commentNo + ", memberId=" + memberId + ", commentYN=" + commentYN
-				+ ", commentContent=" + commentContent + ", commentWriteDate=" + commentWriteDate + ", shareNo="
-				+ shareNo + ", qnaNo=" + qnaNo + ", studyNo=" + studyNo + "]";
+				+ ", commentContent=" + commentContent + ", commentWriteDate=" + commentWriteDate
+				+ ", commentCondition=" + commentCondition + ", shareNo=" + shareNo + ", qnaNo=" + qnaNo + ", studyNo="
+				+ studyNo + "]";
 	}
+
+
 
 	
 }

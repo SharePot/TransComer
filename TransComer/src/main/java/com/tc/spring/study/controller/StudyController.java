@@ -34,9 +34,9 @@ public class StudyController {
 	public ModelAndView studyList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
 		
 		int currentPage=(page!=null) ? page : 1;
-		int listCount = studyService.getListCount();
+		int studyListCount = studyService.getListCount();
 	
-		StudyPageInfo pi=Pagination.getStudyPageInfo(currentPage,listCount);
+		StudyPageInfo pi=Pagination.getStudyPageInfo(currentPage,studyListCount);
 		ArrayList<Study> list=studyService.selectStudyList(pi);
 		if(!list.isEmpty()) {
 			mv.addObject("list",list);
@@ -61,7 +61,7 @@ public class StudyController {
 
 	//스터디 게시물 상세
 	@RequestMapping("studyDetail.tc")
-	public ModelAndView studyDetail(ModelAndView mv,int studyNo,@RequestParam("page")Integer page) {
+	public ModelAndView studyDetail(ModelAndView mv,int studyNo,@RequestParam(name="page",required=false)Integer page) {
 		
 		int currentPage=page !=null ? page : 1;
 		studyService.addReadCount(studyNo);//조회수 증가
@@ -81,7 +81,7 @@ public class StudyController {
 	//스터디 게시물 등록 화면
 	@RequestMapping("studyWriterView.tc")
 	public String studyWriterView() {
-		return "study/studyWriteForm";
+		return "study/studyInsertForm";
 	}
 	
 	
@@ -114,7 +114,7 @@ public class StudyController {
 	//파일저장
 		public String saveFile(MultipartFile file, HttpServletRequest request) {
 		String root=request.getSession().getServletContext().getRealPath("resources");
-		String savePath=root+ "\\nuploadFiles";
+		String savePath=root+ "\\uploadFiles";
 		
 		File folder = new File(savePath);
 		
@@ -134,9 +134,17 @@ public class StudyController {
 		
 		}
 		
+		
+		//스터디 수정폼
+		@RequestMapping("studyUploadView.tc")
+		public String studyUpdateView(int studyNo,Model model) {
+			model.addAttribute("study",studyService.selectStudyOne(studyNo));
+			return "study/studyUpdateForm";
+		}
+		
 		//스터디 수정
 	@RequestMapping(value="studyUpdate.tc",method=RequestMethod.POST)	
-	public String updateStudy(Study study, Model model, HttpServletRequest request,MultipartFile reloadFile) {
+	public String updateStudy(Study study, Model model, HttpServletRequest request,MultipartFile reloadFile,@RequestParam(value="page", required=false)Integer page) {
 		
 		if(reloadFile !=null && reloadFile.isEmpty()) {
 			if(study.getStudyFilePath() !=null) {

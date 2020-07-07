@@ -16,8 +16,8 @@ public class CommentServiceImpl implements CommentService{
 	private CommentStore commentStore;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi,int shareNo,int qnaNo,int studyNo) {
-		return commentStore.selectCommentList(cPi, shareNo, qnaNo, studyNo);
+	public ArrayList<Comment> selectCommentList(int shareNo,int qnaNo,int studyNo) {
+		return commentStore.selectCommentList(shareNo, qnaNo, studyNo);
 	}
 
 	@Override

@@ -18,7 +18,7 @@
 	</select>
 	
 	<!-- 게시글 갯수 확인하는 쿼리 -->
-	<select id="getStudyListCount" resultMap="_int">
+	<select id="getStudyListCount" resultType="_int">
 	SELECT COUNT(*) FROM STUDY
 	</select>
 	
@@ -33,7 +33,7 @@
 	</select>
 	
 	<!-- 게시글 검색 쿼리 -->
-	<select id="searchStudyList" parameterType="search" resultMap="studyResultSet">
+	<select id="searchStudyList" parameterType="StudySearch" resultMap="studyResultSet">
 	SELECT * FROM STUDY
 	<where>
 		<choose>
@@ -58,16 +58,16 @@
 	
 	<!-- 게시글 등록 쿼리-->
 	<insert id="insertStudy" parameterType="Study">
-	INSERT INTO STUDY VALUE(STUDY_NO_SEQ.NEXTVAL,#{studyCategory},#{studyTitle},#{studyContent},SYSDATE,DEFAULT,#{studyFilePath},#{memberId})
+	INSERT INTO STUDY VALUES(STUDY_NO_SEQ.NEXTVAL,#{studyCategory},#{studyTitle},#{studyContent},SYSDATE,DEFAULT,#{studyFilePath},#{memberId})
 	</insert>
 	
 	<!-- 게시글 수정 쿼리 -->
 	<update id="updateStudy" parameterType="Study">
-	UPDATE STUDY SET STUDY_TITLE=#{studyTitle},STUDY_CONTENT=#{STUDY_CONTENT}, STUDY_WRITE_DATE=SYSDATE,STUDY_FILE_PATH=#{studyFilePath} WHERE STUDY_NO=#{studyNo}
+	UPDATE STUDY SET STUDY_TITLE=#{studyTitle},STUDY_CONTENT=#{studyContent}, STUDY_WRITE_DATE=SYSDATE,STUDY_FILE_PATH=#{studyFilePath} WHERE STUDY_NO=#{studyNo}
 	</update>
 
 	<!-- 게시글 삭제 쿼리 -->
-	<delete id="deletStudy" parameterType="_int">
+	<delete id="deleteStudy" parameterType="_int">
 		DELETE FROM STUDY WHERE STUDY_NO=#{studyNo}
 	</delete>
 	

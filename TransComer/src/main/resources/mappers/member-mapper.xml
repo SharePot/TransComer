@@ -2,4 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 
+<resultMap type="Member" id="memberResultSet">
+         <id property="memberNo" column="MEMBER_NO"/>
+         <result property="memberId" column="MEMBER_ID"/>
+         <result property="memberPw" column="MEMBER_PW"/>
+         <result property="memberName" column="MEMBER_NAME"/>
+         <result property="email" column="MEMBER_EMAIL"/>
+         <result property="address" column="MEMBER_ADDRESS"/>
+         <result property="phone" column="MEMBER_PHONE"/>
+         <result property="point" column="MEMBER_POINT"/>
+         <result property="account" column="ACCOUNT_INFO"/>
+         <result property="status" column="MEMBER_STATUS"/>
+         <result property="contentCount" column="CONTENTS_COUNT"/>
+         <result property="adopCount" column="ADOPT_COUNT"/>
+         <result property="enrollDate" column="MEMBER_ENROLL_DATE"/>
+   </resultMap>
+   
+   <select id="selectOne" parameterType="Member" resultMap="memberResultSet">
+      SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw}
+   </select>
+   
+     <select id="selectList" parameterType="Member" resultMap="memberResultSet">
+      SELECT * FROM MEMBER
+   </select>
+   
+
 </mapper>

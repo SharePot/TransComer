@@ -7,7 +7,7 @@ import com.tc.spring.comment.domain.CommentPageInfo;
 
 public interface CommentStore {
 
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi,int shareNo,int qnaNo,int studyNo);
+	public ArrayList<Comment> selectCommentList(int shareNo,int qnaNo,int studyNo);
 
 	public int getCommentListCount();
 	

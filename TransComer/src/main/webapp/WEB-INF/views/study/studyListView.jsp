@@ -11,9 +11,9 @@
  <h1 align="center">게시글 목록</h1>
    
    <h3 align="center">
-      총 개시글 갯수 : ${pi.listCount }
+      총 개시글 갯수 : ${pi.studyListCount }
       <c:if test="${ !empty loginUser }">
-         <button onclick="location.href='#';">글쓰기</button>
+         <button onclick="location.href='studyWriterView.tc'">글쓰기</button>
       </c:if>
    </h3>
    
@@ -33,7 +33,7 @@
 			<c:if test="${ !empty loginUser }">
 				<c:url var="studyDetail" value="studyDetail.tc">
 					<c:param name="studyNo" value="${study.studyNo }" />
-					<c:param name="page" value="${pi.currentPage }" />					
+					<c:param name="page" value="${pi.studyCurrentPage }" />					
 				</c:url>					
 				<a href="${studyDetail }">${study.studyTitle }</a>
 			</c:if>
@@ -46,10 +46,10 @@
          <td align="center">${study.studyWriteDate }</td>
          <td align="center">${study.studyCount }</td>
          <td align="center">
-            <c:if test="${ !empty study.originalFileName }">
+            <c:if test="${ !empty study.studyFilePath }">
                ◎
             </c:if>
-            <c:if test="${ empty study.originalFileName }">
+            <c:if test="${ empty study.studyFilePath }">
                &nbsp;
             </c:if>
          </td>
@@ -61,23 +61,23 @@
 		      <tr align="center" height="20">
 		         <td colspan="6">
 				   <!-- [이전] -->
-				<c:if test="${pi.currentPage <= 1 }">
+				<c:if test="${pi.studyCurrentPage <= 1 }">
 					[이전] &nbsp;
 				</c:if>
-				<c:if test="${pi. currentPage > 1 }">
+				<c:if test="${pi. studyCurrentPage > 1 }">
 					<c:url var="before" value="blist.kh">
-						<c:param name="page" value="${pi.currentPage - 1 }" />
+						<c:param name="page" value="${pi.studyCurrentPage - 1 }" />
 					</c:url>
 					<a href="${before }">[이전]</a> &nbsp;
 				</c:if>
 				
 				
 			<!-- 페이지 -->
-			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-				<c:if test="${p eq currentPage }">
+			<c:forEach var="p" begin="${pi.studyCurrentPage }" end="${pi.studyEndPage }">
+				<c:if test="${p eq studyCurrentPage }">
 					<font color="red" size="4"><b>[${p }]</b></font>
 				</c:if>
-				<c:if test="${p ne currentPage }">
+				<c:if test="${p ne studyCurrentPage }">
 					<c:url var="pagination" value="blist.kh">
 						<c:param name="page" value="${p }" />
 					</c:url>
@@ -90,12 +90,12 @@
 				
 				
 		       <!-- [다음] -->
-		<c:if test="${pi.currentPage >= pi.maxPage }">
+		<c:if test="${pi.studyCurrentPage >= pi.studyMaxPage }">
 			[다음] &nbsp;
 		</c:if>
-		<c:if test="${pi. currentPage < pi.maxPage }">
+		<c:if test="${pi. studyCurrentPage < pi.studyMaxPage }">
 			<c:url var="after" value="blist.kh">
-				<c:param name="page" value="${pi.currentPage + 1 }" />
+				<c:param name="page" value="${pi.studyCurrentPage + 1 }" />
 			</c:url>
 			<a href="${after }">[다음]</a> &nbsp;
 		</c:if>
