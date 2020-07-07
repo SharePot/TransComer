@@ -14,13 +14,13 @@ public class Qna {
 	
 	public Qna() {}
 
-	public Qna(int qnaNo, String memberId, String qnaCategory, String qnaTiitle, String qnaContent, Date qnaWriteDate,
+	public Qna(int qnaNo, String memberId, String qnaCategory, String qnaTitle, String qnaContent, Date qnaWriteDate,
 			int qnaCount) {
 		super();
 		this.qnaNo = qnaNo;
 		this.memberId = memberId;
 		this.qnaCategory = qnaCategory;
-		this.qnaTitle = qnaTiitle;
+		this.qnaTitle = qnaTitle;
 		this.qnaContent = qnaContent;
 		this.qnaWriteDate = qnaWriteDate;
 		this.qnaCount = qnaCount;
@@ -50,11 +50,11 @@ public class Qna {
 		this.qnaCategory = qnaCategory;
 	}
 
-	public String getQnaTiitle() {
+	public String getQnaTitle() {
 		return qnaTitle;
 	}
 
-	public void setQnaTiitle(String qnaTitle) {
+	public void setQnaTitle(String qnaTitle) {
 		this.qnaTitle = qnaTitle;
 	}
 

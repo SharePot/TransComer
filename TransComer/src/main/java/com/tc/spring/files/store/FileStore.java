@@ -6,5 +6,7 @@ public interface FileStore {
 
 	public int insertFile(Files files);
 	
-	public int deleteFile(int fileNo);
+	public int updateFile(Files files);
+	
+	public int deleteFile(String filePath);
 }

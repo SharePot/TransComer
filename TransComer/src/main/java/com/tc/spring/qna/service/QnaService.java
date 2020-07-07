@@ -26,7 +26,7 @@ public interface QnaService {
 	public ArrayList<Qna> searchList(QnaPageInfo qPi, QnaSearch qnaSearch);
 	
 	//  QnA 등록
-	public int insertQna(Qna qna, MultipartFile file, HttpServletRequest request);
+	public int insertQna(Qna qna, HttpServletRequest request);
 	
 	// QnA 상세조회
 	public Qna selectQna(int qnaNo);

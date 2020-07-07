@@ -45,7 +45,7 @@ public class QnaServiceImpl implements QnaService{
 	}
 
 	@Override
-	public int insertQna(Qna qna, MultipartFile file, HttpServletRequest request) {
+	public int insertQna(Qna qna, HttpServletRequest request) {
 		return qnaStore.insertQna(qna);
 	}
 

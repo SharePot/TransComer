@@ -14,7 +14,7 @@
 
 	<!-- qna 목록조회 쿼리 -->
 	<select id="selectList" resultMap="qnaResultSet">
-		SELECT * FROM QNA ORDER BY QNA_WRITE_DATE DESC
+		SELECT * FROM QNA ORDER BY QNA_NO DESC
 	</select>
 	
 	<select id="getListCount" resultType="_int">

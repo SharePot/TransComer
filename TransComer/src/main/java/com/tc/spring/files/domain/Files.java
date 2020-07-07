@@ -3,20 +3,18 @@ package com.tc.spring.files.domain;
 public class Files {
 
 	private int fileNo;
-	private int memberNo;
+	private String memberId;
 	private String fileName;
 	private String filePath;
-	private String memberId;
-	
+
 	public Files() {}
 
-	public Files(int fileNo, int memberNo, String fileName, String filePath, String memberId) {
+	public Files(int fileNo, String memberId, String fileName, String filePath) {
 		super();
 		this.fileNo = fileNo;
-		this.memberNo = memberNo;
+		this.memberId = memberId;
 		this.fileName = fileName;
 		this.filePath = filePath;
-		this.memberId = memberId;
 	}
 
 	public int getFileNo() {
@@ -25,12 +23,12 @@ public class Files {
 	public void setFileNo(int fileNo) {
 		this.fileNo = fileNo;
 	}
-
-	public int getMemberNo() {
-		return memberNo;
+	
+	public String getMemberId() {
+		return memberId;
 	}
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getFileName() {
@@ -47,11 +45,5 @@ public class Files {
 		this.filePath = filePath;
 	}
 
-	public String getMemberId() {
-		return memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
 	
 }

@@ -14,13 +14,17 @@ public class FileStoreLogic implements FileStore {
 
 	@Override
 	public int insertFile(Files files) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("filesMapper.insertFiles", files);
+	}
+	
+	@Override
+	public int updateFile(Files files) {
+		return sqlSession.update("filesMapper.updateFiles", files);
 	}
 
 	@Override
-	public int deleteFile(int fileNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteFile(String filePath) {
+		return sqlSession.delete("filesMapper.deleteFiles", filePath);
 	}
+	
 }
