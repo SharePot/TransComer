@@ -58,7 +58,7 @@
   	<!-- 공지사항 등록 쿼리 -->
   	<insert id="insertQna" parameterType="Qna">
   		INSERT INTO QNA
-  		VALUES(QNA_NO_SEQ.NEXTVAL, #{qnaCategory}, #{qnaTitle}, #{qnaContent}, SYSDATE, DEFAULT, #{memberId})
+  		VALUES(QNA_NO_SEQ.NEXTVAL,#{qnaCategory},#{qnaTitle},#{qnaContent},SYSDATE,DEFAULT,#{memberId})
   	</insert>
   	
   	<!-- 공지사항 수정 쿼리 -->

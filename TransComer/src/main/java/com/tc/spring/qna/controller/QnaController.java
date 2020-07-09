@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +93,7 @@ public class QnaController {
 	@RequestMapping(value="qnaInsert.tc", method=RequestMethod.POST)
 	public String qnaInsert(Qna qna, Files files, Model model, @RequestParam(name="uploadFile",required=false)MultipartFile uploadFile, HttpServletRequest request, String memberId) {
 		
+		System.out.println(qna.toString());
 		int resultQna = 0;
 		int resultFile = 0;
 		String path = null;
@@ -102,7 +104,7 @@ public class QnaController {
 			if (!uploadFile.getOriginalFilename().equals("")) {
 				resultFile = fController.insertFile(files, model, uploadFile, request, memberId);
 			}
-			path = "redirect:qnaList.tc";
+			path = "redirect:qlist.tc";
 		} else {
 			model.addAttribute("msg", "스터디 게시물 등록 실패");
 			path = "common/errorPage";
@@ -116,6 +118,7 @@ public class QnaController {
 		model.addAttribute("qna", qnaService.selectQna(qnaNo));
 		return "qna/qnaUpdateView";
 	}
+	
 	
 	// Qna 게시글 수정
 	@RequestMapping(value="qupdate.tc", method=RequestMethod.POST)

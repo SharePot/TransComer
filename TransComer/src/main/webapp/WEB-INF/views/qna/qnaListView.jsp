@@ -85,16 +85,16 @@
 				                                <tr>
 				                                    <td>${q.qnaNo }</td>
 				                                    <td align="left">
-				                                        <c:if test="${ !empty loginUser }">
+				                                        <%-- <c:if test="${ !empty loginUser }"> --%>
 				                                            <c:url var="qdetail" value="qdetail.tc">
 				                                                <c:param name="qnaNo" value="${q.qnaNo }" />
 				                                                <c:param name="page" value="${qPi.currentPage }" />
 				                                            </c:url>
 				                                            <a href="${qdetail }">${q.qnaTitle }</a>
-				                                        </c:if>
+				                                        <%-- </c:if>
 				                                        <c:if test="${ empty loginUser }">
 				                                            ${q.qnaTitle }
-				                                        </c:if>
+				                                        </c:if> --%>
 				                                    </td>
 				                                    <td>${q.memberId }</td>
 				                                    <td>${q.qnaWriteDate }</td>

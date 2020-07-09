@@ -6,7 +6,8 @@
 <html lang="ko">
 	<head>
 		<title>SharePot</title>
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/resources/css/main.css" type="text/css"/>
 		<link rel="stylesheet"
@@ -16,10 +17,12 @@
       		crossorigin="anonymous">
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" 
+			src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
             
 		<style type="text/css">
-			#contentTr{
-				height:200px;
+			/* #contentTr{
+				height:450px;
 			}
 			
 			#subject{
@@ -27,7 +30,7 @@
 			}
 			
 			#content{
-				height: 450px;
+				height:450px;
 				width:100%;
 			}
 			
@@ -35,6 +38,9 @@
 				height:100%;
 				width:100%;
 			}
+			tr {
+				width:150px;
+			} */
 		</style>
 	</head>
 	<body class="homepage is-preload">
@@ -73,49 +79,46 @@
 							    <h1 align="center">QnA 등록</h1>
 							    <br><br>
 							    <form action="qnaInsert.tc" method="post" enctype="multipart/form-data">
-							        <table class="table" align="center">
+							        <table class="table table-hover">
 							            <tbody>
-							                <tr>
+							                <tr height="50px">
 							                    <th>제목</th>
 							                    <td>
-							                        <input type="text" id="subject" placeholder="제목을 작성하세요" name="qnaTitle">
+							                        <input class="form-control" type="text" name="qnaTitle" id="subject" placeholder="제목을 작성하세요" />
 							                    </td>
 							                </tr>
-
 							                <tr>
 							                    <th>게시글 분류</th>
 							                    <td>
-							                        <select name="qnaCategory" style="width:300px;">
-							                            <option value="ALL">전체공개</option>
+							                        <select id="qnaCategorySelect" class="form-control" style="width:120px;">
+							                            <option value="ALL" selected>전체공개</option>
 							                            <option value="ADMIN">관리자공개</option>
 							                            <c:if test="${loginUser.memberId eq 'admin' }">
 							                            	<option value="NOTICE">공지</option>
 							                            </c:if>
 							                        </select>
+							                        <input type="hidden" name="qnaCategory" id="qnaCategory"/>
 							                    </td>
 							                </tr>
-							                
 							                <tr id="contentTr">
 							                    <th>내용</th>
 							                    <td>
 							                        <div id="content">
-							                            <textarea placeholder="내용을 작성하세요" name="qnaContent"></textarea>
+							                            <textarea class="form-control" placeholder="내용을 작성하세요" name="qnaContent" style="height:450px;"></textarea>
 							                        </div>
 							                    </td>
 							                </tr>
-							                
 							                <tr>
 							                    <th>파일 업로드</th>
 							                    <td>
-							                        <input type="file" name="uploadFile">
+							                        <input type="file" name="uploadFile" class="form-control-file border">
 							                    </td>
 							                </tr>
-
 							                <tr align="center">
 							                    <td colspan="2">
-							                        <button type="submit" class="btn btn-outline-secondary">완료</button>
+							                        <button type="submit" class="btn btn-secondary" id="submitBtn">완료</button>
 							                        &nbsp;&nbsp;
-							                        <button type="reset" class="btn btn-outline-secondary">취소</button>
+							                        <button type="reset" class="btn btn-secondary">취소</button>
 							                    </td>
 							                </tr>
 							            </tbody>
@@ -125,6 +128,13 @@
 						</div>
 					</div>
 				</section>
+				
+				<script>
+					$("#submitBtn").click(function() {
+						var qCategory = $("#qnaCategorySelect option:selected").val();
+						$("#qnaCategory").val(qCategory);
+					});
+				</script>
 
 			<!-- Footer -->
 				<section id="footer">
