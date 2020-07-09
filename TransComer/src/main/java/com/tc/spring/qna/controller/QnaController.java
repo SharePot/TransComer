@@ -55,7 +55,7 @@ public class QnaController {
 	public String qnaSearch(QnaSearch qnaSearch, Model model,
 			@RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = (page != null) ? page : 1;
-		int listCount = qnaService.getListCount();
+		int listCount = qnaService.getListCount();                                      
 		QnaPageInfo qPi = Pagination.getQnaPageInfo(currentPage, listCount);
 
 		ArrayList<Qna> searchList = qnaService.searchList(qPi, qnaSearch);
