@@ -15,10 +15,11 @@ public class Personal {
 	private String personalCount;
 	private String personalDStatus;
 	private String powerYN;
+	private String memberId;
 
 	public Personal(int personalNo, String personTitle, Date personalDate, String personalWriter, String personalPLang,
 			String personalTLang, int personalSchedule, int personalPrice, String personalCount, String personalDStatus,
-			String powerYN) {
+			String powerYN, String memberId) {
 		super();
 		this.personalNo = personalNo;
 		this.personTitle = personTitle;
@@ -31,6 +32,7 @@ public class Personal {
 		this.personalCount = personalCount;
 		this.personalDStatus = personalDStatus;
 		this.powerYN = powerYN;
+		this.memberId = memberId;
 	}
 
 	public int getPersonalNo() {
@@ -121,13 +123,22 @@ public class Personal {
 		this.powerYN = powerYN;
 	}
 
+	
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
 	@Override
 	public String toString() {
 		return "Personal [personalNo=" + personalNo + ", personTitle=" + personTitle + ", personalDate=" + personalDate
 				+ ", personalWriter=" + personalWriter + ", personalPLang=" + personalPLang + ", personalTLang="
 				+ personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice=" + personalPrice
 				+ ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus + ", powerYN=" + powerYN
-				+ "]";
+				+ ", memberId=" + memberId + "]";
 	}
 
 }

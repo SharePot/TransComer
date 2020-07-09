@@ -16,8 +16,7 @@ public class PersonalStoreLogic implements PersonalStore{
 
 	@Override
 	public ArrayList<Personal> selectList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList)sqlSession.selectList("personalMapper.selectList");
 	}
 
 	@Override
