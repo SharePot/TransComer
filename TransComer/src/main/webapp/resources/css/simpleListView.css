@@ -1,0 +1,8 @@
+#boardWrapper {
+	width: 75%;
+	margin: 0 auto;
+}
+
+#boardWrapper h1 {
+    font-size: 35px;
+}

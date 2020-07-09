@@ -1,0 +1,36 @@
+#mainWrapper {
+    width: 70%;
+    margin: auto;
+}
+
+#mainTitle {
+    font-size: 35px;
+}
+
+#mainTb {
+    width: 95%;
+    margin: auto;
+}
+
+#mainTb tr td:first-child {
+    width: auto;
+    font-weight: 500;
+    text-align: center;
+}
+
+#noti {
+    text-align: right;
+    font-weight: 500;
+}
+
+#btn {
+    text-align: right;
+}
+
+#submitBtn {
+    background: skyblue;
+}
+
+#resetBtn {
+    background: gray;
+}

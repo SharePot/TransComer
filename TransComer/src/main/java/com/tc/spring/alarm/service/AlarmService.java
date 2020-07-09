@@ -13,4 +13,8 @@ public interface AlarmService {
 	
 	public int deleteAlarm(int alarmNo);
 	
+	public int readAlarm(int alarmNo);
+	
+	public int getArListCount();
+	
 }

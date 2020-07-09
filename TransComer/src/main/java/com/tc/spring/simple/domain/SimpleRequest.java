@@ -1,6 +1,7 @@
 package com.tc.spring.simple.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class SimpleRequest {
 	
@@ -8,26 +9,29 @@ public class SimpleRequest {
 	private String simpleTitle; 	// 단순의뢰 질문 제목
 	private String simpleContent; 	// 단순의뢰 질문 내용
 	private Date simpleDate; 		// 단순의뢰 질문 작성일
-	private String simpleWriter; 	// 단순의뢰 질문 작성자 회원 아이디
 	private String simplePLang; 	// 단순의뢰 질문 개발언어
 	private String simpleTLang; 	// 단순의뢰 질문 사용언어
 	private String simpleCount; 	// 단순의뢰 질문 조회수
 	private String simpleDStatus; 	// 단순의뢰 질문 삭제 상태
+	private String simpleWriter; // 단순의뢰 작성자 아이디
+	private ArrayList<SimpleResponse> sRes;
 	
 	public SimpleRequest () {}
-	
-	public SimpleRequest(int simpleNo, String simpleTitle, String simpleContent, Date simpleDate, String simpleWriter,
-			String simplePLang, String simpleTLang, String simpleCount, String simpleDStatus) {
+
+	public SimpleRequest(int simpleNo, String simpleTitle, String simpleContent, Date simpleDate, String simplePLang,
+			String simpleTLang, String simpleCount, String simpleDStatus, String simpleWriter,
+			ArrayList<SimpleResponse> sRes) {
 		super();
 		this.simpleNo = simpleNo;
 		this.simpleTitle = simpleTitle;
 		this.simpleContent = simpleContent;
 		this.simpleDate = simpleDate;
-		this.simpleWriter = simpleWriter;
 		this.simplePLang = simplePLang;
 		this.simpleTLang = simpleTLang;
 		this.simpleCount = simpleCount;
 		this.simpleDStatus = simpleDStatus;
+		this.simpleWriter = simpleWriter;
+		this.sRes = sRes;
 	}
 
 	public int getSimpleNo() {
@@ -62,14 +66,6 @@ public class SimpleRequest {
 		this.simpleDate = simpleDate;
 	}
 
-	public String getSimpleWriter() {
-		return simpleWriter;
-	}
-
-	public void setSimpleWriter(String simpleWriter) {
-		this.simpleWriter = simpleWriter;
-	}
-
 	public String getSimplePLang() {
 		return simplePLang;
 	}
@@ -102,12 +98,28 @@ public class SimpleRequest {
 		this.simpleDStatus = simpleDStatus;
 	}
 
+	public String getSimpleWriter() {
+		return simpleWriter;
+	}
+
+	public void setSimpleWriter(String simpleWriter) {
+		this.simpleWriter = simpleWriter;
+	}
+
+	public ArrayList<SimpleResponse> getsRes() {
+		return sRes;
+	}
+
+	public void setsRes(ArrayList<SimpleResponse> sRes) {
+		this.sRes = sRes;
+	}
+
 	@Override
 	public String toString() {
 		return "SimpleRequest [simpleNo=" + simpleNo + ", simpleTitle=" + simpleTitle + ", simpleContent="
-				+ simpleContent + ", simpleDate=" + simpleDate + ", simpleWriter=" + simpleWriter + ", simplePLang="
-				+ simplePLang + ", simpleTLang=" + simpleTLang + ", simpleCount=" + simpleCount + ", simpleDStatus="
-				+ simpleDStatus + "]";
+				+ simpleContent + ", simpleDate=" + simpleDate + ", simplePLang=" + simplePLang + ", simpleTLang="
+				+ simpleTLang + ", simpleCount=" + simpleCount + ", simpleDStatus=" + simpleDStatus + ", simpleWriter="
+				+ simpleWriter + ", sRes=" + sRes + "]";
 	}
-	
+
 }

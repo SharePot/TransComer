@@ -14,13 +14,25 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Autowired
 	private AlarmStore alarmStore;
-
+	
+	// 알람 전체 수 
 	@Override
-	public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public int getArListCount() {
+		return alarmStore.getArListCount();
 	}
 
+	// 알람 전체 조회
+	@Override
+	public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) {
+		return alarmStore.selectAlarmList(aPi);
+	}
+	
+	// 알람 읽음 처리
+	@Override
+	public int readAlarm(int alarmNo) {
+		return alarmStore.readAlarm(alarmNo);
+	}
+	
 	@Override
 	public int insertAlarm(Alarm alarm) {
 		// TODO Auto-generated method stub
@@ -29,7 +41,8 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public int deleteAlarm(int alarmNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return alarmStore.deleteAlarm(alarmNo);
 	}
+
+
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Alarm {
 
+	private int memberNo;
 	private int alarmNo;
 	private String alarmContent;
 	private Date sendTime;
@@ -12,8 +13,9 @@ public class Alarm {
 	
 	public Alarm() {}
 
-	public Alarm(int alarmNo, String alarmContent, Date sendTime, String memberId, String checkYN) {
+	public Alarm(int memberNo, int alarmNo, String alarmContent, Date sendTime, String memberId, String checkYN) {
 		super();
+		this.memberNo = memberNo;
 		this.alarmNo = alarmNo;
 		this.alarmContent = alarmContent;
 		this.sendTime = sendTime;
@@ -21,10 +23,18 @@ public class Alarm {
 		this.checkYN = checkYN;
 	}
 
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
 
 	public int getAlarmNo() {
 		return alarmNo;
 	}
+
 	public void setAlarmNo(int alarmNo) {
 		this.alarmNo = alarmNo;
 	}
@@ -32,6 +42,7 @@ public class Alarm {
 	public String getAlarmContent() {
 		return alarmContent;
 	}
+
 	public void setAlarmContent(String alarmContent) {
 		this.alarmContent = alarmContent;
 	}
@@ -39,6 +50,7 @@ public class Alarm {
 	public Date getSendTime() {
 		return sendTime;
 	}
+
 	public void setSendTime(Date sendTime) {
 		this.sendTime = sendTime;
 	}
@@ -46,6 +58,7 @@ public class Alarm {
 	public String getMemberId() {
 		return memberId;
 	}
+
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
@@ -53,14 +66,17 @@ public class Alarm {
 	public String getCheckYN() {
 		return checkYN;
 	}
+
 	public void setCheckYN(String checkYN) {
 		this.checkYN = checkYN;
 	}
 
 	@Override
 	public String toString() {
-		return "Alarm [alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime=" + sendTime + ", memberId="
-				+ memberId + ", checkYN=" + checkYN + "]";
+		return "Alarm [memberNo=" + memberNo + ", alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime="
+				+ sendTime + ", memberId=" + memberId + ", checkYN=" + checkYN + "]";
 	}
+
+	
 	
 }
