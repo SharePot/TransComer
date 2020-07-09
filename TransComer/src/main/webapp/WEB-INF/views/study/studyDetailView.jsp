@@ -79,7 +79,7 @@
    
    
    <!-- 댓글 목록  -->
-   <table id="rtb" align="center" width="500" border="1" cellspacing="0">
+   <table id="studyTable" align="center" width="500" border="1" cellspacing="0" heigh="1000">
       <thead>
          <tr>
             <td colspan="2"><b id="count"></b></td>
@@ -87,74 +87,28 @@
          </tr>
       </thead>
       <tbody>
-		<tr>
-		<ul class="pagination">
-
-		<li class="disabled"><a><<</a></li>
-		
-		<li class="disabled"><a><</a></li>
-		
-		<li class="disabled active"><a>1</a></li>
-		
-		<li class="goPage" data-page="2"><a>2</a></li>
-		
-		<li class="goPage" data-page="3"><a>3</a></li>
-		
-		<li class="disabled"><a>></a></li>
-		
-		<li class="goLastPage"><a>>></a></li>
-		
-		</ul> 
-
-		</tr>         
+	
       </tbody>
    </table>
        <script>
-       $result['paging'] = array(
+       
 
-    		   'startPage' => $startPage,                //시작페이지
 
-    		   'endPage' => $endPage,                 //종료페이지
-
-    		   'totalBlock' => $totalBlock,              //전체 페이지 블럭 갯수
-
-    		   'totalPage' => $totalPage,                // 전체 페이지 갯수
-
-    		   'blockPageNum' => $blockPageNum,    //한페이지에 나올 블럭갯수
-
-    		   'rowsByPage' => $rowsByPage,           //한페이지에 나올 리스트갯수
-
-    		   'totalCount' => $totalCount,            //전체 리스트갯수
-
-    		   'block' => $block,                        //현재 페이지가 어느 블럭에 포함되어있는지
-
-    		   'page' => $page                            //현재 페이지
-
-    		   );
-
-       var page = 1;                       //페이지 변수를 1로 초기화
-       var searchKey = '';                 //검색기능을 위해 검색 변수 초기화
-
+    		   $(function(){
        // 초기 페이지 로딩 시 댓글 불러오기
          getCommentList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
-         
-         // ajax polling
-         //타회원이 댓글들을 작성했을 수 있으니 지속적으로 댓글 불러오기
-         setInterval(function() {
-        	 getCommentList();
-         }, 10000); //10초 마다 불러옴
-         
+        
          // 댓글 등록 ajax
-         $("#submit").on("click", function commentAjax() {
+         $("#submit").on("click", function(){
             
             var content = $("#content").val(); // 댓글의 내용
             var refStudyNo = ${study.studyNo }; // 어느 게시글의 댓글인지 알려줌
             
             $.ajax({
                url : "insertComment.tc",
-               data : {content:content, refStudyNo:refStudyNo},
-               			'page': page,
-               			'searchKeyword':searcKey,
+               data : {commentContent:content, studyNo:refStudyNo},
+               			/* 'page': page,
+               			'searchKeyword':searcKey, */
                type : "post",
                success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
                   if(data == "success") { //결과값이 success이면
@@ -164,34 +118,26 @@
                }
      
 
-   	    }
+   	    });
 
        });
-
-   });
-
-
-
-                           
-            });
-         });
-
-         
-         
-    
+ });
       
       // 댓글 리스트 불러오는 ajax 함수
       function getCommentList(){
-         var studyNo= ${study.studyNo};
+         var studyNo = ${study.studyNo};
+         var shareNo=0;
+         var qnaNo=0;
+         var commentCondition="study";
          $.ajax({
-            url:"insertComment.tc",
+            url:"commentList.tc",
             data:{studyNo:studyNo,
-            	'page':page,
-            	 'searchKeyword' : searchKey
-            },
+            	shareNo:shareNo,
+            	qnaNo:qnaNo,
+            	commentCondition:commentCondition},
             dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
             success:function(data){ //controller에서 json으로 받아오는 코드 만들어줌
-               $tableBody = $("#rtb tbody");
+               $tableBody = $("#studyTable tbody");
                $tableBody.html("");
                
                var $tr;
@@ -223,164 +169,10 @@
                }
 
             }
-            function(result){
-            	respone = result.lists;          	       	 //반환값중 데이터목록을 response변수에 삽입
-            	paging = result.paging;             //페이징관련 데이터들을 paging변수에 삽입
-
-            }
-            ///=============================================페이징
-            
-            $(".pagination").empty();  //페이징에 필요한 객체내부를 비워준다.
-
-	        	
-
-	        if(paging.page != 1){            // 페이지가 1페이지 가아니면
-
-	        	$(".pagination").append("<li class=\"goFirstPage\"><a><<</a></li>");        //첫페이지로가는버튼 활성화
-
-	        }else{
-
-	        	$(".pagination").append("<li class=\"disabled\"><a><<</a></li>");        //첫페이지로가는버튼 비활성화
-
-	        }
-
-
-
-	        if(paging.block != 1){            //첫번째 블럭이 아니면
-
-	        	$(".pagination").append("<li class=\"goBackPage\"><a><</a></li>");        //뒤로가기버튼 활성화
-
-	        }else{
-
-	        	$(".pagination").append("<li class=\"disabled\"><a><</a></li>");        //뒤로가기버튼 비활성화
-
-	        }
-
-	        	
-
-	        for(var i = paging.startPage ; i <= paging.endPage ; i++){        //시작페이지부터 종료페이지까지 반복문
-
-	        	if(paging.page == i){                            //현재페이지가 반복중인 페이지와 같다면
-
-	                	$(".pagination").append("<li class=\"disabled active\"><a>"+i+"</a></li>");    //버튼 비활성화
-
-	        	}else{
-
-	        		$(".pagination").append("<li class=\"goPage\" data-page=\""+i+"\"><a>"+i+"</a></li>"); //버튼 활성화
-
-	        	}
-
-	        }
-
-
-
-	        if(paging.block < paging.totalBlock){            //전체페이지블럭수가 현재블럭수보다 작을때
-
-	        	$(".pagination").append("<li class=\"goNextPage\"><a>></a></li>");         //다음페이지버튼 활성화
-
-	        }else{
-
-	        	$(".pagination").append("<li class=\"disabled\"><a>></a></li>");        //다음페이지버튼 비활성화
-
-	        }
-
-  
-
-          if(paging.page < paging.totalPage){                //현재페이지가 전체페이지보다 작을때
-
-        		$(".pagination").append("<li class=\"goLastPage\"><a>>></a></li>");    //마지막페이지로 가기 버튼 활성화
-
-        	}else{
-
-        		$(".pagination").append("<li class=\"disabled\"><a>>></a></li>");        //마지막페이지로 가기 버튼 비활성화
-
-        	}
-
-
-
-//첫번째 페이지로 가기 버튼 이벤트
-
-        	$(".goFirstPage").click(function(){
-
-		       	page = 1;
-
-		       	pageFlag = 1;
-		 	$(getCommentList);
-		     //  	$("상단 ajax를 함수로 만들어 재귀호출");
-
-		       	pageFlag = 0;
-
-	        });
-
-
-
-//뒷페이지로 가기 버튼 이벤트
-
-		$(".goBackPage").click(function(){
-
-		      	page = Number(paging.startPage) - 1;
-
-		       	pageFlag = 1;
-		 		$(getCommentList);
-		       //	$("상단 ajax를 함수로 만들어 재귀호출");
-
-		       	pageFlag = 0;
-
-	        });
-
-
-
-//클릭된 페이지로 가기 이벤트
-
-		$(".goPage").click(function(){
-
-			page = $(this).attr("data-page");
-
-			pageFlag = 1;
-
-			$(getCommentList);
-		       //	$("상단 ajax를 함수로 만들어 재귀호출");
-
-		       	pageFlag = 0;
-
-		});
-
-
-
-//다음페이지로 가기 클릭이벤트
-
-		$(".goNextPage").click(function(){
-
-			page = Number(paging.endPage) + 1;
-
-			pageFlag = 1;
-
-			$(getCommentList);
-
-		       	pageFlag = 0;
-
-	        });
-
-
-
-//마지막페이지로 가기 클릭이벤트
-
-	        $(".goLastPage").click(function(){
-
-	        	page = paging.totalPage;
-
-	        	pageFlag = 1;
-
-		       	$(getCommentList);
-
-		      	pageFlag = 0;
-
-	        });
-            
          });
       }
-      
-      
+            
+    
       
       
    </script>

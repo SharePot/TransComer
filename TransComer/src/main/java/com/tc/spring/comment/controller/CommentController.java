@@ -34,21 +34,24 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@RequestMapping("commentList.tc")
-	public void commentList(HttpServletResponse response, int shareNo, int studyNo, int qnaNo)throws JsonIOException, IOException {
+	public void commentList(HttpServletResponse response,int shareNo,int studyNo,int qnaNo,String commentCondition )throws JsonIOException, IOException {
+		//System.out.println(shareNo+","+studyNo+","+qnaNo+","+commentCondition);
+		Comment comment = new Comment();
+		comment.setCommentCondition(commentCondition);
+		comment.setQnaNo(qnaNo);
+		comment.setShareNo(shareNo);
+		comment.setStudyNo(studyNo);
+		
+		ArrayList<Comment> commentList=commentService.selectCommentList(comment);
 		
 		
-		
-		
-		ArrayList<Comment> commentList=commentService.selectCommentList(shareNo, qnaNo, studyNo);
-		
-		if(commentList.isEmpty()) {
 		for(Comment co : commentList) {
 			co.setCommentContent(URLEncoder.encode(co.getCommentContent(),"utf-8"));
-			Gson gson =new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-			gson.toJson(commentList,response.getWriter());
 			
 		}
-		}
+		Gson gson =new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(commentList,response.getWriter());
+		
 		// 기존에 JSONOBject, JSONArray를 이용해서 JSON형태로 만들어줬음
 		// 여기선 Gson 라이브러리를 사용하고자 함.
 		// reply 객체를 JSON형태로 변환해줘서 data로 보내줘야함.
@@ -58,7 +61,7 @@ public class CommentController {
 	
 	@RequestMapping("insertComment.tc")
 	@ResponseBody
-	public String insertComment(Comment comment, HttpSession session) {
+	public String insertComment(Comment comment, HttpSession  session) {
 		Member loginUser=(Member)session.getAttribute("loginUser");
 		String memberId=loginUser.getMemberId();
 		comment.setMemberId(memberId);
@@ -70,12 +73,31 @@ public class CommentController {
 		}
 	}
 	
-	public String updateComment(Comment comment, Model model, HttpServletRequest request) {
-		return null;
+	@RequestMapping("updateComment.tc")
+	@ResponseBody
+	public String updateComment(Comment comment, HttpSession  session) {
+		Member loginUser=(Member)session.getAttribute("loginUser");
+		String memberId=loginUser.getMemberId();
+		comment.setMemberId(memberId);
+		int result=commentService.updateComment(comment);
+		if(result>0){
+			return "success";
+			}else {
+				return "faile";
+			}
+		
 	}
 
-	public String deleteComment(int commentNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
-		return null;
+	@RequestMapping("deleteComment.tc")
+	@ResponseBody
+	public String deleteComment(int commentNo) {
+		int result=commentService.deleteComment(commentNo);
+		if(result>0) {
+			return "success";
+		}else {
+			
+			return  "fail";
+		}
 	}
 		
 }

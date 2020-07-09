@@ -17,8 +17,8 @@ public class CommentStoreLogic implements CommentStore {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(int shareNo,int qnaNo,int studyNo) {
-		return (ArrayList)sqlSession.selectList("commentMapper.selectCommentList");
+	public ArrayList<Comment> selectCommentList(Comment comment) {
+		return (ArrayList)sqlSession.selectList("commentMapper.selectCommentList",comment);
 	}
 
 	@Override
