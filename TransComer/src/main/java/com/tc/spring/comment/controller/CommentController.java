@@ -69,7 +69,7 @@ public class CommentController {
 		if(result>0) {
 			return "success";
 		}else {
-			return "faile";
+			return "fail";
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class CommentController {
 		if(result>0){
 			return "success";
 			}else {
-				return "faile";
+				return "fail";
 			}
 		
 	}
@@ -93,12 +93,11 @@ public class CommentController {
 	public String deleteComment(int commentNo) {
 		int result=commentService.deleteComment(commentNo);
 		if(result>0) {
+			System.out.println("success");
 			return "success";
 		}else {
-			
-			return  "fail";
+			return "fail";
 		}
 	}
-	
 		
 }

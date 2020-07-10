@@ -44,7 +44,7 @@ ORDER BY COMMENT_NO
 </insert>
 
 <delete id="deleteComment" parameterType="_int">
-	DELET FROM COMMENTS WHERE COMMENT_NO=#{commentNo}
+	DELETE FROM COMMENTS WHERE COMMENT_NO=#{commentNo}
 </delete>
 
 <update id="updateComment" parameterType="Comment">

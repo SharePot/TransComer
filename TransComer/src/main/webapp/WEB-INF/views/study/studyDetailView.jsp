@@ -8,9 +8,12 @@
 <title>공지사항 상세</title>
 </head>
 <body>
+	<div class="page-wrapper">
+	<section id="main">
    <c:import url="../common/menuBar.jsp" />
    <br style="clear: both">
    <h1 align="center">${study.studyNo }번 글 상세보기</h1>
+   <input type="hidden" id="loginId" value="${loginUser.memberId }">
    <br>
    <br>
 
@@ -90,6 +93,8 @@
 	
       </tbody>
    </table>
+   </section>
+   </div>
        <script>
        
 
@@ -98,6 +103,10 @@
        // 초기 페이지 로딩 시 댓글 불러오기
          getCommentList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
         
+         setInterval(function() {
+        	 getCommentList();
+          }, 10000); //10초 마다 불러옴
+          
          // 댓글 등록 ajax
          $("#submit").on("click", function(){
             
@@ -107,8 +116,7 @@
             $.ajax({
                url : "insertComment.tc",
                data : {commentContent:content, studyNo:refStudyNo},
-               			/* 'page': page,
-               			'searchKeyword':searcKey, */
+               			
                type : "post",
                success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
                   if(data == "success") { //결과값이 success이면
@@ -121,8 +129,25 @@
    	    });
 
        });
- });
-      
+         
+  
+    		   });
+    		   
+    	       function deleteComment(obj,commentNo){
+    	        	 console.log(commentNo);
+    	        	 $.ajax({
+    	                 url:"deleteComment.tc",
+    	                 type:"post",
+    	                 data:{commentNo:commentNo},
+    	                 //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+    	                 success : function(data) { 
+    	                	 if(data == "success") { 
+    	                		 getCommentList(); 
+    	        	 		console.log("삭제 완료");
+    	                	 }
+    	         		}
+    	 			});
+    	 	  };
       // 댓글 리스트 불러오는 ajax 함수
       function getCommentList(){
          var studyNo = ${study.studyNo};
@@ -141,23 +166,43 @@
                $tableBody.html("");
                
                var $tr;
+               var $commentNo;
                var $memberId;
                var $commentContent;
                var $commentWriteDate;
+               var $deleteButton;
+               var $modifyButton;
+          
                
                $("#count").text("댓글 (" + data.length+")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
                if( data.length > 0 ) {
                   for ( var i in data ) {
-                     $tr = $("<tr>");
+                     $tr = $("<tr class='trClass'>");
+                     var commentNoRead=data[i].commentNo;
+                     $commentNo= $("<td width='100' id='commentNo'>").text(data[i].commentNo);
                      $memberId = $("<td width='100'>").text(data[i].memberId);
                      //내용(복호화)
                      $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
                      //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
-                     $commentWriteDate = $("<td width='100'>").text(data[i].commentWriteDate);
-                     
+                     $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
+                     $loginId=$("#loginId").val();
+                 	 $modifyButton=$("<td>").html("<input type='submit' id='modifyComment' value='수정하기'>")
+                 	 $deleteButton=$("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
+                 	 $tr.append($commentNo);
                      $tr.append($memberId);
                      $tr.append($commentContent);
                      $tr.append($commentWriteDate);
+                    
+                     if(data[i].memberId == $loginId){ 
+                    	 $tr.append($modifyButton);
+                    	 $tr.append($deleteButton);
+                    
+                     console.log($loginId);
+                     console.log(commentNoRead);
+                     console.log($deleteButton);
+                     } 
+                    
+                     
                      $tableBody.append($tr); //(위에 코드 써있는) 파란색 댓글목록의 tablebody부분에 넣어줌
                   }
                }else{ //데이터가 없을때
