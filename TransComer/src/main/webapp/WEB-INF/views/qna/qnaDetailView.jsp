@@ -68,14 +68,14 @@
                                 <li><a href="#">Q&amp;A</a></li>
 							</ul>
 						</nav>
-            </section>
+            	</section>
 
 			<!-- Main -->
 				<section id="main">
 					<div class="container">
 						<div class="row">
 							<div class="col-12">
-							    <!--메인 내용 구역 1-->
+							    <!--메인 내용 구역 1-->s
 							     <div class="container" align="center">
 							        
 							         <h1 class="text-primary">${qna.qnaTitle }</h1>

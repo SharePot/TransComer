@@ -14,6 +14,16 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+	
+	
+		<!-- 웹소켓 -->
+	     <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-websocket</artifactId>
+	        <version>${org.springframework-version}</version>
+	     </dependency>
+
+
 		<!-- ojbc6g, mybatis, srping-mybatis,
 		common-dbcp, spring-jdbc -->
 		<!-- JDBC 드라이버 -->

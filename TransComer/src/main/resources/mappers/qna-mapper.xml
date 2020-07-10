@@ -64,7 +64,7 @@
   	<!-- 공지사항 수정 쿼리 -->
   	<update id="updateQna" parameterType="Qna">
   		UPDATE QNA
-  		SET QNA_TITLE = #{qnaTitle}, QNA_CONTENT = #{qnaContent},
+  		SET QNA_TITLE = #{qnaTitle}, QNA_CONTENT = #{qnaContent}
   		WHERE QNA_NO = #{qnaNo}
   	</update>
   	

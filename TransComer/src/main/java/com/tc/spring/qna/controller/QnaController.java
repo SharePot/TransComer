@@ -67,14 +67,13 @@ public class QnaController {
 
 	// Qna 상세보기
 	@RequestMapping("qdetail.tc")
-	public ModelAndView qnaDetail(ModelAndView mv, int qnaNo, @RequestParam("page") Integer page) {
-		int currentPage = page != null ? page : 1;
+	public ModelAndView qnaDetail(ModelAndView mv, int qnaNo) {
 		
 		qnaService.addReadCount(qnaNo); // 조회수 증가
 		Qna qna = qnaService.selectQna(qnaNo); // 게시글 상세조회
 		if ( qna != null ) {
 			// 메소드 체이닝 방식
-			mv.addObject("qna", qna).addObject("currentPage", currentPage)
+			mv.addObject("qna", qna)
 			.setViewName("qna/qnaDetailView");
 		} else {
 			mv.addObject("msg", "게시글 상세조회 실패!").setViewName("common/errorPage");
@@ -116,7 +115,7 @@ public class QnaController {
 	@RequestMapping("qupview.tc")
 	public String qnaUpdateView(int qnaNo, Model model) {
 		model.addAttribute("qna", qnaService.selectQna(qnaNo));
-		return "qna/qnaUpdateView";
+		return "qna/qnaUpdateForm";
 	}
 	
 	
@@ -127,7 +126,9 @@ public class QnaController {
 		int resultQna = qnaService.updateQna(qna);
 		int resultFile = 0;
 		if(resultQna > 0) {
-			resultFile = fController.updateFile(files, model, request, reloadFile, memberId);
+			if (!reloadFile.getOriginalFilename().equals("")) {
+				resultFile = fController.updateFile(files, model, request, reloadFile, memberId);
+			}
 			return "redirect:qdetail.tc?qnaNo="+qna.getQnaNo();
 		} else {
 			model.addAttribute("msg", "게시글 수정 실패");

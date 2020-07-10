@@ -5,7 +5,7 @@
 <!DOCTYPE HTML>
 <html lang="ko">
 	<head>
-		<title>Qna 등록</title>
+		<title>Qna 수정</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -76,15 +76,15 @@
 						<div class="row">
 							<div class="col-12">
 							    <!--메인 내용 구역 1-->
-							    <h1 align="center">QnA 등록</h1>
+							    <h1 align="center">QnA 수정</h1>
 							    <br><br>
-							    <form action="qnaInsert.tc" method="post" enctype="multipart/form-data">
+							    <form action="qupdate.tc" method="post" enctype="multipart/form-data">
 							        <table class="table table-hover">
 							            <tbody>
 							                <tr height="50px">
 							                    <th>제목</th>
 							                    <td>
-							                        <input class="form-control" type="text" name="qnaTitle" id="subject" placeholder="제목을 작성하세요" />
+							                        <input class="form-control" type="text" name="qnaTitle" id="subject" value="${qna.qnaTitle }" />
 							                    </td>
 							                </tr>
 							                <tr>
@@ -104,18 +104,19 @@
 							                    <th>내용</th>
 							                    <td>
 							                        <div id="content">
-							                            <textarea class="form-control" placeholder="내용을 작성하세요" name="qnaContent" style="height:450px;"></textarea>
+							                            <textarea class="form-control" name="qnaContent" style="height:450px;">${qna.qnaContent }</textarea>
 							                        </div>
 							                    </td>
 							                </tr>
 							                <tr>
 							                    <th>파일 업로드</th>
 							                    <td>
-							                        <input type="file" name="uploadFile" class="form-control-file border">
+							                        <input type="file" name="reloadFile" class="form-control-file border">
 							                    </td>
 							                </tr>
 							                <tr align="center">
 							                    <td colspan="2">
+							                    	<input type="hidden" name="qnaNo" value="${qna.qnaNo }" />
 							                        <button type="submit" class="btn btn-secondary" id="submitBtn">완료</button>
 							                        &nbsp;&nbsp;
 							                        <button type="reset" class="btn btn-secondary">취소</button>
