@@ -1,0 +1,152 @@
+#contentSection {
+    width: 60%;
+    margin: 0 auto;
+}
+
+#titleInfo {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+#contentInfo {
+    font-size: 15px;
+    display: inline;
+    width: 80%;
+}
+
+#modyInfo {
+    font-size: 15px;
+    text-decoration-line: none;
+    display: inline;
+    width: 20%;
+}
+
+#contentWrapper {
+    width: 100%;
+    padding: 15px;
+    background: rgba(213,213,213,0.3);
+    font-size: 18px;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+}
+
+#letterCount {
+    text-align: right;
+}
+
+
+#rContentSection {
+    background: rgba(213,213,213,0.1);
+    padding: 15px;
+    height: 0 auto;
+}
+
+#test2 {
+	width: 100%;
+	border: 0px solid red;
+}
+
+#replyWriter {
+    color: steelblue;
+    font-weight: bold;
+    text-decoration-line: underline;
+    display: inline;
+    font-size: 25px;
+}
+
+#replyInfo {
+    font-size: 15px;
+    display: inline;
+}
+
+.adoptCount, #replyDate {
+    display: inline;
+    font-size: 12px;
+}
+
+#reportBtn {
+    display: inline;
+    font-size: 12px;
+    color: orangered;
+}
+
+#replyContent {
+    padding: 5px;
+    width: 100%;
+    height: 0 auto;
+    background: rgba(213,213,213,0.8);
+}
+
+#replyContent td {
+    min-height: 50px;
+}
+
+#replySection {
+    border: 1px solid lightgray;
+    margin-top: -1px; 
+    padding: 10px;
+    background: rgba(199,211,237,0.3);
+}
+
+#replyWrapper {
+    font-size: 18px;
+	background: rgba(213,213,213,0.3);
+    width: 98%;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#etc {
+    text-align: right;
+}
+
+#replyTb {
+	width: 100%;
+	margin-top: 5px;
+}
+
+#rContentWrapper {
+    width: 85%;
+}
+
+#simpleReplyContent {
+    width: 100%;
+    border: 1px solid lightgray;
+    height: 100px;
+}
+
+#rSubmitWrapper {
+    width: 10%;
+}
+
+#rSubmit {
+    width: 90%;
+    height: 100px;
+    margin-bottom: 5px;
+    margin-left: 6px;
+}
+
+#reportBtn {
+    display: inline;
+    font-size: 12px;
+    color: orangered;
+}
+
+#adoptBtn {
+    margin-left: 10px;
+    height: 35px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+}
+
+#updateBtn, #deleteBtn {
+    display: inline;
+    font-size: 12px;
+    color: midnightblue;
+}
+
+
+
+
+

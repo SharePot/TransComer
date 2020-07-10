@@ -2,4 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="alarmMapper">
 
+	<resultMap type="Alarm" id="alarmResultSet">
+		<id property="alarmNo" column="ALARM_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="alarmContent" column="ALARM_CONTENT" />
+		<result property="sendTime" column="SEND_TIME" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="checkYN" column="CHECK_YN" />
+	</resultMap>
+	
+	<!-- 알람 조회 -->
+	<select id="selectAlarmList" resultMap="alarmResultSet">
+		SELECT * FROM ALARM ORDER BY SEND_TIME DESC
+	</select>
+	
+	<!-- 알람 개수 -->
+	<select id="getArListCount" resultType="_int">
+		SELECT COUNT(*) FROM ALARM WHERE CHECK_YN = 'N'
+	</select>
+	
+	<!-- 알람 읽음 처리 -->
+	<update id="readAlarm" parameterType="Alarm">
+		UPDATE ALARM SET CHECK_YN = 'Y'
+	</update>
+	
+	<!-- 알람 삭제 -->
+	<delete id="deleteAlarm" parameterType="_int">
+		DELETE FROM ALARM WHERE ALARM_NO = #{alarmNo}
+	</delete>
+
 </mapper>

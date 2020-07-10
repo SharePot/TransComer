@@ -2082,6 +2082,31 @@ input, select, textarea {
 			line-height: 1;
 		}
 
+/* topBar */
+#topBar {
+    height: 40px;
+    background: white;
+}
+
+	#topBar ul {
+	    list-style-type: none;
+	    margin-right: 30px;
+	}
+
+		#topBar ul li {
+		    display: inline;
+		}
+		
+			#topBar ul li a {
+		    	color: rgb(76,76,76);
+		    	text-decoration-line: none;
+			}
+			
+			#topBar ul li a:hover {
+		    	color: rgb(116,116,116);
+		    	text-decoration-line: none;
+			}
+
 /* Nav */
 
 	#nav {
@@ -2270,6 +2295,7 @@ input, select, textarea {
 		position: relative;
 		background: #f7f7f7 url("images/bg02.png");
 		padding: 4em 0 4em 0;
+        min-height: 650px;
 	}
 
 		#main:before {
@@ -2456,6 +2482,7 @@ input, select, textarea {
 
 	#navPanel, #titleBar {
 		display: none;
+        background: black;
 	}
 
 	@media screen and (max-width: 980px) {
@@ -2688,7 +2715,7 @@ input, select, textarea {
 				-ms-transform: translateX(275px);
 				transform: translateX(275px);
 			}
-
+        
 			body.navPanel-visible #titleBar {
 				-moz-transform: translateX(275px);
 				-webkit-transform: translateX(275px);

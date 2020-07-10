@@ -10,12 +10,12 @@ public class SimpleResponse {
 	private String simpleReplyWriter; 	// 단순의뢰 답변 작성자
 	private String simpleReplyDelete; 	// 단순의뢰 답변 삭제 상태
 	private String simpleReplyStatus; 	// 단순의뢰 답변 채택 상태
-	private int simpleNo; 				// 단순의뢰 답변 글 번호
+	private int sReqNo; 				// 단순의뢰 답변 글 번호
 	
 	public SimpleResponse () {}
 
 	public SimpleResponse(int simpleReplyNo, String simpleReplyContent, Date simpleReplyDate, String simpleReplyWriter,
-			String simpleReplyDelete, String simpleReplyStatus, int simpleNo) {
+			String simpleReplyDelete, String simpleReplyStatus, int sReqNo) {
 		super();
 		this.simpleReplyNo = simpleReplyNo;
 		this.simpleReplyContent = simpleReplyContent;
@@ -23,7 +23,7 @@ public class SimpleResponse {
 		this.simpleReplyWriter = simpleReplyWriter;
 		this.simpleReplyDelete = simpleReplyDelete;
 		this.simpleReplyStatus = simpleReplyStatus;
-		this.simpleNo = simpleNo;
+		this.sReqNo = sReqNo;
 	}
 
 	public int getSimpleReplyNo() {
@@ -74,20 +74,21 @@ public class SimpleResponse {
 		this.simpleReplyStatus = simpleReplyStatus;
 	}
 
-	public int getSimpleNo() {
-		return simpleNo;
+	public int getsReqNo() {
+		return sReqNo;
 	}
 
-	public void setSimpleNo(int simpleNo) {
-		this.simpleNo = simpleNo;
+	public void setsReqNo(int sReqNo) {
+		this.sReqNo = sReqNo;
 	}
 
 	@Override
 	public String toString() {
 		return "SimpleResponse [simpleReplyNo=" + simpleReplyNo + ", simpleReplyContent=" + simpleReplyContent
 				+ ", simpleReplyDate=" + simpleReplyDate + ", simpleReplyWriter=" + simpleReplyWriter
-				+ ", simpleReplyDelete=" + simpleReplyDelete + ", simpleReplyStatus=" + simpleReplyStatus
-				+ ", simpleNo=" + simpleNo + "]";
+				+ ", simpleReplyDelete=" + simpleReplyDelete + ", simpleReplyStatus=" + simpleReplyStatus + ", sReqNo="
+				+ sReqNo + "]";
 	}
+
 	
 }

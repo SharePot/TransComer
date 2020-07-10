@@ -2,6 +2,7 @@ package com.tc.spring.alarm.store;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,12 +16,25 @@ public class AlarmStoreLogic implements AlarmStore{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	// 알람 전체 수
+	@Override
+	public int getArListCount() {
+		return sqlSession.selectOne("alarmMapper.getArListCount");
+	}
+	
+	// 알람 전체 조회
 	@Override
 	public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) {
-		// TODO Auto-generated method stub
-		return null;
+		int offset = (aPi.getArCurrentPage() - 1) * aPi.getArBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, aPi.getArBoardLimit());
+		return (ArrayList)sqlSession.selectList("alarmMapper.selectAlarmList", null, rowBounds);
 	}
-
+	
+	@Override
+	public int readAlarm(int alarmNo) {
+		return sqlSession.update("alarmMppaer.readAlarm", alarmNo);
+	}
+	
 	@Override
 	public int insertAlarm(Alarm alarm) {
 		// TODO Auto-generated method stub
@@ -29,7 +43,8 @@ public class AlarmStoreLogic implements AlarmStore{
 
 	@Override
 	public int deleteAlarm(int alarmNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("alarmMapper.deleteAlarm", alarmNo);
 	}
+
+
 }

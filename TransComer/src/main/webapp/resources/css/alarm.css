@@ -1,0 +1,62 @@
+#mainWrapper {
+    margin: 0 auto;
+    width: 700px;
+    height: auto;
+    padding: 10px;
+}
+
+#alarmImg {
+    max-width: 50px;
+    float: left;
+}
+
+#alarmTitle {
+    font-size: 40px;
+    padding-top: 10px;
+    padding-left: 65px;
+}
+
+#alarmSection {
+    width: 98%;
+    height: 98%;
+    background: lightgray;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+#alarmItem {
+    background: white;
+    margin: 0 auto;
+    height: auto;
+}
+
+#alarmTb {
+    
+}
+
+#alarmContent {
+    width: 85%;
+    max-width: 495px;
+    color: black;
+    font-size: 15px;
+    text-overflow: hidden;
+    word-break: break-all;
+    text-align: justify;
+}
+
+#alarmBtn {
+    text-align: center;
+}
+
+#cBtn {
+    font-size: 12px;
+    background: skyblue;
+}
+
+#dBtn {
+    width: 60px;;
+    margin-top: 5px;
+    font-size: 12px;
+    background: gray;
+    
+}

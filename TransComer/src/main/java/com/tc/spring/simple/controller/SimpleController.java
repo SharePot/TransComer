@@ -1,5 +1,9 @@
 package com.tc.spring.simple.controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -8,9 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.tc.spring.common.Pagination;
+import com.tc.spring.member.domain.Member;
+import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
 import com.tc.spring.simple.service.SimpleService;
@@ -24,44 +37,133 @@ public class SimpleController {
 	// -------------------- 단순의뢰 질문 --------------------
 	
 	// 단순의뢰 질문 전체 조회
-	public ModelAndView selectSimpleReqList(ModelAndView mv) {
+	@RequestMapping("sReqListView.tc")
+	public ModelAndView selectSimpleReqList(ModelAndView mv, @RequestParam(value="spPage", required=false)Integer spPage) {
 		
-		return null;
+		int spCurrentPage = (spPage != null) ? spPage : 1;
+		int spListCount = simpleService.getSReqListCount();
+		SimplePageInfo spi = Pagination.getSimplePageInfo(spCurrentPage, spListCount);
+		ArrayList<SimpleRequest> sReqList = simpleService.selectSimpleReqList(spi);
+		
+		if (!sReqList.isEmpty()) {
+			mv.addObject("spi", spi);
+			mv.addObject("sReqList", sReqList);
+			mv.setViewName("simple/simpleListView");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
 	}
 	
 	// 단순의뢰 질문 상세 조회
-	public ModelAndView simpleReqDetail(ModelAndView mv, int simpleNo) {
-		return null;
+	@RequestMapping("sReqDetail.tc")
+	public ModelAndView simpleReqDetail(ModelAndView mv, int simpleNo, @RequestParam(value="spPage", required=false)Integer spPage ) {
+		
+		int spCurrentPage = spPage != null ? spPage : 1;
+		simpleService.addSReqReadCount(simpleNo); // 조회수
+		SimpleRequest sReq = simpleService.selectOne(simpleNo);
+		ArrayList<SimpleResponse> sRes = simpleService.sResOne(simpleNo);
+		
+		if (sReq != null) {
+			mv.addObject("sReq", sReq).addObject("spCurrentPage", spCurrentPage).setViewName("simple/simpleDetailView");
+			mv.addObject("sRes", sRes).setViewName("simple/simpleDetailView");
+		} else {
+			mv.setViewName("common/errorPage");
+			
+		}
+		
+		return mv;
+	}
+	
+	// 단순의뢰 질문 작성 폼 열기
+	@RequestMapping("sReqInsertView.tc")
+	public String sReqInsertView() {
+		return "simple/simpleInsertForm";
 	}
 	
 	// 단순의뢰 질문 작성
+	@RequestMapping(value="sReqInsert.tc", method= {RequestMethod.POST, RequestMethod.GET})
 	public String simpleReqInsert(SimpleRequest simpleReq, Model model) {
 		
-		return null;
+		int result = simpleService.simpleReqInsert(simpleReq);
+		if (result > 0) {
+			return "redirect:home.tc";
+		} else {
+			return "common/errorPage";
+		}
+		
+	}
+	
+	// 단순의뢰 질문 수정 폼 열기
+	@RequestMapping("sReqUpdateView.tc")
+	public String sReqUpdateView(int simpleNo, Model model) {
+		model.addAttribute("sReq", simpleService.selectOne(simpleNo));
+		return "simple/simpleUpdateForm";
 	}
 	
 	// 단순의뢰 질문 수정
+	@RequestMapping(value="sReqUpdate.tc", method= {RequestMethod.POST, RequestMethod.GET})
 	public String simpleReqUpdate(SimpleRequest simpleReq, Model model) {
 		
-		return null;
+		int result = simpleService.simpleReqUpdate(simpleReq);
+		
+		if (result > 0) {
+			return "redirect:sReqDetail.tc?simpleNo=" + simpleReq.getSimpleNo();
+		} else {
+			return "common/errorPage";
+		}
+		
 	}
 	
 	// 단순의뢰 질문 삭제
-	public String simpleReqDelete(int simpleNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
+	@RequestMapping("sReqDelete.tc")
+	public String simpleReqDelete(int simpleNo) {
+		int result = simpleService.simpleReqDelete(simpleNo);
 		
-		return null;
+		if (result > 0) {
+			return "redirect:sReqListView.tc";
+		} else {
+			return "common/errorPage";
+		}
+		
 	}
 	
 	// -------------------- 단순의뢰 답변 --------------------
 	
-	// 단순의뢰 답변 전체 조회
-	public ModelAndView getSimpleResList(HttpServletResponse response, int simpleReplyNo) {
-		return null;
+	// 단순의뢰 답변 조회
+	@RequestMapping("sResList.tc")
+	public void getSimpleResList(HttpServletResponse response, int simpleNo) throws JsonIOException, IOException {
+		
+		ArrayList<SimpleResponse> sResList = simpleService.getSimpleResList(simpleNo);
+
+		
+		for (SimpleResponse sRes : sResList) {
+			sRes.setSimpleReplyContent(URLEncoder.encode(sRes.getSimpleReplyContent(), "utf-8"));
+		}
+
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(sResList, response.getWriter());
+		
 	}
 	
 	// 단순의뢰 답변 작성
+	@RequestMapping("insertRes.tc")
+	@ResponseBody
 	public String simpleResInsert(SimpleResponse simpleRes, HttpSession session ) {
-		return null;
+		
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		String simpleReplyWriter = loginUser.getMemberId();
+		
+		simpleRes.setSimpleReplyWriter(simpleReplyWriter);
+		int result = simpleService.simpleResInsert(simpleRes);
+		
+		if (result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 	
 	// 단순의뢰 답변 수정
@@ -70,10 +172,16 @@ public class SimpleController {
 	}
 	
 	// 단순의뢰 답변 삭제
+	@RequestMapping(value= "deleteRes.tc" , method= {RequestMethod.POST, RequestMethod.GET})
 	public String simpleResDelete(int simpleReplyNo) {
-		return null;
+		int result = simpleService.simpleResDelete(simpleReplyNo);
+		
+		if (result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
-	
-	
+
 	
 }
