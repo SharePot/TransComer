@@ -22,7 +22,7 @@
 
 		//alert(root);
 		//var ws = new WebSocket("ws://192.168.0.100:8081/SpringWeb/echo-ws");
-		var ws = new WebSocket("ws://" + root + "/echo-ws.kh");
+		var ws = new WebSocket("ws://" + root + "/echo-ws.tc");
 		
 		// 웹소켓 관련 함수
 		// 웹소켓 연결이 성공 되었을 때 실행
