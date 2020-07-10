@@ -2,12 +2,18 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- 상단에, 웹소켓 관련 추가 -->
+	<!-- xmlns:websocket, xsi:schemaLocation에서 2개, (1)websocket, (2)websocket/spring-webscoket.xsd추가 -->
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -23,10 +29,24 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.tc.spring" />
-
+	<context:component-scan base-package="com.kh.spring" />
+	
+	<!-- 웹소켓 1, echoHandler 클래스 등록(빈으로)-->
+	<beans:bean id="echoHandler" class="com.tc.spring.chat.controller.EchoHandler"></beans:bean>
+	
+	<!-- 웹소켓 핸들러 -->
+	<websocket:handlers>
+		<!-- 웹소켓 1, echoHandler, url 매핑 -->
+		<websocket:mapping handler="echoHandler" path="/echo-ws.tc"/>
+		
+		<!-- 웹소켓 2, handshakeinterceptor, echohandler클래스 가기전 사이에 작동하는 클래스 -->
+		<websocket:handshake-interceptors>
+			<beans:bean class="com.tc.spring.chat.interceptor.HandshakeInterceptor"></beans:bean>
+		</websocket:handshake-interceptors>
+	
+	</websocket:handlers>
+	
+	<!-- AOP -->
 	<aop:aspectj-autoproxy/>
-	
-	
 	
 </beans:beans>
