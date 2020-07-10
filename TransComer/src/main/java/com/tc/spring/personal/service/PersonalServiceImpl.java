@@ -9,38 +9,39 @@ import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.store.PersonalStore;
 
 @Service("personalService")
-public class PersonalServiceImpl implements PersonalService  {
+public class PersonalServiceImpl implements PersonalService {
 
-   @Autowired private PersonalStore personalStore;
+	@Autowired
+	private PersonalStore personalStore;
 
-   @Override
-   public ArrayList<Personal> selectList() {
-      return personalStore.selectList();
-   }
+	@Override
+	public ArrayList<Personal> selectPersonalList() {
+		System.out.println("Service 도착");
+		return personalStore.selectPersonalList();
+	}
 
-   @Override
-   public Personal selectOne() {
-      // TODO Auto-generated method stub
-      return null;
-   }
+	@Override
+	public Personal selectOne() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-   @Override
-   public int insertPersonl() {
-      // TODO Auto-generated method stub
-      return 0;
-   }
+	@Override
+	public int insertPersonl() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public int updatePersonal() {
-      // TODO Auto-generated method stub
-      return 0;
-   }
+	@Override
+	public int updatePersonal() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public int deletePersonal() {
-      // TODO Auto-generated method stub
-      return 0;
-   }
+	@Override
+	public int deletePersonal() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   
 }

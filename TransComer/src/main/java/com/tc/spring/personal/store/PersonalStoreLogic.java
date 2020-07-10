@@ -15,7 +15,8 @@ public class PersonalStoreLogic implements PersonalStore{
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Personal> selectList() {
+	public ArrayList<Personal> selectPersonalList() {
+		System.out.println("Store 도착");
 		return (ArrayList)sqlSession.selectList("personalMapper.selectList");
 	}
 

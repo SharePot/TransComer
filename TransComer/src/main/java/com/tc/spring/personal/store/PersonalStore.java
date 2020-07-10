@@ -6,7 +6,11 @@ import com.tc.spring.personal.domain.Personal;
 
 public interface PersonalStore {
 
-	public ArrayList<Personal> selectList();
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Personal> selectPersonalList();
 
 	public Personal selectOne();
 
@@ -15,4 +19,5 @@ public interface PersonalStore {
 	public int updatePersonal();
 
 	public int deletePersonal();
+
 }

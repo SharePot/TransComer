@@ -63,18 +63,18 @@
                             <!-- 검색 -->
                             
                             
-                            <button onclick="location.href='#';">글쓰기</button>
-                            <%-- <!-- 로그인한 사람만 가능 -->
-							<c:if test="${ !empty loginUser }">
+                            <button onclick="location.href='pWriterView.tc';">글쓰기</button>
+                             <!-- 로그인한 사람만 가능 -->
+                            <!--<c:if test="${ !empty loginUser }">
 								<button onclick="location.href='#';">글쓰기</button>
-							</c:if> --%>
+							</c:if> -->
 
 
                             <header class="major">
                                 <h2>1:1 의뢰</h2>
                             </header>
                             <div class="row">
-                            	<c:forEach var="p" items="">
+                            	<c:forEach var="p" items="${list }">
                                 <div class="col-4 col-6-medium col-12-small">
                                     <section class="box">
                                         <center>
@@ -86,10 +86,11 @@
                                         <header>
                                             <h3></h3>
                                         </header>
-                                        <b><!-- 글 제목 --></b>
+                                        <!-- 글 제목 -->
+                                        <b>${p.personTitle }</b>
                                         <hr>
-                                        <p>사용가능 언어 : 영어
-                                        <br>사용가능 개발언어: JAVA</p>
+                                        <p>사용가능 언어 : ${p.personalTLang}
+                                        <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
                                                 <li><a href="#" class="button alt">자세히 보기</a></li>
@@ -98,63 +99,8 @@
                                     </section>
                                 </div>
                                 </c:forEach>
-                                <!-- <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Consequat et tempus</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Blandit sed adipiscing</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Etiam nisl consequat</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Dolore nisl feugiat</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                            </div> -->
+
+                            </div> 
 
 
                             <br><br><br><br>
@@ -179,13 +125,8 @@
                             </div>-->
 
                         </section>
-
                     </div>
-                    <div class="col-12">
 
-                        <!--내용 채우기(지워도 상관없음)-->
-
-                    </div>
                 </div>
             </div>
         </section>

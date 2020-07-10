@@ -6,7 +6,7 @@ import com.tc.spring.personal.domain.Personal;
 
 public interface PersonalService {
 
-   public ArrayList<Personal> selectList();
+   public ArrayList<Personal> selectPersonalList();
    /**
     * 1:1의뢰 게시판 전체 조회 서비스
     * @param 
@@ -40,4 +40,5 @@ public interface PersonalService {
     * @param 
     * @return
     */
+   
 }
