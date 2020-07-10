@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="personalMapper">
 
+	<resultMap type="Personal" id="personalResultSet">
+		<id property="memberId" column="MEMBERID" />
+		<result property="personalNo" column="PERSONAL_NO" />
+		<result property="personalTitle" column="PESONAL_TITLE" />
+		<result property="personalDate" column="PERSONAL_DATE" />
+		<!-- <result property="personalWriter" column="" /> -->
+		<result property="personalPLang" column="PERSONAL_P_LANG" />
+		<result property="personalTLang" column="PERSONAL_T_LANG" />
+		<result property="personalScedule" column="PERSONAL_SCHEDULE" />
+		<result property="personalPrice" column="PERSONAL_PRICE" />
+		<result property="personalCount" column="PERSONAL_COUNT" />
+		<result property="personalDStatus" column="PERSONAL_D_STATUS" />
+		<result property="powerYN" column="POWER_YN" />
+	</resultMap>
+
+	<select id="selectList" resultMap="personalResultSet">
+		SELECT * FROM PERSONAL ORDER BY MEMBER_ID DESC
+	</select>
+	
+
 </mapper>

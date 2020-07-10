@@ -13,11 +13,9 @@ public class PersonalServiceImpl implements PersonalService  {
 
    @Autowired private PersonalStore personalStore;
 
-   
    @Override
    public ArrayList<Personal> selectList() {
-      // TODO Auto-generated method stub
-      return null;
+      return personalStore.selectList();
    }
 
    @Override
