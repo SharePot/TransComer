@@ -1,10 +1,15 @@
 package com.tc.spring.member.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,11 +20,42 @@ import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.service.MemberService;
 
+
+@SessionAttributes({"loginUser"})
 @Controller
 public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@RequestMapping("mlist.tc")
+	public ModelAndView memberList(ModelAndView mv) {
+		ArrayList<Member>list=memberService.selectMemberList();
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list",list);
+			mv.setViewName("member/memberListView");
+		}else {
+			mv.addObject("msg","회원리스트 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="login.tc",method=RequestMethod.POST)
+	   public ModelAndView memberLogin(Member member,ModelAndView mv) {
+	      Member loginUser = memberService.loginMember(member);
+	      
+	      if (loginUser != null) {
+	         mv.addObject("loginUser", loginUser);
+	         mv.setViewName("home");
+	      } else {
+	         mv.setViewName("common/errorPage");
+	      }
+	      
+	      return mv;
+	      
+	   }
 	
 	public ModelAndView memberLogic(Member member,ModelAndView mv) {
 		return null;

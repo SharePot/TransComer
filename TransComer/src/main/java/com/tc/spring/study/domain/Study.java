@@ -10,13 +10,15 @@ public class Study {
 	private String studyContent;
 	private Date studyWriteDate;
 	private int studyCount;
+	private String studyFilePath;
 
 	public Study() {
 
 	}
 
+
 	public Study(int studyNo, String memberId, String studyCategory, String studyTitle, String studyContent,
-			Date studyWriteDate, int studyCount) {
+			Date studyWriteDate, int studyCount, String studyFilePath) {
 		super();
 		this.studyNo = studyNo;
 		this.memberId = memberId;
@@ -25,7 +27,12 @@ public class Study {
 		this.studyContent = studyContent;
 		this.studyWriteDate = studyWriteDate;
 		this.studyCount = studyCount;
+		this.studyFilePath = studyFilePath;
 	}
+
+
+
+
 
 	public int getStudyNo() {
 		return studyNo;
@@ -83,10 +90,26 @@ public class Study {
 		this.studyCount = studyCount;
 	}
 
+
+	public String getStudyFilePath() {
+		return studyFilePath;
+	}
+
+
+	public void setStudyFilePath(String studyFilePath) {
+		this.studyFilePath = studyFilePath;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Study [studyNo=" + studyNo + ", memberId=" + memberId + ", studyCategory=" + studyCategory
 				+ ", studyTitle=" + studyTitle + ", studyContent=" + studyContent + ", studyWriteDate=" + studyWriteDate
-				+ ", studyCount=" + studyCount + "]";
+				+ ", studyCount=" + studyCount + ", studyFilePath=" + studyFilePath + "]";
 	}
+
+
+
+	
+	
 }

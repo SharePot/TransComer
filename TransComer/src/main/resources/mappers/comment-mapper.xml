@@ -2,4 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="commentMapper">
 
+<resultMap type="Comment" id="commentResultSet">
+	<id property="commentNo" column="COMMENT_NO"/>
+	<result property="memberId" column="MEMBER_ID"/>
+	<result property="commentYN" column="COMMENT_YN"/>
+	<result property="commentContent" column="COMMENT_CONTENT"/>
+	<result property="commentWriteDate" column="COMMENT_WRITE_DATE"/>
+	<result property="shareNo" column="SHARE_NO"/>
+	<result property="qnaNo" column="QNA_NO"/>
+	<result property="studyNo" column="STUDY_NO"/>
+</resultMap>
+
+<select id="selectCommentList" resultMap="commentResultSet">
+SELECT * FROM COMMENTS 
+	<choose>
+		<when test="commentCondition=='share'">
+		JOIN MATERIAL_SHARE USING (SHARE_NO) WHERE SHARE_NO=#{shareNo}
+		</when>
+		<when test="commentCondition=='qna'">
+		 JOIN QNA USING (QNA_NO) WHERE QNA_NO=#{qnaNo}
+		</when>
+		<when test="commentCondition=='study'">
+		 JOIN STUDY USING (STUDY_NO) WHERE STUDY_NO=#{studyNo}
+		 </when>
+	</choose>
+ORDER BY COMMENT_NO
+</select>
+
+<insert id="insertComment" parameterType="Comment">
+	<choose>
+		<when test="commentCondition=='share'">
+	INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,#{shareNo},DEFAULT,DEFAULT)
+		</when>
+		<when test="commentCondition=='qna'">
+		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,DEFAULT,#{qnaNo},DEFAULT)
+		</when>
+		<otherwise>
+		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,DEFAULT,DEFAULT,#{studyNo})
+		</otherwise>
+	</choose>	
+</insert>
+
+<delete id="deleteComment" parameterType="_int">
+	DELET FROM COMMENTS WHERE COMMENT_NO=#{commentNo}
+</delete>
+
+<update id="updateComment" parameterType="Comment">
+	UPDATE COMMENT SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE,COMMENT_YN=#{comment_YN} WHERE COMMENT_NO=#{commentNo}
+</update>
+
+<select id="getCommentListCount" resultType="_int">
+	SELECT COUNT(*) FROM COMMENT
+	<choose>
+		<when test="commentCondition=='share'">
+		WHERE SHARE_NO=#{shareNo}
+		</when>
+		<when test="commentCondition=='qna'">
+		WHERE QNA_NO=#{qnaNo}
+		</when>
+		<otherwise>
+		WHERE STUDY_NO=#{studyNo}
+		</otherwise>	
+	</choose>
+	
+</select>
+
+
 </mapper>

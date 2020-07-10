@@ -12,17 +12,16 @@ import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.store.MemberStore;
 
 @Service("memberService")
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberStore memberStore;
 
 	@Override
-	public Member loginMember(Member member) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	   public Member loginMember(Member member) {
+	      return memberStore.loginMember(member);
+	   }
+	
 	@Override
 	public int checkIdDup(String memberId) {
 		// TODO Auto-generated method stub
@@ -31,8 +30,8 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public ArrayList<Member> selectMemberList() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Member> list=memberStore.selectMemberList();
+		return list;
 	}
 
 	@Override

@@ -18,10 +18,9 @@ public class MemberStoreLogic implements MemberStore {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public Member loginMember(Member member) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	   public Member loginMember(Member member) {
+	      return sqlSession.selectOne("memberMapper.selectOne", member);
+	   }
 
 	@Override
 	public int checkIdDup(String memberId) {
@@ -31,8 +30,8 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public ArrayList<Member> selectMemberList() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectList");
+		return list;
 	}
 
 	@Override
@@ -148,4 +147,13 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -2,6 +2,7 @@ package com.tc.spring.comment.store;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,26 +17,27 @@ public class CommentStoreLogic implements CommentStore {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(CommentPageInfo cPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Comment> selectCommentList(Comment comment) {
+		return (ArrayList)sqlSession.selectList("commentMapper.selectCommentList",comment);
 	}
 
 	@Override
-	public int insertAlarm(Comment comment) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertComment(Comment comment) {
+		return sqlSession.insert("commentMapper.insertComment",comment);
 	}
 
 	@Override
 	public int updateComment(Comment comment) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("commentMapper.updateComment",comment);
 	}
 
 	@Override
-	public int deleteAlarm(int commentNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteComment(int commentNo) {
+		return sqlSession.delete("commentMapper.deleteComment",commentNo);
+	}
+
+	@Override
+	public int getCommentListCount() {
+		return sqlSession.selectOne("commentMapper.getCommentListCount");
 	}
 }
