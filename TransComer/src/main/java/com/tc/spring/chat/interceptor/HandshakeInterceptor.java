@@ -33,12 +33,12 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		Member member = (Member) req.getSession().getAttribute("loginUser");
 		// 가져온 멤버의 아이디 값을 가져온다.
 		String memberId = member.getMemberId();
-		System.out.println("userId : " + memberId);
+		System.out.println("memberId : " + memberId);
 
 		// HttpSession에 저장된 이용자의 아이디를 추출하는 경우
 		// String id = (String) req.getSession().getAttribute("loginUser"); // 구글링방법
-		attributes.put("userId", memberId);	// 키, 벨류
-		System.out.println("HttpSession에 저장된 loginUser의 userId : " + memberId);
+		attributes.put("memberId", memberId);	// 키, 벨류
+		System.out.println("HttpSession에 저장된 loginUser의 memberId : " + memberId);
 
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}

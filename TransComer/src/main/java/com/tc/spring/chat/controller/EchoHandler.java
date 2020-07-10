@@ -28,9 +28,10 @@ public class EchoHandler extends TextWebSocketHandler {
 		//
 		super.afterConnectionEstablished(session);
 		// 로그인 한 유저의 아이디를 가져와보고싶다 가져오자 제발루 ㅠ
+		// 세션에 맵으로 저장된 유저 정보를 가져온다.
 		Map<String, Object> memberMap = session.getAttributes();
-		String userId = (String) memberMap.get("userId");
-		System.out.println("memberMap.get('userId') : " + userId);
+		String memberId = (String) memberMap.get("memberId");
+		System.out.println("memberMap.get('memberId') : " + memberId);
 		System.out.println("memberMap.toString() : " + memberMap.toString());
 		//
 		sessionList.add(session); // 세션에 저장
@@ -64,11 +65,11 @@ public class EchoHandler extends TextWebSocketHandler {
 		//
 		// 로그인 한 유저의 아이디를 가져와보고싶다 가져오자 제발루 ㅠ
 		Map<String, Object> memberMap = session.getAttributes();
-		String userId = (String) memberMap.get("userId");
+		String memberId = (String) memberMap.get("memberId");
 		// 메세지를 채팅에 접속한 유저한테 모두 보내준다.
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("sess : " + sess);
-			sess.sendMessage(new TextMessage(userId + ":" + message.getPayload()));
+			sess.sendMessage(new TextMessage(memberId + ":" + message.getPayload()));
 		}
 	}
 
