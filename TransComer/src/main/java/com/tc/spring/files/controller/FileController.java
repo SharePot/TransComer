@@ -68,7 +68,7 @@ public class FileController {
 			// 기존 업로드된 파일이 있을 경우
 			if ( files.getFilePath() != null ) {
 				// 기존 파일 삭제
-				deleteFile(files.getFilePath(), request, memberId);
+				deleteFile(files.getFileName(), request, memberId);
 			}
 			// 새로 업로드된 파일 저장
 			String savePath = saveFile(reloadFile, request, memberId);

@@ -50,6 +50,26 @@ public class QnaController {
 		return mv;
 	}
 	
+	// Qna 관리자 목록 보기
+	@RequestMapping("qAdminlist.tc")
+	public ModelAndView selectQnaAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int listCount = qnaService.getAdminListCount();
+		QnaPageInfo qPi = Pagination.getQnaPageInfo(currentPage, listCount);
+		
+		ArrayList<Qna> qAdminList = qnaService.selectAdminQnaList(qPi);
+		
+		if(!qAdminList.isEmpty()) {
+			mv.addObject("qalist", qAdminList);
+			mv.addObject("qPi", qPi);
+			mv.setViewName("admin/qnaAdminListView");
+		} else {
+			mv.addObject("msg", "관리자 문의글 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
 	// Qna 검색
 	@RequestMapping("qnaSearch.tc")
 	public String qnaSearch(QnaSearch qnaSearch, Model model,
@@ -92,7 +112,6 @@ public class QnaController {
 	@RequestMapping(value="qnaInsert.tc", method=RequestMethod.POST)
 	public String qnaInsert(Qna qna, Files files, Model model, @RequestParam(name="uploadFile",required=false)MultipartFile uploadFile, HttpServletRequest request, String memberId) {
 		
-		System.out.println(qna.toString());
 		int resultQna = 0;
 		int resultFile = 0;
 		String path = null;

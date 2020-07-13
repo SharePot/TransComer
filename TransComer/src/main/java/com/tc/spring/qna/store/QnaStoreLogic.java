@@ -23,6 +23,11 @@ public class QnaStoreLogic implements QnaStore {
 	}
 	
 	@Override
+	public int getAdminListCount() {
+		return sqlSession.selectOne("qnaMapper.getAdminListCount");
+	}
+	
+	@Override
 	public ArrayList<Qna> selectList(QnaPageInfo qPi) {
 		
 		int offset = (qPi.getCurrentPage() - 1) * qPi.getQnaLimit();
@@ -40,6 +45,14 @@ public class QnaStoreLogic implements QnaStore {
 		// 20건의 10건만큼 건너뛰고 결과값을 가져옴 => 10개
 		RowBounds rowBounds = new RowBounds(offset, qPi.getQnaLimit());
 		return (ArrayList)sqlSession.selectList("qnaMapper.selectList", null, rowBounds);
+	}
+	
+	@Override
+	public ArrayList<Qna> selectAdminQnaList(QnaPageInfo qPi) {
+		
+		int offset = (qPi.getCurrentPage() - 1) * qPi.getQnaLimit();
+		RowBounds rowBounds = new RowBounds(offset, qPi.getQnaLimit());
+		return (ArrayList)sqlSession.selectList("qnaMapper.selectAdminQnaList", null, rowBounds);
 	}
 	
 	@Override
@@ -82,10 +95,8 @@ public class QnaStoreLogic implements QnaStore {
 
 	@Override
 	public int deleteQna(int qnaNo) {
-		return sqlSession.delete("qnaMapper.delete", qnaNo);
+		return sqlSession.delete("qnaMapper.deleteQna", qnaNo);
 	}
-
 	
-
 	
 }

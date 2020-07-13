@@ -25,8 +25,18 @@ public class QnaServiceImpl implements QnaService{
 	}
 	
 	@Override
+	public int getAdminListCount() {
+		return qnaStore.getAdminListCount();
+	}
+	
+	@Override
 	public ArrayList<Qna> selectList(QnaPageInfo qPi) {
 		return qnaStore.selectList(qPi);
+	}
+	
+	@Override
+	public ArrayList<Qna> selectAdminQnaList(QnaPageInfo qPi) {
+		return qnaStore.selectAdminQnaList(qPi);
 	}
 	
 	@Override
@@ -59,8 +69,6 @@ public class QnaServiceImpl implements QnaService{
 	public int deleteQna(int qnaNo) {
 		return qnaStore.deleteQna(qnaNo);
 	}
-
 	
 
-	
 }

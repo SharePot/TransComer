@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="reportMapper">
+	
+	<resultMap type="Report" id="reportResultSet">
+		<id property="reportNo" column="REPORT_NO" />
+		<result property="reporterMemberId" column="REPORTER_MEMBER_ID" />
+		<result property="targetMemberId" column="TARGET_MEMBER_ID" />
+		<result property="reportContent" column="REPORT_CONTENT" />
+		<result property="reportDate" column="REPORT_DATE" />
+	</resultMap>
+	
+	<resultMap type="Member" id="blackResultSet">
+		<id property="memberNo" column="MEMBER_NO"/>
+        <result property="memberId" column="MEMBER_ID"/>
+        <result property="memberPw" column="MEMBER_PW"/>
+        <result property="memberName" column="MEMBER_NAME"/>
+        <result property="email" column="MEMBER_EMAIL"/>
+        <result property="address" column="MEMBER_ADDRESS"/>
+        <result property="phone" column="MEMBER_PHONE"/>
+        <result property="point" column="MEMBER_POINT"/>
+        <result property="account" column="ACCOUNT_INFO"/>
+        <result property="status" column="MEMBER_STATUS"/>
+        <result property="contentCount" column="CONTENTS_COUNT"/>
+        <result property="adopCount" column="ADOPT_COUNT"/>
+        <result property="enrollDate" column="MEMBER_ENROLL_DATE"/>
+	</resultMap>
+	
+	<select id="selectReportList" resultMap="reportResultSet">
+		SELECT * FROM BLACKLIST ORDER BY REPORT_NO DESC
+	</select>
 
+	<select id="selectReportCount" resultType="_int">
+		SELECT COUNT(*) FROM BLACKLIST
+	</select>
+	
+	<select id="selectBlackList" resultMap="blackResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEMBER_STATUS = 'BLACKLIST' OR MEMBER_STATUS = 'blacklist'
+	</select>
+	
+	<select id="selectBlackCount" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE MEMBER_STATUS = 'BLACKLIST' OR MEMBER_STATUS = 'blacklist'
+	</select>
+	
+	<insert id="insertReport" parameterType="Report">
+		INSERT INTO BLACKLIST
+		VALUES (REPORT_NO_SEQ.NEXTVAL, #{reporterMemberId}, #{targetMemberId}, #{reportContent}, SYSDATE)
+	</insert>
+	
+	<update id="updateReport" parameterType="Report">
+		UPDATE MEMBER
+		SET MEMBER_STATUS = 'BLACKLIST'
+		WHERE MEMBER_ID = #{targetMemberId}
+	</update>
+	
+	<update id="updateBlack" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_STATUS = 'PRIMARY'
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	<delete id="deleteReport" parameterType="_int">
+		DELETE FROM BLACKLIST
+		WHERE REPORT_NO = #{reportNo}
+	</delete>
 </mapper>

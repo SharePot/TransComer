@@ -2,10 +2,15 @@ package com.tc.spring.report.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
+import com.tc.spring.member.domain.Member;
+import com.tc.spring.report.domain.BlackPageInfo;
 import com.tc.spring.report.domain.Report;
 import com.tc.spring.report.domain.ReportPageInfo;
 import com.tc.spring.report.store.ReportStore;
@@ -17,20 +22,43 @@ public class ReportServiceImpl implements ReportService {
 	private ReportStore reportStore;
 
 	@Override
-	public ArrayList<Report> selectAlarmList(ReportPageInfo rPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public int getReportListCount() {
+		return reportStore.getReportListCount();
+	}
+	
+	@Override
+	public int getBlackListCount() {
+		return reportStore.getBlackListCount();
+	}
+	
+	@Override
+	public ArrayList<Report> selectReportList(ReportPageInfo rPi) {
+		return reportStore.selectReportList(rPi);
+	}
+	
+	@Override
+	public ArrayList<Member> selectBlackList(BlackPageInfo bPi) {
+		return reportStore.selectBlackList(bPi);
 	}
 
 	@Override
-	public int insertAlarm(Report report) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertReport(Report report, HttpServletRequest request) {
+		return reportStore.insertReport(report);
 	}
 
 	@Override
-	public int deleteAlarm(int reportNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateReport(Report report, HttpServletRequest request) {
+		return reportStore.updateReport(report);
 	}
+	
+	@Override
+	public int updateBlack(Member member, HttpServletRequest request) {
+		return reportStore.updateBlack(member);
+	}
+	
+	@Override
+	public int deleteReport(int reportNo) {
+		return reportStore.deleteReport(reportNo);
+	}
+
 }

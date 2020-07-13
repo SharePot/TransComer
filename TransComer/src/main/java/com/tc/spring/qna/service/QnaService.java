@@ -16,8 +16,14 @@ public interface QnaService {
 	// 전체 게시글 수
 	public int getListCount();
 	
+	// 관리자 문의 게시글 수
+	public int getAdminListCount();
+	
 	// 전체 조회
 	public ArrayList<Qna> selectList(QnaPageInfo qPi);
+	
+	// 관리자 문의 조회
+	public ArrayList<Qna> selectAdminQnaList(QnaPageInfo qPi);
 	
 	// 조회수 증가
 	public int addReadCount(int qnaNo);
