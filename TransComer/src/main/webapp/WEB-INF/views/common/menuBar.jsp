@@ -44,10 +44,11 @@
                     <li>
                     <c:url var="sList" value="sReqListView.tc" />
 					<c:url var="alarmList" value="alarmList.tc" />
+					<c:url var="pList" value="plist.tc" />
                         <a href="#">번역 의뢰</a>
                         <ul>
                             <li><a href="${sList }">단순의뢰</a></li>
-                            <li><a href="#">1:1 의뢰</a></li>
+                            <li><a href="${pList }">1:1 의뢰</a></li>
                         </ul>
                     </li>
                     <li><a href="#">번역 공유</a></li>

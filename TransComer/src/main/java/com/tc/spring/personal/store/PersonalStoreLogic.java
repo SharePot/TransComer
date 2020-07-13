@@ -27,9 +27,8 @@ public class PersonalStoreLogic implements PersonalStore{
 	}
 
 	@Override
-	public int insertPersonl() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertPersonal(Personal personal) {
+		return sqlSession.insert("personalMapper.insertPersonal", personal);
 	}
 
 	@Override

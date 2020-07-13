@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Personal {
 
 	private int personalNo;
-	private String personTitle;
+	private String personalTitle;
 	private String personalContent;
 	private Date personalDate;
 	private String personalPLang;
@@ -21,14 +21,14 @@ public class Personal {
 
 	}
 
-	public Personal(int personalNo, String personTitle, Date personalDate, String personalContent, String personalPLang,
-			String personalTLang, int personalSchedule, int personalPrice, int personalCount, String personalDStatus,
-			String powerYN, String memberId) {
+	public Personal(int personalNo, String personalTitle, String personalContent, Date personalDate,
+			String personalPLang, String personalTLang, int personalSchedule, int personalPrice, int personalCount,
+			String personalDStatus, String powerYN, String memberId) {
 		super();
 		this.personalNo = personalNo;
-		this.personTitle = personTitle;
-		this.personalDate = personalDate;
+		this.personalTitle = personalTitle;
 		this.personalContent = personalContent;
+		this.personalDate = personalDate;
 		this.personalPLang = personalPLang;
 		this.personalTLang = personalTLang;
 		this.personalSchedule = personalSchedule;
@@ -47,20 +47,12 @@ public class Personal {
 		this.personalNo = personalNo;
 	}
 
-	public String getPersonTitle() {
-		return personTitle;
+	public String getPersonalTitle() {
+		return personalTitle;
 	}
 
-	public void setPersonTitle(String personTitle) {
-		this.personTitle = personTitle;
-	}
-
-	public Date getPersonalDate() {
-		return personalDate;
-	}
-
-	public void setPersonalDate(Date personalDate) {
-		this.personalDate = personalDate;
+	public void setPersonalTitle(String personalTitle) {
+		this.personalTitle = personalTitle;
 	}
 
 	public String getPersonalContent() {
@@ -69,6 +61,14 @@ public class Personal {
 
 	public void setPersonalContent(String personalContent) {
 		this.personalContent = personalContent;
+	}
+
+	public Date getPersonalDate() {
+		return personalDate;
+	}
+
+	public void setPersonalDate(Date personalDate) {
+		this.personalDate = personalDate;
 	}
 
 	public String getPersonalPLang() {
@@ -137,11 +137,11 @@ public class Personal {
 
 	@Override
 	public String toString() {
-		return "Personal [personalNo=" + personalNo + ", personTitle=" + personTitle + ", personalDate=" + personalDate
-				+ ", personalContent=" + personalContent + ", personalPLang=" + personalPLang + ", personalTLang="
-				+ personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice=" + personalPrice
-				+ ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus + ", powerYN=" + powerYN
-				+ ", memberId=" + memberId + "]";
+		return "Personal [personalNo=" + personalNo + ", personalTitle=" + personalTitle + ", personalContent="
+				+ personalContent + ", personalDate=" + personalDate + ", personalPLang=" + personalPLang
+				+ ", personalTLang=" + personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice="
+				+ personalPrice + ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus
+				+ ", powerYN=" + powerYN + ", memberId=" + memberId + "]";
 	}
 
 }

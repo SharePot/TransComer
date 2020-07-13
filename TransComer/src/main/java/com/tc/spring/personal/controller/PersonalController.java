@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tc.spring.personal.domain.Personal;
@@ -39,15 +41,28 @@ public class PersonalController {
 		return null;
 	}
 
-	@RequestMapping("pWriterView.tc")
 	// 1:1게시판 등록페이지 이동
+	@RequestMapping("pWriterView.tc")
 	public String pWriterView() {
+		
 		return "personal/personalWriterForm";
 	}
 
 	// 1:1게시판 등록하기
-	public String personalInsert() {
-		return null;
+	@RequestMapping(value = "pWriterInsert.tc", method = RequestMethod.POST)
+	public String personalInsert(Personal personal, Model model, String pLang1, String pLang2, String pLang3,
+			String tLang1, String tLang2, String tLang3) {
+		
+		personal.setPersonalPLang(pLang1 + "," + pLang2 + "," + pLang3);
+		personal.setPersonalTLang(tLang1 + "," + tLang2 + "," + tLang3);
+		System.out.println("Personal : " + personal);
+		int result = personalService.insertPersonal(personal);
+		if (result > 0) {
+			return "redirect:plist.tc";
+		} else {
+			model.addAttribute("msg", "등록실패");
+			return "common/errorPage";
+		}
 	}
 
 	// 1:1게시판 수정화면 이동

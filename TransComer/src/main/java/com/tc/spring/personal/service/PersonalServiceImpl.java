@@ -2,8 +2,11 @@ package com.tc.spring.personal.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.store.PersonalStore;
@@ -27,10 +30,16 @@ public class PersonalServiceImpl implements PersonalService {
 	}
 
 	@Override
-	public int insertPersonl() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertPersonal(Personal personal) {
+		personal.setPersonalContent(personal.getPersonalContent().replace("\n", "<br>"));
+		return personalStore.insertPersonal(personal);
 	}
+	
+	/*@Override
+	public int insertPersonal(Personal personal, MultipartFile file, HttpServletRequest request) {
+		personal.setPersonalContent(personal.getPersonalContent().replace("\n", "<br>"));
+		return personalStore.insertPersonal(personal);
+	}*/
 
 	@Override
 	public int updatePersonal() {

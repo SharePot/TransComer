@@ -24,17 +24,16 @@
 </head>
 
 <body class="homepage is-preload">
+<c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
 
         <!-- Header -->
-        <%-- 메뉴바
-       <c:import url="../common/menuBar.jsp"/> --%>
-        <section id="header">
+        <!-- <section id="header">
 
-            <!-- Logo -->
+            Logo
             <h1><a href="index.html">SharePot</a></h1>
 
-            <!-- Nav -->
+            Nav
             <nav id="nav">
                 <ul>
                     <li class="current"><a href="index.html">Home</a></li>
@@ -50,7 +49,7 @@
                     <li><a href="#">Q&amp;A</a></li>
                 </ul>
             </nav>
-        </section>
+        </section> -->
 
         <!-- Main -->
         <section id="main">
@@ -63,11 +62,11 @@
                             <!-- 검색 -->
                             
                             
-                            <button onclick="location.href='pWriterView.tc';">글쓰기</button>
-                             <!-- 로그인한 사람만 가능 -->
-                            <!--<c:if test="${ !empty loginUser }">
-								<button onclick="location.href='#';">글쓰기</button>
-							</c:if> -->
+                           <!--  <button onclick="location.href='pWriterView.tc';">글쓰기</button> -->
+                            <!--  로그인한 사람만 가능 -->
+                            <c:if test="${ !empty loginUser }">
+								<button onclick="location.href='pWriterView.tc';">글쓰기</button>
+							</c:if>
 
 
                             <header class="major">
@@ -87,7 +86,7 @@
                                             <h3></h3>
                                         </header>
                                         <!-- 글 제목 -->
-                                        <b>${p.personTitle }</b>
+                                        <b>${p.personalTitle }</b>
                                         <hr>
                                         <p>사용가능 언어 : ${p.personalTLang}
                                         <br>사용가능 개발언어: ${p.personalPLang}</p>
@@ -154,12 +153,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/jquery.dropotron.min.js"></script>
+    <script src="resources/js/browser.min.js"></script>
+    <script src="resources/js/breakpoints.min.js"></script>
+    <script src="resources/js/util.js"></script>
+    <script src="resources/js/main.js"></script>
     <!--템플릿 css-->
     <link rel="stylesheet" href="resources/css/main.css" />
 

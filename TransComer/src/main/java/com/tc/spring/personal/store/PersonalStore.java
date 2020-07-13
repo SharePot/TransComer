@@ -14,7 +14,7 @@ public interface PersonalStore {
 
 	public Personal selectOne();
 
-	public int insertPersonl();
+	public int insertPersonal(Personal personal);
 
 	public int updatePersonal();
 
