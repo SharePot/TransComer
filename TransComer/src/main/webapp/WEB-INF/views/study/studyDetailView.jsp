@@ -10,7 +10,7 @@
 <body>
 	<div class="page-wrapper">
 	<section id="main">
-   <c:import url="../common/menuBar.jsp" />  
+ <c:import url="../common/menuBar.jsp" />   
   <%--  <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
    <br style="clear: both">
    <h1 align="center">${study.studyNo }번 글 상세보기</h1>
@@ -92,8 +92,15 @@
         <!-- 댓글 등록  -->
    <table align="center" width="500" border="1" cellspacing="0" id="commentTable">
       <tr>
-      <td> 공개여부 : <input type="radio" name="commentYN"  class="custom-control-input commentYN" value="Y" checked="checked">공개
-          <input type="radio" class="custom-control-input commentYN" name="commentYN" value="N">비공개</td>
+      <td>
+      	<!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
+          <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
+          <label>공개여부&nbsp;: &nbsp;&nbsp;</label>
+          <select id="commentYN" name="commentYN">
+            <option value="Y" >공개</option>
+            <option value="N" >비공개</option>
+          </select>
+          </td>
          <td><textarea cols="55" rows="3" id="content"></textarea>
         <input type="hidden" id="commentCondition" name="commentCondition" value="study"></td>
          
@@ -136,7 +143,7 @@
             
             var content = $("#content").val(); // 댓글의 내용
             var refStudyNo = ${study.studyNo }; // 어느 게시글의 댓글인지 알려줌
-            var commentYN=$(".commentYN").val();
+            var commentYN=$("#commentYN").val();
             $.ajax({
                url : "insertComment.tc",
                data : {commentContent:content, studyNo:refStudyNo,commentYN:commentYN},
