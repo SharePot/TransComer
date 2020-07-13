@@ -63,7 +63,7 @@ public interface StudyService {
 	 * @param search
 	 * @return
 	 */
-	public ArrayList searchStudyList(StudySearch search);
+	public ArrayList<Study> searchStudyList(StudySearch search);
 
 
 

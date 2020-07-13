@@ -56,7 +56,7 @@ public class StudyStoreLogic implements StudyStore{
 	}
 
 	@Override
-	public ArrayList SearchStudyList(StudySearch search) {
+	public ArrayList<Study> searchStudyList(StudySearch search) {
 		return (ArrayList)sqlSession.selectList("studyMapper.searchStudyList",search);
 	}
 

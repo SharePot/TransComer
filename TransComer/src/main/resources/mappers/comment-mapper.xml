@@ -48,7 +48,7 @@ ORDER BY COMMENT_NO
 </delete>
 
 <update id="updateComment" parameterType="Comment">
-	UPDATE COMMENT SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE,COMMENT_YN=#{comment_YN} WHERE COMMENT_NO=#{commentNo}
+	UPDATE COMMENTS SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE WHERE COMMENT_NO=#{commentNo}
 </update>
 
 <select id="getCommentListCount" resultType="_int">

@@ -37,19 +37,19 @@
 	SELECT * FROM STUDY
 	<where>
 		<choose>
-			<when test="searchCondition=='title'">
-			STUDY_TITLE LIKE '%' || #{searchValue} || '%'
+			<when test="studySearchCondition =='title'">
+			STUDY_TITLE LIKE '%' || #{studySearchValue} || '%'
 			</when>
-			<when test="searchCondition=='writer">
-			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
+			<when test="studySearchCondition =='writer'">
+			AND MEMBER_ID LIKE '%' || #{studySearchValue} || '%'
 			</when>
-			<when test="searchCondition=='content'">
-			AND STUDY_CONTENT '%' || #{searchValue} || '%'  			
+			<when test="studySearchCondition=='content'">
+			AND STUDY_CONTENT '%' || #{studySearchValue} || '%'  			
 			</when>
 			<otherwise>
-			 AND (MEMBER_ID LIKE '%' || #{searchValue } || '%'
-				OR STUDY_TITLE LIKE '%' || #{searchValue } ||  '%'
-				OR STUDY_CONTENT LIKE '%' || #{searchValue } || '%')
+			 AND (MEMBER_ID LIKE '%' || #{studySearchValue } || '%'
+				OR STUDY_TITLE LIKE '%' || #{studySearchValue } ||  '%'
+				OR STUDY_CONTENT LIKE '%' || #{studySearchValue } || '%')
 			</otherwise>
 		</choose>
 	</where>	

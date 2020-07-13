@@ -54,7 +54,7 @@ public class StudyController {
 	public String studySearch(StudySearch search, Model model) {
 		ArrayList<Study> searchList=studyService.searchStudyList(search);
 		
-		model.addAttribute("searchList",searchList);
+		model.addAttribute("list",searchList);
 		model.addAttribute("search",search);
 		return "study/studyListView";
 	}
