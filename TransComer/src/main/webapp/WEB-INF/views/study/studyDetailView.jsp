@@ -222,6 +222,7 @@
    	 	  };
    	 	  	  
     	 	  
+   	 	  
       // 댓글 리스트 불러오는 ajax 함수
       function getCommentList(){
          var studyNo = ${study.studyNo};
