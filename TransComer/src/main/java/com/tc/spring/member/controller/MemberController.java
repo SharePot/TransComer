@@ -57,17 +57,24 @@ public class MemberController {
 	      
 	   }
 	
+	@RequestMapping("loginPage.tc")
+	public String loginPage() {
+		return "member/login";
+	}
+	
+	   @RequestMapping("logout.tc")
+	   public String memberLogout(SessionStatus status) {
+	      status.setComplete();
+	      return "redirect:home.tc";
+	      
+	   }
+	
 	public ModelAndView memberLogic(Member member,ModelAndView mv) {
 		return null;
 		
 	}
 	
-	public String memberLogout(SessionStatus status) {
-		
-		return null;
-		
-	}
-	
+
 	public String enrollView() {
 		
 		return null;

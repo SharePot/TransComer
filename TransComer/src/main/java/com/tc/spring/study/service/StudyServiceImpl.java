@@ -52,8 +52,8 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public ArrayList searchStudyList(StudySearch search) {
-		return studyStore.SearchStudyList(search);
+	public ArrayList<Study> searchStudyList(StudySearch search) {
+		return studyStore.searchStudyList(search);
 	}
 
 	@Override

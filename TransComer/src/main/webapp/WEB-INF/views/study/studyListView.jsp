@@ -104,5 +104,20 @@
          </td>
       </tr>
    </table>
+   
+    <div id="searchArea" align="center">
+      <form action="studySearch.tc" name="searchForm" method="get">
+         <select id="studySearchCondition" name="studySearchCondition">
+            <option value="all" <c:if test="${search.studySearchCondition == 'all' }">selected</c:if>>전체</option>
+            <option value="writer" <c:if test="${search.studySearchCondition == 'writer' }">selected</c:if>>작성자</option>
+            <option value="title" <c:if test="${search.studySearchCondition == 'title' }">selected</c:if>>제목</option>
+            <option value="content" <c:if test="${search.studySearchCondition == 'content' }">selected</c:if>>내용</option>
+         </select>
+         <input type="search" name="studySearchValue" value="">
+         <button>검색</button><br>
+         <input type="checkbox" name="studyExistFile" <c:if test="${!empty search.studyExistFile }">checked</c:if>>
+      </form>
+   </div>
+   
 </body>
 </html>

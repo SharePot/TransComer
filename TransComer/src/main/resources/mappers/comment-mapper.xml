@@ -32,23 +32,23 @@ ORDER BY COMMENT_NO
 <insert id="insertComment" parameterType="Comment">
 	<choose>
 		<when test="commentCondition=='share'">
-	INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,#{shareNo},DEFAULT,DEFAULT)
+	INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},#{commentYN},#{commentContent},SYSDATE,#{shareNo},DEFAULT,DEFAULT)
 		</when>
 		<when test="commentCondition=='qna'">
-		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,DEFAULT,#{qnaNo},DEFAULT)
+		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},#{commentYN},#{commentContent},SYSDATE,DEFAULT,#{qnaNo},DEFAULT)
 		</when>
 		<otherwise>
-		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},DEFAULT,#{commentContent},SYSDATE,DEFAULT,DEFAULT,#{studyNo})
+		INSERT INTO COMMENTS VALUES(COMMENTS_NO_SEQ.NEXTVAL,#{memberId},#{commentYN},#{commentContent},SYSDATE,DEFAULT,DEFAULT,#{studyNo})
 		</otherwise>
 	</choose>	
 </insert>
 
 <delete id="deleteComment" parameterType="_int">
-	DELET FROM COMMENTS WHERE COMMENT_NO=#{commentNo}
+	DELETE FROM COMMENTS WHERE COMMENT_NO=#{commentNo}
 </delete>
 
 <update id="updateComment" parameterType="Comment">
-	UPDATE COMMENT SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE,COMMENT_YN=#{comment_YN} WHERE COMMENT_NO=#{commentNo}
+	UPDATE COMMENTS SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE WHERE COMMENT_NO=#{commentNo}
 </update>
 
 <select id="getCommentListCount" resultType="_int">

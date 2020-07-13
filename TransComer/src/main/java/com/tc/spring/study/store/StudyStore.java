@@ -57,6 +57,6 @@ public interface StudyStore {
 	 * @param search
 	 * @return
 	 */
-	public ArrayList SearchStudyList(StudySearch search);
+	public ArrayList<Study> searchStudyList(StudySearch search);
 }
 
