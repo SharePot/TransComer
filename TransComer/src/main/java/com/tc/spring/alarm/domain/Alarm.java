@@ -7,13 +7,13 @@ public class Alarm {
 	private int memberNo;
 	private int alarmNo;
 	private String alarmContent;
-	private Date sendTime;
+	private String sendTime;
 	private String memberId;
 	private String checkYN;
 	
 	public Alarm() {}
 
-	public Alarm(int memberNo, int alarmNo, String alarmContent, Date sendTime, String memberId, String checkYN) {
+	public Alarm(int memberNo, int alarmNo, String alarmContent, String sendTime, String memberId, String checkYN) {
 		super();
 		this.memberNo = memberNo;
 		this.alarmNo = alarmNo;
@@ -47,11 +47,11 @@ public class Alarm {
 		this.alarmContent = alarmContent;
 	}
 
-	public Date getSendTime() {
+	public String getSendTime() {
 		return sendTime;
 	}
 
-	public void setSendTime(Date sendTime) {
+	public void setSendTime(String sendTime) {
 		this.sendTime = sendTime;
 	}
 
@@ -76,7 +76,5 @@ public class Alarm {
 		return "Alarm [memberNo=" + memberNo + ", alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime="
 				+ sendTime + ", memberId=" + memberId + ", checkYN=" + checkYN + "]";
 	}
-
-	
 	
 }

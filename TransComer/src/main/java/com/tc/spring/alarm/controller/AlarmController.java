@@ -25,16 +25,18 @@ public class AlarmController {
 	private AlarmService alarmService;
 	
 	@RequestMapping("alarmList.tc")
-	public ModelAndView selectAlarmList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
+	public ModelAndView selectAlarmList(ModelAndView mv, int memberNo, @RequestParam(value="page", required=false)Integer page) {
 		
-		int arCurrentPage = (page != null) ? page : 1;
-		int arListCount = alarmService.getArListCount();
-		AlarmPageInfo aPi = Pagination.getAlarmPageInfo(arCurrentPage, arListCount);
-		ArrayList<Alarm> arList = alarmService.selectAlarmList(aPi);
+		// int arCurrentPage = (page != null) ? page : 1;
+		// int arListCount = alarmService.getArListCount();
+		// AlarmPageInfo aPi = Pagination.getAlarmPageInfo(arCurrentPage, arListCount);
+		// ArrayList<Alarm> arList = alarmService.selectAlarmList(memberNo);
+		Alarm alarm = alarmService.selectAlarmList(memberNo);
 		
-		if (!arList.isEmpty()) {
-			mv.addObject("aPi", aPi);
-			mv.addObject("arList", arList);
+		// if (!arList.isEmpty()) {
+		if (alarm != null) {
+			// mv.addObject("aPi", aPi);
+			mv.addObject("alarm", alarm);
 			mv.setViewName("alarm/alarmList");
 		} else {
 			mv.setViewName("common/errorPage");
@@ -60,7 +62,7 @@ public class AlarmController {
 		
 	}
 	
-	@RequestMapping(value="readAlarm.tc", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping("readAlarm.tc")
 	public String readAlarm(int alarmNo) {
 		
 		int result = alarmService.readAlarm(alarmNo);

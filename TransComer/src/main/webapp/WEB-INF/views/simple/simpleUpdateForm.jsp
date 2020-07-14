@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="resources/css/simpleInsertForm.css" />
 	<link rel="stylesheet" href="resources/css/main.css" />
 </head>
-	<%-- <c:import url="../common/menuBar.jsp" /> --%>
+<c:import url="../common/menuBar.jsp" />
 <body class="homepage is-preload">
     <div id="page-wrapper">
 

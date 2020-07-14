@@ -22,17 +22,15 @@ public class AlarmStoreLogic implements AlarmStore{
 		return sqlSession.selectOne("alarmMapper.getArListCount");
 	}
 	
-	// 알람 전체 조회
+	// 알람 멤버별 조회
 	@Override
-	public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) {
-		int offset = (aPi.getArCurrentPage() - 1) * aPi.getArBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, aPi.getArBoardLimit());
-		return (ArrayList)sqlSession.selectList("alarmMapper.selectAlarmList", null, rowBounds);
+	public Alarm selectAlarmList(int memberNo) {
+		return sqlSession.selectOne("alarmMapper.selectAlarmList", memberNo);
 	}
 	
 	@Override
 	public int readAlarm(int alarmNo) {
-		return sqlSession.update("alarmMppaer.readAlarm", alarmNo);
+		return sqlSession.update("alarmMapper.readAlarm", alarmNo);
 	}
 	
 	@Override

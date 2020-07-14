@@ -140,10 +140,8 @@
     margin-right: 20px;
 }
 
-#updateBtn, #deleteBtn {
+textarea, #updateBtn, #updateResetBtn {
     display: inline;
-    font-size: 12px;
-    color: midnightblue;
 }
 
 

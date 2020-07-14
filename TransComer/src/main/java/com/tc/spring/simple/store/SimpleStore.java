@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
+import com.tc.spring.simple.domain.SimpleSearch;
 
 public interface SimpleStore {
 	
@@ -23,6 +24,8 @@ public interface SimpleStore {
 	
 	public int simpleReqDelete(int simpleNo);
 	
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch);
+	
 	// -------------------- 단순의뢰 답변 --------------------
 	
 	public ArrayList<SimpleResponse> selectSimpleResList(int simpleNo);
@@ -34,5 +37,11 @@ public interface SimpleStore {
 	public int simpleResUpdate(SimpleResponse simpleRes);
 	
 	public int simpleResDelete(int simpleReplyNo);
+	
+	public int adoptReply(int simpleReplyNo);
+	
+	public int adoptRequest(int sReqNo);
+	
+	public int memberAdoptCount(String simpleReplyWriter);
 	
 }

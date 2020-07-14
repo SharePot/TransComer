@@ -26,6 +26,7 @@ import com.tc.spring.member.domain.Member;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
+import com.tc.spring.simple.domain.SimpleSearch;
 import com.tc.spring.simple.service.SimpleService;
 
 @Controller
@@ -50,7 +51,7 @@ public class SimpleController {
 			mv.addObject("sReqList", sReqList);
 			mv.setViewName("simple/simpleListView");
 		} else {
-			mv.setViewName("common/errorPage");
+			mv.setViewName("simple/simpleListView");
 		}
 		
 		return mv;
@@ -129,6 +130,18 @@ public class SimpleController {
 		
 	}
 	
+	// 단순의뢰 질문 검색
+	@RequestMapping("sReqSearch.tc")
+	public String simpleReqSearch (SimpleSearch simpleSearch, Model model) {
+		ArrayList<SimpleRequest> sReqList = simpleService.sReqSearchList(simpleSearch);
+		
+		model.addAttribute("sReqList", sReqList);
+		model.addAttribute("simpleSearch", simpleSearch);
+		
+		return "simple/simpleListView";
+		
+	}
+	
 	// -------------------- 단순의뢰 답변 --------------------
 	
 	// 단순의뢰 답변 조회
@@ -167,12 +180,22 @@ public class SimpleController {
 	}
 	
 	// 단순의뢰 답변 수정
+	@RequestMapping("updateRes.tc")
+	@ResponseBody
 	public String simpleResUpdate(SimpleResponse simpleRes) {
-		return null;
+		int result = simpleService.simpleResUpdate(simpleRes);
+		
+		if (result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 	
 	// 단순의뢰 답변 삭제
-	@RequestMapping(value= "deleteRes.tc" , method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping("deleteRes.tc")
+	@ResponseBody
 	public String simpleResDelete(int simpleReplyNo) {
 		int result = simpleService.simpleResDelete(simpleReplyNo);
 		
@@ -181,6 +204,30 @@ public class SimpleController {
 		} else {
 			return "fail";
 		}
+	}
+	
+	// 단순의뢰 채택 처리
+	@RequestMapping("adoptReply.tc")
+	@ResponseBody
+	public String replyAdopt (int simpleReplyNo, int sReqNo, String simpleReplyWriter ) {
+		
+		int adoptReply = simpleService.adoptReply(simpleReplyNo);
+		int adoptRequest = simpleService.adoptRequest(sReqNo);
+		int memberAdoptCount = simpleService.memberAdoptCount(simpleReplyWriter);
+		
+		if (adoptReply > 0) {
+			if (adoptRequest > 0) {
+				if (memberAdoptCount > 0) {
+					return "success";
+				}
+			}
+			
+			return "success";
+			
+		} else {
+			return "fail";
+		}
+		
 	}
 
 	

@@ -13,13 +13,14 @@ public class SimpleRequest {
 	private String simpleTLang; 	// 단순의뢰 질문 사용언어
 	private String simpleCount; 	// 단순의뢰 질문 조회수
 	private String simpleDStatus; 	// 단순의뢰 질문 삭제 상태
+	private String simpleAStatus; 	// 단순의뢰 채택 상태
 	private String simpleWriter; // 단순의뢰 작성자 아이디
 	private ArrayList<SimpleResponse> sRes;
 	
 	public SimpleRequest () {}
 
 	public SimpleRequest(int simpleNo, String simpleTitle, String simpleContent, Date simpleDate, String simplePLang,
-			String simpleTLang, String simpleCount, String simpleDStatus, String simpleWriter,
+			String simpleTLang, String simpleCount, String simpleDStatus, String simpleAStatus, String simpleWriter,
 			ArrayList<SimpleResponse> sRes) {
 		super();
 		this.simpleNo = simpleNo;
@@ -30,6 +31,7 @@ public class SimpleRequest {
 		this.simpleTLang = simpleTLang;
 		this.simpleCount = simpleCount;
 		this.simpleDStatus = simpleDStatus;
+		this.simpleAStatus = simpleAStatus;
 		this.simpleWriter = simpleWriter;
 		this.sRes = sRes;
 	}
@@ -98,6 +100,14 @@ public class SimpleRequest {
 		this.simpleDStatus = simpleDStatus;
 	}
 
+	public String getSimpleAStatus() {
+		return simpleAStatus;
+	}
+
+	public void setSimpleAStatus(String simpleAStatus) {
+		this.simpleAStatus = simpleAStatus;
+	}
+
 	public String getSimpleWriter() {
 		return simpleWriter;
 	}
@@ -118,8 +128,8 @@ public class SimpleRequest {
 	public String toString() {
 		return "SimpleRequest [simpleNo=" + simpleNo + ", simpleTitle=" + simpleTitle + ", simpleContent="
 				+ simpleContent + ", simpleDate=" + simpleDate + ", simplePLang=" + simplePLang + ", simpleTLang="
-				+ simpleTLang + ", simpleCount=" + simpleCount + ", simpleDStatus=" + simpleDStatus + ", simpleWriter="
-				+ simpleWriter + ", sRes=" + sRes + "]";
+				+ simpleTLang + ", simpleCount=" + simpleCount + ", simpleDStatus=" + simpleDStatus + ", simpleAStatus="
+				+ simpleAStatus + ", simpleWriter=" + simpleWriter + ", sRes=" + sRes + "]";
 	}
 
 }
