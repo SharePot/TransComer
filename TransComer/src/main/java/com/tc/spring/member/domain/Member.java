@@ -15,13 +15,13 @@ public class Member {
 	private String account;
 	private String status;
 	private int contentCount;
-	private int adopCount;
+	private int adoptCount;
 	private Date enrollDate;
 	
 	public Member() {}
 
 	public Member(int memberNo, String memberId, String memberPw, String memberName, String email, String address,
-			String phone, int point, String account, String status, int contentCount, int adopCount, Date enrollDate) {
+			String phone, int point, String account, String status, int contentCount, int adoptCount, Date enrollDate) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
@@ -34,7 +34,7 @@ public class Member {
 		this.account = account;
 		this.status = status;
 		this.contentCount = contentCount;
-		this.adopCount = adopCount;
+		this.adoptCount = adoptCount;
 		this.enrollDate = enrollDate;
 	}
 
@@ -126,12 +126,12 @@ public class Member {
 		this.contentCount = contentCount;
 	}
 
-	public int getAdopCount() {
-		return adopCount;
+	public int getAdoptCount() {
+		return adoptCount;
 	}
 
-	public void setAdopCount(int adopCount) {
-		this.adopCount = adopCount;
+	public void setAdoptCount(int adoptCount) {
+		this.adoptCount = adoptCount;
 	}
 
 	public Date getEnrollDate() {
@@ -146,8 +146,8 @@ public class Member {
 	public String toString() {
 		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberName="
 				+ memberName + ", email=" + email + ", address=" + address + ", phone=" + phone + ", point=" + point
-				+ ", account=" + account + ", status=" + status + ", contentCount=" + contentCount + ", addpCount="
-				+ adopCount + ", enrollDate=" + enrollDate + "]";
+				+ ", account=" + account + ", status=" + status + ", contentCount=" + contentCount + ", adoptCount="
+				+ adoptCount + ", enrollDate=" + enrollDate + "]";
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.tc.spring.member.service;
 import java.util.ArrayList;
 
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -24,18 +25,22 @@ public interface MemberService {
 	public int deleteMember(String memberId);
 	
 	
-	//=======================================================
-	public ArrayList<PointRefund> selectPointRefundList();
+	//=======================================================포인트 환급
+	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
 	
-	public PointRefund selectPointRefundOne();
+	public int getPointRefundListCount();
+	
+	public PointRefund selectPointRefundOne(int refundNo);
 	
 	public int insertPointRefund(PointRefund pointRf);
 	
 	public int updatePointRefund(PointRefund pointRf);
 	
-	public int deletePointRefund(int refundNo);
+	public ArrayList<PointRefund> selectPointRefundCheck(String refundYn);
 	
-	//=====================================================
+	
+	
+	//=====================================================포인트 변동
 	
 	public ArrayList<PointChange> selectPointChangeList();
 	
@@ -47,7 +52,7 @@ public interface MemberService {
 	
 	public int deletePoingChange(int pointNo);
 	
-	//====================================================
+	//====================================================프로필
 	
 	public ArrayList<Profile> selectProfileList();
 	

@@ -9,12 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -101,7 +104,8 @@ public class MemberController {
 		return null;
 	}
 	
-	//=============================================================================
+	//포인트변동=============================================================================
+	
 	
 	public ModelAndView PointChageList(ModelAndView mv,Integer page) {
 		return null;
@@ -122,27 +126,67 @@ public class MemberController {
 		return null;
 	}
 	
-	//=============================================================================
+	//포인트 환급=============================================================================
 	
-	public ModelAndView PointRefundList(ModelAndView mv,Integer page) {
-		return null;
+	//포인트 환급 리스트 조회
+	@RequestMapping("pointRefundList.tc")
+	public ModelAndView pointRefundList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
+		int currentPage=(page!=null) ? page : 1;
+		int pointRefundListCount=memberService.getPointRefundListCount();
+		
+		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointRefundListCount);
+		ArrayList<PointRefund> list=memberService.selectPointRefundList(pi);
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list",list);
+			mv.addObject("pi",pi);
+			mv.setViewName("member/pointRefundList");
+		}else {
+			mv.addObject("msg","포인트 환급 리스트 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
 	}
 	
-	public String PointRefundInsert(PointChange pc, Model model, HttpServletRequest request) {
-	
-		return null;
+	//포인트 환급신청 화면
+	@RequestMapping("pointRefundRequestView.tc")
+	public String pointRefundRequestView() {
+		return "member/pointRefundRequestForm";
 	}
 	
-	public String PointRefundUpdate (PointRefund pointRefund,Model model,HttpServletRequest request) {
-	
-		return null;
+	//포인트 환급 신청
+	@RequestMapping(value="pointRefundInsert.tc",method=RequestMethod.POST)
+	public String pointRefundInsert(PointRefund pointRefund, Model model, HttpServletRequest request) {
+		int result=memberService.insertPointRefund(pointRefund);
+		if(result>0) {
+			return "";
+		}else {
+		model.addAttribute("msg","포인트 환급 신청 실패");	
+		}
+		return "common/errorPage";
+	}
+	//포인트 환급 확정화면
+	@RequestMapping("pointRefundCheckView.tc")
+	public String pointRefundCheckView() {
+		return "member/pointRefundCheckForm";
 	}
 	
-	public String PointRefundDelete(int PointRefundNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
 	
-		return null;
+	//포인트 환급 확정 및 반려
+	@RequestMapping(value="pointRefundUpdate.tc", method=RequestMethod.POST)
+	public String pointRefundUpdate (PointRefund pointRefund,Model model) {
+		int result=memberService.updatePointRefund(pointRefund);
+		if(result>0) {
+			return "pointRefundList.tc";
+		}else{
+			model.addAttribute("msg","포인트 환급 확정 및 반려 실패");
+			return "common/errorPage";
+		}
 	}
 	
+	
+
 	
 	//=============================================================================
 	

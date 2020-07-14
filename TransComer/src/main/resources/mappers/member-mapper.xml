@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 
+<!-- 멤버관련 -->
 <resultMap type="Member" id="memberResultSet">
          <id property="memberNo" column="MEMBER_NO"/>
          <result property="memberId" column="MEMBER_ID"/>
@@ -14,17 +15,73 @@
          <result property="account" column="ACCOUNT_INFO"/>
          <result property="status" column="MEMBER_STATUS"/>
          <result property="contentCount" column="CONTENTS_COUNT"/>
-         <result property="adopCount" column="ADOPT_COUNT"/>
+         <result property="adoptCount" column="ADOPT_COUNT"/>
          <result property="enrollDate" column="MEMBER_ENROLL_DATE"/>
    </resultMap>
    
-   <select id="selectOne" parameterType="Member" resultMap="memberResultSet">
+   <select id="selectMemberOne" parameterType="Member" resultMap="memberResultSet">
       SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw}
    </select>
    
-     <select id="selectList" parameterType="Member" resultMap="memberResultSet">
+     <select id="selectMemberList" parameterType="Member" resultMap="memberResultSet">
       SELECT * FROM MEMBER
    </select>
    
 
-</mapper>
+
+<!-- 포인트 변동 관련 -->
+   <resultMap type="PointChange" id="pointChangeResultSet">
+   <id property="pointNo" column="POINT_NO"/>
+   <result property="memberId" column="MEMBER_ID"/>
+   <result property="pointUpdateDate" column="POINT_UPDATE_DATE"/>
+   <result property="pointAmount" column="POINT_AMOUNT"/>
+   <result property="pointContent" column="POINT_CONTENT"/>
+   </resultMap>
+   
+   <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   SELECT * FROM POINT_HISTORIES
+   </select>
+
+<!-- 포인트 환급 관련 -->
+   <resultMap type="PointRefund" id="pointRefundResultSet">
+   <id property="refundNo" column="REFUND_NO"/>
+   <result property="refundPoint" column="REFUND_POINT"/>
+   <result property="memberId" column="MEMBER_ID"/>
+   <result property="refundYn" column="REFUND_YN"/>
+   <result property="refundRequestDate" column="REFUND_REQUEST_DATE"/>
+   <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
+   </resultMap>
+   
+   <!-- 포인트 환급 전체리스트 -->
+   <select id="selectPointRefundList" parameterType="PointRefund" resultMap="pointRefundResultSet">
+   SELECT * FROM POINT_RETURN
+   </select>
+   
+   <!-- 포인트 환급 내역 한개 확인 -->
+   <select id="selectPointRefundOne" parameterType="PointRefund" resultMap="pointRefundResultSet">
+   	SELECT * FROM POINT_RETURN WHERE POINT_NO=#{refundNo}
+   </select>
+   
+   <!-- 포인트 환급 상태별 목록 -->
+   <select id="selectPointRefundCheck">
+   SELECT * FROM POINT_RETURN WHERE REFUND_YN=#{refundYn}
+   </select>
+   
+   <!-- 포인트 환급 여부 수정 -->
+   <update id="pointRefundUpdate">
+	UPDATE POINT_RETURN SET REFUND_YN=#{refundYn},REFUND_COMPLETE_DATE=SYSDATE WHERE REFUND_NO=#{refundNo}
+   </update>
+   
+   <!-- 포인트 환급 신청 추가 -->
+   <insert id="pointRefundInsert">
+   	INSERT INTO POINT_RETURN VALUES(POINT_REF_NO_SEQ.NEXTVAL,#{refundPoint},DEFAULT,#{memberId},SYSDATE,null)
+   </insert>
+   
+   <!-- 포인트 환급 신청 갯수 확인하는 쿼리 -->
+	<select id="getPointRefundListCount" resultType="_int">
+	SELECT COUNT(*) FROM POINT_RETURN
+	</select>
+   
+   
+   
+   </mapper>
