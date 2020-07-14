@@ -1,6 +1,7 @@
 package com.tc.spring.common;
 
 import com.tc.spring.alarm.domain.AlarmPageInfo;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.qna.domain.QnaPageInfo;
 import com.tc.spring.report.domain.BlackPageInfo;
 import com.tc.spring.report.domain.ReportPageInfo;
@@ -208,4 +209,29 @@ public class Pagination {
 	
 			return bPi;
 	   }
+	   
+	   public static MemberPageInfo getMemberPageInfo(int currentPage, int listCount) {
+           
+	         MemberPageInfo mPi=null;
+	            
+	            int pageLimit= 10;
+	            int maxPage;
+	            int startPage;
+	            int endPage;
+	            
+	            int boardLimit=5;
+	            
+	            maxPage=(int)((double)listCount/boardLimit+0.9);
+	            
+	            startPage=(((int)((double)currentPage/pageLimit +0.9))-1) * pageLimit+1;
+	            
+	            endPage=startPage+pageLimit-1;
+	            
+	            if(maxPage<endPage) {
+	               endPage=maxPage;
+	            }
+	            mPi=new MemberPageInfo(currentPage,listCount,pageLimit,maxPage,startPage,endPage,boardLimit);
+	            
+	            return mPi;
+	         }
 }

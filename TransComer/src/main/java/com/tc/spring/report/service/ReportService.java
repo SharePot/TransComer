@@ -18,6 +18,8 @@ public interface ReportService {
 	
 	public ArrayList<Report> selectReportList(ReportPageInfo rPi);
 	
+	public ArrayList<Report> searchReportList(ReportPageInfo rPi);
+	
 	public ArrayList<Member> selectBlackList(BlackPageInfo bPi);
 
 	public int insertReport(Report report, HttpServletRequest request);

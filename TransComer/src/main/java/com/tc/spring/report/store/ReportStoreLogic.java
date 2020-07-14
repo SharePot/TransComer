@@ -48,6 +48,13 @@ public class ReportStoreLogic implements ReportStore {
 	}
 	
 	@Override
+	public ArrayList<Report> searchReportList(ReportPageInfo rPi) {
+		int offset = (rPi.getCurrentPage() - 1) * rPi.getReportLimit();
+		RowBounds rowBounds = new RowBounds(offset, rPi.getReportLimit());
+		return (ArrayList)sqlSession.selectList("reportMapper.searchReportList", null, rowBounds);
+	}
+	
+	@Override
 	public ArrayList<Member> selectBlackList(BlackPageInfo bPi) {
 		int offset = (bPi.getCurrentPage() - 1) * bPi.getBlackLimit();
 		RowBounds rowBounds = new RowBounds(offset, bPi.getBlackLimit());
@@ -73,6 +80,8 @@ public class ReportStoreLogic implements ReportStore {
 	public int deleteReport(int reportNo) {
 		return sqlSession.delete("reportMapper.deleteReport", reportNo);
 	}
+
+	
 
 	
 	
