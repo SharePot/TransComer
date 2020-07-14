@@ -37,6 +37,11 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
+	public ArrayList<Report> searchReportList(ReportPageInfo rPi) {
+		return reportStore.searchReportList(rPi);
+	}
+	
+	@Override
 	public ArrayList<Member> selectBlackList(BlackPageInfo bPi) {
 		return reportStore.selectBlackList(bPi);
 	}
@@ -60,5 +65,7 @@ public class ReportServiceImpl implements ReportService {
 	public int deleteReport(int reportNo) {
 		return reportStore.deleteReport(reportNo);
 	}
+
+	
 
 }

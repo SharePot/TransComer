@@ -29,6 +29,29 @@
 	<select id="selectReportList" resultMap="reportResultSet">
 		SELECT * FROM BLACKLIST ORDER BY REPORT_NO DESC
 	</select>
+	
+	<select id="searchReportList"  parameterType="reportSearch" resultMap="reportResultSet">
+		SELECT * FROM QNA
+  		<where>
+  			<choose>
+	  			<when test="searchCondition == 'title'">
+	  				QNA_TITLE LIKE '%' || #{searchValue} || '%'  		
+		  		</when>
+		  		<when test="searchCondition == 'writer'">
+		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<when test="searchCondition == 'content'">
+		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<otherwise>
+		  			AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  			OR QNA_TITLE LIKE '%' || #{searchValue} || '%'
+		  			OR QNA_CONTENT LIKE '%' || #{searchValue} || '%')
+		  		</otherwise>	
+  			</choose>
+  		</where>	
+  		ORDER BY QNA_WRITE_DATE DESC
+	</select>
 
 	<select id="selectReportCount" resultType="_int">
 		SELECT COUNT(*) FROM BLACKLIST
@@ -58,7 +81,7 @@
 	<update id="updateBlack" parameterType="Member">
 		UPDATE MEMBER
 		SET MEMBER_STATUS = 'PRIMARY'
-		WHERE MEMBER_ID = #{memberId}
+		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
 	<delete id="deleteReport" parameterType="_int">

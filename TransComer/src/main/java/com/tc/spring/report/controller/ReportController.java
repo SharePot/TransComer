@@ -26,12 +26,14 @@ public class ReportController {
 	@Autowired
 	private ReportService reportService;
 	
+	// 관리자페이지 신고와 블랙리스트 목록 보기
 	@RequestMapping("rANDblist.tc")
-	public ModelAndView selectReportAndBlackList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
-		int reportCurrentPage = (page != null) ? page : 1;
+	public ModelAndView selectReportAndBlackList(ModelAndView mv, @RequestParam(value="rpage", required=false)Integer rpage, 
+			@RequestParam(value="bpage", required=false)Integer bpage) {
+		int reportCurrentPage = (rpage != null) ? rpage : 1;
 		int reportListCount = reportService.getReportListCount();
 		
-		int blackCurrentPage = (page != null) ? page : 1;
+		int blackCurrentPage = (bpage != null) ? bpage : 1;
 		int blackListCount = reportService.getBlackListCount();
 		
 		ReportPageInfo rPi = Pagination.getReportPageInfo(reportCurrentPage, reportListCount);
@@ -53,6 +55,27 @@ public class ReportController {
 		return mv;
 	}
 	
+	// 관리자 페이지 신고리스트 검색 목록 보기
+	@RequestMapping("reportSeartch.tc")
+	public ModelAndView searchReportList(ModelAndView mv, @RequestParam(value="rpage", required=false)Integer rpage, 
+	@RequestParam(value="bpage", required=false)Integer bpage) {
+		
+		int reportCurrentPage = (rpage != null) ? rpage : 1;
+		int reportListCount = reportService.getReportListCount();
+		
+		int blackCurrentPage = (bpage != null) ? bpage : 1;
+		int blackListCount = reportService.getBlackListCount();
+		
+		ReportPageInfo rPi = Pagination.getReportPageInfo(reportCurrentPage, reportListCount);
+		BlackPageInfo bPi = Pagination.getBlackPageInfo(blackCurrentPage, blackListCount);
+		
+		ArrayList<Report> rList = reportService.searchReportList(rPi);
+		ArrayList<Member> bList = reportService.selectBlackList(bPi);
+		
+		return mv;
+	}
+	
+	// 신고 넣기
 	@RequestMapping(value="rinsert.tc", method=RequestMethod.POST)
 	public String insertReport(Report report, Model model,  HttpServletRequest request) {
 		int result = 0;
@@ -70,49 +93,29 @@ public class ReportController {
 		return path;
 	}
 	
+	// ajax로 처리했기 때문에 return으로 redirect:rANDblist.tc를 사용할 곳이 없게 된다.
+	// 신고 승인 후 해당 아이디 목록 어떻게 처리할지 생각
 	@RequestMapping("rupdate.tc")
-	public String updateReport(Report report, Model model, HttpServletRequest request) {
+	public void updateReport(Report report, HttpServletRequest request) {
 		int result = 0;
 		String path = null;
 		
 		result = reportService.updateReport(report, request);
-		
-		if (result > 0) {
-			path = "redirect:rANDblist.tc";
-		} else {
-			model.addAttribute("msg", "신고 승인 실패");
-			path = "common/errorPage";
-		}
-		return path;
 	}
 	
+	// 블랙리스트 해제 (ajax 처리)
 	@RequestMapping("bupdate.tc")
-	public String updateBlack(Member member, Model model, HttpServletRequest request) {
+	public void updateBlack(Member member, HttpServletRequest request) {
 		int result = 0;
-		String path = null;
 		
 		result = reportService.updateBlack(member, request);
-		
-		if (result > 0) {
-			path = "redurect:rANDblist.tc";
-		} else {
-			model.addAttribute("msg", "블랙리스트 해제 실패");
-			path = "common/errorPage";
-		}
-		return path;
+	
 	}
 	
+	// 신고 반려 및 경고(ajax 처리)
 	@RequestMapping("rdelete.tc")
-	public String deleteReport(int reportNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
+	public void deleteReport(int reportNo, HttpServletRequest request) {
 		
 		int result = reportService.deleteReport(reportNo);
-		
-		if(result > 0) {
-			rd.addFlashAttribute("msg", "신고 처리 완료");
-			return "redirect:rANDblist.tc";
-		}else {
-			model.addAttribute("msg","신고 처리 실패");
-			return "common/errorPage";
-		}
 	}
 }

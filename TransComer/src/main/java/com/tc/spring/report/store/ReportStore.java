@@ -15,6 +15,8 @@ public interface ReportStore {
 	public int getBlackListCount();
 	
 	public ArrayList<Report> selectReportList(ReportPageInfo rPi);
+	
+	public ArrayList<Report> searchReportList(ReportPageInfo rPi);
 
 	public ArrayList<Member> selectBlackList(BlackPageInfo bPi);
 
