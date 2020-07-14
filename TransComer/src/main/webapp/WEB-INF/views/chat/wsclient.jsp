@@ -1,0 +1,126 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Websocket Client</title>
+<!-- 부트스트랩 css -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- 부트스르탭 js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- 자체 css 파일 -->
+<link rel="stylesheet" href="../../../resources/css/chatting.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		// 웹소켓 세팅
+		var url = window.location.host;//웹브라우저의 주소창의 포트까지 가져옴
+		var pathname = window.location.pathname; /* '/'부터 오른쪽에 있는 모든 경로*/
+		var appCtx = pathname.substring(0, pathname.indexOf("/", 2));
+		var root = url + appCtx;
+
+		//alert(root);
+		//var ws = new WebSocket("ws://192.168.0.100:8081/SpringWeb/echo-ws");
+		var ws = new WebSocket("ws://" + root + "/echo-ws.kh");
+		
+		// 웹소켓 관련 함수
+		// 웹소켓 연결이 성공 되었을 때 실행
+		ws.onopen = onOpen;
+		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
+		ws.onmessage = onMessage;
+		//
+		ws.onclose = onClose;
+		
+		// 웹소켓 연결이 성공 되었을 때 실행
+		function onOpen(){
+			$('#chatStatus').text('Info: connection opened.');
+
+			// enter(keycode:13) 키를 누르면 이벤트 발생
+			$('input[name=chatInput]').on('keydown', function(evt) {
+				if (evt.keyCode == 13) {
+					var msg = $('input[name=chatInput]').val();
+					// websocket으로 메시지를 보내는 함수
+					ws.send(msg);
+					$('input[name=chatInput]').val('');
+				}
+			});
+		}
+		
+		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
+		function onMessage(event){
+			// 구글링 화면 뿌리기
+			$('textarea').eq(0).prepend(event.data + '\n');
+			
+			// 내가만든 채팅창 화면 뿌리기
+			// 보내준 데이터를 ','를 기준으로 (아이디:내용)으로 자른다
+			var splitData = event.data.split(',');
+			
+			for(var i in splitData){
+				console.log("splitData = " + splitData[i]);
+			}
+			
+			// 보낸사람의 아이디를 저장
+			var sendUserId = splitData[0];
+			// 보낸채팅 내용을 저장
+			var sendMessage = splitData[1];
+			// 보낸 시간 저장
+			var sendTime = splitData[2];
+			
+			// 현재 로그인한 유저의 정보를 저장
+			var loginUserId = "${ loginUser.userId }";
+			console.log(loginUserId);
+			
+			if(sendUserId==loginUserId){
+				// 내가 보낸거 추가
+				console.log("내가 보낸 메시지.");
+				$("#chatArea").append("<div class='d-flex justify-content-end'><span style='font-size: 0.6em; margin-top: 3px; padding-right: 7px;'>"+sendTime+"</span>"+"<p class='from-me'>"+sendMessage+"</p></div>");				
+			} else{
+				// 상대방이 보낸거 추가
+				console.log("상대방이 보낸 메시지.");
+				$("#chatArea").append("<div style='margin-left: 10px;'>"+sendUserId+"</div>");
+				$("#chatArea").append("<div class='d-flex justify-content-start'><p class='from-them'>"+sendMessage+"</p><span style='font-size: 0.6em; margin-top: 3px; padding-left: 7px;'>"+sendTime+"</span></div>");
+			}
+			console.log(event.data);
+			
+			// 스크롤을 최하단으로 고정시키는 코드(최신 채팅 보이도록 고정)
+			$("#chatArea").scrollTop($("#chatArea")[0].scrollHeight);
+		}
+		
+		function onClose(event){
+			$('#chatStatus').text('Info: connection closed.');
+		}
+   	});
+</script>
+</head>
+<body>
+	<div id='chatStatus'></div>
+	
+	<br>
+	<a href="home.kh">메인페이지로</a>
+	
+	
+	<div class="card">
+		<div class="card-header d-flex justify-content-center">채팅</div>
+		<!-- 채팅 내용 카드바디 -->
+		<div class="card-body" id="chatArea">
+			<!-- 내가 보낸거 -->
+			<!-- <div class="d-flex justify-content-end">
+				<p class="from-me">내가 보낸내용</p>
+			</div> -->
+			<!-- 상대방이 보낸거 -->
+			<!-- <div class="d-flex justify-content-start">
+                 <p class="from-them">Wow</p>
+            </div> -->
+		</div>
+		<!-- 채팅 내용 입력창 -->
+		<div class="card-footer">
+            <input type="text" name="chatInput" class="form-control" placeholder="내용 입력 후 엔터">
+        </div>
+	</div>
+
+</body>
+</html>
