@@ -6,10 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Websocket Client</title>
+<!-- 부트스트랩 css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- 부트스르탭 js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- 자체 css 파일 -->
 <link rel="stylesheet" href="../../../resources/css/chatting.css" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
@@ -22,7 +25,7 @@
 
 		//alert(root);
 		//var ws = new WebSocket("ws://192.168.0.100:8081/SpringWeb/echo-ws");
-		var ws = new WebSocket("ws://" + root + "/echo-ws.tc");
+		var ws = new WebSocket("ws://" + root + "/echo-ws.kh");
 		
 		// 웹소켓 관련 함수
 		// 웹소켓 연결이 성공 되었을 때 실행
@@ -53,8 +56,8 @@
 			$('textarea').eq(0).prepend(event.data + '\n');
 			
 			// 내가만든 채팅창 화면 뿌리기
-			// 보내준 데이터를 ':'를 기준으로 (아이디:내용)으로 자른다
-			var splitData = event.data.split(':');
+			// 보내준 데이터를 ','를 기준으로 (아이디:내용)으로 자른다
+			var splitData = event.data.split(',');
 			
 			for(var i in splitData){
 				console.log("splitData = " + splitData[i]);
@@ -64,6 +67,8 @@
 			var sendUserId = splitData[0];
 			// 보낸채팅 내용을 저장
 			var sendMessage = splitData[1];
+			// 보낸 시간 저장
+			var sendTime = splitData[2];
 			
 			// 현재 로그인한 유저의 정보를 저장
 			var loginUserId = "${ loginUser.userId }";
@@ -72,11 +77,12 @@
 			if(sendUserId==loginUserId){
 				// 내가 보낸거 추가
 				console.log("내가 보낸 메시지.");
-				$("#chatArea").append("<div class='d-flex justify-content-end'><p class='from-me'>"+sendMessage+"</p></div>");				
+				$("#chatArea").append("<div class='d-flex justify-content-end'><span style='font-size: 0.6em; margin-top: 3px; padding-right: 7px;'>"+sendTime+"</span>"+"<p class='from-me'>"+sendMessage+"</p></div>");				
 			} else{
 				// 상대방이 보낸거 추가
-				console.log("상대방이 보낸 메시지.")
-				$("#chatArea").append("<div class='d-flex justify-content-start'><p class='from-them'>"+sendMessage+"</p></div>");
+				console.log("상대방이 보낸 메시지.");
+				$("#chatArea").append("<div style='margin-left: 10px;'>"+sendUserId+"</div>");
+				$("#chatArea").append("<div class='d-flex justify-content-start'><p class='from-them'>"+sendMessage+"</p><span style='font-size: 0.6em; margin-top: 3px; padding-left: 7px;'>"+sendTime+"</span></div>");
 			}
 			console.log(event.data);
 			

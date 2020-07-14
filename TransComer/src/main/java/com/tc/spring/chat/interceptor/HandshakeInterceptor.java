@@ -13,10 +13,13 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 import com.tc.spring.member.domain.Member;
 
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
+
 	// 전에 일어나는 핸드셰이커, before
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
+		//
+		System.out.println("-----HandshakeInterceptor.java -- beforeHandshake()-----");
 		System.out.println("* Before Handshake");
 
 		ServletServerHttpRequest ssreq = (ServletServerHttpRequest) request;
@@ -26,19 +29,19 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
 		// 방법을 찾는다
 		System.out.println("req.getSession() : " + req.getSession());
-		System.out.println("req.getSession().getAttribute() : " + req.getSession().getAttribute("loginUser"));
-		System.out.println("req.getSession().getAttribute() : " + req.getSession().getAttribute("loginUser"));
+		System.out
+				.println("req.getSession().getAttribute('loginUser') : " + req.getSession().getAttribute("loginUser"));
 
-		// 세션에 저장된 로그인 유저의 정보 attribute를 가져와, 형변환
 		Member member = (Member) req.getSession().getAttribute("loginUser");
-		// 가져온 멤버의 아이디 값을 가져온다.
-		String memberId = member.getMemberId();
-		System.out.println("memberId : " + memberId);
+		if (member != null) {
+			String userId = member.getMemberId();
+			System.out.println("userId : " + userId);
+			attributes.put("userId", userId);
+			System.out.println("HttpSession에 저장된 loginUser의 userId : " + userId);
+		}
 
 		// HttpSession에 저장된 이용자의 아이디를 추출하는 경우
 		// String id = (String) req.getSession().getAttribute("loginUser"); // 구글링방법
-		attributes.put("memberId", memberId);	// 키, 벨류
-		System.out.println("HttpSession에 저장된 loginUser의 memberId : " + memberId);
 
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
@@ -47,6 +50,8 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 	@Override
 	public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Exception ex) {
+		//
+		System.out.println("-----HandshakeInterceptor.java -- afterHandshake()-----");
 		System.out.println("** After Handshake");
 		super.afterHandshake(request, response, wsHandler, ex);
 	}
