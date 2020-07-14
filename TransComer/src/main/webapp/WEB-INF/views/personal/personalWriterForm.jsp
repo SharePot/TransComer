@@ -71,15 +71,16 @@
 </head>
 
 <body class="homepage is-preload">
+<c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
 
         <!-- Header -->
-        <section id="header">
+        <!-- <section id="header">
 
-            <!-- Logo -->
+            Logo
             <h1><a href="index.html">SharePot</a></h1>
 
-            <!-- Nav -->
+            Nav
             <nav id="nav">
                 <ul>
                     <li class="current"><a href="#">Home</a></li>
@@ -95,7 +96,7 @@
                     <li><a href="#">Q&amp;A</a></li>
                 </ul>
             </nav>
-        </section>
+        </section> -->
 
         <!-- Main -->
         <section id="main">
@@ -103,7 +104,7 @@
                 <div class="row">
                     <div class="col-12">
                         <center>
-                            <h2>${p.memberId }님의 번역가 등록</h2>
+                            <h2>' ${loginUser.memberId } ' 님의 번역가 등록</h2>
                         </center>
                         <hr>
                         <div class="card" id="introduce">
@@ -247,18 +248,18 @@
     </div>
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet"> -->
 
-    <script src="resources/js/jquery.min.js"></script>
+    <!-- <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/jquery.dropotron.min.js"></script>
     <script src="resources/js/browser.min.js"></script>
     <script src="resources/js/breakpoints.min.js"></script>
     <script src="resources/js/util.js"></script>
-    <script src="resources/js/main.js"></script>
+    <script src="resources/js/main.js"></script> -->
     <!--템플릿 css-->
      <link rel="stylesheet" href="resources/css/main.css" />
 

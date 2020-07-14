@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.service.PersonalService;
 
 @Controller
@@ -25,7 +26,6 @@ public class PersonalController {
 
 		if (!list.isEmpty()) {
 			mv.addObject("list", list);
-			;
 			System.out.println("plist.tc 컨트롤러 리스트 안비었음"); // 확인용
 			mv.setViewName("personal/personalMain");
 		} else {
@@ -35,6 +35,17 @@ public class PersonalController {
 		}
 		return mv;
 	}
+	
+	// 1:1 게시판 검색
+	@RequestMapping("pSearch.tc")
+	public String personalSearch(PersonalSearch search, Model model) {
+		ArrayList<Personal> searchList = personalService.searchPersonalList(search);
+		
+		model.addAttribute("list", searchList);
+		model.addAttribute("search", search); // 검색 후에도 검색결과가 남아있게 하기 위해
+		return "personal/personalMain";
+	}
+	
 
 	// 1:1게시판 상세 조회
 	public String personalDetail() {

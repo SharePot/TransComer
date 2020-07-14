@@ -3,6 +3,7 @@ package com.tc.spring.personal.store;
 import java.util.ArrayList;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
 
 public interface PersonalStore {
 
@@ -19,5 +20,8 @@ public interface PersonalStore {
 	public int updatePersonal();
 
 	public int deletePersonal();
+	
+	public ArrayList<Personal> searchPersonalList(PersonalSearch search);
+
 
 }

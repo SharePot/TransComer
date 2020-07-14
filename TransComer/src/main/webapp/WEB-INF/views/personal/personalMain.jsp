@@ -20,6 +20,11 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        #searchBox {
+        	width : 60%;
+        }
+        
     </style>
 </head>
 
@@ -60,10 +65,25 @@
                         <!-- Portfolio -->
                         <section>
                             <!-- 검색 -->
-                            
-                            
-                           <!--  <button onclick="location.href='pWriterView.tc';">글쓰기</button> -->
-                            <!--  로그인한 사람만 가능 -->
+                            <br>
+							<div class="input-group mb-3" id="searchBox">
+								<form action="pSearch.tc" method="get">
+									<select class="custom-select" id="searchCondition" name="searchCondition">
+										<option selected>Choose</option>
+										<option value="title" <c:if test="${search.searchCondition == 'title' }">selected</c:if>> 제목</option>
+										<option value="writer" <c:if test="${search.searchCondition == 'writer' }">selected</c:if>>번역가</option>
+										<option value="tLang" <c:if test="${search.searchCondition == 'tLang' }">selected</c:if>>사용 언어</option>
+										<option value="pLang" <c:if test="${search.searchCondition == 'pLang' }">selected</c:if>>개발 언어</option>
+									</select>
+									<input type="search" name="searchValue" class="form-control" placeholder="검색어 입력" value="${search.searchValue }">
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" type="submit" id="button-addon" style="background: black;">search</button>
+									</div>
+								</form>
+							</div>
+
+
+							<!--  로그인한 사람만 글쓰기 가능 -->
                             <c:if test="${ !empty loginUser }">
 								<button onclick="location.href='pWriterView.tc';">글쓰기</button>
 							</c:if>
@@ -83,7 +103,7 @@
                                         </center>
                                         <br>
                                         <header>
-                                            <h3></h3>
+                                            <h3>${p.memberId }</h3>
                                         </header>
                                         <!-- 글 제목 -->
                                         <b>${p.personalTitle }</b>
@@ -147,18 +167,18 @@
     </div>
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet"> -->
 
-    <script src="resources/js/jquery.min.js"></script>
+    <!-- <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/jquery.dropotron.min.js"></script>
     <script src="resources/js/browser.min.js"></script>
     <script src="resources/js/breakpoints.min.js"></script>
     <script src="resources/js/util.js"></script>
-    <script src="resources/js/main.js"></script>
+    <script src="resources/js/main.js"></script> -->
     <!--템플릿 css-->
     <link rel="stylesheet" href="resources/css/main.css" />
 

@@ -4,7 +4,7 @@
 
 	<resultMap type="Personal" id="personalResultSet">
 		<id property="personalNo" column="PERSONAL_NO" />
-		<result property="personalTitle" column="PESONAL_TITLE" />
+		<result property="personalTitle" column="PERSONAL_TITLE" />
 		<result property="personalContent" column="PERSONAL_CONTENT"/>
 		<result property="personalDate" column="PERSONAL_DATE" />
 		<result property="personalPLang" column="PERSONAL_P_LANG" />
@@ -14,7 +14,7 @@
 		<result property="personalCount" column="PERSONAL_COUNT" />
 		<result property="personalDStatus" column="PERSONAL_D_STATUS" />
 		<result property="powerYN" column="POWER_YN" />
-		<result property="memberId" column="MEMBERID" />
+		<result property="memberId" column="MEMBER_ID" />
 	</resultMap>
 
 	<!-- 1:1 게시판 목록 조회 -->
@@ -27,7 +27,33 @@
 		INSERT INTO PERSONAL VALUES(PERSONAL_NO_SEQ.NEXTVAL, #{personalTitle}, #{personalContent}, SYSDATE, #{personalPLang}, #{personalTLang}, #{personalSchedule}, #{personalPrice}, 0, 'N', 'N', #{memberId})
 	</insert>
 	
-	
+	<!-- 1:1 게시판 검색 -->
+	<select id="searchPersonalList" parameterType="PersonalSearch" resultMap="personalResultSet">
+		SELECT * FROM PERSONAL
+		<where>
+			<choose>
+			<when test="searchCondition == 'title'">
+				PERSONAL_TITLE LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'writer'">
+				AND MEMBER_ID LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'tLang'">
+				AND PERSONAL_T_LANG LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'pLang'">
+				AND PERSONAL_P_LANG LIKE '%' || #{searchValue } || '%'
+			</when>
+			<otherwise>
+				AND (MEMBER_ID LIKE '%' || #{searchValue } || '%'
+				OR PERSONAL_TITLE LIKE '%' || #{searchValue } || '%'
+				OR PERSONAL_T_LANG LIKE '%' || #{searchValue } || '%')
+				OR PERSONAL_P_LANG LIKE '%' || #{searchValue } || '%')
+			</otherwise>
+		</choose>
+		</where>
+		ORDER BY PERSONAL_NO DESC
+	</select>
 	
 
 </mapper>

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
+import com.tc.spring.study.domain.StudySearch;
 
 public interface PersonalService {
 
@@ -45,5 +47,12 @@ public interface PersonalService {
     * @param 
     * @return
     */
+   
+   public ArrayList<Personal> searchPersonalList(PersonalSearch search);
+   /**
+	* 1:1 게시판 검색
+	* @param search
+	* @return
+	*/
    
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
 
 @Repository("personalStore")
 public class PersonalStoreLogic implements PersonalStore{
@@ -41,5 +42,10 @@ public class PersonalStoreLogic implements PersonalStore{
 	public int deletePersonal() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public ArrayList<Personal> searchPersonalList(PersonalSearch search) {
+		return (ArrayList)sqlSession.selectList("personalMapper.searchPersonalList", search);
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.store.PersonalStore;
 
 @Service("personalService")
@@ -51,6 +52,12 @@ public class PersonalServiceImpl implements PersonalService {
 	public int deletePersonal() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/*검색*/
+	@Override
+	public ArrayList<Personal> searchPersonalList(PersonalSearch search) {
+		return personalStore.searchPersonalList(search);
 	}
 
 }
