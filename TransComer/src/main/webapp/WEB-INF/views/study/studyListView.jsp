@@ -11,7 +11,7 @@
  <h1 align="center">게시글 목록</h1>
    
    <h3 align="center">
-      총 개시글 갯수 : ${pi.studyListCount }
+      총 게시글 갯수 : ${pi.studyListCount }
       <c:if test="${ !empty loginUser }">
          <button onclick="location.href='studyWriterView.tc'">글쓰기</button>
       </c:if>

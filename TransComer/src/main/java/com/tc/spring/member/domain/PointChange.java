@@ -5,21 +5,25 @@ import java.sql.Date;
 public class PointChange {
 	
 	public int pointNo;
-	public int memberNo;
+	public String memberId;
 	public Date pointUpdateDate;
 	public int pointAmount;
 	public String pointContent;
 	
 	public PointChange() {}
 
-	public PointChange(int pointNo, int memberNo, Date pointUpdateDate, int pointAmount, String pointContent) {
+
+
+	public PointChange(int pointNo, String memberId, Date pointUpdateDate, int pointAmount, String pointContent) {
 		super();
 		this.pointNo = pointNo;
-		this.memberNo = memberNo;
+		this.memberId = memberId;
 		this.pointUpdateDate = pointUpdateDate;
 		this.pointAmount = pointAmount;
 		this.pointContent = pointContent;
 	}
+
+
 
 	public int getPointNo() {
 		return pointNo;
@@ -29,13 +33,7 @@ public class PointChange {
 		this.pointNo = pointNo;
 	}
 
-	public int getMemberNo() {
-		return memberNo;
-	}
 
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
-	}
 
 	public Date getPointUpdateDate() {
 		return pointUpdateDate;
@@ -61,12 +59,36 @@ public class PointChange {
 		this.pointContent = pointContent;
 	}
 
+
+
+	/**
+	 * @return the memberId
+	 */
+	public String getMemberId() {
+		return memberId;
+	}
+
+
+
+	/**
+	 * @param memberId the memberId to set
+	 */
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "PointChange [pointNo=" + pointNo + ", memberNo=" + memberNo + ", pointUpdateDate=" + pointUpdateDate
+		return "PointChange [pointNo=" + pointNo + ", memberId=" + memberId + ", pointUpdateDate=" + pointUpdateDate
 				+ ", pointAmount=" + pointAmount + ", pointContent=" + pointContent + "]";
 	}
-	
+
+
 	
 
 }

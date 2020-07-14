@@ -2,11 +2,13 @@ package com.tc.spring.member.store;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -19,7 +21,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	   public Member loginMember(Member member) {
-	      return sqlSession.selectOne("memberMapper.selectOne", member);
+	      return sqlSession.selectOne("memberMapper.selectMemberOne", member);
 	   }
 
 	@Override
@@ -30,7 +32,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public ArrayList<Member> selectMemberList() {
-		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectList");
+		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectMemberList");
 		return list;
 	}
 
@@ -58,36 +60,41 @@ public class MemberStoreLogic implements MemberStore {
 		return 0;
 	}
 
+	//포인트 환급=====================================================================================
 	@Override
-	public ArrayList<PointRefund> selectPointRefundList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.selectPointRefundList",null,rowbounds);
 	}
 
 	@Override
-	public PointRefund selectPointRefundOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public PointRefund selectPointRefundOne(int refundNo) {
+		return sqlSession.selectOne("memberMapper.selectPointRefundOne",refundNo);
 	}
 
 	@Override
 	public int insertPointRefund(PointRefund pointRf) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("memberMapper.pointRefundInsert",pointRf);
 	}
 
 	@Override
 	public int updatePointRefund(PointRefund pointRf) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("memberMapper.pointRefundUpdate",pointRf);
 	}
 
 	@Override
-	public int deletePointRefund(int refundNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public ArrayList<PointRefund> selectPointRefundCheck(String refundYn){
+		return (ArrayList)sqlSession.selectList("memberMapper.selectPointRefundCheck",refundYn);
 	}
 
+	@Override
+	public int getPointRefundListCount() {
+		return sqlSession.selectOne("memberMapper.getPointRefundListCount");
+	}
+	
+	
+	//포인트 변동=====================================================================================
 	@Override
 	public ArrayList<PointChange> selectPointChangeList() {
 		// TODO Auto-generated method stub
@@ -117,7 +124,7 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+//프로필===============================================================
 	@Override
 	public ArrayList<Profile> selectProfileList() {
 		// TODO Auto-generated method stub
@@ -147,8 +154,8 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	
+
+
 	
 	
 	

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -57,37 +58,37 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+//포인트 환급=====================================================================================
 	@Override
-	public ArrayList<PointRefund> selectPointRefundList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi) {
+		return memberStore.selectPointRefundList(pi);
 	}
 
 	@Override
-	public PointRefund selectPointRefundOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public PointRefund selectPointRefundOne(int refundNo) {
+		return memberStore.selectPointRefundOne(refundNo);
 	}
 
 	@Override
 	public int insertPointRefund(PointRefund pointRf) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.insertPointRefund(pointRf);
 	}
 
 	@Override
 	public int updatePointRefund(PointRefund pointRf) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.updatePointRefund(pointRf);
 	}
 
 	@Override
-	public int deletePointRefund(int refundNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public ArrayList<PointRefund> selectPointRefundCheck(String refundYn) {
+		return memberStore.selectPointRefundCheck(refundYn);
 	}
 
+	@Override
+	public int getPointRefundListCount() {
+		return memberStore.getPointRefundListCount();
+	}
+	//포인트 변동=====================================================================================
 	@Override
 	public ArrayList<PointChange> selectPointChangeList() {
 		// TODO Auto-generated method stub
@@ -129,7 +130,7 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+//=======================================프로필
 	@Override
 	public int insertPointChange(Profile profile) {
 		// TODO Auto-generated method stub
@@ -147,4 +148,8 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
+
 }
