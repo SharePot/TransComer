@@ -2,11 +2,17 @@ package com.tc.spring.personal.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
+import com.tc.spring.study.domain.StudySearch;
 
 public interface PersonalService {
 
-   public ArrayList<Personal> selectList();
+   public ArrayList<Personal> selectPersonalList();
    /**
     * 1:1의뢰 게시판 전체 조회 서비스
     * @param 
@@ -20,7 +26,8 @@ public interface PersonalService {
     * @return
     */
    
-   public int insertPersonl();
+   public int insertPersonal(Personal personal);
+   /*public int insertPersonal(Personal personal, MultipartFile file, HttpServletRequest request);*/
    /**
     * 1:1의뢰 게시판 등록 서비스
     * @param 
@@ -40,4 +47,12 @@ public interface PersonalService {
     * @param 
     * @return
     */
+   
+   public ArrayList<Personal> searchPersonalList(PersonalSearch search);
+   /**
+	* 1:1 게시판 검색
+	* @param search
+	* @return
+	*/
+   
 }

@@ -5,26 +5,30 @@ import java.sql.Date;
 public class Personal {
 
 	private int personalNo;
-	private String personTitle;
+	private String personalTitle;
+	private String personalContent;
 	private Date personalDate;
-	private String personalWriter;
 	private String personalPLang;
 	private String personalTLang;
 	private int personalSchedule;
 	private int personalPrice;
-	private String personalCount;
+	private int personalCount;
 	private String personalDStatus;
 	private String powerYN;
 	private String memberId;
 
-	public Personal(int personalNo, String personTitle, Date personalDate, String personalWriter, String personalPLang,
-			String personalTLang, int personalSchedule, int personalPrice, String personalCount, String personalDStatus,
-			String powerYN, String memberId) {
+	public Personal() {
+
+	}
+
+	public Personal(int personalNo, String personalTitle, String personalContent, Date personalDate,
+			String personalPLang, String personalTLang, int personalSchedule, int personalPrice, int personalCount,
+			String personalDStatus, String powerYN, String memberId) {
 		super();
 		this.personalNo = personalNo;
-		this.personTitle = personTitle;
+		this.personalTitle = personalTitle;
+		this.personalContent = personalContent;
 		this.personalDate = personalDate;
-		this.personalWriter = personalWriter;
 		this.personalPLang = personalPLang;
 		this.personalTLang = personalTLang;
 		this.personalSchedule = personalSchedule;
@@ -43,12 +47,20 @@ public class Personal {
 		this.personalNo = personalNo;
 	}
 
-	public String getPersonTitle() {
-		return personTitle;
+	public String getPersonalTitle() {
+		return personalTitle;
 	}
 
-	public void setPersonTitle(String personTitle) {
-		this.personTitle = personTitle;
+	public void setPersonalTitle(String personalTitle) {
+		this.personalTitle = personalTitle;
+	}
+
+	public String getPersonalContent() {
+		return personalContent;
+	}
+
+	public void setPersonalContent(String personalContent) {
+		this.personalContent = personalContent;
 	}
 
 	public Date getPersonalDate() {
@@ -57,14 +69,6 @@ public class Personal {
 
 	public void setPersonalDate(Date personalDate) {
 		this.personalDate = personalDate;
-	}
-
-	public String getPersonalWriter() {
-		return personalWriter;
-	}
- 
-	public void setPersonalWriter(String personalWriter) {
-		this.personalWriter = personalWriter;
 	}
 
 	public String getPersonalPLang() {
@@ -99,11 +103,11 @@ public class Personal {
 		this.personalPrice = personalPrice;
 	}
 
-	public String getPersonalCount() {
+	public int getPersonalCount() {
 		return personalCount;
 	}
 
-	public void setPersonalCount(String personalCount) {
+	public void setPersonalCount(int personalCount) {
 		this.personalCount = personalCount;
 	}
 
@@ -123,7 +127,6 @@ public class Personal {
 		this.powerYN = powerYN;
 	}
 
-	
 	public String getMemberId() {
 		return memberId;
 	}
@@ -134,11 +137,11 @@ public class Personal {
 
 	@Override
 	public String toString() {
-		return "Personal [personalNo=" + personalNo + ", personTitle=" + personTitle + ", personalDate=" + personalDate
-				+ ", personalWriter=" + personalWriter + ", personalPLang=" + personalPLang + ", personalTLang="
-				+ personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice=" + personalPrice
-				+ ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus + ", powerYN=" + powerYN
-				+ ", memberId=" + memberId + "]";
+		return "Personal [personalNo=" + personalNo + ", personalTitle=" + personalTitle + ", personalContent="
+				+ personalContent + ", personalDate=" + personalDate + ", personalPLang=" + personalPLang
+				+ ", personalTLang=" + personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice="
+				+ personalPrice + ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus
+				+ ", powerYN=" + powerYN + ", memberId=" + memberId + "]";
 	}
 
 }

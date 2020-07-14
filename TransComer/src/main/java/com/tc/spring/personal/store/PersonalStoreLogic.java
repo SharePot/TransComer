@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalSearch;
 
 @Repository("personalStore")
 public class PersonalStoreLogic implements PersonalStore{
@@ -15,7 +16,8 @@ public class PersonalStoreLogic implements PersonalStore{
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Personal> selectList() {
+	public ArrayList<Personal> selectPersonalList() {
+		System.out.println("Store 도착");
 		return (ArrayList)sqlSession.selectList("personalMapper.selectList");
 	}
 
@@ -26,9 +28,8 @@ public class PersonalStoreLogic implements PersonalStore{
 	}
 
 	@Override
-	public int insertPersonl() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertPersonal(Personal personal) {
+		return sqlSession.insert("personalMapper.insertPersonal", personal);
 	}
 
 	@Override
@@ -41,5 +42,10 @@ public class PersonalStoreLogic implements PersonalStore{
 	public int deletePersonal() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public ArrayList<Personal> searchPersonalList(PersonalSearch search) {
+		return (ArrayList)sqlSession.selectList("personalMapper.searchPersonalList", search);
 	}
 }

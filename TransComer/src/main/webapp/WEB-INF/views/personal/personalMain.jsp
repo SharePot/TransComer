@@ -20,21 +20,25 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        #searchBox {
+        	width : 60%;
+        }
+        
     </style>
 </head>
 
 <body class="homepage is-preload">
+<c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
 
         <!-- Header -->
-        <%-- 메뉴바
-       <c:import url="../common/menuBar.jsp"/> --%>
-        <section id="header">
+        <!-- <section id="header">
 
-            <!-- Logo -->
+            Logo
             <h1><a href="index.html">SharePot</a></h1>
 
-            <!-- Nav -->
+            Nav
             <nav id="nav">
                 <ul>
                     <li class="current"><a href="index.html">Home</a></li>
@@ -50,7 +54,7 @@
                     <li><a href="#">Q&amp;A</a></li>
                 </ul>
             </nav>
-        </section>
+        </section> -->
 
         <!-- Main -->
         <section id="main">
@@ -61,20 +65,35 @@
                         <!-- Portfolio -->
                         <section>
                             <!-- 검색 -->
-                            
-                            
-                            <button onclick="location.href='#';">글쓰기</button>
-                            <%-- <!-- 로그인한 사람만 가능 -->
-							<c:if test="${ !empty loginUser }">
-								<button onclick="location.href='#';">글쓰기</button>
-							</c:if> --%>
+                            <br>
+							<div class="input-group mb-3" id="searchBox">
+								<form action="pSearch.tc" method="get">
+									<select class="custom-select" id="searchCondition" name="searchCondition">
+										<option selected>Choose</option>
+										<option value="title" <c:if test="${search.searchCondition == 'title' }">selected</c:if>> 제목</option>
+										<option value="writer" <c:if test="${search.searchCondition == 'writer' }">selected</c:if>>번역가</option>
+										<option value="tLang" <c:if test="${search.searchCondition == 'tLang' }">selected</c:if>>사용 언어</option>
+										<option value="pLang" <c:if test="${search.searchCondition == 'pLang' }">selected</c:if>>개발 언어</option>
+									</select>
+									<input type="search" name="searchValue" class="form-control" placeholder="검색어 입력" value="${search.searchValue }">
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" type="submit" id="button-addon" style="background: black;">search</button>
+									</div>
+								</form>
+							</div>
+
+
+							<!--  로그인한 사람만 글쓰기 가능 -->
+                            <c:if test="${ !empty loginUser }">
+								<button onclick="location.href='pWriterView.tc';">글쓰기</button>
+							</c:if>
 
 
                             <header class="major">
                                 <h2>1:1 의뢰</h2>
                             </header>
                             <div class="row">
-                            	<c:forEach var="p" items="">
+                            	<c:forEach var="p" items="${list }">
                                 <div class="col-4 col-6-medium col-12-small">
                                     <section class="box">
                                         <center>
@@ -84,12 +103,13 @@
                                         </center>
                                         <br>
                                         <header>
-                                            <h3></h3>
+                                            <h3>${p.memberId }</h3>
                                         </header>
-                                        <b><!-- 글 제목 --></b>
+                                        <!-- 글 제목 -->
+                                        <b>${p.personalTitle }</b>
                                         <hr>
-                                        <p>사용가능 언어 : 영어
-                                        <br>사용가능 개발언어: JAVA</p>
+                                        <p>사용가능 언어 : ${p.personalTLang}
+                                        <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
                                                 <li><a href="#" class="button alt">자세히 보기</a></li>
@@ -98,63 +118,8 @@
                                     </section>
                                 </div>
                                 </c:forEach>
-                                <!-- <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Consequat et tempus</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Blandit sed adipiscing</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Etiam nisl consequat</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                                <div class="col-4 col-6-medium col-12-small">
-                                    <section class="box">
-                                        <a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
-                                        <header>
-                                            <h3>Dolore nisl feugiat</h3>
-                                        </header>
-                                        <p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-                                        <footer>
-                                            <ul class="actions">
-                                                <li><a href="#" class="button alt">Find out more</a></li>
-                                            </ul>
-                                        </footer>
-                                    </section>
-                                </div>
-                            </div> -->
+
+                            </div> 
 
 
                             <br><br><br><br>
@@ -179,13 +144,8 @@
                             </div>-->
 
                         </section>
-
                     </div>
-                    <div class="col-12">
 
-                        <!--내용 채우기(지워도 상관없음)-->
-
-                    </div>
                 </div>
             </div>
         </section>
@@ -207,18 +167,18 @@
     </div>
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet"> -->
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <!-- <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/jquery.dropotron.min.js"></script>
+    <script src="resources/js/browser.min.js"></script>
+    <script src="resources/js/breakpoints.min.js"></script>
+    <script src="resources/js/util.js"></script>
+    <script src="resources/js/main.js"></script> -->
     <!--템플릿 css-->
     <link rel="stylesheet" href="resources/css/main.css" />
 
