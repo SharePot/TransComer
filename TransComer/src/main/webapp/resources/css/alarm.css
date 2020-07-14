@@ -1,6 +1,7 @@
 #mainWrapper {
     margin: 0 auto;
-    width: 700px;
+    width: 40%;
+    min-width: 400px;
     height: auto;
     padding: 10px;
 }
@@ -24,39 +25,31 @@
     margin: 0 auto;
 }
 
-#alarmItem {
+div {
+    border: 1px solid blue !important;
+}
+
+table tr td {
+    border: 1px solid red !important;
+}
+
+#alarmSection table {
     background: white;
-    margin: 0 auto;
-    height: auto;
+    height: 0 auto !important;
+    min-height: 80px;
+    margin-bottom: 0px !important;
 }
 
-#alarmTb {
-    
-}
-
-#alarmContent {
-    width: 85%;
-    max-width: 495px;
-    color: black;
+#alarmSection table tr:first-child td:last-child {
+    width: 30%;
     font-size: 15px;
-    text-overflow: hidden;
-    word-break: break-all;
-    text-align: justify;
+    text-align: right;
 }
 
-#alarmBtn {
-    text-align: center;
+#alarmSection table tr:first-child td:first-child {
+    width: 30%;
+    font-size: 15px;
+    text-align: left;
 }
 
-#cBtn {
-    font-size: 12px;
-    background: skyblue;
-}
 
-#dBtn {
-    width: 60px;;
-    margin-top: 5px;
-    font-size: 12px;
-    background: gray;
-    
-}

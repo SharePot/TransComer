@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
+import com.tc.spring.simple.domain.SimpleSearch;
 
 @Repository("simpleStore")
 public class SimpleStoreLogic implements SimpleStore {
@@ -60,6 +61,12 @@ public class SimpleStoreLogic implements SimpleStore {
 	public int simpleReqDelete(int simpleNo) {
 		return sqlSession.update("simpleMapper.deleteSReq", simpleNo);
 	}
+	
+	// 단순의뢰 질문 검색
+	@Override
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch) {
+		return (ArrayList)sqlSession.selectList("simpleMapper.searchSReq", simpleSearch);
+	}
 
 	// 단순의뢰 답변 조회
 	@Override
@@ -80,10 +87,10 @@ public class SimpleStoreLogic implements SimpleStore {
 		return sqlSession.insert("simpleMapper.insertReply", simpleRes);
 	}
 
+	// 단순의뢰 답변 수정
 	@Override
 	public int simpleResUpdate(SimpleResponse simpleRes) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("simpleMapper.updateReply", simpleRes);
 	}
 
 	// 단순의뢰 답변 삭제
@@ -91,6 +98,25 @@ public class SimpleStoreLogic implements SimpleStore {
 	public int simpleResDelete(int simpleReplyNo) {
 		return sqlSession.update("simpleMapper.deleteReply",simpleReplyNo);
 	}
+
+	// 단순의뢰 답변 채택 처리
+	@Override
+	public int adoptReply(int simpleReplyNo) {
+		return sqlSession.update("simpleMapper.adoptReply", simpleReplyNo);
+	}
+
+	// 단순의뢰 질문 채택 처리
+	@Override
+	public int adoptRequest(int sReqNo) {
+		return sqlSession.update("simpleMapper.adoptRequest", sReqNo);
+	}
+
+	// 단순의뢰 답변자 채택 카운팅
+	@Override
+	public int memberAdoptCount(String simpleReplyWriter) {
+		return sqlSession.update("simpleMapper.memberAdoptCount", simpleReplyWriter);
+	}
+
 
 
 

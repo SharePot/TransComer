@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
+import com.tc.spring.simple.domain.SimpleSearch;
 
 public interface SimpleService {
 	
@@ -59,6 +60,12 @@ public interface SimpleService {
 	 */
 	public int simpleReqDelete(int simpleNo);
 	
+	/**
+	 * 단순의뢰 질문 검색
+	 * @param simpleRequest
+	 * @return
+	 */
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch);
 	
 	
 	// -------------------- 단순의뢰 답변 --------------------
@@ -93,5 +100,27 @@ public interface SimpleService {
 	 * @return
 	 */
 	public int simpleResDelete(int simpleReplyNo);
+	
+	/**
+	 * 단순의뢰 답변 채택 처리
+	 * @param simpleReplyNo
+	 * @return
+	 */
+	public int adoptReply(int simpleReplyNo);
+	
+	/**
+	 * 단순의뢰 질문 채택 처리
+	 * @param sReqNo
+	 * @return
+	 */
+	public int adoptRequest(int sReqNo);
+	
+	/**
+	 * 단순의뢰 답변자 채택 카운팅
+	 * @param simpleReplyWriter
+	 * @return
+	 */
+	public int memberAdoptCount(String simpleReplyWriter);
+	
 	
 }

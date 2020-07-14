@@ -11,6 +11,7 @@
 		<result property="simpleTLang" column="SIMPLE_T_LANG" />
 		<result property="simpleCount" column="SIMPLE_COUNT" />
 		<result property="simpleDStatus" column="SIMPLE_D_STATUS" />
+		<result property="simpleAStatus" column="SIMPLE_A_STATUS" />
 		<result property="simpleWriter" column="SIMPLE_WRITER" />
 	</resultMap>
 	
@@ -24,6 +25,22 @@
 		<result property="sReqNo" column="SREQ_NO" />
 	</resultMap>
 	
+	<resultMap type="Member" id="memberResultSet">
+         <id property="memberNo" column="MEMBER_NO"/>
+         <result property="memberId" column="MEMBER_ID"/>
+         <result property="memberPw" column="MEMBER_PW"/>
+         <result property="memberName" column="MEMBER_NAME"/>
+         <result property="email" column="MEMBER_EMAIL"/>
+         <result property="address" column="MEMBER_ADDRESS"/>
+         <result property="phone" column="MEMBER_PHONE"/>
+         <result property="point" column="MEMBER_POINT"/>
+         <result property="account" column="ACCOUNT_INFO"/>
+         <result property="status" column="MEMBER_STATUS"/>
+         <result property="contentCount" column="CONTENTS_COUNT"/>
+         <result property="adopCount" column="ADOPT_COUNT"/>
+         <result property="enrollDate" column="MEMBER_ENROLL_DATE"/>
+   </resultMap>
+	
 	<!-- 단순의뢰 질문 조회 -->
 	<select id="selectList" resultMap="simpleResultSet">
 		SELECT * FROM SIMPLE_REQUEST ORDER BY SIMPLE_DATE DESC
@@ -31,7 +48,7 @@
 	
 	<!-- 단순의뢰 질문 작성 -->
 	<insert id="insertSReq" parameterType="SimpleRequest">
-		INSERT INTO SIMPLE_REQUEST VALUES (SIMPLE_NO_SEQ.NEXTVAL, #{simpleTitle}, #{simpleContent}, SYSDATE, #{simplePLang}, #{simpleTLang}, 0, DEFAULT, #{simpleWriter})
+		INSERT INTO SIMPLE_REQUEST VALUES (SIMPLE_NO_SEQ.NEXTVAL, #{simpleTitle}, #{simpleContent}, SYSDATE, #{simplePLang}, #{simpleTLang}, 0, DEFAULT, DEFAULT, #{simpleWriter})
 	</insert>
 	
 	<!-- 단순의뢰 질문 수정 -->
@@ -62,7 +79,10 @@
 	
 	<!-- 단순의뢰 답변 조회 -->
 	<select id="selectResList" resultMap="sResResultSet" parameterType="_int">
-		SELECT * FROM SIMPLE_REPLY P JOIN SIMPLE_REQUEST Q ON (P.SREQ_NO = Q.SIMPLE_NO) WHERE SREQ_NO = #{simpleNo} ORDER BY SIMPLE_REPLY_NO DESC
+		<!-- SELECT * FROM SIMPLE_REPLY P LEFT OUTER JOIN SIMPLE_REQUEST Q ON P.SREQ_NO = Q.SIMPLE_NO
+		LEFT OUTER JOIN MEMBER M ON P.SIMPLE_REPLY_WRITER = M.MEMBER_ID WHERE SREQ_NO = #{simpleNo} AND SIMPLE_REPLY_DELETE = 'N' ORDER BY SIMPLE_REPLY_NO DESC -->
+		
+		SELECT * FROM SIMPLE_REPLY P JOIN SIMPLE_REQUEST Q ON (P.SREQ_NO = Q.SIMPLE_NO) WHERE SREQ_NO = #{simpleNo} AND SIMPLE_REPLY_DELETE = 'N' ORDER BY SIMPLE_REPLY_NO DESC
 	</select>
 	
 	<select id="sResOne" resultMap="sResResultSet">
@@ -74,9 +94,55 @@
 		INSERT INTO SIMPLE_REPLY VALUES (SIMPLE_REPLY_NO_SEQ.NEXTVAL, #{simpleReplyContent}, SYSDATE, #{simpleReplyWriter}, DEFAULT, DEFAULT, #{sReqNo})
 	</insert>
 	
+	<!-- 단순의뢰 답변 수정 -->
+	<update id="updateReply" parameterType="SimpleResponse">
+		UPDATE SIMPLE_REPLY SET SIMPLE_REPLY_CONTENT = #{simpleReplyContent} WHERE SIMPLE_REPLY_NO = #{simpleReplyNo}
+	</update>
+	
 	<!-- 단순의뢰 답변 삭제 -->
 	<update id="deleteReply" parameterType="_int">
 		UPDATE SIMPLE_REPLY SET SIMPLE_REPLY_DELETE = 'Y' WHERE SIMPLE_REPLY_NO = #{simpleReplyNo}
 	</update>
+	
+	<!-- 단순의뢰 답변 검색 -->
+	<select id="searchSReq" parameterType="SimpleSearch" resultMap="simpleResultSet">
+		SELECT * FROM SIMPLE_REQUEST
+			<where>
+				<choose>
+					<when test="searchCondition == 'title'">
+						SIMPLE_TITLE LIKE '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchCondition == 'writer'">
+						AND SIMPLE_WRITER LIKE '%' || #{searchValue} || '%'
+					</when>
+					<when test="searchCondition == 'content'">
+						AND SIMPLE_CONTENT LIKE '%' || #{searchValue} || '%'
+					</when>
+					<otherwise>
+						AND (SIMPLE_WRITER LIKE '%' || #{searchValue} || '%'
+						OR SIMPLE_TITLE LIKE '%' || #{searchValue} || '%'
+						OR SIMPLE_CONTENT LIKE '%' || #{searchValue} || '%')
+					</otherwise>
+				</choose>
+			</where>
+			ORDER BY SIMPLE_DATE DESC
+	</select>
+	
+	<!-- 단순의뢰 채택 처리 -->
+	
+		<!-- 단순의뢰 답변 채택 처리 -->
+		<update id="adoptReply" parameterType="SimpleResponse">
+			UPDATE SIMPLE_REPLY SET SIMPLE_REPLY_STATUS = 'Y' WHERE SIMPLE_REPLY_NO = #{simpleReplyNo}
+		</update>
+		
+		<!-- 단순의뢰 질문 채택 처리 -->
+		<update id="adoptRequest" parameterType="SimpleResponse">
+			UPDATE SIMPLE_REQUEST SET SIMPLE_A_STATUS = 'Y' WHERE SIMPLE_NO = #{sReqNo}
+		</update>
+		
+		<!-- 단순의뢰 채택 멤버 카운트 처리 -->
+		<update id="memberAdoptCount" parameterType="SimpleResponse">
+			UPDATE MEMBER SET ADOPT_COUNT = ADOPT_COUNT + 1 WHERE MEMBER_ID = #{simpleReplyWriter}
+		</update>
 	
 </mapper>

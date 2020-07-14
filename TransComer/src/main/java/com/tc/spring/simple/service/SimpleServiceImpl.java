@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
+import com.tc.spring.simple.domain.SimpleSearch;
 import com.tc.spring.simple.store.SimpleStore;
 
 @Service("simpleService")
@@ -60,6 +61,12 @@ public class SimpleServiceImpl implements SimpleService {
 		return simpleStore.simpleReqDelete(simpleNo);
 	}
 
+	// 단순의뢰 질문 검색
+	@Override
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch) {
+		return simpleStore.sReqSearchList(simpleSearch);
+	}
+	
 	// 단순의뢰 답변 조회
 	@Override
 	public ArrayList<SimpleResponse> getSimpleResList(int simpleNo) {
@@ -78,16 +85,36 @@ public class SimpleServiceImpl implements SimpleService {
 		return simpleStore.simpleResInsert(simpleRes);
 	}
 
+	// 단순의뢰 답변 수정
 	@Override
 	public int simpleResUpdate(SimpleResponse simpleRes) {
-		// TODO Auto-generated method stub
-		return 0;
+		return simpleStore.simpleResUpdate(simpleRes);
 	}
 
+	// 단순의뢰 답변 삭제
 	@Override
 	public int simpleResDelete(int simpleReplyNo) {
 		return simpleStore.simpleResDelete(simpleReplyNo);
 	}
+
+	// 단순의뢰 답변 채택 처리
+	@Override
+	public int adoptReply(int simpleReplyNo) {
+		return simpleStore.adoptReply(simpleReplyNo);
+	}
+
+	// 단순의뢰 질문 채택 처리
+	@Override
+	public int adoptRequest(int sReqNo) {
+		return simpleStore.adoptRequest(sReqNo);
+	}
+
+	// 단순의뢰 답변자 채택 카운팅
+	@Override
+	public int memberAdoptCount(String simpleReplyWriter) {
+		return simpleStore.memberAdoptCount(simpleReplyWriter);
+	}
+
 
 
 
