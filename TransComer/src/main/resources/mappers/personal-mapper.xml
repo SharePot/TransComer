@@ -55,5 +55,41 @@
 		ORDER BY PERSONAL_NO DESC
 	</select>
 	
+	<!-- 1:1 의뢰 게시판 전체 수 조회 -->
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL
+	</select>
+	
+	<!-- 1:1 의뢰 게시판 검색 후 게시물 갯수 조회 -->
+	<select id="getSearchListCount" parameterType="PersonalSearch" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL
+		<where>
+			<choose>
+			<when test="searchCondition == 'title'">
+				PERSONAL_TITLE LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'writer'">
+				AND MEMBER_ID LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'tLang'">
+				AND PERSONAL_T_LANG LIKE '%' || #{searchValue } || '%'
+			</when>
+			<when test="searchCondition == 'pLang'">
+				AND PERSONAL_P_LANG LIKE '%' || #{searchValue } || '%'
+			</when>
+			<otherwise>
+				AND (MEMBER_ID LIKE '%' || #{searchValue } || '%'
+				OR PERSONAL_TITLE LIKE '%' || #{searchValue } || '%'
+				OR PERSONAL_T_LANG LIKE '%' || #{searchValue } || '%'
+				OR PERSONAL_P_LANG LIKE '%' || #{searchValue } || '%')
+			</otherwise>
+		</choose>
+		</where>
+	</select>
+	
+	<!-- 1:1 의뢰 게시판 상세 조회시 조회수 증가 -->
+	<update id="updateCount" parameterType="_int">
+		UPDATE PERSONAL SET PERSONAL_COUNT = PERSONAL_COUNT + 1 WHERE MEMBER_ID = #{memberId}
+	</update>
 
 </mapper>

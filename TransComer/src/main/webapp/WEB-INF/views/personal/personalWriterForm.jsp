@@ -121,7 +121,7 @@
                             <div id="profileContent">
                                 <br>
                                 <label>글제목</label>
-                                <input type="text" name="personalTitle" placeholder="제목을 입력해주세요" value="">
+                                <input type="text" name="personalTitle" placeholder="제목을 입력해주세요" value="" maxlength="52">
                                 <br><br>
                                 <label>글내용</label>
                                 <textarea type="text" name="personalContent" placeholder="내용을 입력해주세요" style=" width: 70%; display: inline-block; margin-left: 20%;"></textarea>

@@ -25,36 +25,17 @@
         	width : 60%;
         }
         
+        #pagenav a {
+        	text-decoration:none !important;
+        	color: black;
+        }
+        s
     </style>
 </head>
 
 <body class="homepage is-preload">
 <c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
-
-        <!-- Header -->
-        <!-- <section id="header">
-
-            Logo
-            <h1><a href="index.html">SharePot</a></h1>
-
-            Nav
-            <nav id="nav">
-                <ul>
-                    <li class="current"><a href="index.html">Home</a></li>
-                    <li>
-                        <a href="#">번역 의뢰</a>
-                        <ul>
-                            <li><a href="#">단순 의뢰</a></li>
-                            <li><a href="#">1:1 의뢰</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">번역 공유</a></li>
-                    <li><a href="#">스터디</a></li>
-                    <li><a href="#">Q&amp;A</a></li>
-                </ul>
-            </nav>
-        </section> -->
 
         <!-- Main -->
         <section id="main">
@@ -69,7 +50,7 @@
 							<div class="input-group mb-3" id="searchBox">
 								<form action="pSearch.tc" method="get">
 									<select class="custom-select" id="searchCondition" name="searchCondition">
-										<option selected>Choose</option>
+									<!-- 	<option selected>Choose</option> -->
 										<option value="title" <c:if test="${search.searchCondition == 'title' }">selected</c:if>> 제목</option>
 										<option value="writer" <c:if test="${search.searchCondition == 'writer' }">selected</c:if>>번역가</option>
 										<option value="tLang" <c:if test="${search.searchCondition == 'tLang' }">selected</c:if>>사용 언어</option>
@@ -98,7 +79,7 @@
                                     <section class="box">
                                         <center>
                                             <div class="imgbox" style="background: #BDBDBD;">
-                                                <img class="profile" src="/imges/girl.png">
+                                                <img class="profile" src="">
                                             </div>
                                         </center>
                                         <br>
@@ -122,26 +103,48 @@
                             </div> 
 
 
-                            <br><br><br><br>
-                            <div class="justify-content-center" style="text-align:center;">
+							<br><br><br><br>
+							<!-- 페이징 처리 -->
+							 <div class="justify-content-center" id="pagenav" style="text-align:center;">
                                 <ul class="pagination justify-content-center" style="clear:both;">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </div>
-
-
-                            <!--<br><br><br><br>
-                            <div class="justify-content-center" style="text-align: center;">
-                                <ul class="pagination justify-content-center" style="clear: both;">
-                                    ${pageData.pageNavi}
-                                </ul>
-                            </div>-->
+                                <!-- [이전] -->
+                                <c:if test="${pi.currentPage <= 1 }">
+                                	<li class="page-item"><a class="page-link" href="${before }">&laquo;</a></li>
+                                </c:if>
+                                <c:if test="${pi.currentPage > 1 }">
+                                	<c:url var="before" value="plist.tc">
+                                		<c:param name="page" value="${pi.currentPage - 1 }" />
+				              		</c:url>
+				               		<li class="page-item"><a class="page-link" href="${before }">&laquo;</a></li>
+				            	</c:if>
+				            	
+				            	<!-- 페이지 -->
+				         		<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				            		<c:if test="${p eq currentPage }">
+				            			<li class="page-item"><a class="page-link" href="${pagination }">${p }</a></li>
+				           			</c:if>
+				           			<c:if test="${p ne currentPage }">
+				               			<c:url var="pagination" value="plist.tc">
+				                  			<c:param name="page" value="${p }" />
+				               			</c:url>
+				               			<li class="page-item"><a class="page-link" href="${pagination }">${p }</a></li>
+				            		</c:if>
+				         		</c:forEach>
+				         		
+				         		<!-- [다음] -->
+				      			<c:if test="${pi.currentPage >= pi.maxPage }">
+				         			<li class="page-item"><a class="page-link" href="${after }">&raquo;</a></li>
+				      			</c:if>
+				      			<c:if test="${pi.currentPage < pi.maxPage }">
+				         			<c:url var="after" value="plist.tc">
+				            			<c:param name="page" value="${pi.currentPage + 1 }" />
+				         			</c:url>
+				         				<li class="page-item"><a class="page-link" href="${after }">&raquo;</a></li>
+				      			</c:if>
+				            	
+				            	</ul>
+				            </div>
+				            
 
                         </section>
                     </div>
