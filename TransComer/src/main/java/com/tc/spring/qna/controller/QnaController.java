@@ -50,6 +50,27 @@ public class QnaController {
 		return mv;
 	}
 	
+	// Qna 검색 목록 보기
+	@RequestMapping(value="qsearch.tc", method=RequestMethod.GET)
+	public ModelAndView searchQnaList(QnaSearch qnaSearch, ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int listCount = qnaService.getSearchListCount(qnaSearch);
+		QnaPageInfo qPi = Pagination.getQnaPageInfo(currentPage, listCount);
+		
+		ArrayList<Qna> qList = qnaService.searchQnaList(qnaSearch, qPi);
+		
+		if(!qList.isEmpty()) {
+			mv.addObject("qlist", qList);
+			mv.addObject("qPi", qPi);
+			mv.addObject("qSearch", qnaSearch);
+			mv.setViewName("qna/qnaSearchListView");
+		} else {
+			mv.addObject("msg", "게시글 전체조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
 	// Qna 관리자 목록 보기
 	@RequestMapping("qAdminlist.tc")
 	public ModelAndView selectQnaAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
@@ -70,21 +91,6 @@ public class QnaController {
 		return mv;
 	}
 	
-	// Qna 검색
-	@RequestMapping("qnaSearch.tc")
-	public String qnaSearch(QnaSearch qnaSearch, Model model,
-			@RequestParam(value = "page", required = false) Integer page) {
-		int currentPage = (page != null) ? page : 1;
-		int listCount = qnaService.getListCount();                                      
-		QnaPageInfo qPi = Pagination.getQnaPageInfo(currentPage, listCount);
-
-		ArrayList<Qna> searchList = qnaService.searchList(qPi, qnaSearch);
-
-		model.addAttribute("searchList", searchList);
-		model.addAttribute("qnaSearch", qnaSearch);
-		return "qna/qnaListView";
-	}
-
 	// Qna 상세보기
 	@RequestMapping("qdetail.tc")
 	public ModelAndView qnaDetail(ModelAndView mv, int qnaNo) {

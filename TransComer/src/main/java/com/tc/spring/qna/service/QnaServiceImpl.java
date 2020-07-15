@@ -30,6 +30,11 @@ public class QnaServiceImpl implements QnaService{
 	}
 	
 	@Override
+	public int getSearchListCount(QnaSearch qnaSearch) {
+		return qnaStore.getSearchListCount(qnaSearch);
+	}
+	
+	@Override
 	public ArrayList<Qna> selectList(QnaPageInfo qPi) {
 		return qnaStore.selectList(qPi);
 	}
@@ -40,13 +45,13 @@ public class QnaServiceImpl implements QnaService{
 	}
 	
 	@Override
-	public int addReadCount(int qnaNo) {
-		return qnaStore.addReadCount(qnaNo);
+	public ArrayList<Qna> searchQnaList(QnaSearch qnaSearch, QnaPageInfo qPi) {
+		return qnaStore.searchQnaList(qnaSearch, qPi);
 	}
 	
 	@Override
-	public ArrayList<Qna> searchList(QnaPageInfo qPi, QnaSearch qnaSearch) {
-		return qnaStore.searchList(qPi, qnaSearch);
+	public int addReadCount(int qnaNo) {
+		return qnaStore.addReadCount(qnaNo);
 	}
 	
 	@Override
@@ -69,6 +74,8 @@ public class QnaServiceImpl implements QnaService{
 	public int deleteQna(int qnaNo) {
 		return qnaStore.deleteQna(qnaNo);
 	}
+
+	
 	
 
 }

@@ -16,6 +16,7 @@
 		<typeAlias type="com.tc.spring.member.domain.PointChange" alias="PointChange"/>
 		<typeAlias type="com.tc.spring.member.domain.PointRefund" alias="PointRefund"/>
 		<typeAlias type="com.tc.spring.member.domain.Profile" alias="Profile"/>
+		<!-- <typeAlias type="com.tc.spring.member.domain.MemberSearch" alias="MemberSearch"/> -->
 		
 		<typeAlias type="com.tc.spring.alarm.domain.Alarm" alias="Alarm"/>
 		
@@ -33,6 +34,8 @@
 		<typeAlias type="com.tc.spring.qna.domain.QnaSearch" alias="QnaSearch"/>
 		
 		<typeAlias type="com.tc.spring.report.domain.Report" alias="Report"/>
+		<typeAlias type="com.tc.spring.report.domain.ReportSearch" alias="ReportSearch"/>
+		<typeAlias type="com.tc.spring.report.domain.BlackSearch" alias="BlackSearch"/>
 		
 		<typeAlias type="com.tc.spring.review.domain.Review" alias="Review"/>
 		

@@ -24,6 +24,7 @@
 		WHERE QNA_CATEGORY = 'ALL' OR QNA_CATEGORY = 'NOTICE'
 	</select>
 	
+	<!-- 관리자 문의글 쿼리 -->
 	<select id="selectAdminQnaList" resultMap="qnaResultSet">
 		SELECT * FROM QNA
 		WHERE QNA_CATEGORY = 'ADMIN'
@@ -35,6 +36,44 @@
 		WHERE QNA_CATEGORY = 'ADMIN'
 	</select>
 	
+	<!-- QNA 검색 쿼리 -->
+	<select id="searchQnaList" parameterType="QnaSearch" resultMap="qnaResultSet">
+  		SELECT * FROM QNA
+  		<where>
+  		(QNA_CATEGORY = 'ALL' OR QNA_CATEGORY = 'NOTICE')
+  			<choose>
+	  			<when test="searchCondition == 'title'">
+	  				AND QNA_TITLE LIKE '%' || #{searchValue} || '%'  		
+		  		</when>
+		  		<when test="searchCondition == 'writer'">
+		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<when test="searchCondition == 'content'">
+		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%'
+		  		</when>
+  			</choose>
+  		</where>	
+  		ORDER BY QNA_NO DESC
+  	</select>
+	
+	<select id="getSearchListCount" parameterType="QnaSearch" resultType="_int">
+		SELECT COUNT(*) FROM QNA
+  		<where>
+  		(QNA_CATEGORY = 'ALL' OR QNA_CATEGORY = 'NOTICE')
+  			<choose>
+	  			<when test="searchCondition == 'title'">
+	  				AND QNA_TITLE LIKE '%' || #{searchValue} || '%'  		
+		  		</when>
+		  		<when test="searchCondition == 'writer'">
+		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<when test="searchCondition == 'content'">
+		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%'
+		  		</when>
+  			</choose>
+  		</where>	
+	</select>
+	
 	<update id="updateCount" parameterType="_int">
 		UPDATE QNA SET QNA_COUNT = QNA_COUNT + 1
 		WHERE QNA_NO = #{qnaNo}
@@ -44,30 +83,6 @@
 		SELECT * FROM QNA
 		WHERE QNA_NO = #{qnaNo}
 	</select>
-	
-	<!-- if 태그 -->
-  	<select id="searchList" parameterType="QnaSearch" resultMap="qnaResultSet">
-  		SELECT * FROM QNA
-  		<where>
-  			<choose>
-	  			<when test="searchCondition == 'title'">
-	  				QNA_TITLE LIKE '%' || #{searchValue} || '%'  		
-		  		</when>
-		  		<when test="searchCondition == 'writer'">
-		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
-		  		</when>
-		  		<when test="searchCondition == 'content'">
-		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%'
-		  		</when>
-		  		<otherwise>
-		  			AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
-		  			OR QNA_TITLE LIKE '%' || #{searchValue} || '%'
-		  			OR QNA_CONTENT LIKE '%' || #{searchValue} || '%')
-		  		</otherwise>	
-  			</choose>
-  		</where>	
-  		ORDER BY QNA_WRITE_DATE DESC
-  	</select>
   	
   	<!-- 공지사항 등록 쿼리 -->
   	<insert id="insertQna" parameterType="Qna">

@@ -19,19 +19,22 @@ public interface QnaService {
 	// 관리자 문의 게시글 수
 	public int getAdminListCount();
 	
+	// 검색 게시글 수
+	public int getSearchListCount(QnaSearch qnaSearch);
+	
 	// 전체 조회
 	public ArrayList<Qna> selectList(QnaPageInfo qPi);
 	
 	// 관리자 문의 조회
 	public ArrayList<Qna> selectAdminQnaList(QnaPageInfo qPi);
 	
+	// 게시글 검색
+	public ArrayList<Qna> searchQnaList(QnaSearch qnaSearch, QnaPageInfo qPi);
+	
 	// 조회수 증가
 	public int addReadCount(int qnaNo);
 	
-	// 글 검색
-	public ArrayList<Qna> searchList(QnaPageInfo qPi, QnaSearch qnaSearch);
-	
-	//  QnA 등록
+	// QnA 등록
 	public int insertQna(Qna qna, HttpServletRequest request);
 	
 	// QnA 상세조회

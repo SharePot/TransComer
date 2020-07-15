@@ -16,8 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.report.domain.BlackPageInfo;
+import com.tc.spring.report.domain.BlackSearch;
 import com.tc.spring.report.domain.Report;
 import com.tc.spring.report.domain.ReportPageInfo;
+import com.tc.spring.report.domain.ReportSearch;
 import com.tc.spring.report.service.ReportService;
 
 @Controller
@@ -42,7 +44,7 @@ public class ReportController {
 		ArrayList<Report> rList = reportService.selectReportList(rPi);
 		ArrayList<Member> bList = reportService.selectBlackList(bPi);
 		
-		if(!rList.isEmpty()) {
+		if(!rList.isEmpty() || !bList.isEmpty()) {
 			mv.addObject("rlist", rList);
 			mv.addObject("blist", bList);
 			mv.addObject("rPi", rPi);
@@ -56,12 +58,12 @@ public class ReportController {
 	}
 	
 	// 관리자 페이지 신고리스트 검색 목록 보기
-	@RequestMapping("reportSeartch.tc")
-	public ModelAndView searchReportList(ModelAndView mv, @RequestParam(value="rpage", required=false)Integer rpage, 
+	@RequestMapping(value="reportSearch.tc", method=RequestMethod.GET)
+	public ModelAndView searchReportList(ReportSearch reportSearch, ModelAndView mv, @RequestParam(value="rpage", required=false)Integer rpage, 
 	@RequestParam(value="bpage", required=false)Integer bpage) {
 		
 		int reportCurrentPage = (rpage != null) ? rpage : 1;
-		int reportListCount = reportService.getReportListCount();
+		int reportListCount = reportService.getReportSearchListCount(reportSearch);
 		
 		int blackCurrentPage = (bpage != null) ? bpage : 1;
 		int blackListCount = reportService.getBlackListCount();
@@ -69,9 +71,50 @@ public class ReportController {
 		ReportPageInfo rPi = Pagination.getReportPageInfo(reportCurrentPage, reportListCount);
 		BlackPageInfo bPi = Pagination.getBlackPageInfo(blackCurrentPage, blackListCount);
 		
-		ArrayList<Report> rList = reportService.searchReportList(rPi);
+		ArrayList<Report> rList = reportService.searchReportList(reportSearch, rPi);
 		ArrayList<Member> bList = reportService.selectBlackList(bPi);
 		
+		if(!rList.isEmpty() || !bList.isEmpty()) {
+			mv.addObject("rlist", rList);
+			mv.addObject("blist", bList);
+			mv.addObject("rsearch", reportSearch);
+			mv.addObject("rPi", rPi);
+			mv.addObject("bPi", bPi);
+			mv.setViewName("admin/adminReportSearch");
+		} else {
+			mv.addObject("msg", "게시글 전체조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	// 관리자 페이지 블랙리스트 검색 목록 보기
+	@RequestMapping(value="blackSearch.tc", method=RequestMethod.GET)
+	public ModelAndView searchBlackList(BlackSearch blackSearch, ModelAndView mv, @RequestParam(value="rpage", required=false)Integer rpage, 
+			@RequestParam(value="bpage", required=false)Integer bpage) {
+		int reportCurrentPage = (rpage != null) ? rpage : 1;
+		int reportListCount = reportService.getReportListCount();
+		
+		int blackCurrentPage = (bpage != null) ? bpage : 1;
+		int blackListCount = reportService.getBlackSearchListCount(blackSearch);
+		
+		ReportPageInfo rPi = Pagination.getReportPageInfo(reportCurrentPage, reportListCount);
+		BlackPageInfo bPi = Pagination.getBlackPageInfo(blackCurrentPage, blackListCount);
+		
+		ArrayList<Report> rList = reportService.selectReportList(rPi);
+		ArrayList<Member> bList = reportService.searchBlackList(blackSearch, bPi);
+		
+		if(!rList.isEmpty() || !bList.isEmpty()) {
+			mv.addObject("rlist", rList);
+			mv.addObject("blist", bList);
+			mv.addObject("bsearch", blackSearch);
+			mv.addObject("rPi", rPi);
+			mv.addObject("bPi", bPi);
+			mv.setViewName("admin/adminBlackSearch");
+		} else {
+			mv.addObject("msg", "게시글 전체조회 실패");
+			mv.setViewName("common/errorPage");
+		}
 		return mv;
 	}
 	

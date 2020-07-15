@@ -69,7 +69,10 @@
 				        <div class="row">
 				            <div class="col-12">
 				                <h1 align="center">QnA 게시판</h1>
-				                <br> 
+				                <br>
+				                <div class="d-flex justify-content-center">
+		                        	<button type="button" class="btn btn-primary" onclick="location.href='qlist.tc'">전체 리스트</button>
+		                        </div> 
 				                <hr>
 				                <br>
 				                <div class="container">
@@ -141,9 +144,6 @@
 				                            </table>
 				                        </form>
 				                	</div>
-				                	<div class="d-flex justify-content-end">
-				                		<button type="button" class="btn btn-info" onclick="location.href='qWriterView.tc">글쓰기</button>
-				                	</div>
 				                </div>
 				                
 				                <div class="container d-flex justify-content-center">
@@ -153,7 +153,7 @@
 				                        <c:if test="${qPi.currentPage <= 1 }">
 				                        </c:if>
 				                        <c:if test="${qPi. currentPage > 1 }">
-				                            <c:url var="before" value="qlist.tc">
+				                            <c:url var="before" value="qsearch.tc?searchValue=${qsearch.searchvalue }&searchCondition=${qsearch.searchCondition }">
 				                                <c:param name="page" value="${qPi.currentPage - 1 }" />
 				                            </c:url>
 				                            <li class="page-item">
@@ -167,7 +167,7 @@
 				                                <li class="page-item active"><a class="page-linl" href="#">${qp }</a></li>
 				                            </c:if>
 				                            <c:if test="${qp ne currentPage }">
-				                                <c:url var="pagination" value="qlist.tc">
+				                                <c:url var="pagination" value="qsearch.tc?searchValue=${qsearch.searchvalue }&searchCondition=${qsearch.searchCondition }">
 				                                    <c:param name="page" value="${qp }" />
 				                                </c:url>
 				                                <li class="page-item">
@@ -180,7 +180,7 @@
 				                        <c:if test="${qPi.currentPage >= qPi.maxPage }">
 				                        </c:if>
 				                        <c:if test="${qPi. currentPage < qPi.maxPage }">
-				                            <c:url var="after" value="qlist.tc">
+				                            <c:url var="after" value="qsearch.tc?searchValue=${qsearch.searchvalue }&searchCondition=${qsearch.searchCondition }">
 				                                <c:param name="page" value="${qPi.currentPage + 1 }" />
 				                            </c:url>
 				                            <li class="page-item">

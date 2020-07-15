@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.report.domain.BlackPageInfo;
+import com.tc.spring.report.domain.BlackSearch;
 import com.tc.spring.report.domain.Report;
 import com.tc.spring.report.domain.ReportPageInfo;
+import com.tc.spring.report.domain.ReportSearch;
 
 @Repository("reportStore")
 public class ReportStoreLogic implements ReportStore {
@@ -26,6 +28,16 @@ public class ReportStoreLogic implements ReportStore {
 	@Override
 	public int getBlackListCount() {
 		return sqlSession.selectOne("reportMapper.selectBlackCount");
+	}
+	
+	@Override
+	public int getReportSearchListCount(ReportSearch reportSearch) {
+		return sqlSession.selectOne("reportMapper.selectReportSearchCount", reportSearch);
+	}
+
+	@Override
+	public int getBlackSearchListCount(BlackSearch blackSearch) {
+		return sqlSession.selectOne("reportMapper.selectBlackSearchCount", blackSearch);
 	}
 	
 	@Override
@@ -48,10 +60,10 @@ public class ReportStoreLogic implements ReportStore {
 	}
 	
 	@Override
-	public ArrayList<Report> searchReportList(ReportPageInfo rPi) {
+	public ArrayList<Report> searchReportList(ReportSearch reportSearch, ReportPageInfo rPi) {
 		int offset = (rPi.getCurrentPage() - 1) * rPi.getReportLimit();
 		RowBounds rowBounds = new RowBounds(offset, rPi.getReportLimit());
-		return (ArrayList)sqlSession.selectList("reportMapper.searchReportList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("reportMapper.searchReportList", reportSearch, rowBounds);
 	}
 	
 	@Override
@@ -59,6 +71,13 @@ public class ReportStoreLogic implements ReportStore {
 		int offset = (bPi.getCurrentPage() - 1) * bPi.getBlackLimit();
 		RowBounds rowBounds = new RowBounds(offset, bPi.getBlackLimit());
 		return (ArrayList)sqlSession.selectList("reportMapper.selectBlackList", null, rowBounds);
+	}
+	
+	@Override
+	public ArrayList<Member> searchBlackList(BlackSearch blackSearch, BlackPageInfo bPi) {
+		int offset = (bPi.getCurrentPage() - 1) * bPi.getBlackLimit();
+		RowBounds rowBounds = new RowBounds(offset, bPi.getBlackLimit());
+		return (ArrayList)sqlSession.selectList("reportMapper.searchBlackList", blackSearch, rowBounds);
 	}
 
 	@Override
@@ -81,8 +100,4 @@ public class ReportStoreLogic implements ReportStore {
 		return sqlSession.delete("reportMapper.deleteReport", reportNo);
 	}
 
-	
-
-	
-	
 }

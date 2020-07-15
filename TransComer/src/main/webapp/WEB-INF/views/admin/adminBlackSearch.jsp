@@ -69,17 +69,17 @@
 					<div class="container">
 					    <ul class="nav nav-tabs nav-justified" role="tablist">
 					        <li class="nav-item">
-					            <a class="nav-link active" data-toggle="tab" href="#reportList">신고 리스트</a>
+					            <a class="nav-link" data-toggle="tab" href="#reportList">신고 리스트</a>
 					        </li>
 					        <li class="nav-item">
-					            <a class="nav-link" data-toggle="tab" href="#blackList">블랙 리스트</a>
+					            <a class="nav-link active" data-toggle="tab" href="#blackList">블랙 리스트</a>
 					        </li>
 					    </ul>
 				    </div>
 
 				    <!-- Tab panes -->
 				    <div class="tab-content">
-				        <div id="reportList" class="container tab-pane active"><br>
+				        <div id="reportList" class="container tab-pane fade"><br>
 				            <div class="container">
 				                <div class="row">
 				                    <div class="col-12">
@@ -199,12 +199,15 @@
 				            </div>
 				        </div>
 				        
-				        <div id="blackList" class="container tab-pane fade"><br>
+				        <div id="blackList" class="container tab-pane active"><br>
 				            <div class="container">
 				                <div class="row">
 				                    <div class="col-12">
 				                        <h1 align="center">블랙 리스트</h1>
 				                        <br>
+				                        <div class="d-flex justify-content-center">
+				                        	<button type="button" class="btn btn-primary" onclick="location.href='rANDblist.tc'">전체 리스트</button>
+				                        </div>
 				                        <hr>
 				                        <br>
 				                        <div class="container">
@@ -276,7 +279,7 @@
 				                                <c:if test="${bPi.currentPage <= 1 }">
 				                                </c:if>
 				                                <c:if test="${bPi.currentPage > 1 }">
-				                                    <c:url var="before" value="rANDblist.tc">
+				                                    <c:url var="before" value="blackSearch.tc?searchValue=${bsearch.searchValue }&searchCondition=${bsearch.searchCondition }">
 				                                        <c:param name="bpage" value="${bPi.currentPage - 1 }" />
 				                                    </c:url>
 				                                    <li class="page-item">
@@ -288,10 +291,10 @@
 				                                <!-- 페이지 -->
 				                                <c:forEach var="bp" begin="${bPi.startPage }" end="${bPi.endPage }">
 				                                    <c:if test="${bp eq currentPage }">
-				                                        <li class="page-item active"><a class="page-linl" href="#">${bp }</a></li>
+				                                        <li class="page-item active"><a class="page-link" href="#">${bp }</a></li>
 				                                    </c:if>
 				                                    <c:if test="${bp ne currentPage }">
-				                                        <c:url var="pagination" value="rANDblist.tc">
+				                                        <c:url var="pagination" value="blackSearch.tc?searchValue=${bsearch.searchValue }&searchCondition=${bsearch.searchCondition }">
 				                                            <c:param name="bpage" value="${bp }" />
 				                                        </c:url>
 				                                        <li class="page-item">
@@ -304,7 +307,7 @@
 				                                <c:if test="${bPi.currentPage >= bPi.maxPage }">
 				                                </c:if>
 				                                <c:if test="${bPi.currentPage < bPi.maxPage }">
-				                                    <c:url var="after" value="rANDblist.tc">
+				                                    <c:url var="after" value="blackSearch.tc?searchValue=${bsearch.searchValue }&searchCondition=${bsearch.searchCondition }">
 				                                        <c:param name="bpage" value="${bPi.currentPage + 1 }" />
 				                                    </c:url>
 				                                    <li class="page-item">
@@ -345,6 +348,10 @@
 		<script src="/resources/js/main.js"></script>
 
 		<script>
+			$(document).ready(function() {
+				
+			})
+		
 			/* 신고리스트 검색창 처리 jquery */
 			$(document).ready(function(e) {
 				$('.searchSelect').find('a').click(function(e) {

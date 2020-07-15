@@ -77,7 +77,9 @@
 							<div class="col-12">
 							    <!--메인 내용 구역 1-->
 							    <h1 align="center">QnA 수정</h1>
-							    <br><br>
+							    <br> 
+				                <hr>
+				                <br>
 							    <form action="qupdate.tc" method="post" enctype="multipart/form-data">
 							        <table class="table table-hover">
 							            <tbody>

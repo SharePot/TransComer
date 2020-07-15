@@ -85,6 +85,9 @@
 				                    <div class="col-12">
 				                        <h1 align="center">신고 리스트</h1>
 				                        <br>
+				                        <div class="d-flex justify-content-center">
+				                        	<button type="button" class="btn btn-primary" onclick="location.href='rANDblist.tc'">전체 리스트</button>
+				                        </div>
 				                        <hr>
 				                        <br>
 				                        <div class="container">
@@ -157,7 +160,7 @@
 				                                <c:if test="${rPi.currentPage <= 1 }">
 				                                </c:if>
 				                                <c:if test="${rPi.currentPage > 1 }">
-				                                    <c:url var="before" value="rANDblist.tc">
+				                                    <c:url var="before" value="reportSearch.tc?searchValue=${rsearch.searchValue }&searchCondition=${rsearch.searchCondition }">
 				                                        <c:param name="rpage" value="${rPi.currentPage - 1 }" />
 				                                    </c:url>
 				                                    <li class="page-item">
@@ -169,10 +172,10 @@
 				                                <!-- 페이지 -->
 				                                <c:forEach var="rp" begin="${rPi.startPage }" end="${rPi.endPage }">
 				                                    <c:if test="${rp eq currentPage }">
-				                                        <li class="page-item active"><a class="page-linl" href="#">${rp }</a></li>
+				                                        <li class="page-item active"><a class="page-link" href="#">${rp }</a></li>
 				                                    </c:if>
 				                                    <c:if test="${rp ne currentPage }">
-				                                        <c:url var="pagination" value="rANDblist.tc">
+				                                        <c:url var="pagination" value="reportSearch.tc?searchValue=${rsearch.searchValue }&searchCondition=${rsearch.searchCondition }">
 				                                            <c:param name="rpage" value="${rp }" />
 				                                        </c:url>
 				                                        <li class="page-item">
@@ -185,7 +188,7 @@
 				                                <c:if test="${rPi.currentPage >= rPi.maxPage }">
 				                                </c:if>
 				                                <c:if test="${rPi.currentPage < rPi.maxPage }">
-				                                    <c:url var="after" value="rANDblist.tc">
+				                                    <c:url var="after" value="reportSearch.tc?searchValue=${rsearch.searchValue }&searchCondition=${rsearch.searchCondition }">
 				                                        <c:param name="rpage" value="${rPi.currentPage + 1 }" />
 				                                    </c:url>
 				                                    <li class="page-item">

@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.report.domain.BlackPageInfo;
+import com.tc.spring.report.domain.BlackSearch;
 import com.tc.spring.report.domain.Report;
 import com.tc.spring.report.domain.ReportPageInfo;
+import com.tc.spring.report.domain.ReportSearch;
 import com.tc.spring.report.store.ReportStore;
 
 @Service("reportService")
@@ -32,18 +34,33 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
+	public int getReportSearchListCount(ReportSearch reportSearch) {
+		return reportStore.getReportSearchListCount(reportSearch);
+	}
+	
+	@Override
+	public int getBlackSearchListCount(BlackSearch blackSearch) {
+		return reportStore.getBlackSearchListCount(blackSearch);
+	}
+	
+	@Override
 	public ArrayList<Report> selectReportList(ReportPageInfo rPi) {
 		return reportStore.selectReportList(rPi);
 	}
 	
 	@Override
-	public ArrayList<Report> searchReportList(ReportPageInfo rPi) {
-		return reportStore.searchReportList(rPi);
+	public ArrayList<Report> searchReportList(ReportSearch reportSearch, ReportPageInfo rPi) {
+		return reportStore.searchReportList(reportSearch, rPi);
 	}
 	
 	@Override
 	public ArrayList<Member> selectBlackList(BlackPageInfo bPi) {
 		return reportStore.selectBlackList(bPi);
+	}
+	
+	@Override
+	public ArrayList<Member> searchBlackList(BlackSearch blackSearch, BlackPageInfo bPi) {
+		return reportStore.searchBlackList(blackSearch, bPi);
 	}
 
 	@Override
@@ -65,7 +82,6 @@ public class ReportServiceImpl implements ReportService {
 	public int deleteReport(int reportNo) {
 		return reportStore.deleteReport(reportNo);
 	}
-
 	
 
 }
