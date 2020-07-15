@@ -368,15 +368,15 @@ a:hover {text-decoration: underline; color: black;}
                 </div>
 
                 <!-- Login Form -->
-                <form data-brackets-id='2678' action="/loginTest" method="post" id="loginForm">
-                <br data-brackets-id='2679'><br data-brackets-id='2680'>
-                  <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="id" placeholder="이메일을 입력해주세요">
-                  <br data-brackets-id='2682'><br data-brackets-id='2683'>
-                  <input data-brackets-id='2684' type="password" id="password" class="fadeIn third" name="pwd" placeholder="비밀번호를 입력해주세요">
-                 <br data-brackets-id='2685'><br data-brackets-id='2686'><a data-brackets-id='2687' style="color: red"><label data-brackets-id='2688' id="idChcekArea"></label></a><!-- 중복체크 -->
-                  
-                  <input data-brackets-id='2689' type="button" class="fadeIn fourth" value="로그인" id="submitBtn">
-                  <input data-brackets-id='2690' type="button" class="fadeIn fourth" value="카카오 계정으로 로그인" id="submitBtn1">
+                <form data-brackets-id='2678' action="login.tc" method="post" id="loginForm">
+	                <br data-brackets-id='2679'><br data-brackets-id='2680'>
+	                  <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="memberId" placeholder="이메일을 입력해주세요">
+	                  <br data-brackets-id='2682'><br data-brackets-id='2683'>
+	                  <input data-brackets-id='2684' type="password" id="password" class="fadeIn third" name="memberPw" placeholder="비밀번호를 입력해주세요">
+	                 <br data-brackets-id='2685'><br data-brackets-id='2686'><a data-brackets-id='2687' style="color: red"><label data-brackets-id='2688' id="idChcekArea"></label></a><!-- 중복체크 -->
+	                  
+	                  <input data-brackets-id='2689' type="button" class="fadeIn fourth" value="로그인" id="submitBtn">
+	                  <input data-brackets-id='2690' type="button" class="fadeIn fourth" value="카카오 계정으로 로그인" id="submitBtn1">
                  
                 </form>
                 <ul data-brackets-id='2691'>
@@ -425,7 +425,7 @@ a:hover {text-decoration: underline; color: black;}
     			alert("비밀번호를 입력해주세요.");
     		}else{
 	    		$.ajax({
-	                url : "/IdCheck",
+	                url : "login.tc",
 	                type : "POST",
 	                data:{
 	                      mId : $("#login").val(),

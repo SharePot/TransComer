@@ -25,19 +25,12 @@
     margin: 0 auto;
 }
 
-div {
-    border: 1px solid blue !important;
-}
-
-table tr td {
-    border: 1px solid red !important;
-}
-
 #alarmSection table {
     background: white;
     height: 0 auto !important;
     min-height: 80px;
-    margin-bottom: 0px !important;
+    margin-bottom: 9px !important;
+    color: lightgray;
 }
 
 #alarmSection table tr:first-child td:last-child {
@@ -50,6 +43,16 @@ table tr td {
     width: 30%;
     font-size: 15px;
     text-align: left;
+    padding-top: 0px !important;
 }
 
+#deleteBtn {
+	color: black;
+}
 
+#noAlarm {
+	color : black;
+	font-size: 30px;
+	line-height: 20px;
+	text-align: center;
+}

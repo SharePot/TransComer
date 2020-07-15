@@ -1,0 +1,40 @@
+#mainWrapper {
+    margin: 0 auto;
+    width: 60%;
+    min-width: 400px;
+    height: auto;
+    padding: 10px;
+}
+
+#iconImg {
+    max-width: 50px;
+    float: left;
+}
+
+#pageTitle {
+    font-size: 40px;
+    padding-top: 10px;
+    padding-left: 65px;
+}
+
+#pageList li {
+    list-style-type: none;
+    font-size: 30px;
+    height: 100px;
+    font-weight: 500;
+}
+
+#pageList li a {
+    color: black;
+    text-decoration-line: none;
+    line-height: 40px;
+}
+
+#pageList li a:hover {
+    color: darkgray;
+}
+
+.itemImg {
+    max-width: 35px;
+    margin-right: 20px;
+}
