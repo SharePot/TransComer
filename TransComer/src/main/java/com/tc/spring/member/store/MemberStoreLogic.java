@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
+import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -21,7 +22,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	   public Member loginMember(Member member) {
-	      return sqlSession.selectOne("memberMapper.selectMemberOne", member);
+	      return sqlSession.selectOne("memberMapper.selectMemberLogin", member);
 	   }
 
 	@Override
@@ -31,15 +32,16 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectMemberList");
+	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectMemberList",null,rowbounds);
 		return list;
 	}
 
 	@Override
-	public Member selectMemberOne(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member selectMemberOne(int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectMemberOne",memberNo);
 	}
 
 	@Override
@@ -59,6 +61,25 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public int getMemberListCount() {
+		return sqlSession.selectOne("memberMapper.getMemberListCount");
+	}
+
+
+	@Override
+	public int getMemberSearchListCount(MemberSearch search) {
+		return sqlSession.selectOne("memberMapper.getMemberSearchListCount",search);
+	}
+
+	@Override
+	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi, MemberSearch search) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.searchMemberList",search,rowbounds);
+	}
+
 
 	//포인트 환급=====================================================================================
 	@Override

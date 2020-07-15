@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
+import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -30,15 +31,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		ArrayList<Member> list=memberStore.selectMemberList();
+	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
+		ArrayList<Member> list=memberStore.selectMemberList(pi);
 		return list;
 	}
 
 	@Override
-	public Member selectMemberOne(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member selectMemberOne(int memberNo) {
+		return memberStore.selectMemberOne(memberNo);
 	}
 
 	@Override
@@ -58,6 +58,25 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+
+	@Override
+	public int getMemberListCount() {
+		return memberStore.getMemberListCount();
+	}
+	
+	@Override
+	public int getMemberSearchListCount(MemberSearch search) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi, MemberSearch search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 //포인트 환급=====================================================================================
 	@Override
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi) {
@@ -148,6 +167,9 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
 
 
 

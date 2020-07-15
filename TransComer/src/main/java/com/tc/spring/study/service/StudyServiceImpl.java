@@ -52,13 +52,18 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public ArrayList<Study> searchStudyList(StudySearch search) {
-		return studyStore.searchStudyList(search);
+	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi) {
+		return studyStore.searchStudyList(search,pi);
 	}
 
 	@Override
 	public int addReadCount(int studyNo) {
 		return studyStore.addReadCount(studyNo);
+	}
+
+	@Override
+	public int getSearchListCount(StudySearch search) {
+		return  studyStore.getSearchListCount(search);
 	}
 
 

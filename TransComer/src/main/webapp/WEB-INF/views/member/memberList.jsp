@@ -8,63 +8,69 @@
 <title>Insert title here</title>
 </head>
 <body>
- <h1 align="center">포인트 환급 신청 목록</h1>
+ <h1 align="center">전체 회원 목록</h1>
    
    <h3 align="center">
-      총 포인트 환급 신청 건수 : ${pi.listCount }
+      총 회원 수 : ${pi.listCount }
    </h3>
    
    <table align="center" border="1" cellspacing="0" width="700" id="tb">
       <tr>
-         <th>번호</th>
-         <th width="300">고객 아이디</th>
-         <th>환급 신청 포인트</th>
+         <th>NO</th>
+         <th width="300">아이디</th>
+         <th>이름</th>
+         <th>이메일</th>
          <th>은행명</th>
          <th>계좌주</th>
          <th>계좌번호</th>
-         <th>환급 신청 날짜</th>
-         <th>환급 여부</th>
-         <th>환급 확정 날짜</th>
+         <th>블랙리스트</th>
+         <th>프리미엄 여부</th>
       </tr>
-      <c:forEach var="pointRefund" items="${list }">
+      <c:forEach var="member" items="${list }">
          <tr>
-		         <td align="center">${pointRefund.refundNo }</td>
-	         <td align="center">${pointRefund.memberId }</td>
-	         <td align="center">${pointRefund.refundPoint }</td>
-	         <c:forTokens var="accountInfo" items="${pointRefund.accountInfo }" delims="," varStatus="status">
+		         <td align="center">${member.memberNo }</td>
+	         <td align="center">
+	         	<c:url var="memberDetail" value="memberDetail.tc">
+					<c:param name="memberNo" value="${member.memberNo }" />
+				</c:url>					
+				<a href="${memberDetail}">${member.memberId }</a>
+	        </td>
+	         <td align="center">${member.memberName }</td>
+	         <td align="center">${member.email }</td>
+	        <c:if test="${member.account eq null }">
+	        <td></td>
+	        <td></td>
+	        <td> </td>
+	        </c:if>
+	            <c:if test="${member.account ne null }">
+	         <c:forTokens var="accountInfo" items="${member.account }" delims="," varStatus="status">
 					<c:if test="${status.index eq 0 }">
-							<td>
-								<input type="text" name="bank"  value="${accountInfo }" readonly size="6">
-							</td>
+							<td><input type="text" name="bank"  value="${accountInfo }" readonly size="6"></td>
 					</c:if>
 					<c:if test="${status.index eq 1 }">
 							<td><input type="text" name="accountOwner" readonly value="${accountInfo }"></td>
 					</c:if>
 					<c:if test="${status.index eq 2}">
 							<td><input type="text" name="account" readonly  value="${accountInfo }"></td>
-						
 					</c:if>
 				</c:forTokens>
-	         <td align="center">${pointRefund.refundRequestDate }</td>
+				</c:if>
 	         <td align="center">
-	         <c:if test="${pointRefund.refundYn eq 'Y' }">
-	         	확정
+	         <c:if test="${member.status eq 'BLACKLIST' }">
+	         	X
 	         </c:if>
-	         <c:if test="${pointRefund.refundYn eq 'W' }">
-	         		<c:url var="pointRefundCheck" value="pointRefundCheckView.tc">
-					<c:param name="refundNo" value="${pointRefund.refundNo }" />
-				</c:url>					
-				<a href="${pointRefundCheck }">대기</a>
-	         </c:if>
-	         <c:if test="${pointRefund.refundYn eq 'N' }">
-	         	반려
+	         <c:if test="${member.status ne 'BLACKLIST' }">
+	         O
 	         </c:if>
 	         </td>
-         <td align="center">
-         <c:if test= "${pointRefund.refundCompleteDate eq null }">
-         	미확정
-         </c:if>
-         ${pointRefund.refundCompleteDate }</td>
+	           <td align="center">
+	         <c:if test="${member.status eq 'PREMIUM' }">
+	         	O
+	         </c:if>
+	         <c:if test="${member.status ne 'PREMIUM' }">
+	         X
+	         </c:if>
+	         </td>
       </tr>
       </c:forEach>
       
@@ -116,7 +122,18 @@
          </td>
       </tr>
    </table>
-   
+       <div id="searchArea" align="center">
+      <form action="memberSearch.tc" name="searchForm" method="get">
+         <select id="memberSearchCondition" name="memberSearchCondition">
+            <option value="all" <c:if test="${search.memberSearchCondition == 'all' }">selected</c:if>>전체</option>
+            <option value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
+            <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
+            <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
+         </select>
+         <input type="search" name="memberSearchValue" value="">
+         <button>검색</button><br>
+      </form>
+   </div>
    
 </body>
 </html>

@@ -51,11 +51,15 @@ public class StudyController {
 
 	//스터디 검색
 	@RequestMapping("studySearch.tc")
-	public String studySearch(StudySearch search, Model model) {
-		ArrayList<Study> searchList=studyService.searchStudyList(search);
+	public String studySearch(StudySearch search, Model model,@RequestParam(value="page",required=false)Integer page) {
+		int currentPage=(page!=null) ? page : 1;
+		int studyListCount = studyService.getSearchListCount(search);
+		StudyPageInfo pi=Pagination.getStudyPageInfo(currentPage,studyListCount);
+		ArrayList<Study> searchList=studyService.searchStudyList(search,pi);
 		
 		model.addAttribute("list",searchList);
 		model.addAttribute("search",search);
+		model.addAttribute("pi",pi);
 		return "study/studyListView";
 	}
 
@@ -73,7 +77,7 @@ public class StudyController {
 			.setViewName("study/studyDetailView");
 		}else {
 			mv.addObject("msg","스터디 게시물 조회 실패")
-			.setViewName("common.errorPage");
+			.setViewName("common/errorPage");
 		}
 		return mv;
 	}
