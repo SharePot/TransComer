@@ -7,9 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tc.spring.common.Pagination;
 import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.service.PersonalService;
 
@@ -21,15 +24,19 @@ public class PersonalController {
 
 	// 1:1게시판 전체 조회
 	@RequestMapping("plist.tc")
-	public ModelAndView personalList(ModelAndView mv) {
-		ArrayList<Personal> list = personalService.selectPersonalList();
+	public ModelAndView personalList(ModelAndView mv, @RequestParam(value="page",required=false)Integer page) {
+		
+		int currentPage=(page!=null) ? page : 1;
+		int listCount = personalService.getListCount();
+		
+		PersonalPageInfo pi = Pagination.getPersonalPageInfo(currentPage, listCount);
+		ArrayList<Personal> list = personalService.selectPersonalList(pi);
 
 		if (!list.isEmpty()) {
 			mv.addObject("list", list);
-			System.out.println("plist.tc 컨트롤러 리스트 안비었음"); // 확인용
+			mv.addObject("pi", pi);
 			mv.setViewName("personal/personalMain");
 		} else {
-			System.out.println("plist.tc 컨트롤러 리스트 비었다구"); // 확인용
 			mv.addObject("msg", "게시글 전체조회 실패");
 			mv.setViewName("common/errorPage");
 		}
@@ -38,11 +45,18 @@ public class PersonalController {
 	
 	// 1:1 게시판 검색
 	@RequestMapping("pSearch.tc")
-	public String personalSearch(PersonalSearch search, Model model) {
-		ArrayList<Personal> searchList = personalService.searchPersonalList(search);
+	public String personalSearch(PersonalSearch search, Model model, @RequestParam(value="page",required=false)Integer page) {
+		
+		int currentPage=(page!=null) ? page : 1;
+		int listCount = personalService.getSearchListCount(search);
+		//System.out.println("====컨트롤러 ===search listCount 변수 : "+listCount);
+		
+		PersonalPageInfo pi = Pagination.getPersonalPageInfo(currentPage, listCount);
+		ArrayList<Personal> searchList = personalService.searchPersonalList(search, pi);
 		
 		model.addAttribute("list", searchList);
 		model.addAttribute("search", search); // 검색 후에도 검색결과가 남아있게 하기 위해
+		model.addAttribute("pi", pi);
 		return "personal/personalMain";
 	}
 	
