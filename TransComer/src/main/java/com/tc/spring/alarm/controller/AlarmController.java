@@ -1,8 +1,11 @@
 package com.tc.spring.alarm.controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.tc.spring.alarm.domain.Alarm;
 import com.tc.spring.alarm.domain.AlarmPageInfo;
 import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
+import com.tc.spring.simple.domain.SimpleResponse;
 
 @Controller
 public class AlarmController {
@@ -25,24 +32,39 @@ public class AlarmController {
 	private AlarmService alarmService;
 	
 	@RequestMapping("alarmList.tc")
-	public ModelAndView selectAlarmList(ModelAndView mv, int memberNo, @RequestParam(value="page", required=false)Integer page) {
+	public void getAlarmList(HttpServletResponse response, String memberId) throws JsonIOException, IOException {
 		
-		// int arCurrentPage = (page != null) ? page : 1;
-		// int arListCount = alarmService.getArListCount();
-		// AlarmPageInfo aPi = Pagination.getAlarmPageInfo(arCurrentPage, arListCount);
-		// ArrayList<Alarm> arList = alarmService.selectAlarmList(memberNo);
-		Alarm alarm = alarmService.selectAlarmList(memberNo);
+		ArrayList<Alarm> alarmList = alarmService.getAlarmList(memberId);
+
 		
-		// if (!arList.isEmpty()) {
-		if (alarm != null) {
-			// mv.addObject("aPi", aPi);
-			mv.addObject("alarm", alarm);
-			mv.setViewName("alarm/alarmList");
-		} else {
-			mv.setViewName("common/errorPage");
+		for (Alarm alarm : alarmList) {
+			alarm.setAlarmContent(URLEncoder.encode(alarm.getAlarmContent(), "utf-8"));
 		}
+
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(alarmList, response.getWriter());
 		
-		return mv;
+	}
+	
+	/*
+	 * public ModelAndView selectAlarmList(ModelAndView
+	 * mv, @RequestParam(value="page", required=false)Integer page) {
+	 * 
+	 * int arCurrentPage = (page != null) ? page : 1; int arListCount =
+	 * alarmService.getArListCount(); AlarmPageInfo aPi =
+	 * Pagination.getAlarmPageInfo(arCurrentPage, arListCount); ArrayList<Alarm>
+	 * arList = alarmService.selectAlarmList(aPi);
+	 * 
+	 * if (!arList.isEmpty()) { mv.addObject("aPi", aPi); mv.addObject("arList",
+	 * arList); mv.setViewName("alarm/alarmList"); } else {
+	 * mv.setViewName("common/errorPage"); }
+	 * 
+	 * return mv; }
+	 */
+	
+	@RequestMapping("alarmView.tc")
+	public String alarmView() {
+		return "alarm/alarmList";
 	}
 	
 	public String insertAlarm(Alarm alarm, Model model,  HttpServletRequest request) {

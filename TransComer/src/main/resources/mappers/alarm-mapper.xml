@@ -12,8 +12,8 @@
 	</resultMap>
 	
 	<!-- 알람 조회 -->
-	<select id="selectAlarmList" resultMap="alarmResultSet">
-		SELECT * FROM ALARM WHERE MEMBER_NO = #{memberNo} ORDER BY SEND_TIME DESC
+	<select id="selectAlarmList" resultMap="alarmResultSet" parameterType="Alarm">
+		SELECT * FROM ALARM WHERE MEMBER_ID = #{memberId} ORDER BY SEND_TIME DESC
 	</select>
 	
 	<!-- 알람 개수 -->

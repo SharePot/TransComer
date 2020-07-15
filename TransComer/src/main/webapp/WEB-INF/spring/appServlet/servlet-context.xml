@@ -29,7 +29,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.kh.spring" />
+	<context:component-scan base-package="com.tc.spring" />
 	
 	<!-- 웹소켓 1, echoHandler 클래스 등록(빈으로)-->
 	<beans:bean id="echoHandler" class="com.tc.spring.chat.controller.EchoHandler"></beans:bean>

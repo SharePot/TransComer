@@ -20,13 +20,12 @@ public class AlarmServiceImpl implements AlarmService {
 	public int getArListCount() {
 		return alarmStore.getArListCount();
 	}
-	
-	// 알람 멤버별 조회
-	@Override
-	public Alarm selectAlarmList(int memberNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+	// 알람 전체 조회
+	/*
+	 * @Override public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) { return
+	 * alarmStore.selectAlarmList(aPi); }
+	 */
 	
 	// 알람 읽음 처리
 	@Override
@@ -45,6 +44,10 @@ public class AlarmServiceImpl implements AlarmService {
 		return alarmStore.deleteAlarm(alarmNo);
 	}
 
+	@Override
+	public ArrayList<Alarm> getAlarmList(String memberId) {
+		return alarmStore.getAlarmList(memberId);
+	}
 
 
 }
