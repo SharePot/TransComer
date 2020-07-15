@@ -21,7 +21,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	   public Member loginMember(Member member) {
-	      return sqlSession.selectOne("memberMapper.selectMemberOne", member);
+	      return sqlSession.selectOne("memberMapper.selectMemberLogin", member);
 	   }
 
 	@Override
@@ -31,15 +31,16 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectMemberList");
+	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		ArrayList<Member> list= (ArrayList)sqlSession.selectList("memberMapper.selectMemberList",null,rowbounds);
 		return list;
 	}
 
 	@Override
-	public Member selectMemberOne(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member selectMemberOne(int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectMemberOne",memberNo);
 	}
 
 	@Override
@@ -59,6 +60,12 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public int getMemberListCount() {
+		return sqlSession.selectOne("memberMapper.getMemberListCount");
+	}
+
 
 	//포인트 환급=====================================================================================
 	@Override
@@ -154,6 +161,7 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 
 	

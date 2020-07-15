@@ -56,8 +56,15 @@ public class StudyStoreLogic implements StudyStore{
 	}
 
 	@Override
-	public ArrayList<Study> searchStudyList(StudySearch search) {
-		return (ArrayList)sqlSession.selectList("studyMapper.searchStudyList",search);
+	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi) {
+		int offset=(pi.getStudyCurrentPage() -1)* pi.getStudyBoardLimit();
+		RowBounds rowbounds =new RowBounds(offset,pi.getStudyBoardLimit());
+		return (ArrayList)sqlSession.selectList("studyMapper.searchStudyList",search,rowbounds);
+	}
+
+	@Override
+	public int getSearchListCount(StudySearch search) {
+		return sqlSession.selectOne("studyMapper.getStudySearchListCount",search);
 	}
 
 	

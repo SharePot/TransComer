@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
- <h1 align="center">포인트 환급 완료 목록</h1>
+ <h1 align="center">포인트 환급 신청 목록</h1>
    
    <h3 align="center">
       총 포인트 환급 신청 건수 : ${pi.listCount }
@@ -23,19 +23,38 @@
          <th>계좌주</th>
          <th>계좌번호</th>
          <th>환급 신청 날짜</th>
-         <th>환급 결과</th>
+         <th>환급 여부</th>
+         <th>환급 확정 날짜</th>
       </tr>
       <c:forEach var="pointRefund" items="${list }">
          <tr>
+         <c:if test="${pointRefund.refundYn ne 'W' } ">
 		         <td align="center">${pointRefund.refundNo }</td>
 	         <td align="center">${pointRefund.memberId }</td>
 	         <td align="center">${pointRefund.refundPoint }</td>
+	         <c:forTokens var="accountInfo" items="${pointRefund.accountInfo }" delims="," varStatus="status">
+					<c:if test="${status.index eq 0 }">
+							<td>
+								<input type="text" name="bank"  value="${accountInfo }" readonly size="6">
+							</td>
+					</c:if>
+					<c:if test="${status.index eq 1 }">
+							<td><input type="text" name="accountOwner" readonly value="${accountInfo }"></td>
+					</c:if>
+					<c:if test="${status.index eq 2}">
+							<td><input type="text" name="account" readonly  value="${accountInfo }"></td>
+						
+					</c:if>
+				</c:forTokens>
 	         <td align="center">${pointRefund.refundRequestDate }</td>
 	         <td align="center">
 	         <c:if test="${pointRefund.refundYn eq 'Y' }">
-	         	완료
+	         	확정
 	         </c:if>
 	         <c:if test="${pointRefund.refundYn eq 'W' }">
+	         	대기
+	         </c:if>
+	         <c:if test="${pointRefund.refundYn eq 'N' }">
 	         	반려
 	         </c:if>
 	         </td>
@@ -44,23 +63,7 @@
          	미확정
          </c:if>
          ${pointRefund.refundCompleteDate }</td>
-         <td align="center">
-			<form action="pointRefundCheckView.tc" method="post">
-			<input type="hidden" name="refundYn" value="Y">
-                  <input type="hidden" name="refundNo"  value="${pointRefund.refundNo }">
-                  <input type="submit" name="conformRefund" class="btn btn-secondary" value="승인"><!--  onclick="return question(this);"> -->
-			</form>
-			<form action="pointRefundCheckView.tc" method="post">
-			<input type="hidden" name="refundYn" value="N">
-                  <input type="hidden" name="refundNo"  value="${pointRefund.refundNo }">
-                  <input type="submit" name="conformRefund" class="btn btn-secondary" value="반려"><!--  onclick="return question(this);"> -->
-			</form>
-
-
-
-
-
-         </td>
+         </c:if>
       </tr>
       </c:forEach>
       

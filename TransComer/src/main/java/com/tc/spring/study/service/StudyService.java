@@ -38,6 +38,9 @@ public interface StudyService {
 	 * @param studyNo
 	 * @return
 	 */
+	
+	public int getSearchListCount(StudySearch search);
+	
 	public Study selectStudyOne(int studyNo);
 	/**
 	 * 스터디 삽입
@@ -63,7 +66,7 @@ public interface StudyService {
 	 * @param search
 	 * @return
 	 */
-	public ArrayList<Study> searchStudyList(StudySearch search);
+	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi);
 
 
 

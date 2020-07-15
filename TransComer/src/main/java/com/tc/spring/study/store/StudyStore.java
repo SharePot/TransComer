@@ -20,6 +20,9 @@ public interface StudyStore {
 	 * @param studyNo
 	 * @return
 	 */
+	
+	public int getSearchListCount(StudySearch search);
+	
 	public int addReadCount(int studyNo);
 	/**
 	 * 스터디 전체 리스트 조회
@@ -57,6 +60,6 @@ public interface StudyStore {
 	 * @param search
 	 * @return
 	 */
-	public ArrayList<Study> searchStudyList(StudySearch search);
+	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi);
 }
 

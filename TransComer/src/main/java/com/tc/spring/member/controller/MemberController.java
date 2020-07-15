@@ -31,13 +31,18 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@RequestMapping("mlist.tc")
-	public ModelAndView memberList(ModelAndView mv) {
-		ArrayList<Member>list=memberService.selectMemberList();
+	@RequestMapping("memberList.tc")
+	public ModelAndView memberList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
+		int currentPage=(page!=null) ? page : 1;
+		int memberListCount=memberService.getMemberListCount();
+		
+		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, memberListCount);
+		ArrayList<Member> list=memberService.selectMemberList(pi);
 		
 		if(!list.isEmpty()) {
 			mv.addObject("list",list);
-			mv.setViewName("member/memberListView");
+			mv.addObject("pi",pi);
+			mv.setViewName("member/memberList");
 		}else {
 			mv.addObject("msg","회원리스트 조회 실패");
 			mv.setViewName("common/errorPage");
@@ -71,6 +76,14 @@ public class MemberController {
 	      return "redirect:home.tc";
 	      
 	   }
+	   
+	   @RequestMapping("memberDetail.tc")
+		public String memberSelectOne(Model model,int memberNo) {
+			model.addAttribute("member",memberService.selectMemberOne(memberNo));
+			return "member/memberDetail";
+		   
+		}
+		
 	
 	public ModelAndView memberLogic(Member member,ModelAndView mv) {
 		return null;
@@ -103,6 +116,8 @@ public class MemberController {
 	public String memberDelete(String userId,Model model,SessionStatus status) {
 		return null;
 	}
+	
+	
 	
 	//포인트변동=============================================================================
 	
@@ -168,22 +183,26 @@ public class MemberController {
 	}
 	//포인트 환급 확정화면
 	@RequestMapping("pointRefundCheckView.tc")
-	public String pointRefundCheckView() {
-		return "member/pointRefundCheckForm";
+	public String pointRefundCheckView(Model model,int refundNo) {
+		model.addAttribute("pointRefund",memberService.selectPointRefundOne(refundNo));
+		return "member/pointRefundCheckView";
+		
 	}
-	
+
 	
 	//포인트 환급 확정 및 반려
-	@RequestMapping(value="pointRefundUpdate.tc", method=RequestMethod.POST)
+	@RequestMapping(value="pointRefundUpdate.tc", method=RequestMethod.GET)
 	public String pointRefundUpdate (PointRefund pointRefund,Model model) {
 		int result=memberService.updatePointRefund(pointRefund);
 		if(result>0) {
-			return "pointRefundList.tc";
+			return "pointRefundList";
 		}else{
 			model.addAttribute("msg","포인트 환급 확정 및 반려 실패");
 			return "common/errorPage";
 		}
 	}
+	
+	
 	
 	
 

@@ -16,15 +16,17 @@ public interface MemberStore {
 	
 	public int checkIdDup(String memberId);
 
-	public ArrayList<Member> selectMemberList();
+	public ArrayList<Member> selectMemberList(MemberPageInfo pi);
 	
-	public Member selectMemberOne(String memberId);
+	public Member selectMemberOne(int memberNo);
 	
 	public int insertMember(Member member);
 	
 	public int updateMember(Member member);
 	
 	public int deleteMember(String memberId);
+	
+	public int getMemberListCount();
 	
 	
 	//포인트 환급=======================================================

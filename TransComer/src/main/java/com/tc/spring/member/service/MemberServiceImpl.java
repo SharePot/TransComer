@@ -30,15 +30,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		ArrayList<Member> list=memberStore.selectMemberList();
+	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
+		ArrayList<Member> list=memberStore.selectMemberList(pi);
 		return list;
 	}
 
 	@Override
-	public Member selectMemberOne(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member selectMemberOne(int memberNo) {
+		return memberStore.selectMemberOne(memberNo);
 	}
 
 	@Override
@@ -58,6 +57,13 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+
+	@Override
+	public int getMemberListCount() {
+		return memberStore.getMemberListCount();
+	}
+
 //포인트 환급=====================================================================================
 	@Override
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi) {
@@ -148,6 +154,7 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 
 

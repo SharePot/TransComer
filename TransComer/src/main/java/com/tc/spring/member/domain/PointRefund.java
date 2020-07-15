@@ -10,17 +10,19 @@ public class PointRefund {
 	public String refundYn;
 	public Date refundRequestDate;
 	public Date refundCompleteDate;
-	public String bank;
-	public String accountOwner;
-	public int account;
+	public String accountInfo;
 	
 	public PointRefund() {}
 
 
 
 
+
+
+
+
 	public PointRefund(int refundNo, int refundPoint, String memberId, String refundYn, Date refundRequestDate,
-			Date refundCompleteDate, String bank, String accountOwner, int account) {
+			Date refundCompleteDate, String accountInfo) {
 		super();
 		this.refundNo = refundNo;
 		this.refundPoint = refundPoint;
@@ -28,10 +30,12 @@ public class PointRefund {
 		this.refundYn = refundYn;
 		this.refundRequestDate = refundRequestDate;
 		this.refundCompleteDate = refundCompleteDate;
-		this.bank = bank;
-		this.accountOwner = accountOwner;
-		this.account = account;
+		this.accountInfo = accountInfo;
 	}
+
+
+
+
 
 
 
@@ -103,49 +107,14 @@ public class PointRefund {
 
 	/**
 	 * @return the bank
-	 */
-	public String getBank() {
-		return bank;
-	}
-
-
-
-
-	/**
-	 * @param bank the bank to set
-	 */
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
-
-
-
-
-	/**
-	 * @return the accountOwner
-	 */
-	public String getAccountOwner() {
-		return accountOwner;
-	}
-
-
-
-
-	/**
-	 * @param accountOwner the accountOwner to set
-	 */
-	public void setAccountOwner(String accountOwner) {
-		this.accountOwner = accountOwner;
-	}
-
 
 
 
 	/**
 	 * @return the account
 	 */
-	public int getAccount() {
-		return account;
+	public String getAccountInfo() {
+		return accountInfo;
 	}
 
 
@@ -154,9 +123,13 @@ public class PointRefund {
 	/**
 	 * @param account the account to set
 	 */
-	public void setAccount(int account) {
-		this.account = account;
+	public void setAccountInfo(String accountInfo) {
+		this.accountInfo = accountInfo;
 	}
+
+
+
+
 
 
 
@@ -168,17 +141,13 @@ public class PointRefund {
 	public String toString() {
 		return "PointRefund [refundNo=" + refundNo + ", refundPoint=" + refundPoint + ", memberId=" + memberId
 				+ ", refundYn=" + refundYn + ", refundRequestDate=" + refundRequestDate + ", refundCompleteDate="
-				+ refundCompleteDate + ", bank=" + bank + ", accountOwner=" + accountOwner + ", account=" + account
-				+ "]";
+				+ refundCompleteDate + ", accountInfo=" + accountInfo + "]";
 	}
 
 
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	
+
 	
 
 }
