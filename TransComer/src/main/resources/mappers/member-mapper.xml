@@ -39,13 +39,13 @@
 	SELECT COUNT(*) FROM MEMBER   
 		<where>
 		<choose>
-			<when test="memberSearchCondition =='title'">
+			<when test="memberSearchCondition =='status'">
 			MEMBER_STATUS LIKE '%' || #{memberSearchValue} || '%'
 			</when>
-			<when test="memberSearchCondition =='writer'">
+			<when test="memberSearchCondition =='memberId'">
 			AND MEMBER_ID LIKE '%' || #{memberSearchValue} || '%'
 			</when>
-			<when test="memberSearchCondition'content'">
+			<when test="memberSearchCondition=='name'">
 			AND MEMBER_NAME LIKE '%' || #{memberSearchValue} || '%'  			
 			</when>
 			<otherwise>

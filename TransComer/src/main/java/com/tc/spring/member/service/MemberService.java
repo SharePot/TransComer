@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
+import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
@@ -25,6 +26,10 @@ public interface MemberService {
 	public int deleteMember(String memberId);
 	
 	public int getMemberListCount();
+	
+	public int getMemberSearchListCount(MemberSearch search);
+	
+	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi,MemberSearch search);
 	
 	
 	//=======================================================포인트 환급

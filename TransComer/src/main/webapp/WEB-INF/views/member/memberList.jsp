@@ -123,16 +123,15 @@
       </tr>
    </table>
        <div id="searchArea" align="center">
-      <form action="studySearch.tc" name="searchForm" method="get">
-         <select id="studySearchCondition" name="studySearchCondition">
-            <option value="all" <c:if test="${search.studySearchCondition == 'all' }">selected</c:if>>전체</option>
-            <option value="writer" <c:if test="${search.studySearchCondition == 'writer' }">selected</c:if>>작성자</option>
-            <option value="title" <c:if test="${search.studySearchCondition == 'title' }">selected</c:if>>제목</option>
-            <option value="content" <c:if test="${search.studySearchCondition == 'content' }">selected</c:if>>내용</option>
+      <form action="memberSearch.tc" name="searchForm" method="get">
+         <select id="memberSearchCondition" name="memberSearchCondition">
+            <option value="all" <c:if test="${search.memberSearchCondition == 'all' }">selected</c:if>>전체</option>
+            <option value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
+            <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
+            <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
          </select>
-         <input type="search" name="studySearchValue" value="">
+         <input type="search" name="memberSearchValue" value="">
          <button>검색</button><br>
-         <input type="checkbox" name="studyExistFile" <c:if test="${!empty search.studyExistFile }">checked</c:if>>
       </form>
    </div>
    

@@ -18,10 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
+import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.service.MemberService;
+import com.tc.spring.study.domain.Study;
+import com.tc.spring.study.domain.StudyPageInfo;
+import com.tc.spring.study.domain.StudySearch;
 
 
 @SessionAttributes({"loginUser"})
@@ -85,10 +89,19 @@ public class MemberController {
 		}
 		
 	
-	public ModelAndView memberLogic(Member member,ModelAndView mv) {
-		return null;
-		
-	}
+	 //멤버 검색
+		@RequestMapping("memberSearch.tc")
+		public String memberSearch(MemberSearch search, Model model,@RequestParam(value="page",required=false)Integer page) {
+			int currentPage=(page!=null) ? page : 1;
+			int MemberSearchListCount = memberService.getMemberSearchListCount(search);
+			MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, MemberSearchListCount);
+			ArrayList<Member> searchList=memberService.selectMemberSearchList(pi, search);
+			
+			model.addAttribute("list",searchList);
+			model.addAttribute("search",search);
+			model.addAttribute("pi",pi);
+			return "member/memberList";
+		}
 	
 
 	public String enrollView() {
