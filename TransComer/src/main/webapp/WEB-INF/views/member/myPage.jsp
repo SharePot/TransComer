@@ -19,11 +19,11 @@
 			<ul id="pageList">
 				<li>
 					<img src="/resources/css/images/user2.png" class="itemImg">
-					<a href="">내 정보 보기 / 수정하기</a>
+					<a href="memberDetail.tc">내 정보 보기 / 수정하기</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/login.png" class="itemImg">
-					<a href="">경력 프로필 등록 / 수정하기</a>
+					<a href="profileInsertView.tc">경력 프로필 등록 / 수정하기</a>
 				</li>
 					
 				<li>
@@ -40,7 +40,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/money (1).png" class="itemImg">
-					<a href="">포인트 환급 신청</a>
+					<a href="pointRefundRequestView.tc">포인트 환급 신청</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/premium-quality.png" class="itemImg">

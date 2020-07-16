@@ -46,7 +46,7 @@
                                     <option value="kr">한국어</option>
                                     <option value="eng">영어</option>
                                     <option value="ch">중국어</option>
-                                    <option value="spa">스페인어</option>
+                                    <option value="jpn">일본어</option>
                                 </select>
                             </td>
                         </tr>

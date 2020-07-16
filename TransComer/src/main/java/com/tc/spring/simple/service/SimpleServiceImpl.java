@@ -61,10 +61,16 @@ public class SimpleServiceImpl implements SimpleService {
 		return simpleStore.simpleReqDelete(simpleNo);
 	}
 
+	// 단순의뢰 질문 검색 수 조회
+	@Override
+	public int getSearchsReListCount(SimpleSearch simpleSearch) {
+		return simpleStore.getSearchsReListCount(simpleSearch);
+	}
+	
 	// 단순의뢰 질문 검색
 	@Override
-	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch) {
-		return simpleStore.sReqSearchList(simpleSearch);
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi) {
+		return simpleStore.sReqSearchList(simpleSearch, spi);
 	}
 	
 	// 단순의뢰 답변 조회
@@ -114,6 +120,7 @@ public class SimpleServiceImpl implements SimpleService {
 	public int memberAdoptCount(String simpleReplyWriter) {
 		return simpleStore.memberAdoptCount(simpleReplyWriter);
 	}
+
 
 
 

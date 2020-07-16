@@ -12,6 +12,7 @@ public interface SimpleStore {
 	// -------------------- 단순의뢰 질문 --------------------
 	public int getSReqListCount();
 	
+	
 	public int addSReqReadCount(int simpleNo);
 	
 	public ArrayList<SimpleRequest> selectSimpleReqList(SimplePageInfo spi);
@@ -24,7 +25,9 @@ public interface SimpleStore {
 	
 	public int simpleReqDelete(int simpleNo);
 	
-	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch);
+	public int getSearchsReListCount(SimpleSearch simpleSearch);
+	
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi);
 	
 	// -------------------- 단순의뢰 답변 --------------------
 	

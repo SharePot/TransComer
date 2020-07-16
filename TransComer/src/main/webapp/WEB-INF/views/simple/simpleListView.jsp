@@ -53,16 +53,16 @@
 						<td colspan="6">
 						
 							<!-- [이전] -->
-							<c:if test="${spi.spCurrentPage <= 1 }">[이전] &nbsp;</c:if>
-							<c:if test="${spi.spCurrentPage > 1 }">
-								<c:url var="before" value="sReqListView.tc">
-									<c:param name="spPage" value="${spi.spCurrentPage - 1 }" />
+							<c:if test="${pi.spCurrentPage <= 1 }">[이전] &nbsp;</c:if>
+							<c:if test="${pi.spCurrentPage > 1 }">
+								<c:url var="before" value="blist.kh">
+									<c:param name="spPage" value="${pi.spCurrentPage - 1 }" />
 								</c:url>
-								<a href="before">[이전]</a>&nbsp;
+								<a href="${before}">[이전]</a>&nbsp;
 							</c:if>
 							
 							<!-- 페이지 -->
-							<c:forEach var="p" begin="${spi.spStartPage }" end="${spi.spEndPage }">
+							<c:forEach var="p" begin="${pi.spStartPage }" end="${pi.spEndPage }">
 								<c:if test="${p eq spCurrentPage }">
 									<font color="red" size="4"><b>[${p }]</b></font>
 								</c:if>
@@ -75,19 +75,18 @@
 							</c:forEach>
 							
 							<!-- [다음] -->
-							<c:if test="${spi.spCurrentPage <= spi.spMaxPage }">[다음] &nbsp;</c:if>
-							<c:if test="${spi.spCurrentPage > spi.spMaxPage }">
+							<c:if test="${pi.spCurrentPage <= pi.spMaxPage }">[다음] &nbsp;</c:if>
+							<c:if test="${pi.spCurrentPage > pi.spMaxPage }">
 								<c:url var="after" value="sReqListView.tc">
-									<c:param name="spPage" value="${spi.spCurrentPage + 1 }" />
+									<c:param name="spPage" value="${pi.spCurrentPage + 1 }" />
 								</c:url>
-								<a href="after">[다음]</a>&nbsp;
+								<a href="${after}">[다음]</a>&nbsp;
 							</c:if>
 							
 						</td>
 					</tr>
 					<tr>
 						<td colspan="6">
-							<div id="searchArea" align="center">
 								<form action="sReqSearch.tc" name="searchForm" method="get">
 									<select id="searchCondition" name="searchCondition">
 										<option value="all" <c:if test="${simpleSearch.searchCondition == 'all' }">selected</c:if>>전체</option>
@@ -98,7 +97,6 @@
 									<input type="search" name="searchValue" value="">
 									<button>검색</button><br>
 								</form>
-							</div>
 						</td>
 					</tr>
 				</table>

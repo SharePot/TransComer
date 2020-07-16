@@ -19,6 +19,7 @@ public interface SimpleService {
 	
 	public int getSReqListCount();
 	
+	
 	/**
 	 * 게시글 조회수
 	 * @param simpleNo
@@ -61,11 +62,18 @@ public interface SimpleService {
 	public int simpleReqDelete(int simpleNo);
 	
 	/**
+	 * 게시판 검색 수 조회
+	 * @param simpleSearch
+	 * @return
+	 */
+	public int getSearchsReListCount(SimpleSearch simpleSearch);
+	
+	/**
 	 * 단순의뢰 질문 검색
 	 * @param simpleRequest
 	 * @return
 	 */
-	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch);
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi);
 	
 	
 	// -------------------- 단순의뢰 답변 --------------------

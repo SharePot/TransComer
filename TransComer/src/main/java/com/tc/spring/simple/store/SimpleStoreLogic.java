@@ -62,10 +62,18 @@ public class SimpleStoreLogic implements SimpleStore {
 		return sqlSession.update("simpleMapper.deleteSReq", simpleNo);
 	}
 	
+	// 단순의뢰 질문 검색 수 조회
+	@Override
+	public int getSearchsReListCount(SimpleSearch simpleSearch) {
+		return sqlSession.selectOne("simpleMapper.getSearchsReListCount", simpleSearch);
+	}
+	
 	// 단순의뢰 질문 검색
 	@Override
-	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch) {
-		return (ArrayList)sqlSession.selectList("simpleMapper.searchSReq", simpleSearch);
+	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi) {
+		int offset = (spi.getSpCurrentPage() - 1)* spi.getSpBoardLimit();
+		RowBounds rowbounds = new RowBounds(offset, spi.getSpBoardLimit());
+		return (ArrayList)sqlSession.selectList("simpleMapper.searchSReq", simpleSearch, rowbounds);
 	}
 
 	// 단순의뢰 답변 조회
@@ -116,6 +124,7 @@ public class SimpleStoreLogic implements SimpleStore {
 	public int memberAdoptCount(String simpleReplyWriter) {
 		return sqlSession.update("simpleMapper.memberAdoptCount", simpleReplyWriter);
 	}
+
 
 
 

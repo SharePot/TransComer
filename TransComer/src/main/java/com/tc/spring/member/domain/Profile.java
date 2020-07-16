@@ -1,7 +1,10 @@
 package com.tc.spring.member.domain;
 
+import java.sql.Date;
+
 public class Profile {
 	
+	public int profileNo;
 	public int memberNo;
 	public String pLang1;
 	public String pLang2;
@@ -16,13 +19,18 @@ public class Profile {
 	public String tLangGrade2;
 	public String tLangGrade3;
 	public String introduce;
+	public String profileFilePath;
+	public Date profileDate;
+	public String profileStatus;
 	
 	public Profile() {}
 
-	public Profile(int memberNo, String pLang1, String pLang2, String pLang3, String tLang1, String tLang2,
-			String tLang3, String pLangGrade1, String pLangGrade2, String pLangGrade3, String tLangGrade1,
-			String tLangGrade2, String tLangGrade3, String introduce) {
+	public Profile(int profileNo, int memberNo, String pLang1, String pLang2, String pLang3, String tLang1,
+			String tLang2, String tLang3, String pLangGrade1, String pLangGrade2, String pLangGrade3,
+			String tLangGrade1, String tLangGrade2, String tLangGrade3, String introduce, String profileFilePath,
+			Date profileDate, String profileStatus) {
 		super();
+		this.profileNo = profileNo;
 		this.memberNo = memberNo;
 		this.pLang1 = pLang1;
 		this.pLang2 = pLang2;
@@ -37,6 +45,17 @@ public class Profile {
 		this.tLangGrade2 = tLangGrade2;
 		this.tLangGrade3 = tLangGrade3;
 		this.introduce = introduce;
+		this.profileFilePath = profileFilePath;
+		this.profileDate = profileDate;
+		this.profileStatus = profileStatus;
+	}
+
+	public int getProfileNo() {
+		return profileNo;
+	}
+
+	public void setProfileNo(int profileNo) {
+		this.profileNo = profileNo;
 	}
 
 	public int getMemberNo() {
@@ -151,15 +170,38 @@ public class Profile {
 		this.introduce = introduce;
 	}
 
+	public String getProfileFilePath() {
+		return profileFilePath;
+	}
+
+	public void setProfileFilePath(String profileFilePath) {
+		this.profileFilePath = profileFilePath;
+	}
+
+	public Date getProfileDate() {
+		return profileDate;
+	}
+
+	public void setProfileDate(Date profileDate) {
+		this.profileDate = profileDate;
+	}
+
+	public String getProfileStatus() {
+		return profileStatus;
+	}
+
+	public void setProfileStatus(String profileStatus) {
+		this.profileStatus = profileStatus;
+	}
+
 	@Override
 	public String toString() {
-		return "Profile [memberNo=" + memberNo + ", pLang1=" + pLang1 + ", pLang2=" + pLang2 + ", pLang3=" + pLang3
-				+ ", tLang1=" + tLang1 + ", tLang2=" + tLang2 + ", tLang3=" + tLang3 + ", pLangGrade1=" + pLangGrade1
-				+ ", pLangGrade2=" + pLangGrade2 + ", pLangGrade3=" + pLangGrade3 + ", tLangGrade1=" + tLangGrade1
-				+ ", tLangGrade2=" + tLangGrade2 + ", tLangGrade3=" + tLangGrade3 + ", introduce=" + introduce + "]";
+		return "Profile [profileNo=" + profileNo + ", memberNo=" + memberNo + ", pLang1=" + pLang1 + ", pLang2="
+				+ pLang2 + ", pLang3=" + pLang3 + ", tLang1=" + tLang1 + ", tLang2=" + tLang2 + ", tLang3=" + tLang3
+				+ ", pLangGrade1=" + pLangGrade1 + ", pLangGrade2=" + pLangGrade2 + ", pLangGrade3=" + pLangGrade3
+				+ ", tLangGrade1=" + tLangGrade1 + ", tLangGrade2=" + tLangGrade2 + ", tLangGrade3=" + tLangGrade3
+				+ ", introduce=" + introduce + ", profileFilePath=" + profileFilePath + ", profileDate=" + profileDate
+				+ ", profileStatus=" + profileStatus + "]";
 	}
-	
-	
-	
-	
+
 }

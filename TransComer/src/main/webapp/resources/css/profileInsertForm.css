@@ -1,0 +1,26 @@
+#profileForm {
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
+#profileContent input {
+	width: 50%;
+	display: inline-block;
+	margin-left: 20%;
+}
+
+#profileContent label {
+	float: left;
+	width: 30%;
+	margin-top: 10px;
+	color: gray;
+}
+
+#profileContent select {
+	width: 24.5%;
+	display: inline-block;
+}
+
+.custom-radio input {
+	display: inline-block;
+}

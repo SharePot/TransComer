@@ -19,7 +19,11 @@
 			<ul id="pageList">
 				<li>
 					<img src="/resources/css/images/user2.png" class="itemImg">
-					<a href="">회원 전체 리스트</a>
+					<a href="memberList.tc">회원 전체 리스트</a>
+				</li>
+				<li>
+					<img src="/resources/css/images/login.png" class="itemImg">
+					<a href="">회원 프로필 리스트</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/emergency.png" class="itemImg">
@@ -36,7 +40,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/money.png" class="itemImg">
-					<a href="">포인트 환급 목록</a>
+					<a href="pointRefundList.tc">포인트 환급 목록</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/money (1).png" class="itemImg">

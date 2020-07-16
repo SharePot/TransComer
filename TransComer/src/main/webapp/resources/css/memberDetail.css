@@ -1,0 +1,37 @@
+#mainWrapper {
+	width: 35%;
+	margin: 0 auto;
+}
+
+table td:first-child {
+	width: 30%;
+	text-align: right;
+}
+
+.semiTitle {
+	font-size: 20px;
+	color: rgb(0,102,204);
+	margin-bottom: 10px !important;
+}
+
+#memId {
+	font-size: 30px !important;
+	display: inline;
+	color: rgb(237, 211, 44);	
+}
+
+#title {
+	font-size: 20px !important;
+	display: inline;
+}
+
+#info {
+	text-align: center;
+}
+
+#accountInfoNone {
+	text-align: left !important;
+	padding-left: 30px !important;
+}
+
+

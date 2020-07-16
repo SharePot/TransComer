@@ -129,6 +129,29 @@
 			ORDER BY SIMPLE_DATE DESC
 	</select>
 	
+	<!-- 단순의뢰 질문 검색 개수 확인 -->
+	<select id="getSearchsReListCount" parameterType="SimpleSearch" resultType="_int">
+		SELECT COUNT(*) FROM SIMPLE_REQUEST
+		<where>
+			<choose>
+				<when test="searchCondition == 'title'">
+					SIMPLE_TITLE LIKE '%' || #{searchValue} || '%'
+				</when>
+				<when test="searchCondition == 'writer'">
+					SIMPLE_WRITER LIKE '%' || #{searchValue} || '%'
+				</when>
+				<when test="searchCondition == 'content'">
+					SIMPLE_CONTENT LIKE '%' || #{searchValue} || '%'
+				</when>
+				<otherwise>
+					AND (SIMPLE_WRITER LIKE '%' || #{searchValue} || '%'
+					OR SIMPLE_TITLE LIKE '%' || #{searchValue} || '%'
+					OR SIMPLE_CONTENT LIKE '%' || #{searchValue} || '%')
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	
 	<!-- 단순의뢰 채택 처리 -->
 	
 		<!-- 단순의뢰 답변 채택 처리 -->

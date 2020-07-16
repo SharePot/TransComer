@@ -51,7 +51,7 @@ public class SimpleController {
 			mv.addObject("sReqList", sReqList);
 			mv.setViewName("simple/simpleListView");
 		} else {
-			mv.setViewName("simple/simpleListView");
+			mv.setViewName("common/errorPage");
 		}
 		
 		return mv;
@@ -132,12 +132,15 @@ public class SimpleController {
 	
 	// 단순의뢰 질문 검색
 	@RequestMapping("sReqSearch.tc")
-	public String simpleReqSearch (SimpleSearch simpleSearch, Model model) {
-		ArrayList<SimpleRequest> sReqList = simpleService.sReqSearchList(simpleSearch);
+	public String simpleReqSearch (SimpleSearch simpleSearch, Model model, @RequestParam(value="spPage", required=false)Integer spPage) {
+		int spCurrentPage = (spPage != null) ? spPage : 1;
+		int spListCount = simpleService.getSearchsReListCount(simpleSearch);
+		SimplePageInfo spi = Pagination.getSimplePageInfo(spCurrentPage, spListCount);
+		ArrayList<SimpleRequest> sReqList = simpleService.sReqSearchList(simpleSearch, spi);
 		
 		model.addAttribute("sReqList", sReqList);
 		model.addAttribute("simpleSearch", simpleSearch);
-		
+		model.addAttribute("spi", spi);
 		return "simple/simpleListView";
 		
 	}
