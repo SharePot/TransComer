@@ -91,8 +91,6 @@ public class FileController {
 		return result;
 	}
 	
-	
-	
 	public int deleteFile(String fileName, HttpServletRequest request, String memberId) {
 		// 파일 저장 경로 설정
 		String root = request.getSession().getServletContext().getRealPath("resources");

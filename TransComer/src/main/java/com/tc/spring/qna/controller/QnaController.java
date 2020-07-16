@@ -83,7 +83,7 @@ public class QnaController {
 		if(!qAdminList.isEmpty()) {
 			mv.addObject("qalist", qAdminList);
 			mv.addObject("qPi", qPi);
-			mv.setViewName("admin/qnaAdminListView");
+			mv.setViewName("admin/adminQnaList");
 		} else {
 			mv.addObject("msg", "관리자 문의글 조회 실패");
 			mv.setViewName("common/errorPage");
@@ -162,19 +162,18 @@ public class QnaController {
 	}
 	
 	// Qna 게시글 삭제
-	@RequestMapping("qdelete.tc")
-	public String qnaDelete(int qnaNo, String fileName, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
+	@RequestMapping(value="qdelete.tc", method=RequestMethod.GET)
+	public void qnaDelete(int qnaNo, String fileName, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
 		Qna qna = qnaService.selectQna(qnaNo);
 		int resultQna = qnaService.deleteQna(qnaNo);
 		int resultFile = 0;
 		
 		if(resultQna > 0) {
-			resultFile = fController.deleteFile(fileName, request, memberId);
-			rd.addFlashAttribute("msg","게시글 삭제 성공");
-			return "redirect:qlist.tc";
-		}else {
-			model.addAttribute("msg","게시글 삭제 실패");
-			return "common/errorPage";
+			if (fileName != null) {
+				resultFile = fController.deleteFile(fileName, request, memberId);
+			}
+			/*rd.addFlashAttribute("msg","게시글 삭제 성공");
+			return "redirect:qlist.tc";*/
 		}
 	}
 	
