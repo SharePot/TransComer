@@ -17,12 +17,13 @@ public interface PersonalService {
 
 	/**
 	 * 1:1의뢰 게시판 전체 조회 서비스
+	 * @param personalNoint 
 	 * 
 	 * @param
 	 * @return list
 	 */
 
-	public Personal selectOne();
+	public Personal selectOne(int personalNo);
 
 	/**
 	 * 1:1의뢰 게시판 상세조회용 서비스
@@ -62,7 +63,7 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int updatePersonal();
+	public int updatePersonal(Personal personal);
 
 	/**
 	 * 1:1의뢰 게시판 수정용 서비스
@@ -71,7 +72,7 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int deletePersonal();
+	public int deletePersonal(int personalNo);
 
 	/**
 	 * 1:1의뢰 게시판 삭제용 서비스

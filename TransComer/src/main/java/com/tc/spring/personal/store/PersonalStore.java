@@ -14,7 +14,7 @@ public interface PersonalStore {
 	 */
 	public ArrayList<Personal> selectPersonalList(PersonalPageInfo pi);
 
-	public Personal selectOne();
+	public Personal selectOne(int personalNo);
 	
 	public int getListCount();
 
@@ -22,9 +22,9 @@ public interface PersonalStore {
 
 	public int insertPersonal(Personal personal);
 
-	public int updatePersonal();
+	public int updatePersonal(Personal personal);
 
-	public int deletePersonal();
+	public int deletePersonal(int personalNo);
 	
 	public ArrayList<Personal> searchPersonalList(PersonalSearch search, PersonalPageInfo pi);
 

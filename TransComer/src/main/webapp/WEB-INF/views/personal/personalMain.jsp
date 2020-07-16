@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
     <title>1:1 의뢰 메인</title>
     <style>
+    	section {
+    		border: 0px !important; 		
+    	}
+    
         .imgbox {
             width: 150px;
             height: 150px;
@@ -93,7 +97,7 @@
                                         <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
-                                                <li><a href="#" class="button alt">자세히 보기</a></li>
+                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}" class="button alt">자세히 보기</a></li>
                                             </ul>
                                         </footer>
                                     </section>
