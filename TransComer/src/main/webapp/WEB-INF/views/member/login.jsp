@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 		<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <!DOCTYPE html>
 <html data-brackets-id='2665'>
@@ -419,6 +424,9 @@ a:hover {text-decoration: underline; color: black;}
         
     <script data-brackets-id='2704' type="text/javascript">
     	$("#submitBtn").click(function () {
+    		var memberId=$("#login").val();
+    		var memberPw=$("#password").val();
+    		
     		if($("#login").val() == ""){
     			alert("아이디를 입력해주세요.");
     		}else if($("#password").val()==""){
@@ -426,17 +434,15 @@ a:hover {text-decoration: underline; color: black;}
     		}else{
 	    		$.ajax({
 	                url : "login.tc",
-	                type : "POST",
-	                data:{
-	                      mId : $("#login").val(),
-	                      pwd : $("#password").val()
-	                      
+	                type : "post",
+	                data:{memberId:memberId,
+	                      memberPw:memberPw
 	                   },
 	                success : function(data) {
-	                   if(data == 0){
-	                	   $("#idChcekArea").text("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+	                   if(data == "success"){
+	                	   window.location.href = "/indexBN.jsp";
 	                   }else{
-	                	   $("#loginForm").submit();
+	                	   $("#idChcekArea").text("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
 	                	   
 	                   }
 	                }

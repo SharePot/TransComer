@@ -67,14 +67,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int getMemberSearchListCount(MemberSearch search) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.getMemberSearchListCount(search);
 	}
 
 	@Override
 	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi, MemberSearch search) {
-		// TODO Auto-generated method stub
-		return null;
+		return memberStore.selectMemberSearchList(pi, search);
 	}
 
 //포인트 환급=====================================================================================

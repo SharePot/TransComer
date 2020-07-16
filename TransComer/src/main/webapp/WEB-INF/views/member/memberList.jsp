@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 		<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -125,12 +129,18 @@
        <div id="searchArea" align="center">
       <form action="memberSearch.tc" name="searchForm" method="get">
          <select id="memberSearchCondition" name="memberSearchCondition">
-            <option value="all" <c:if test="${search.memberSearchCondition == 'all' }">selected</c:if>>전체</option>
-            <option value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
+            <option id="status" value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
             <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
             <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
          </select>
-         <input type="search" name="memberSearchValue" value="">
+	         <input type="text" list="browsers" id="textSearch" name="memberSearchValue">
+	         <datalist id="browsers">
+	         <option value="BLACKLIST" <c:if test="${search.memberSearchValue == 'BLACKLIST' }">selected</c:if>>블랙리스트</option>
+	         <option value="PREMIUM" <c:if test="${search.memberSearchValue == 'PREMIUM' }">selected</c:if>>프리미엄</option>
+	         <option value="ADMIN" <c:if test="${search.memberSearchValue == 'ADMIN' }">selected</c:if>>관리자</option>
+	         <option value="DROP" <c:if test="${search.memberSearchValue == 'DROP' }">selected</c:if>>탈퇴회원</option>
+	         <option value="PRIMARY" <c:if test="${search.memberSearchValue == 'PRIMARY' }">selected</c:if>>일반회원</option>
+	       </datalist>
          <button>검색</button><br>
       </form>
    </div>

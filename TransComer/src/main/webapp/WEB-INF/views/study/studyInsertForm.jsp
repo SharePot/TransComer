@@ -27,8 +27,8 @@
 				<td>카테고리</td>
 				<td>
 				<select id="studyCategory" name="studyCategory">
-            <option value="GROUP" >그룹</option>
-            <option value="PERSONAL" >개인</option>
+            <option value="GROUP">그룹</option>
+            <option value="PERSONAL">개인</option>
             <option value="PROJECT">프로젝트</option>
             <option value="ETC">기타</option>
          </select>

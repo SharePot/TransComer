@@ -35,7 +35,7 @@
    </select>
    
    <!-- 회원 검색별 전체 인원수  -->
-   <select id="getMemberSearchListCount" resultType="_int">
+   <select id="getMemberSearchListCount" parameterType="MemberSearch" resultType="_int">
 	SELECT COUNT(*) FROM MEMBER   
 		<where>
 		<choose>
@@ -48,11 +48,7 @@
 			<when test="memberSearchCondition=='name'">
 			AND MEMBER_NAME LIKE '%' || #{memberSearchValue} || '%'  			
 			</when>
-			<otherwise>
-			 AND (MEMBER_STATUS LIKE '%' || #{studySearchValue } || '%'
-				OR MEMBER_ID LIKE '%' || #{studySearchValue } ||  '%'
-				OR MEMBER_NAME LIKE '%' || #{studySearchValue } || '%')
-			</otherwise>
+		
 		</choose>
 	</where>	
    </select>
@@ -62,20 +58,16 @@
    SELECT * FROM MEMBER
    	<where>
 		<choose>
-			<when test="memberSearchCondition =='title'">
+			<when test="memberSearchCondition =='status'">
 			MEMBER_STATUS LIKE '%' || #{memberSearchValue} || '%'
 			</when>
-			<when test="memberSearchCondition =='writer'">
+			<when test="memberSearchCondition =='memberId'">
 			AND MEMBER_ID LIKE '%' || #{memberSearchValue} || '%'
 			</when>
-			<when test="memberSearchCondition'content'">
+			<when test="memberSearchCondition =='name'">
 			AND MEMBER_NAME LIKE '%' || #{memberSearchValue} || '%'  			
 			</when>
-			<otherwise>
-			 AND (MEMBER_STATUS LIKE '%' || #{studySearchValue } || '%'
-				OR MEMBER_ID LIKE '%' || #{studySearchValue } ||  '%'
-				OR MEMBER_NAME LIKE '%' || #{studySearchValue } || '%')
-			</otherwise>
+		
 		</choose>
 	</where>	
 	ORDER BY MEMBER_NO DESC
@@ -87,7 +79,11 @@
    <select id="selectMemberOne" parameterType="Member" resultMap="memberResultSet">
    SELECT * FROM MEMBER WHERE MEMBER_NO=#{memberNo}
    </select>
-
+   
+   <!-- 회원 포인트 업데이트 -->
+	<update id="updateMemberPoint" parameterType="Member">
+	UPDATE MEMBER SET MEMBER_POINT=#{point} WHERE MEMBER_ID=#{memberId}
+	</update>
 
 <!-- 포인트 변동 관련 -->
    <resultMap type="PointChange" id="pointChangeResultSet">
@@ -98,10 +94,21 @@
    <result property="pointContent" column="POINT_CONTENT"/>
    </resultMap>
    
-   <!-- 포인트 변동 리스트 -->
+   <!-- 포인트 변동 리스트 전체-->
    <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
-   SELECT * FROM POINT_HISTORIES
+   SELECT * FROM POINT_HISTORIES 
    </select>
+   
+   
+      <!-- 포인트 변동 리스트 회원별-->
+   <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
+   </select>
+   
+   <!-- 포인트 차감(결제) -->
+	<insert id="insertPointChange"  parameterType="PointChange">
+	INSERT INTO POINT_HISTORIES VALUES(POINT_NO_SEQ.NEXTVAL,#{memberId},SYSDATE,#{pointAmount},#{pointContent})
+	</insert>
 
 <!-- 포인트 환급 관련 -->
    <resultMap type="PointRefund" id="pointRefundResultSet">
@@ -136,7 +143,7 @@
    
    <!-- 포인트 환급 신청 추가 -->
    <insert id="pointRefundInsert">
-   	INSERT INTO POINT_RETURN VALUES(POINT_REF_NO_SEQ.NEXTVAL,#{refundPoint},DEFAULT,#{memberId},SYSDATE,null)
+   	INSERT INTO POINT_RETURN VALUES(POINT_REF_NO_SEQ.NEXTVAL,#{refundPoint},DEFAULT,#{accountInfo},#{memberId},SYSDATE,null)
    </insert>
    
    <!-- 포인트 환급 신청 갯수 확인하는 쿼리 -->

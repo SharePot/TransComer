@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +36,7 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	//회원리스트
 	@RequestMapping("memberList.tc")
 	public ModelAndView memberList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
 		int currentPage=(page!=null) ? page : 1;
@@ -54,6 +56,7 @@ public class MemberController {
 		return mv;
 	}
 	
+/*	//로그인
 	@RequestMapping(value="login.tc",method=RequestMethod.POST)
 	   public ModelAndView memberLogin(Member member,ModelAndView mv) {
 	      Member loginUser = memberService.loginMember(member);
@@ -67,25 +70,40 @@ public class MemberController {
 	      
 	      return mv;
 	      
+	   }*/
+	
+		//로그인
+	@RequestMapping(value="login.tc",method=RequestMethod.POST)
+	@ResponseBody
+	   public String memberLogin(Member member,Model model) {
+	      Member loginUser = memberService.loginMember(member);
+	      
+	      if (loginUser != null) {
+	    	  model.addAttribute("loginUser", loginUser);
+	    	  return "success";
+	      } else {
+	    	  return "fail";
+	      }
 	   }
 	
+	//로그인 페이지
 	@RequestMapping("loginPage.tc")
 	public String loginPage() {
 		return "member/login";
 	}
 	
+	//로그아웃
 	   @RequestMapping("logout.tc")
 	   public String memberLogout(SessionStatus status) {
 	      status.setComplete();
 	      return "redirect:home.tc";
-	      
 	   }
 	   
+	   //멤버 세부사항
 	   @RequestMapping("memberDetail.tc")
 		public String memberSelectOne(Model model,int memberNo) {
 			model.addAttribute("member",memberService.selectMemberOne(memberNo));
 			return "member/memberDetail";
-		   
 		}
 		
 	
@@ -102,7 +120,18 @@ public class MemberController {
 			model.addAttribute("pi",pi);
 			return "member/memberList";
 		}
-	
+	//회원 마이페이지
+		@RequestMapping("myPage.tc")
+		   public String myPage() {
+		      return "member/myPage";
+		   }
+
+
+	//관리자페이지
+  @RequestMapping("adminPage.tc")
+  	public String adminPage() {
+		      return "member/adminPage";
+		   }
 
 	public String enrollView() {
 		
@@ -134,10 +163,18 @@ public class MemberController {
 	
 	//포인트변동=============================================================================
 	
-	
-	public ModelAndView PointChageList(ModelAndView mv,Integer page) {
+	//관리자페이지에서 포인트 변동리스트 전체
+	@RequestMapping("pointchangList.tc")
+	public ModelAndView pointChageList(ModelAndView mv,Integer page) {
 		return null;
 	}
+	
+	//회원 마이페이지에서 포인트 변동리스트 전체
+		@RequestMapping("pointchangMemberList.tc")
+		public ModelAndView pointChageMemberList(ModelAndView mv,Integer page) {
+			return null;
+		}
+		
 	
 	public String pointChangeInsert(PointChange pc, Model model, HttpServletRequest request) {
 	
@@ -185,10 +222,11 @@ public class MemberController {
 	
 	//포인트 환급 신청
 	@RequestMapping(value="pointRefundInsert.tc",method=RequestMethod.POST)
-	public String pointRefundInsert(PointRefund pointRefund, Model model, HttpServletRequest request) {
+	public String pointRefundInsert(PointRefund pointRefund, Model model,String bank,String accountOwner,String account ) {
+		pointRefund.setAccountInfo(bank+","+accountOwner+","+account);
 		int result=memberService.insertPointRefund(pointRefund);
 		if(result>0) {
-			return "";
+			return "member/myPage";
 		}else {
 		model.addAttribute("msg","포인트 환급 신청 실패");	
 		}
@@ -214,11 +252,6 @@ public class MemberController {
 			return "common/errorPage";
 		}
 	}
-	
-	
-	
-	
-
 	
 	//=============================================================================
 	
