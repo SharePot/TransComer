@@ -22,10 +22,18 @@
 				</c:if>
 				
 				<c:url var="logout" value="logout.tc" />
-				<c:url var="alarm" value="alarmList.tc" />
+				<c:url var="alarm" value="alarmView.tc" />
+				
 				<c:if test="${!empty sessionScope.loginUser }">
-					<li><a href="${logout }"><a>로그아웃</a></a></li>
-					<li><a>마이페이지</a></li>
+					<li><a href="${logout }">로그아웃</a></li>
+					<li>
+						<c:if test="${loginUser.status ne 'ADMIN' }">
+							<a href="myPage.tc">마이페이지</a>
+						</c:if>
+						<c:if test="${loginUser.status eq 'ADMIN' }">
+							<a href="adminPage.tc">관리자페이지</a>
+						</c:if>
+					</li>
 					<li><a href="${alarm }">알림</a></li>
 				</c:if>
 			</ul>
@@ -43,7 +51,6 @@
                     <li class="current"><a href="#">Home</a></li>
                     <li>
                     <c:url var="sList" value="sReqListView.tc" />
-					<c:url var="alarmList" value="alarmList.tc" />
 					<c:url var="pList" value="plist.tc" />
                         <a href="#">번역 의뢰</a>
                         <ul>
@@ -52,8 +59,8 @@
                         </ul>
                     </li>
                     <li><a href="#">번역 공유</a></li>
-                    <li><a href="#">스터디</a></li>
-                    <li><a href="#">Q&amp;A</a></li>
+                    <li><a href="studyList.tc">스터디</a></li>
+                    <li><a href="qlist.tc">Q&amp;A</a></li>
                 </ul>
             </nav>
         </section>
