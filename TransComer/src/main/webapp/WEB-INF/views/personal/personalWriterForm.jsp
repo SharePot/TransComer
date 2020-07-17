@@ -74,30 +74,6 @@
 <c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
 
-        <!-- Header -->
-        <!-- <section id="header">
-
-            Logo
-            <h1><a href="index.html">SharePot</a></h1>
-
-            Nav
-            <nav id="nav">
-                <ul>
-                    <li class="current"><a href="#">Home</a></li>
-                    <li>
-                        <a href="#">번역 의뢰</a>
-                        <ul>
-                            <li><a href="#">단순 의뢰</a></li>
-                            <li><a href="#">1:1 의뢰</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">번역 공유</a></li>
-                    <li><a href="#">스터디</a></li>
-                    <li><a href="#">Q&amp;A</a></li>
-                </ul>
-            </nav>
-        </section> -->
-
         <!-- Main -->
         <section id="main">
             <div class="container">
@@ -127,7 +103,7 @@
                                 <textarea type="text" name="personalContent" placeholder="내용을 입력해주세요" style=" width: 70%; display: inline-block; margin-left: 20%;"></textarea>
                                 <br><br>
                                 <label>대표 사진</label>
-                                <input type="file" name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
+                                <input type="file" name="uploadFile" id="profile_pt" onchange="previewImage(this,'View_area')">
                                 <!--이미지 미리보기-->
                                 <div id='View_area' style=' margin-left: 30%; margin-top: 10px; position:relative; width: 300px; height: 200px; color: black; border: 0px solid black; dispaly: inline;'></div>
                                 <p style="font-size: 10pt;  margin-left: 30%;">
@@ -138,70 +114,68 @@
                                 <br><br>
                                 <label>개발 언어</label>
                                     <select name='pLang1' class="pLang_first" style="margin-left: 20%; width:20%;">
-                                        <option value='' selected>-- 필수 선택--</option>
-                                        <option>JAVA</option>
-                                        <option>Javascript</option>
-                                        <option>C</option>
-                                        <option>C++</option>
-                                        <option>C#</option>
-                                        <option>Python</option>
-                                        <option>PHP</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 필수 선택--</option>
+                                        <option value='JAVA'>JAVA</option>
+                                        <option value='Javascript'>Javascript</option>
+                                        <option value='C'>C</option>
+                                        <option value='C++'>C++</option>
+                                        <option value='C#'>C#</option>
+                                        <option value='Python'>Python</option>
+                                        <option value='PHP'>PHP</option>
                                     </select>
 
                                     <select name='pLang2' class="pLang_second" style="margin-top:10px; width:20%;">
-                                        <option value='' selected>-- 선택 --</option>
-                                        <option>JAVA</option>
-                                        <option>Javascript</option>
-                                        <option>C</option>
-                                        <option>C++</option>
-                                        <option>C#</option>
-                                        <option>Python</option>
-                                        <option>PHP</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 선택 --</option>
+                                        <option value='JAVA'>JAVA</option>
+                                        <option value='Javascript'>Javascript</option>
+                                        <option value='C'>C</option>
+                                        <option value='C++'>C++</option>
+                                        <option value='C#'>C#</option>
+                                        <option value='Python'>Python</option>
+                                        <option value='PHP'>PHP</option>
+                                        <option value='없음'>없음</option>
                                     </select>
 
                                     <select name='pLang3' class="pLang_third" style="margin-top:10px; width:20%;">
-                                        <option value='' selected>-- 선택 --</option>
-                                        <option>JAVA</option>
-                                        <option>Javascript</option>
-                                        <option>C</option>
-                                        <option>C++</option>
-                                        <option>C#</option>
-                                        <option>Python</option>
-                                        <option>PHP</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 선택 --</option>
+                                        <option value='JAVA'>JAVA</option>
+                                        <option value='Javascript'>Javascript</option>
+                                        <option value='C'>C</option>
+                                        <option value='C++'>C++</option>
+                                        <option value='C#'>C#</option>
+                                        <option value='Python'>Python</option>
+                                        <option value='PHP'>PHP</option>
+                                        <option value='없음'>없음</option>
                                     </select>
                                 
 
                                 <br><br>
                                 <label>사용 언어</label>
                                 <select name='tLang1' class="tLang_first" style="margin-left: 20%; width:20%;">
-                                        <option value='' selected>-- 필수 선택--</option>
-                                        <option>영어</option>
-                                        <option>중국어</option>
-                                        <option>일본어</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 필수 선택--</option>
+                                        <option value='영어'>영어</option>
+                                        <option value='중국어'>중국어</option>
+                                        <option value='일본어'>일본어</option>
                                     </select>
                                  <select name='tLang2' class="pLang_second" style="margin-top:10px; width:20%;">
-                                        <option value='' selected>-- 선택 --</option>
-                                        <option>영어</option>
-                                        <option>중국어</option>
-                                        <option>일본어</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 선택 --</option>
+                                        <option value='영어'>영어</option>
+                                        <option value='중국어'>중국어</option>
+                                        <option value='일본어'>일본어</option>
+                                        <option value='없음'>없음</option>
                                     </select>
                                  <select name='tLang3' class="pLang_third" style="margin-top:10px; width:20%;">
-                                        <option value='' selected>-- 선택 --</option>
-                                        <option>영어</option>
-                                        <option>중국어</option>
-                                        <option>일본어</option>
-                                        <option value=''>없음</option>
+                                        <option value='없음' selected>-- 선택 --</option>
+                        				<option value='영어'>영어</option>
+                                        <option value='중국어'>중국어</option>
+                                        <option value='일본어'>일본어</option>
+                                        <option value='없음'>없음</option>
                                     </select>
-                                </div>
+                                    
                                 <br><br>
                                 <label>가격</label>
                                 <input type="text" id="personalPrice" name="personalPrice" style="width:120px" placeholder="" value="">&nbsp;P/100자 당
-        
+        						</div>
                             <hr>
                             <p style="font-size: 10pt;">- 마이페이지에서 파워번역가를 등록하면 상단에 번역게시물을 띄워드립니다.</p>
 	

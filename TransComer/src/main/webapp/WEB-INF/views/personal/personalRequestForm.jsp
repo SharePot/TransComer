@@ -30,31 +30,8 @@
 </head>
 
 <body class="homepage is-preload">
+<c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
-
-        <!-- Header -->
-        <section id="header">
-
-            <!-- Logo -->
-            <h1><a href="index.html">SharePot</a></h1>
-
-            <!-- Nav -->
-            <nav id="nav">
-                <ul>
-                    <li class="current"><a href="#">Home</a></li>
-                    <li>
-                        <a href="#">번역 의뢰</a>
-                        <ul>
-                            <li><a href="#">단순 의뢰</a></li>
-                            <li><a href="#">1:1 의뢰</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">번역 공유</a></li>
-                    <li><a href="#">스터디</a></li>
-                    <li><a href="#">Q&amp;A</a></li>
-                </ul>
-            </nav>
-        </section>
 
         <!-- Main -->
         <section id="main">
@@ -69,19 +46,19 @@
                             <h3>* 번역가 정보</h3>
                             <br>
                             <label>번역가</label>
-                            <input type="text" id="personalWriter" name="personalWriter" placeholder="번역가 이름" readonly value="">
+                            <input type="text" id="memberId" name="memberId" placeholder="번역가 이름" readonly value="${personal.memberId }">
                             <br><br>
                             <label>개발언어</label>
-                            <input type="password" id="personalPLang" name="personalPLang" placeholder="번역가의 개발언어" readonly value="">
+                            <input type="text" id="personalPLang" name="personalPLang" placeholder="번역가의 개발언어" readonly value="${personal.personalPLang} ">
                             <br><br>
                             <label>사용언어</label>
-                            <input type="password" id="personalTLang" name="personalTLang" placeholder="번역가의 사용언어" readonly value="">
+                            <input type="text" id="personalTLang" name="personalTLang" placeholder="번역가의 사용언어" readonly value="${personal.personalTLang}">
                             <br><br>
-                            <label>번역 작업 소요 시간</label>
-                            <input type="text" id="personalSchedule" name="personalSchedule" placeholder="번역가의 작업시간" readonly value="">
+                            <label>번역 작업 소요 일정</label>
+                            <input type="text" id="personalSchedule" name="personalSchedule" placeholder="번역가의 작업시간" readonly value="${personal.personalSchedule}">
                             <br><br>
                             <label>번역 가격(100자 당)</label>
-                            <input type="text" id="personalPrice" name="personalPrice" placeholder="번역가가 설정한 가격" readonly value="">
+                            <input type="text" id="personalPrice" name="personalPrice" placeholder="번역가가 설정한 가격" readonly value="${personal.personalPrice}">
                             <br><br>
 
                             <hr>
@@ -112,7 +89,7 @@
                             <br>
                             <h4 id="price" style="float:right;">현재가격 :</h4>
                             <br>
-                            <p style="float:right; font-size:13px;">(100자 당 가격 : 2000원)</p>
+                            <p style="float:right; font-size:13px;">(100자 당 가격 : ${personal.personalPrice }원)</p>
                             <br><br>
 
                             <hr>
@@ -122,7 +99,7 @@
 
                             <br><br>
                             <center>
-                                <button type="button" class="btn btn-primary btn-lg" type="submit"> 결제하기 </button>
+                                <button type="button" class="btn btn-primary btn-lg" type="submit"> 신청하기 </button>
                             </center>
                         </form>
                     </div>
@@ -149,21 +126,6 @@
 
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="assets/css/main.css" />
-
     
     <!--의뢰 내용 글자수 세기-->
     <script>
@@ -178,14 +140,15 @@
     </script>
 
     <script>
-        $(function() {
-            $('#pReqContent').keyup(function(e) {
-                var pReqContent = $(this).val();
-                $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
-                $('#price').html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * 2000 + '원');
-            });
-            $('#pReqContent').keyup();
-        });
+	    $(function() {
+	        $('#pReqContent').keyup(function(e) {
+	            var pReqContent = $(this).val();
+	            var personalPrice = "${personal.personalPrice}";
+	            $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
+	            $('#price').html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * personalPrice + '원');
+	        });
+	        $('#pReqContent').keyup();
+	    });
     </script>
 
 

@@ -14,6 +14,7 @@
 		<result property="personalCount" column="PERSONAL_COUNT" />
 		<result property="personalDStatus" column="PERSONAL_D_STATUS" />
 		<result property="powerYN" column="POWER_YN" />
+		<result property="personalFilePath" column="PERSONAL_FILE_PATH" />
 		<result property="memberId" column="MEMBER_ID" />
 	</resultMap>
 
@@ -25,7 +26,7 @@
 	
 	<!-- 1:1 번역가 게시글 등록 -->
 	<insert id="insertPersonal" parameterType="Personal">
-		INSERT INTO PERSONAL VALUES(PERSONAL_NO_SEQ.NEXTVAL, #{personalTitle}, #{personalContent}, SYSDATE, #{personalPLang}, #{personalTLang}, #{personalSchedule}, #{personalPrice}, 0, 'N', 'N', #{memberId})
+		INSERT INTO PERSONAL VALUES(PERSONAL_NO_SEQ.NEXTVAL, #{personalTitle}, #{personalContent}, SYSDATE, #{personalPLang}, #{personalTLang}, #{personalSchedule}, #{personalPrice}, 0, 'N', 'N', #{personalFilePath}, #{memberId})
 	</insert>
 	
 	
@@ -112,7 +113,8 @@
 		PERSONAL_SCHEDULE=#{personalSchedule}, 
 		PERSONAL_P_LANG=#{personalPLang}, 
 		PERSONAL_T_LANG=#{personalTLang}, 
-		PERSONAL_PRICE=#{personalPrice} 
+		PERSONAL_PRICE=#{personalPrice},
+		PERSONAL_FILE_PATH=#{personalFilePath}
 		WHERE PERSONAL_NO=#{personalNo}
 	</update>
 	
@@ -120,5 +122,10 @@
 	<delete id="deletePersonal" parameterType="_int" >
 		DELETE FROM PERSONAL WHERE PERSONAL_NO=#{personalNo}
 	</delete>
+	
+	<!-- 1:1 게시글 리뷰 작성 -->
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, #{revContent}, '', SYSDATE, #{personalNo}, #{memberId})
+	</insert>
 
 </mapper>

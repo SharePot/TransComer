@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalSearch;
+import com.tc.spring.review.domain.Review;
 
 @Repository("personalStore")
 public class PersonalStoreLogic implements PersonalStore {
@@ -68,4 +69,11 @@ public class PersonalStoreLogic implements PersonalStore {
 	public int getSearchListCount(PersonalSearch search) {
 		return sqlSession.selectOne("personalMapper.getSearchListCount", search);
 	}
+	
+	@Override
+	public int insertReview(Review review) {
+		return sqlSession.insert("personalMapper.insertReview", review);
+	}
+	
+	
 }

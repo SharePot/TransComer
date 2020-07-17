@@ -88,16 +88,16 @@
                                         </center>
                                         <br>
                                         <header>
-                                            <h3>${p.memberId }</h3>
+                                            <h4>${p.personalTitle }</h4>
                                         </header>
                                         <!-- 글 제목 -->
-                                        <b>${p.personalTitle }</b>
+                                        <b>${p.memberId }</b>
                                         <hr>
                                         <p>사용가능 언어 : ${p.personalTLang}
                                         <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
-                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}" class="button alt">자세히 보기</a></li>
+                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}" class="button alt" style="background-color:lightblue;">자세히 보기</a></li>
                                             </ul>
                                         </footer>
                                     </section>
@@ -174,18 +174,6 @@
     </div>
 
     <!-- Scripts -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet"> -->
-
-    <!-- <script src="resources/js/jquery.min.js"></script>
-    <script src="resources/js/jquery.dropotron.min.js"></script>
-    <script src="resources/js/browser.min.js"></script>
-    <script src="resources/js/breakpoints.min.js"></script>
-    <script src="resources/js/util.js"></script>
-    <script src="resources/js/main.js"></script> -->
     <!--템플릿 css-->
     <link rel="stylesheet" href="resources/css/main.css" />
 

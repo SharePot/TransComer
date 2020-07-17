@@ -24,6 +24,11 @@
             overflow: hidden;
             /*justify-content: center;*/
         }
+        
+        .thumbnailImage{
+            width: 100%;
+            height: 100%;
+        }
 
         .profile {
             width: 100%;
@@ -75,7 +80,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-8 col-6-medium col-12-small">
-                        <img class="profile" src="/imges/%EB%B2%88%EC%97%AD.png">
+                        <img class="thumbnailImage" src="/resources/pUploadFiles/${personal.personalFilePath}">
                     </div>
 
                     <div class="col-4 col-6-medium col-12-small">
@@ -88,11 +93,12 @@
                             <hr>
                             <p>- 작업일정 : ${personal.personalSchedule } 일
                                 <br>- 사용가능 언어 : ${personal.personalTLang }
-                                <br>- 사용가능 개발언어: ${personal.personalPLang }</p>
+                                <br>- 사용가능 개발언어: ${personal.personalPLang }
+                            </p>
                             <footer>
                             	<!-- 작성자가 아니면 구매하기 버튼, 작성자이면 수정/삭제 버튼  -->
                             	<c:if test="${loginUser.memberId != personal.memberId }">
-								 	<button type="button" class="btn btn-warning btn-lg btn-block" href="#">구매하기</button>
+								 	<button type="button" class="btn btn-warning btn-lg btn-block" onclick="location.href = 'pRequestView.tc?personalNo=${personal.personalNo}'">의뢰하기</button>
 								</c:if>
                                 <c:if test="${loginUser.memberId eq personal.memberId }">
 	                                <c:url var="pUpdate" value="pWriterUpdateView.tc">
@@ -160,7 +166,7 @@
                                                 <img class="profile" src="/imges/girl.png">
                                             </div>
                                         </td>
-                                        <td>@아이디</td>
+                                        <td style="font-style: bold; color: darkblue">@아이디</td>
                                     </tr>
                                     <tr>
                                         <td>촉박한 시간, 늦은 새벽 시간 연락도 이해주셔서 너무 너무 감사드립니다.
@@ -169,12 +175,12 @@
                                 </table>
                                 <hr>
                                 <div class="col-sm-12 col-md-12">
-                                    <form action="/PdReviewInsert">
+                                    <form action="pReview.tc">
                                         <textarea id="Q_Contents" class="DOC_TEXT" name="rvContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
                                         <br>
                                         <span style="color:#aaa;" id="counter">(0 / 최대 50자)</span>
 
-                                        <input type="hidden" name="" value="${salePage.saleNo}">
+                                        <%-- <input type="hidden" name="" value="${}"> --%>
 
                                         <input type="submit" class="btn btn-success" value="등록">
                                         <input type="reset" class="btn" value="취소">
@@ -195,7 +201,7 @@
                             </center>
                             <br>
                             <header>
-                                <h3 style="text-align:center">Tylerr</h3>
+                                <h3 style="text-align:center">${personal.memberId }</h3>
                             </header>
                             <hr>
                             <p> 숙명여대 법학부&국제통상학과 졸업
@@ -239,20 +245,8 @@
     </div>
 
     <!-- Scripts -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script> -->
     <!--템플릿 css-->
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="resources/css/main.css" />
     
     <script>
     	function deletePersonal() {

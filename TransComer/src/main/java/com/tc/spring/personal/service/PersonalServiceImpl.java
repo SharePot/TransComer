@@ -12,6 +12,7 @@ import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.store.PersonalStore;
+import com.tc.spring.review.domain.Review;
 
 @Service("personalService")
 public class PersonalServiceImpl implements PersonalService {
@@ -42,7 +43,7 @@ public class PersonalServiceImpl implements PersonalService {
 	}
 
 	@Override
-	public int insertPersonal(Personal personal) {
+	public int insertPersonal(Personal personal, MultipartFile file, HttpServletRequest request) {
 		// textarea의 갱행문자를 <br>로 변경
 		personal.setPersonalContent(personal.getPersonalContent().replace("\n", "<br>"));
 		return personalStore.insertPersonal(personal);
@@ -80,6 +81,11 @@ public class PersonalServiceImpl implements PersonalService {
 		// System.out.println("====서비스가 가져온 갯수 : " +
 		// personalStore.getSearchListCount(search));
 		return personalStore.getSearchListCount(search);
+	}
+	
+	@Override
+	public int insertReview(Review review) {
+		return personalStore.insertReview(review);
 	}
 
 }
