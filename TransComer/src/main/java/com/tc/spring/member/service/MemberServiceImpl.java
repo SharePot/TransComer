@@ -2,8 +2,11 @@ package com.tc.spring.member.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
@@ -136,22 +139,21 @@ public class MemberServiceImpl implements MemberService {
 		return 0;
 	}
 
+//=======================================프로필
 	@Override
 	public ArrayList<Profile> selectProfileList() {
-		// TODO Auto-generated method stub
-		return null;
+		return memberStore.selectProfileList();
 	}
 
 	@Override
-	public Profile selectProfileOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile selectProfileOne(int memberNo) {
+		return memberStore.selectProfileOne(memberNo);
 	}
-//=======================================프로필
+	
 	@Override
-	public int insertPointChange(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertProfile(Profile profile, MultipartFile file, HttpServletRequest request) {
+		profile.setIntroduce(profile.getIntroduce().replace("\n", "<br>"));
+		return memberStore.insertProfile(profile);
 	}
 
 	@Override
@@ -165,10 +167,6 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-
-
 
 
 

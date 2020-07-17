@@ -148,20 +148,17 @@ public class MemberStoreLogic implements MemberStore {
 //프로필===============================================================
 	@Override
 	public ArrayList<Profile> selectProfileList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList)sqlSession.selectList("memberMapper.selectProfileList");
 	}
 
 	@Override
-	public Profile selectProfileOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile selectProfileOne(int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectProfileOne", memberNo);
 	}
-
+	
 	@Override
-	public int insertPointChange(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertProfile(Profile profile) {
+		return sqlSession.insert("memberMapper.insertProfile", profile);
 	}
 
 	@Override
@@ -175,7 +172,6 @@ public class MemberStoreLogic implements MemberStore {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 	
 	

@@ -2,6 +2,10 @@ package com.tc.spring.member.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.MemberSearch;
@@ -61,14 +65,14 @@ public interface MemberService {
 	
 	//====================================================프로필
 	
+	
 	public ArrayList<Profile> selectProfileList();
 	
-	public Profile selectProfileOne();
+	public Profile selectProfileOne(int memberNo);
 	
-	public int insertPointChange(Profile profile);
+	public int insertProfile(Profile profile, MultipartFile file, HttpServletRequest request);
 	
 	public int updateProfile(Profile profile);
 	
 	public int deleteProfile(int memberNo);
-	
 }

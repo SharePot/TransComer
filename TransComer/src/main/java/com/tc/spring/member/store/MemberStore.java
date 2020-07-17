@@ -59,15 +59,14 @@ public interface MemberStore {
 	public int deletePoingChange(int pointNo);
 	
 	//프로필====================================================
-	
+
 	public ArrayList<Profile> selectProfileList();
 	
-	public Profile selectProfileOne();
+	public Profile selectProfileOne(int memberNo);
 	
-	public int insertPointChange(Profile profile);
+	public int insertProfile(Profile profile);
 	
 	public int updateProfile(Profile profile);
 	
 	public int deleteProfile(int memberNo);
-
 }

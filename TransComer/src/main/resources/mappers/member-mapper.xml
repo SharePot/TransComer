@@ -150,7 +150,43 @@
 	<select id="getPointRefundListCount" resultType="_int">
 	SELECT COUNT(*) FROM POINT_RETURN
 	</select>
+	
+	
+   <!-- 프로필 관련 쿼리 -->
+   <resultMap type="Profile" id="profileResultSet">
+   		<id property="profileNo" column="PROFILE_NO" />
+   		<result property="memberNo" column="MEMBER_NO" />
+   		<result property="pLang1" column="P_LANGUAGE1" />
+   		<result property="pLang2" column="P_LANGUAGE2" />
+   		<result property="pLang3" column="P_LANGUAGE3" />
+   		<result property="pLangGrade1" column="P_LANG_GRADE1" />
+   		<result property="pLangGrade2" column="P_LANG_GRADE2" />
+   		<result property="pLangGrade3" column="P_LANG_GRADE3" />
+   		<result property="tLang1" column="T_LANGUAGE1" />
+   		<result property="tLang2" column="T_LANGUAGE2" />
+   		<result property="tLang3" column="T_LANGUAGE3" />
+   		<result property="tLangGrade1" column="T_LANG_GRADE1" />
+   		<result property="tLangGrade2" column="T_LANG_GRADE2" />
+   		<result property="tLangGrade3" column="T_LANG_GRADE3" />
+   		<result property="introduce" column="MEM_INTRODUCE" />
+   		<result property="profileFilePath" column="PROFILE_FILE_PATH" />
+   		<result property="profileDate" column="PROFILE_DATE" />
+   		<result property="profileStatus" column="PROFILE_STATUS" />
+   </resultMap>
    
+   <select id="selectProfileList" resultMap="profileResultSet">
+   		SELECT * FROM PROFILE ORDER BY PROFILE_NO DESC
+   </select>
+   
+   <select id="selectProfileOne" parameterType="_int" resultMap="profileResultSet">
+   		SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+   </select>
+   
+   <insert id="insertProfile" parameterType="Profile">
+   		INSERT INTO PROFILE VALUES(PRO_NO_SEQ.NEXTVAL, #{memberNo}, #{pLang1}, #{pLangGrade1}, #{pLang2}, 
+   		#{pLangGrade2}, #{pLang3}, #{pLangGrade3}, #{tLang1}, #{tLangGrade1}, #{tLang2}, 
+   		#{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, DEFAULT)
+   </insert>
    
    
    </mapper>

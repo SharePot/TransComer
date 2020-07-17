@@ -1,5 +1,7 @@
 package com.tc.spring.member.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -178,6 +181,7 @@ public class MemberController {
 	
 	public String pointChangeInsert(PointChange pc, Model model, HttpServletRequest request) {
 	
+		
 		return null;
 	}
 	
@@ -255,24 +259,89 @@ public class MemberController {
 	
 	//=============================================================================
 	
-	public ModelAndView profileList(ModelAndView mv) {
-		return null;
-	}
-	
-	public String profileInsert(Profile profile, Model model, HttpServletRequest request) {
-	
-		return null;
-	}
-	
-	public String ProfileUpdate (Profile profile,Model model,HttpServletRequest request) {
-	
-		return null;
-	}
-	
-	public String profileDelete(int memberNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
-	
-		return null;
-	}
-	
+	// 프로필 등록 회원 전체 리스트
+		@RequestMapping("profileList.tc")
+		public ModelAndView profileList(ModelAndView mv) {
+			ArrayList<Profile> pfList = memberService.selectProfileList();
+			if (!pfList.isEmpty()) {
+				mv.addObject("pfList", pfList);
+				mv.setViewName("member/memberList");
+			} else {
+				mv.setViewName("common/errorPage");
+			}
+
+			return mv;
+
+		}
+
+		// 프로필 상세보기
+		@RequestMapping("profileDetail.tc")
+		public String profileDetail(int memberNo, Model model) {
+			Profile profile = memberService.selectProfileOne(memberNo);
+			if (profile != null) {
+				model.addAttribute("profile", profile);
+				return "member/profileList";
+			} else {
+				return "common/errorPage";
+			}
+		}
+
+		// 프로필 등록 화면 열기
+		@RequestMapping("profileInsertView.tc")
+		public String profileInsertView() {
+			return "member/profileInsertForm";
+
+		}
+
+		// 프로필 등록
+		@RequestMapping(value = "profileInsert.tc", method = RequestMethod.POST)
+		public String insertProfile(Profile profile, Model model, HttpServletRequest request,
+				@RequestParam(name = "uploadFile", required = false) MultipartFile uploadFile) {
+
+			if (!uploadFile.getOriginalFilename().equals("")) {
+				String filePath = saveFile(uploadFile, request);
+
+				if (filePath != null) {
+					profile.setProfileFilePath(uploadFile.getOriginalFilename());
+				}
+			}
+
+			int result = 0;
+			String path = null;
+
+			result = memberService.insertProfile(profile, uploadFile, request);
+			System.out.println(profile.toString());
+
+			if (result > 0) {
+				path = "redirect:profileList.tc";
+			} else {
+				path = "common/errorPage";
+			}
+
+			return path;
+		}
+
+		// 파일 저장
+		public String saveFile(MultipartFile file, HttpServletRequest request) {
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			String savePath = root + "\\uploadFiles";
+
+			File folder = new File(savePath);
+
+			if (!folder.exists()) {
+				folder.mkdir();
+			}
+
+			String filePath = folder + "\\" + file.getOriginalFilename();
+
+			try {
+				file.transferTo(new File(filePath));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return filePath;
+
+		}
 	
 }
