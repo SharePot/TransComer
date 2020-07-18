@@ -1,0 +1,32 @@
+#boardWrapper {
+	width: 75%;
+	margin: 0 auto;
+}
+
+#boardWrapper h1 {
+    font-size: 35px;
+}
+
+#studySearchCondition{
+	width:10%;
+	float:left; 
+	align:center;
+/* 	margin-left:30%; */
+}
+#searchArea{
+	width:100%;
+	float:left;
+	align:center;
+		margin-left:30%;
+	
+}
+ #button{
+	float:left;
+	align:center;
+		margin-left:3%; 
+ }
+ #search{
+ float:left;
+ align:center;
+	margin-left:3%;
+ }

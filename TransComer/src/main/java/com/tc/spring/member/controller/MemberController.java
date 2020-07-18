@@ -250,7 +250,7 @@ public class MemberController {
 	public String pointRefundUpdate (PointRefund pointRefund,Model model) {
 		int result=memberService.updatePointRefund(pointRefund);
 		if(result>0) {
-			return "pointRefundList";
+			return "pointRefundList.tc";
 		}else{
 			model.addAttribute("msg","포인트 환급 확정 및 반려 실패");
 			return "common/errorPage";

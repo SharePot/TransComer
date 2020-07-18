@@ -11,8 +11,10 @@
 
 
 <body>
-	<c:import url="../common/menuBar.jsp" />
-	<br style="clear:both">
+<c:import url="../common/menuBar.jsp" />
+	 <div id="page-wrapper">
+	   <!-- Main -->
+        <section id="main">
 	<h1 align="center">스터디 수정페이지</h1>
 	
 	<br><br>
@@ -53,12 +55,19 @@
 			<tr>
 				<td colspan="2" align="center">
 				<input type="submit" value="수정">&nbsp; &nbsp;
+					<input type="reset" value="취소">
 				</td>
 			</tr>
 		</table>
 	</form>
 	
 	<p align="center">
+		<c:url var="home" value="home.tc"/>
+		<a href="${ home }">시작페이지로 이동</a>&nbsp;
+		<c:url var="list" value="studyList.tc"/>
+		<a href="${list }">목록 전체보기</a>
+	</p>
+<%-- 	<p align="center">
 		<c:url var="home" value="home.kh"/>
 		<a href="${ home }">Home</a>&nbsp;
 		<c:url var="studyList" value="studyList.tc"/>
@@ -67,7 +76,9 @@
 		header에 다양한 정보가 포함되어있는데 예를들어 user-agent(브라우저) referer(이전페이지) 들이 있습니다.-->
 		<c:url var="back" value="${header.referer }"/>
 		<a href="${back }">이전</a>
-	</p>
+	</p> --%>
 	<br><br><br><br><br><br><br><br><br><br><br><br>
+	</section>
+	</div>
 </body>
 </html>

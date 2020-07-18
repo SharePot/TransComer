@@ -4,49 +4,59 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="resources/css/pointRefundList.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>SharePot - 포인트 환급 신청</title>
 </head>
+<c:import url="../common/menuBar.jsp" />
 <body>
- <h1 align="center">포인트 환급 신청 목록</h1>
+
+<div id="page-wrapper">
+		<section id="main">
+		<div id="boardWrapper">
+ <h2 align="center">포인트 환급 신청 목록</h2>
+   <br><br><br>
    
-   <h3 align="center">
-      총 포인트 환급 신청 건수 : ${pi.listCount }
-   </h3>
+   <h3 align="center">  총 포인트 환급 신청 건수 : ${pi.listCount }</h3>
+   <br><br>
    
-   <table align="center" border="1" cellspacing="0" width="700" id="tb">
+   <table align="center" border="1" width="100%">
       <tr>
-         <th>번호</th>
-         <th width="300">고객 아이디</th>
-         <th>환급 신청 포인트</th>
+         <th>No</th>
+         <th>아이디</th>
+         <th>환급 포인트</th>
          <th>은행명</th>
-         <th>계좌주</th>
+         <th>예금주</th>
          <th>계좌번호</th>
-         <th>환급 신청 날짜</th>
-         <th>환급 여부</th>
+         <th>신청 날짜</th>
+         <th>환급 하기</th>
          <th>환급 확정 날짜</th>
       </tr>
       <c:forEach var="pointRefund" items="${list }">
          <tr>
-		         <td align="center">${pointRefund.refundNo }</td>
-	         <td align="center">${pointRefund.memberId }</td>
-	         <td align="center">${pointRefund.refundPoint }</td>
+		         <td >${pointRefund.refundNo }</td>
+	         <td>${pointRefund.memberId }</td>
+	         <td >${pointRefund.refundPoint }</td>
 	         <c:forTokens var="accountInfo" items="${pointRefund.accountInfo }" delims="," varStatus="status">
 					<c:if test="${status.index eq 0 }">
 							<td>
-								<input type="text" name="bank"  value="${accountInfo }" readonly size="6">
+								<input type="hidden" name="bank"  value="${accountInfo }" readonly size="6">
+							${accountInfo }
 							</td>
 					</c:if>
 					<c:if test="${status.index eq 1 }">
-							<td><input type="text" name="accountOwner" readonly value="${accountInfo }"></td>
+							<td><input type="hidden" name="accountOwner" readonly value="${accountInfo }">
+							${accountInfo }
+							</td>
 					</c:if>
 					<c:if test="${status.index eq 2}">
-							<td><input type="text" name="account" readonly  value="${accountInfo }"></td>
-						
+							<td><input type="hidden" name="account" readonly  value="${accountInfo }">
+							${accountInfo }
+							</td>
 					</c:if>
 				</c:forTokens>
-	         <td align="center">${pointRefund.refundRequestDate }</td>
-	         <td align="center">
+	         <td>${pointRefund.refundRequestDate }</td>
+	         <td>
 	         <c:if test="${pointRefund.refundYn eq 'Y' }">
 	         	확정
 	         </c:if>
@@ -60,7 +70,7 @@
 	         	반려
 	         </c:if>
 	         </td>
-         <td align="center">
+         <td>
          <c:if test= "${pointRefund.refundCompleteDate eq null }">
          	미확정
          </c:if>
@@ -70,14 +80,14 @@
       
       
       <!-- 페이징 처리 -->
-		      <tr align="center" height="20">
-		         <td colspan="6">
+		      <tr height="20">
+		         <td align="center" colspan="9">
 				   <!-- [이전] -->
 				<c:if test="${pi.currentPage <= 1 }">
 					[이전] &nbsp;
 				</c:if>
 				<c:if test="${pi. currentPage > 1 }">
-					<c:url var="before" value="blist.kh">
+					<c:url var="before" value="pointRefundList.tc">
 						<c:param name="page" value="${pi.currentPage - 1 }" />
 					</c:url>
 					<a href="${before }">[이전]</a> &nbsp;
@@ -90,7 +100,7 @@
 					<font color="red" size="4"><b>[${p }]</b></font>
 				</c:if>
 				<c:if test="${p ne currentPage }">
-					<c:url var="pagination" value="blist.kh">
+					<c:url var="pagination" value="pointRefundList.tc">
 						<c:param name="page" value="${p }" />
 					</c:url>
 					<a href="${pagination }">${p }</a> &nbsp;
@@ -106,7 +116,7 @@
 			[다음] &nbsp;
 		</c:if>
 		<c:if test="${pi. currentPage < pi.maxPage }">
-			<c:url var="after" value="blist.kh">
+			<c:url var="after" value="pointRefundList.tc">
 				<c:param name="page" value="${pi.currentPage + 1 }" />
 			</c:url>
 			<a href="${after }">[다음]</a> &nbsp;
@@ -116,6 +126,9 @@
          </td>
       </tr>
    </table>
+   </div>
+   </section>
+   </div>
    
    
 </body>

@@ -95,13 +95,13 @@
    </resultMap>
    
    <!-- 포인트 변동 리스트 전체-->
-   <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   <select id="selectAdminPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
    SELECT * FROM POINT_HISTORIES 
    </select>
    
    
       <!-- 포인트 변동 리스트 회원별-->
-   <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   <select id="selectMemberPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
    SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
    </select>
    
