@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -136,8 +137,16 @@ public class ReportController {
 		return path;
 	}
 	
+	/*ajax 에서 success로 넘어가는 조건은 http 요청에 성공했을 경우이다.
+	그런데 @RequestMapping 메서드에 적용되면 해당 메소드의 리턴값을  http 응답데이터로 사용하는 @ResponseBody를
+	빼먹었으니 요청데이터가 없었던것 같다.
+	그럼 @RequestBody  와 @ResponseBody 에 대해서 알아보자.
+	@RequestBody 와 @ResponseBody 어노테이션은 각각 HTTP 요청 몸체를 자바 객체로 변환하고 자바 객체를 HTTP 응답 몸체로 변환해주는데 사용된다.
+*/
+
 	// ajax로 처리했기 때문에 return으로 redirect:rANDblist.tc를 사용할 곳이 없게 된다.
 	// 신고 승인 후 해당 아이디 목록 어떻게 처리할지 생각
+	@ResponseBody
 	@RequestMapping("rupdate.tc")
 	public void updateReport(Report report, HttpServletRequest request) {
 		int result = 0;
@@ -147,6 +156,7 @@ public class ReportController {
 	}
 	
 	// 블랙리스트 해제 (ajax 처리)
+	@ResponseBody
 	@RequestMapping("bupdate.tc")
 	public void updateBlack(Member member, HttpServletRequest request) {
 		int result = 0;
@@ -156,6 +166,7 @@ public class ReportController {
 	}
 	
 	// 신고 반려 및 경고(ajax 처리)
+	@ResponseBody
 	@RequestMapping("rdelete.tc")
 	public void deleteReport(int reportNo, HttpServletRequest request) {
 		

@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
       		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
       		crossorigin="anonymous">
+      	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" ></script>
         
@@ -49,74 +50,91 @@
 			<!-- Header -->
 				<section id="header">
 
-					<!-- Logo -->
-						<h1><a href="index.html">SharePot</a></h1>
+				    <!-- Logo -->
+				    <h1><a href="index.html">SharePot</a></h1>
 
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li class="current"><a href="#">Home</a></li>
-								<li>
-                                    <a href="#">번역 의뢰</a>
-                                    <ul>
-										<li><a href="#">단순 의뢰</a></li>
-										<li><a href="#">1:1 의뢰</a></li>
-                                    </ul>
-                                </li>
-								<li><a href="#">번역 공유</a></li>
-								<li><a href="#">스터디</a></li>
-                                <li><a href="#">Q&amp;A</a></li>
-							</ul>
-						</nav>
-            	</section>
+				    <!-- Nav -->
+				    <nav id="nav">
+				        <ul>
+				            <li class="current"><a href="#">Home</a></li>
+				            <li>
+				                <a href="#">번역 의뢰</a>
+				                <ul>
+				                    <li><a href="#">단순 의뢰</a></li>
+				                    <li><a href="#">1:1 의뢰</a></li>
+				                </ul>
+				            </li>
+				            <li><a href="#">번역 공유</a></li>
+				            <li><a href="#">스터디</a></li>
+				            <li><a href="qlist.tc">Q&amp;A</a></li>
+				        </ul>
+				    </nav>
+				</section>
 
-			<!-- Main -->
+				<!-- Main -->
 				<section id="main">
-					<div class="container">
-						<div class="row">
-							<div class="col-12">
-							    <!--메인 내용 구역 1-->s
-							     <div class="container" align="center">
-							        
-							         <h1 class="text-primary">${qna.qnaTitle }</h1>
-							         
-							    
-							         <hr style="width:550px;">
-							         <p style="font-size:12px;">No.${qna.qnaNo }
-							             | 작성자 : ${qna.memberId }
-							             | 작성일 : ${qna.qnaWriteDate }
-							         </p>
+				    <div class="container d-flex justify-content-center" style="width:800px;">
+				        <div class="row" style="width:700px;">
+				            <div class="col-12" style="padding:30px 0px 0px 0px;">
+				                <!--메인 내용 구역 1-->
+				                <div class="row">
+				                    <div class="col-md-9">
+				                        <h1 class="text-dark" style="margin-top:10px;">${qna.qnaTitle }</h1>
+				                    </div>
 
-							         <h3>${qna.qnaContent }</h3>
+				                    <div class="col-md-3" align="right">
+				                        <h6 class="text-muted" style="margin-right:40px; margin-top:10px;">No.${qna.qnaNo }</h6>
+				                        <h6 class="text-muted" style="margin-right:20px;">${qna.qnaWriteDate }</h6>
+				                    </div>
+				                </div>
 
-							         <br>
-					                 <c:if test="${qna.memberId eq sessionScope.member.memberId }">
-					                     <a href="qupview.tc?qnaNo=${qna.qnaNo }">수정</a>
-					                     <a href="qdelete.tc?qnaNo=${qna.qnaNo }" onclick="return question();">삭제</a>
-					                 </c:if>
-					                 <a href="qlist.tc">목록</a>
-					                 <br>
-					                
-					                 <button type="button" class="btn btn-outline-secondary" onclick="javascript:history.back();">뒤로가기</button>
-						         
-							         
-							         <hr style="width:550px;">
-							     </div>
+				                <hr style="width:700px; margin:5px 0px 5px 0px;">
+				                <div class="row">
+				                    <div class="col-md-9">
+				                        <h4 class="text-dark" style="margin-left:10px;">${qna.memberId }</h4>
+				                    </div>
+				                    <div class="col-md-3" style="margin-top:5px;">
+				                        <i class="fas fa-comment" style="font-size:25px; margin-left:30px;"></i>
+				                        40
+				                        <i class="fas fa-eye" style="font-size:25px;"></i>
+				                        ${qna.qnaCount }
 
-							     <h4 align="center">comment ${fn:length(content.comments) }</h4>
+				                    </div>
+				                </div>
 
-							     <div class="container d-flex justify-content-center">
-							         <form class="form-inline d-flex justify-content-center" action="/writeComment" method="post">
-							             <input type="hidden" name="qnaNo" value="${qna.qnaNo }" />
-							             <input type="text" class="form-control" name="comment" placeholder="댓글입력" size="50">
-							             &nbsp;
-							             <button class="btn btn-outline-secondary" type="submit">작성</button>
-							         </form>
-							     </div>
+				                <br>
+				                <div class="card">
+				                    <img class="card-img-top" src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE" alt="Card image">
+				                    <div class="card-body">
+				                        <h5>${qna.qnaContent }</h5>
+				                    </div>
+				                </div>
+				                <br>
+				                <div align="right">
+				                	<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='qlist.tc'">목록</button>&nbsp;
+				                	<c:if test="${qna.memberId eq sessionScope.member.memberId }">
+				                		<button type="button" class="btn btn-primary btn-sm" onclick="location.href='qupview.tc?qnaNo=${qna.qnaNo }'">수정</button>&nbsp;
+				                		<button type="button" class="btn btn-warning btn-sm" onclick="return question();">삭제</button>
+				                	</c:if>
+				                </div>
+				                <hr style="width:700px;">
+				            </div>
+							
+							<!-- 댓글 부분 -->
+				            <h4 align="center">comment ${fn:length(content.comments) }</h4>
 
-							     <br>
+				            <div class="container d-flex justify-content-center">
+				                <form class="form-inline d-flex justify-content-center" action="/writeComment" method="post">
+				                    <input type="hidden" name="qnaNo" value="${qna.qnaNo }" />
+				                    <input type="text" class="form-control" name="comment" placeholder="댓글입력" size="50">
+				                    &nbsp;
+				                    <button class="btn btn-outline-secondary" type="submit">작성</button>
+				                </form>
+				            </div>
 
-							     <%-- <div class="container" style="width : 700px;">
+				            <br>
+
+				            <%-- <div class="container" style="width : 700px;">
 							         <table class=" table table-borderless">
 							             <thead>
 							                 <tr>
@@ -150,75 +168,84 @@
 							         </table>
 							     </div> --%>
 
-							     <%-- <form action="/updateComment" id="modifyForm" method="post">
+				            <%-- <form action="/updateComment" id="modifyForm" method="post">
 							         <input type="hidden" id="upcomment" name="upcomment">
 							         <input type="hidden" id="upproductNo" name="upproductNo" value="${content.productNo }">
 							         <input type="hidden" id="upCommentNo" name="upCommentNo">
 							     </form> --%>
-							     </div>
+				        </div>
 
-							     <Script>
-							         function question() {
-							             var result = window.confirm("정말로 삭제 하시겠습니까?");
-							             if (result) {
-							                 return true;
-							             } else {
-							                 return false;
-							             }
-							         }
+				        <Script>
+				        	/* 게시글 삭제 ajax */
+				            function question() {
+				                var result = window.confirm("정말로 삭제 하시겠습니까?");
+				                console.log(result);
+				                if (result) {
+				                	var qnaNo = ${qna.qnaNo }
+				                	$.ajax ({
+				                		url : "/qdelete.tc",
+				    					type : "GET",
+				    					datatype : 'json',
+				    					data : {"qnaNo" : qnaNo},
+				    					success : function(data) {
+				    						location.href = "qlist.tc";
+				    					}
+				                	});
+				                } else {
+				                    return false;
+				                }
+				            }
 
-							         function showModifyComment(obj, commentContent, memberId, commentRegDate) {
-							             console.log(obj);
-							             $(obj).parents("tr").next().show();
-							             $(obj).parents("tr").hide();
-							         }
+				            function showModifyComment(obj, commentContent, memberId, commentRegDate) {
+				                console.log(obj);
+				                $(obj).parents("tr").next().show();
+				                $(obj).parents("tr").hide();
+				            }
 
-							         function modifyCancel(obj) {
-							             $(obj).parents("tr").prev().show();
-							             $(obj).parents("tr").hide();
-							         }
+				            function modifyCancel(obj) {
+				                $(obj).parents("tr").prev().show();
+				                $(obj).parents("tr").hide();
+				            }
 
-							         function modifyComment(obj, commentNo) {
-							             var comment = $(".commentContentUpdate").val();
-							             $("#upCommentNo").val(commentNo);
-							             $("#upcomment").val(comment);
-							             $("#upproductNo").val($("#upproductNo").val());
-							             $("#modifyForm").submit();
-							         }
-							         $('#report').click(function() {
-							             $('#reportForm').show();
-							         });
-							         $('#reportCancel').click(function() {
-							             $('#reportForm').hide();
-							         })
-							         $("#reportCheck").click(function() {
-							             if (confirm("신고하시겠습니까?") == true) {
-							                 top.window.opener = top;
-							                 document.form.submit();
-							                 window.close();
-							             } else {
-							                 return false;
-							             }
-							         });
-							     </Script>
-							 </div>
-						</div>
-					</div>
+				            function modifyComment(obj, commentNo) {
+				                var comment = $(".commentContentUpdate").val();
+				                $("#upCommentNo").val(commentNo);
+				                $("#upcomment").val(comment);
+				                $("#upproductNo").val($("#upproductNo").val());
+				                $("#modifyForm").submit();
+				            }
+				            $('#report').click(function() {
+				                $('#reportForm').show();
+				            });
+				            $('#reportCancel').click(function() {
+				                $('#reportForm').hide();
+				            })
+				            $("#reportCheck").click(function() {
+				                if (confirm("신고하시겠습니까?") == true) {
+				                    top.window.opener = top;
+				                    document.form.submit();
+				                    window.close();
+				                } else {
+				                    return false;
+				                }
+				            });
+				        </Script>
+				    </div>
 				</section>
-				
 
-			<!-- Footer -->
+
+				<!-- Footer -->
 				<section id="footer">
-					<div class="container">
-						<div class="row">
-							<div class="col-8 col-12-medium">
-							</div>
-							<div class="col-4 col-12-medium">
-							</div>
-							<div class="col-12">
-							</div>
-						</div>
-					</div>
+				    <div class="container">
+				        <div class="row">
+				            <div class="col-8 col-12-medium">
+				            </div>
+				            <div class="col-4 col-12-medium">
+				            </div>
+				            <div class="col-12">
+				            </div>
+				        </div>
+				    </div>
 				</section>
 
 		</div>

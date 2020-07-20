@@ -113,8 +113,9 @@
 							                <tr>
 							                    <th>파일 업로드</th>
 							                    <td>
-							                        <input type="file" name="uploadFile" class="form-control-file border">
+							                        <input type="file" multiple="multiple" name="uploadFile" class="form-control-file border"> 
 							                    </td>
+							                        
 							                </tr>
 							                <tr align="center">
 							                    <td colspan="2">

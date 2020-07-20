@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tc.spring.files.domain.Files;
 import com.tc.spring.files.service.FileService;
@@ -20,11 +21,12 @@ public class FileController {
 	@Autowired
 	private FileService fileService;
 	
-	public int insertFile(Files files, Model model, @RequestParam(name="uploadFile",required=false) MultipartFile uploadFile, HttpServletRequest request, String memberId) {
+	public int insertFile(Files files, Model model, MultipartFile uploadFile, HttpServletRequest request, String memberId) {
 		
 		if(!uploadFile.getOriginalFilename().equals("")) { 
 			String filePath = saveFile(uploadFile, request, memberId);
 			if(filePath != null) {
+				files.setMemberId(memberId);
 				files.setFileName(uploadFile.getOriginalFilename());
 				files.setFilePath(filePath);
 			}
@@ -48,10 +50,10 @@ public class FileController {
 
 		// 만약 폴더가 없을 경우 자동 생성
 		if(!folder.exists()) {
-			folder.mkdir();
+			folder.mkdirs();
 		}
 
-		String filePath=folder+"\\"+file.getOriginalFilename();
+		String filePath=savePath+"\\"+file.getOriginalFilename();
 		
 		try {
 			//실제로 파일 저장
@@ -62,7 +64,7 @@ public class FileController {
 		return filePath;
 	}
 	
-	public int updateFile(Files files, Model model,HttpServletRequest request, MultipartFile reloadFile, String memberId) {
+	public int updateFile(Files files, Model model, HttpServletRequest request, MultipartFile reloadFile, String memberId) {
 		// 새로 업로드된 파일이 있을 경우
 		if (reloadFile != null && !reloadFile.isEmpty()) {
 			// 기존 업로드된 파일이 있을 경우
@@ -90,8 +92,6 @@ public class FileController {
 		}*/
 		return result;
 	}
-	
-	
 	
 	public int deleteFile(String fileName, HttpServletRequest request, String memberId) {
 		// 파일 저장 경로 설정

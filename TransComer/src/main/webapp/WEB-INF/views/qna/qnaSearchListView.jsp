@@ -31,8 +31,8 @@
 		    ul>li {
 		        font-color: black;
 		    }
-		    .qnaTb>thead {
-		    	text-align: center;
+		    td {
+		    	text-align:center;
 		    }
 		</style>
 	</head>
@@ -58,7 +58,7 @@
                                 </li>
 								<li><a href="#">번역 공유</a></li>
 								<li><a href="#">스터디</a></li>
-                                <li><a href="#">Q&amp;A</a></li>
+                                <li><a href="qlist.tc">Q&amp;A</a></li>
 							</ul>
 						</nav>
             </section>
@@ -74,17 +74,20 @@
 		                        	<button type="button" class="btn btn-primary" onclick="location.href='qlist.tc'">전체 리스트</button>
 		                        </div> 
 				                <hr>
+				                <div align="right">
+				                	<a href="qnaWriterView.tc" style="margin-right:10px;"><i class="fas fa-edit fa-2x"></i></a>
+				                </div>
 				                <br>
 				                <div class="container">
 				                    <table class="table table-hover qnaTb">
 				                        <thead class="thead-light">
 				                            <tr>
-				                                <th style="width:10%;">글번호</th>
-				                                <th style="width:40%;">제목</th>
-				                                <th style="width:10%;">작성자</th>
-				                                <th style="width:10%;">작성일</th>
-				                                <th style="width:10%;">조회</th>
-				                                <th style="width:10%;">댓글</th>
+				                                <th style="width:10%; text-align:center;">글번호</th>
+				                                <th style="width:40%; text-align:center;" >제목</th>
+				                                <th style="width:10%; text-align:center;">작성자</th>
+				                                <th style="width:10%; text-align:center;">작성일</th>
+				                                <th style="width:10%; text-align:center;">조회</th>
+				                                <th style="width:10%; text-align:center;">댓글</th>
 				                            </tr>
 				                        </thead>
 
