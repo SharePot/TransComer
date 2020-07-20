@@ -166,16 +166,45 @@ public class MemberController {
 	
 	//포인트변동=============================================================================
 	
+	
+	
 	//관리자페이지에서 포인트 변동리스트 전체
 	@RequestMapping("pointchangList.tc")
-	public ModelAndView pointChageList(ModelAndView mv,Integer page) {
-		return null;
+	public ModelAndView pointChageList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
+		int currentPage=(page!=null) ? page :1;
+		int pointChangeListCount=memberService.getPointRefundListCount();
+		
+		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
+		ArrayList<PointChange> list=memberService.selectPointChangeList(pi);
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list",list);
+			mv.addObject("pi",pi);
+			mv.setViewName("member/pointChangeList");
+		}else {
+			mv.addObject("msg","포인트 변동 리스트 조회 실패");
+			 mv.setViewName("common/errorPage");
+		}
+		
+		
+		return mv;
 	}
+	
+
+
 	
 	//회원 마이페이지에서 포인트 변동리스트 전체
 		@RequestMapping("pointchangMemberList.tc")
-		public ModelAndView pointChageMemberList(ModelAndView mv,Integer page) {
-			return null;
+		public String pointChageMemberList(String memberId,Model model,@RequestParam(value="page",required=false)Integer page) {
+		int currentPage=(page!=null) ? page: 1;
+			int pointChangeMemberListCount=memberService.getPointChangeMemberCount(memberId);
+			MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointChangeMemberListCount);
+			ArrayList<PointChange> list=memberService.selectPointChangeMemberList(pi, memberId);
+			
+			model.addAttribute("list",list);
+			model.addAttribute("memberId",memberId);
+			model.addAttribute("pi",pi);
+			return "member/memberPointChangView";
 		}
 		
 	

@@ -94,8 +94,19 @@
    <result property="pointContent" column="POINT_CONTENT"/>
    </resultMap>
    
+   
+      <!-- 회원 전체 인원수  -->
+   <select id="getPointChangeMemberListCount" resultType="_int">
+   	SELECT COUNT(*) FROM POINT_HISTORIES 
+   </select>
+   
+      <!-- 회원 전체 인원수  -->
+   <select id="getPointChangeListCount" resultType="_int">
+   	SELECT COUNT(*) FROM POINT_HISTORIES  WHERE MEMBER_ID=#{memberId}
+   </select>
+   
    <!-- 포인트 변동 리스트 전체-->
-   <select id="selectAdminPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   <select id="selecPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
    SELECT * FROM POINT_HISTORIES 
    </select>
    

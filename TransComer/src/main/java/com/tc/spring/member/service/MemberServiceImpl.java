@@ -110,10 +110,28 @@ public class MemberServiceImpl implements MemberService {
 	}
 	//포인트 변동=====================================================================================
 	@Override
-	public ArrayList<PointChange> selectPointChangeList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi) {
+		return memberStore.selectPointChangeList(pi);
 	}
+	
+	@Override
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId) {
+		return memberStore.selectPointChangeMemberList(pi, memberId);
+	}
+	
+
+	@Override
+	public int getPointChangeCount() {
+		return memberStore.getPointChangeCount();
+	}
+
+	@Override
+	public int getPointChangeMemberCount(String memberId) {
+		return memberStore.getPointChangeMemberCount(memberId);
+	}
+
+
+
 
 	@Override
 	public PointChange selectPointChangeOne() {

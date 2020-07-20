@@ -76,7 +76,7 @@
 				
 				
 			<!-- 페이지 -->
-			<c:forEach var="p" begin="${pi.studyCurrentPage }" end="${pi.studyEndPage }">
+			<c:forEach var="p" begin="${pi.studyStartPage }" end="${pi.studyEndPage }">
 				<c:if test="${p eq studyCurrentPage }">
 					<font color="red" size="4"><b>[${p }]</b></font>
 				</c:if>

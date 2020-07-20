@@ -117,11 +117,39 @@ public class MemberStoreLogic implements MemberStore {
 	
 	//포인트 변동=====================================================================================
 	@Override
-	public ArrayList<PointChange> selectPointChangeList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.selecPointChangeList",null,rowbounds);
+	}
+	
+
+	@Override
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberPointChangeList",memberId,rowbounds);
+	}
+	
+
+	@Override
+	public int getPointChangeCount() {
+		return sqlSession.selectOne("memberMapper.getPointChangeListCount");
 	}
 
+	@Override
+	public int getPointChangeMemberCount(String memberId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.getPointChangeMemberListCount",memberId);
+	}
+
+
+	
+	
+
+	
+
+	
 	@Override
 	public PointChange selectPointChangeOne() {
 		// TODO Auto-generated method stub
@@ -144,6 +172,7 @@ public class MemberStoreLogic implements MemberStore {
 	public int deletePoingChange(int pointNo) {
 		// TODO Auto-generated method stub
 		return 0;
+		
 	}
 //프로필===============================================================
 	@Override
@@ -173,9 +202,7 @@ public class MemberStoreLogic implements MemberStore {
 		return 0;
 	}
 
-	
-	
-	
+
 	
 	
 	

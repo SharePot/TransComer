@@ -48,7 +48,13 @@ public interface MemberStore {
 	public ArrayList<PointRefund> selectPointRefundCheck(String refundYn);
 	//포인트 변동=====================================================
 	
-	public ArrayList<PointChange> selectPointChangeList();
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi);
+	
+	public int getPointChangeCount();
+	
+	public int getPointChangeMemberCount(String memberId);
+	
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId);
 	
 	public PointChange selectPointChangeOne();
 	

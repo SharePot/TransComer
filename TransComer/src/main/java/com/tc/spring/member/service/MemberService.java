@@ -53,7 +53,14 @@ public interface MemberService {
 	
 	//=====================================================포인트 변동
 	
-	public ArrayList<PointChange> selectPointChangeList();
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi);
+	
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId);
+	
+	
+	public int getPointChangeCount();
+	
+	public int getPointChangeMemberCount(String memberId);
 	
 	public PointChange selectPointChangeOne();
 	
@@ -62,6 +69,8 @@ public interface MemberService {
 	public int updatePointChage(PointChange pc);
 	
 	public int deletePoingChange(int pointNo);
+	
+	
 	
 	//====================================================프로필
 	
