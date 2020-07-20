@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.review.domain.Review;
 
@@ -30,8 +31,11 @@ public interface PersonalStore {
 	public ArrayList<Personal> searchPersonalList(PersonalSearch search, PersonalPageInfo pi);
 
 	public int getSearchListCount(PersonalSearch search);
+	
+	public int insertRequest(PersonalReqRep personalReqRep);
 
 	public int insertReview(Review review);
+
 
 
 }

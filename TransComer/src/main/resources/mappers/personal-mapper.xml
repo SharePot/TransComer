@@ -118,10 +118,18 @@
 		WHERE PERSONAL_NO=#{personalNo}
 	</update>
 	
+	
 	<!-- 1:1 번역가 게시글 삭제 -->
 	<delete id="deletePersonal" parameterType="_int" >
 		DELETE FROM PERSONAL WHERE PERSONAL_NO=#{personalNo}
 	</delete>
+	
+	
+	<insert id="insertRequest" parameterType="personalReqRep">
+		INSERT INTO PERSONAL_REQ_REP VALUES(P_REQ_NO_SEQ.NEXTVAL, #{pReqContent}, #{pReqPLang}, #{pReqTLang}, #{pReqDetail}, SYSDATE, SYSDATE,
+		#{pRepTranslator}, #{pRepResult}, #{pReqPrice}, 'N', 'N', #{memberId})
+	</insert>
+	
 	
 	<!-- 1:1 게시글 리뷰 작성 -->
 	<insert id="insertReview" parameterType="Review">

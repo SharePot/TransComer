@@ -3,6 +3,7 @@ package com.tc.spring.personal.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,6 +24,7 @@ import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.service.PersonalService;
 import com.tc.spring.review.domain.Review;
@@ -69,7 +72,6 @@ public class PersonalController {
 				personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1] + ",&nbsp" + tLangList[2]);
 			}
 		}
-
 		
 		if (!list.isEmpty()) {
 			mv.addObject("list", list);
@@ -136,8 +138,7 @@ public class PersonalController {
 		}else {
 			personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1] + ",&nbsp" + tLangList[2]);
 		}
-
-		
+	
 		if (personal != null) {
 			mv.addObject("personal", personal).addObject("currentPage", currentPage)
 					.setViewName("personal/personalDetailView");
@@ -291,6 +292,10 @@ public class PersonalController {
 	}
 	
 	
+	
+	//의뢰신청==========================================================================
+	
+	
 	// 1:1 의뢰 신청폼으로 이동하기 
 	@RequestMapping("pRequestView.tc")
 	public String pRequestView(int personalNo, Model model) {
@@ -298,6 +303,59 @@ public class PersonalController {
 		return "personal/personalRequestForm";
 	}
 	
+	
+	// 1:1 의뢰 신청 등록하기
+	@RequestMapping(value = "pReqInsert.tc", method=RequestMethod.POST)
+	public String requestInsert(PersonalReqRep personalReqRep, Model model, @RequestParam(name="uploadFile",required=false)MultipartFile uploadFile,HttpServletRequest request) {
+		
+		String path = null;
+		int result = personalService.insertRequest(personalReqRep, uploadFile, request);
+		if (result > 0) {
+			return "redirect:plist.tc";
+		} else {
+			model.addAttribute("msg", "등록실패");
+			path = "common/errorPage";
+		}
+		return path;
+		
+	}
+	
+	
+	
+	// 1:1 의뢰 신청 다중파일 저장
+	/*@RequestMapping(value = "reqUploadFile")
+	    public String reqSaveFile(MultipartHttpServletRequest mtfRequest) {
+	        List<MultipartFile> fileList = mtfRequest.getFiles("file");
+	        
+	        String root = mtfRequest.getSession().getServletContext().getRealPath("resources");
+	        String savePath = root + "\\reqUploadFile";
+	    
+	        File folder = new File(savePath);
+			
+			if(!folder.exists()) {
+				folder.mkdir();
+			}
+			
+	        for (MultipartFile mf : fileList) {
+
+	            String filePath = folder+"\\"+mf.getOriginalFilename();
+	            
+	            try {
+	                mf.transferTo(new File(filePath));
+	            } catch (IllegalStateException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            } catch (IOException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	            return filePath;
+	        }
+	    }*/
+
+
+	
+	//리뷰=============================================================================
 	
 	// 1:1 리뷰 작성하기
 	@RequestMapping("pReview.tc")
