@@ -135,5 +135,11 @@
 	<insert id="insertReview" parameterType="Review">
 		INSERT INTO REVIEW VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, #{revContent}, '', SYSDATE, #{personalNo}, #{memberId})
 	</insert>
-
+	
+	<!-- 1:1 의뢰 신청 및 결과 -->
+	<resultMap type="" id="">
+		<id property="" column=""/>
+		<result property="" column=""/>
+	</resultMap>
+	
 </mapper>
