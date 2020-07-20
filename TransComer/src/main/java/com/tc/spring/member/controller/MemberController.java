@@ -36,15 +36,6 @@ import com.tc.spring.study.domain.StudySearch;
 @Controller
 public class MemberController {
 
-	@RequestMapping("myPage.tc")
-	   public String myPage() {
-	      return "member/myPage";
-	   }
-	   
-	   @RequestMapping("adminPage.tc")
-	   public String adminPage() {
-	      return "member/adminPage";
-	   }
 	
 	@Autowired
 	private MemberService memberService;
