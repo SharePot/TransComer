@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalSearch;
+import com.tc.spring.review.domain.Review;
 
 @Repository("personalStore")
 public class PersonalStoreLogic implements PersonalStore {
@@ -26,9 +27,8 @@ public class PersonalStoreLogic implements PersonalStore {
 	}
 
 	@Override
-	public Personal selectOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public Personal selectOne(int personalNo) {
+		return sqlSession.selectOne("personalMapper.selectPersonalOne", personalNo);
 	}
 
 	@Override
@@ -47,15 +47,15 @@ public class PersonalStoreLogic implements PersonalStore {
 	}
 
 	@Override
-	public int updatePersonal() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updatePersonal(Personal personal) {
+		System.out.println("---store 결과 : " + sqlSession.update("personalMapper.updatePersonal", personal));
+		System.out.println(">> store에 있습니다, personal :" + personal.toString());
+		return sqlSession.update("personalMapper.updatePersonal", personal);
 	}
 
 	@Override
-	public int deletePersonal() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deletePersonal(int personalNo) {
+		return sqlSession.update("personalMapper.deletePersonal", personalNo);
 	}
 
 	@Override
@@ -67,7 +67,13 @@ public class PersonalStoreLogic implements PersonalStore {
 
 	@Override
 	public int getSearchListCount(PersonalSearch search) {
-		//System.out.println("===스토어가 가져온 갯수 : " + sqlSession.selectOne("personalMapper.getSearchListCount",search));
 		return sqlSession.selectOne("personalMapper.getSearchListCount", search);
 	}
+	
+	@Override
+	public int insertReview(Review review) {
+		return sqlSession.insert("personalMapper.insertReview", review);
+	}
+	
+	
 }

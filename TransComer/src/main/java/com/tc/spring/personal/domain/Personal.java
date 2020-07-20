@@ -15,6 +15,7 @@ public class Personal {
 	private int personalCount;
 	private String personalDStatus;
 	private String powerYN;
+	private String personalFilePath;
 	private String memberId;
 
 	public Personal() {
@@ -23,7 +24,7 @@ public class Personal {
 
 	public Personal(int personalNo, String personalTitle, String personalContent, Date personalDate,
 			String personalPLang, String personalTLang, int personalSchedule, int personalPrice, int personalCount,
-			String personalDStatus, String powerYN, String memberId) {
+			String personalDStatus, String powerYN, String personalFilePath, String memberId) {
 		super();
 		this.personalNo = personalNo;
 		this.personalTitle = personalTitle;
@@ -36,9 +37,11 @@ public class Personal {
 		this.personalCount = personalCount;
 		this.personalDStatus = personalDStatus;
 		this.powerYN = powerYN;
+		this.personalFilePath = personalFilePath;
 		this.memberId = memberId;
 	}
 
+	
 	public int getPersonalNo() {
 		return personalNo;
 	}
@@ -127,6 +130,14 @@ public class Personal {
 		this.powerYN = powerYN;
 	}
 
+	public String getPersonalFilePath() {
+		return personalFilePath;
+	}
+
+	public void setPersonalFilePath(String personalFilePath) {
+		this.personalFilePath = personalFilePath;
+	}
+
 	public String getMemberId() {
 		return memberId;
 	}
@@ -135,13 +146,15 @@ public class Personal {
 		this.memberId = memberId;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Personal [personalNo=" + personalNo + ", personalTitle=" + personalTitle + ", personalContent="
 				+ personalContent + ", personalDate=" + personalDate + ", personalPLang=" + personalPLang
 				+ ", personalTLang=" + personalTLang + ", personalSchedule=" + personalSchedule + ", personalPrice="
 				+ personalPrice + ", personalCount=" + personalCount + ", personalDStatus=" + personalDStatus
-				+ ", powerYN=" + powerYN + ", memberId=" + memberId + "]";
+				+ ", powerYN=" + powerYN + ", personalFilePath=" + personalFilePath + ", memberId=" + memberId + "]";
 	}
-
+	
+	
 }

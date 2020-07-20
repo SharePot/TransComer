@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalSearch;
+import com.tc.spring.review.domain.Review;
 import com.tc.spring.study.domain.StudySearch;
 
 public interface PersonalService {
@@ -17,12 +18,13 @@ public interface PersonalService {
 
 	/**
 	 * 1:1의뢰 게시판 전체 조회 서비스
+	 * @param personalNoint 
 	 * 
 	 * @param
 	 * @return list
 	 */
 
-	public Personal selectOne();
+	public Personal selectOne(int personalNo);
 
 	/**
 	 * 1:1의뢰 게시판 상세조회용 서비스
@@ -49,12 +51,8 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int insertPersonal(Personal personal);
+	public int insertPersonal(Personal personal, MultipartFile file, HttpServletRequest request);
 
-	/*
-	 * public int insertPersonal(Personal personal, MultipartFile file,
-	 * HttpServletRequest request);
-	 */
 	/**
 	 * 1:1의뢰 게시판 등록 서비스
 	 * 
@@ -62,7 +60,7 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int updatePersonal();
+	public int updatePersonal(Personal personal);
 
 	/**
 	 * 1:1의뢰 게시판 수정용 서비스
@@ -71,7 +69,7 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int deletePersonal();
+	public int deletePersonal(int personalNo);
 
 	/**
 	 * 1:1의뢰 게시판 삭제용 서비스
@@ -96,4 +94,6 @@ public interface PersonalService {
 	 * @param personalNo
 	 * @return
 	 */
+
+	public int insertReview(Review review);
 }

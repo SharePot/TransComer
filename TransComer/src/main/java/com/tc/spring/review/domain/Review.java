@@ -5,25 +5,25 @@ import java.sql.Date;
 public class Review {
 
 	private int reviewNo;
-	private String revWriteMemberId;
 	private String revTargetMemberId;
 	private String revContent;
 	private int starRage;
 	private Date revWriteDate;
 	private int personalNo;
+	private String memberId;
 	
 	public Review() {}
 
-	public Review(int reviewNo, String revWriteMemberId, String revTargetMemberId, String revContent, int starRage,
-			Date revWriteDate, int personalNo) {
+	public Review(int reviewNo, String revTargetMemberId, String revContent, int starRage, Date revWriteDate,
+			int personalNo, String memberId) {
 		super();
 		this.reviewNo = reviewNo;
-		this.revWriteMemberId = revWriteMemberId;
 		this.revTargetMemberId = revTargetMemberId;
 		this.revContent = revContent;
 		this.starRage = starRage;
 		this.revWriteDate = revWriteDate;
 		this.personalNo = personalNo;
+		this.memberId = memberId;
 	}
 
 	public int getReviewNo() {
@@ -32,14 +32,6 @@ public class Review {
 
 	public void setReviewNo(int reviewNo) {
 		this.reviewNo = reviewNo;
-	}
-
-	public String getRevWriteMemberId() {
-		return revWriteMemberId;
-	}
-
-	public void setRevWriteMemberId(String revWriteMemberId) {
-		this.revWriteMemberId = revWriteMemberId;
 	}
 
 	public String getRevTargetMemberId() {
@@ -82,12 +74,21 @@ public class Review {
 		this.personalNo = personalNo;
 	}
 
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
 	@Override
 	public String toString() {
-		return "Review [reviewNo=" + reviewNo + ", revWriteMemberId=" + revWriteMemberId + ", revTargetMemberId="
-				+ revTargetMemberId + ", revContent=" + revContent + ", starRage=" + starRage + ", revWriteDate="
-				+ revWriteDate + ", personalNo=" + personalNo + "]";
+		return "Review [reviewNo=" + reviewNo + ", revTargetMemberId=" + revTargetMemberId + ", revContent="
+				+ revContent + ", starRage=" + starRage + ", revWriteDate=" + revWriteDate + ", personalNo="
+				+ personalNo + ", memberId=" + memberId + "]";
 	}
+
 	
 	
 }

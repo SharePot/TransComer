@@ -73,14 +73,14 @@
 <body class="homepage is-preload">
 <c:import url="../common/menuBar.jsp"/>
     <div id="page-wrapper">
-
+    
         <!-- Main -->
         <section id="main">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <center>
-                            <h2>' ${loginUser.memberId } ' 님의 번역가 등록</h2>
+                            <h2>' ${loginUser.memberId } ' 님의 번역가 등록 수정</h2>
                         </center>
                         <hr>
                         <div class="card" id="introduce">
@@ -93,89 +93,108 @@
                                 <p class="card-text"> </p>
                             </div>
                         </div>
-                        <form action="pWriterInsert.tc" method="post" id="WriterForm" enctype="Multipart/form-data">
+                        <form action="pWriterUpdate.tc" method="post" id="WriterForm" enctype="multipart/form-data">
+                        <input type="hidden" name="personalNo" value="${personal.personalNo }">
                             <div id="profileContent">
                                 <br>
                                 <label>글제목</label>
-                                <input type="text" name="personalTitle" placeholder="제목을 입력해주세요" value="" maxlength="52">
+                                <input type="text" name="personalTitle" placeholder="제목을 입력해주세요" value="${personal.personalTitle }" maxlength="52">
                                 <br><br>
                                 <label>글내용</label>
-                                <textarea type="text" name="personalContent" placeholder="내용을 입력해주세요" style=" width: 70%; display: inline-block; margin-left: 20%;"></textarea>
+                                <textarea name="personalContent" placeholder="내용을 입력해주세요" style=" width: 70%; display: inline-block; margin-left: 20%;">${personal.personalContent }</textarea>
                                 <br><br>
                                 <label>대표 사진</label>
-                                <input type="file" name="uploadFile" id="profile_pt" onchange="previewImage(this,'View_area')">
+                                <br> <input type="file" name="reloadFile" id="profile_pt" onchange="previewImage(this,'View_area')">
+								<c:if test="${ !empty personal.personalFilePath }">
+									<a href="${contextPath }/resources/pUploadFiles/${personal.personalFilePath}">${personal.personalFilePath}</a>
+								</c:if>
                                 <!--이미지 미리보기-->
                                 <div id='View_area' style=' margin-left: 30%; margin-top: 10px; position:relative; width: 300px; height: 200px; color: black; border: 0px solid black; dispaly: inline;'></div>
                                 <p style="font-size: 10pt;  margin-left: 30%;">
                                     (이미지 크기는 300*200px을 권장합니다.)
                                 </p>
                                 <label>작업 일정</label>
-                                <input type="text" name="personalSchedule" style="width:120px" placeholder="최대 소요 기간" value="">&nbsp;일
+                                <input type="text" name="personalSchedule" style="width:120px" placeholder="최대 소요 기간" value="${personal.personalSchedule} ">&nbsp;일
                                 <br><br>
                                 <label>개발 언어</label>
-                                    <select name='pLang1' class="pLang_first" style="margin-left: 20%; width:20%;">
-                                        <option value='없음' selected>-- 필수 선택--</option>
-                                        <option value='JAVA'>JAVA</option>
-                                        <option value='Javascript'>Javascript</option>
-                                        <option value='C'>C</option>
-                                        <option value='C++'>C++</option>
-                                        <option value='C#'>C#</option>
-                                        <option value='Python'>Python</option>
-                                        <option value='PHP'>PHP</option>
-                                    </select>
+                                <c:forTokens var="pLang" items="${personal.personalPLang }" delims="," varStatus="status">
+									<c:if test="${status.index == 0 }">
+	                                    <select name=pLang1 class="pLang_first" style="margin-left: 20%; width:20%;">
+	                                        <option value='없음'>-- 필수 선택--</option>
+	                                        <option value='JAVA' <c:if test="${pLang eq 'JAVA'}">selected</c:if>>JAVA </option>
+	                                        <option value='Javascript' <c:if test="${pLang eq 'Javascript'}">selected</c:if>>Javascript</option>
+	                                        <option value='C' <c:if test="${pLang eq 'C'}">selected</c:if>>C</option>
+	                                        <option value='C++' <c:if test="${pLang eq 'C++'}">selected</c:if>>C++</option>
+	                                        <option value='C#' <c:if test="${pLang eq 'C#'}">selected</c:if>>C#</option>
+	                                        <option value='Python' <c:if test="${pLang eq 'Python'}">selected</c:if>>Python</option>
+	                                        <option value='PHP' <c:if test="${pLang eq 'PHP'}">selected</c:if>>PHP</option>
+	                                    </select>
+									</c:if>
+									
+									<c:if test="${status.index == 1 }">
+	                                    <select name='pLang2' class="pLang_second" style="margin-top:10px; width:20%;">
+	                                        <option value='없음' selected>-- 선택 --</option>
+	                                        <option value='JAVA' <c:if test="${pLang eq 'JAVA'}">selected</c:if>>JAVA </option>
+	                                        <option value='Javascript' <c:if test="${pLang eq 'Javascript'}">selected</c:if>>Javascript</option>
+	                                        <option value='C' <c:if test="${pLang eq 'C'}">selected</c:if>>C</option>
+	                                        <option value='C++' <c:if test="${pLang eq 'C++'}">selected</c:if>>C++</option>
+	                                        <option value='C#' <c:if test="${pLang eq 'C#'}">selected</c:if>>C#</option>
+	                                        <option value='Python' <c:if test="${pLang eq 'Python'}">selected</c:if>>Python</option>
+	                                        <option value='PHP' <c:if test="${pLang eq 'PHP'}">selected</c:if>>PHP</option>
+	                                        <option value='없음' <c:if test="${pLang eq ''}">selected</c:if>>없음</option>
+	                                    </select>
+									</c:if>
+									<c:if test="${status.index == 2 }">
+	                                    <select name='pLang3' class="pLang_third" style="margin-top:10px; width:20%;">
+	                                        <option value='없음' selected>-- 선택 --</option>
+	                                        <option value='JAVA' <c:if test="${pLang eq 'JAVA'}">selected</c:if>>JAVA </option>
+	                                        <option value='Javascript' <c:if test="${pLang eq 'Javascript'}">selected</c:if>>Javascript</option>
+	                                        <option value='C' <c:if test="${pLang eq 'C'}">selected</c:if>>C</option>
+	                                        <option value='C++' <c:if test="${pLang eq 'C++'}">selected</c:if>>C++</option>
+	                                        <option value='C#' <c:if test="${pLang eq 'C#'}">selected</c:if>>C#</option>
+	                                        <option value='Python' <c:if test="${pLang eq 'Python'}">selected</c:if>>Python</option>
+	                                        <option value='PHP' <c:if test="${pLang eq 'PHP'}">selected</c:if>>PHP</option>
+	                                        <option value='없음' <c:if test="${pLang eq ''}">selected</c:if>>없음</option>
+	                                    </select>
+									</c:if>                                	
+                                </c:forTokens>
 
-                                    <select name='pLang2' class="pLang_second" style="margin-top:10px; width:20%;">
-                                        <option value='없음' selected>-- 선택 --</option>
-                                        <option value='JAVA'>JAVA</option>
-                                        <option value='Javascript'>Javascript</option>
-                                        <option value='C'>C</option>
-                                        <option value='C++'>C++</option>
-                                        <option value='C#'>C#</option>
-                                        <option value='Python'>Python</option>
-                                        <option value='PHP'>PHP</option>
-                                        <option value='없음'>없음</option>
-                                    </select>
-
-                                    <select name='pLang3' class="pLang_third" style="margin-top:10px; width:20%;">
-                                        <option value='없음' selected>-- 선택 --</option>
-                                        <option value='JAVA'>JAVA</option>
-                                        <option value='Javascript'>Javascript</option>
-                                        <option value='C'>C</option>
-                                        <option value='C++'>C++</option>
-                                        <option value='C#'>C#</option>
-                                        <option value='Python'>Python</option>
-                                        <option value='PHP'>PHP</option>
-                                        <option value='없음'>없음</option>
-                                    </select>
-                                
 
                                 <br><br>
                                 <label>사용 언어</label>
-                                <select name='tLang1' class="tLang_first" style="margin-left: 20%; width:20%;">
-                                        <option value='없음' selected>-- 필수 선택--</option>
-                                        <option value='영어'>영어</option>
-                                        <option value='중국어'>중국어</option>
-                                        <option value='일본어'>일본어</option>
-                                    </select>
-                                 <select name='tLang2' class="pLang_second" style="margin-top:10px; width:20%;">
-                                        <option value='없음' selected>-- 선택 --</option>
-                                        <option value='영어'>영어</option>
-                                        <option value='중국어'>중국어</option>
-                                        <option value='일본어'>일본어</option>
-                                        <option value='없음'>없음</option>
-                                    </select>
-                                 <select name='tLang3' class="pLang_third" style="margin-top:10px; width:20%;">
-                                        <option value='없음' selected>-- 선택 --</option>
-                        				<option value='영어'>영어</option>
-                                        <option value='중국어'>중국어</option>
-                                        <option value='일본어'>일본어</option>
-                                        <option value='없음'>없음</option>
-                                    </select>
-                                    
+								<c:forTokens var="tLang" items="${personal.personalTLang }" delims="," varStatus="status">
+									<c:if test="${status.index == 0 }">
+										<select name='tLang1' class="tLang_first" style="margin-left: 20%; width: 20%;">
+											<option value='없음'>-- 필수 선택--</option>
+											<option value='영어' <c:if test="${tLang eq '영어'}">selected</c:if>>영어</option>
+											<option value='중국어' <c:if test="${tLang eq '중국어'}">selected</c:if>>중국어</option>
+											<option value='일본어' <c:if test="${tLang eq '일본어'}">selected</c:if>>일본어</option>
+										</select>
+									</c:if>
+									<c:if test="${status.index == 1 }">
+										<select name='tLang2' class="pLang_second" style="margin-top: 10px; width: 20%;">
+											<option value='없음'>-- 선택 --</option>
+											<option value='영어' <c:if test="${tLang eq '영어'}">selected</c:if>>영어</option>
+											<option value='중국어' <c:if test="${tLang eq '중국어'}">selected</c:if>>중국어</option>
+											<option value='일본어' <c:if test="${tLang eq '일본어'}">selected</c:if>>일본어</option>
+											<option value='없음' <c:if test="${tLang eq ''}">selected</c:if>>없음</option>
+										</select>
+									</c:if>
+									<c:if test="${status.index == 2 }">	
+										<select name='tLang3' class="pLang_third" style="margin-top: 10px; width: 20%;">
+											<option value='없음'>-- 선택 --</option>
+											<option value='영어' <c:if test="${tLang eq '영어'}">selected</c:if>>영어</option>
+											<option value='중국어' <c:if test="${tLang eq '중국어'}">selected</c:if>>중국어</option>
+											<option value='일본어' <c:if test="${tLang eq '일본어'}">selected</c:if>>일본어</option>
+											<option value='없음' <c:if test="${tLang eq ''}">selected</c:if>>없음</option>
+										</select>
+									</c:if>
+								</c:forTokens>
+								
                                 <br><br>
                                 <label>가격</label>
-                                <input type="text" id="personalPrice" name="personalPrice" style="width:120px" placeholder="" value="">&nbsp;P/100자 당
-        						</div>
+                                <input type="text" id="personalPrice" name="personalPrice" style="width:120px" value="${personal.personalPrice }">&nbsp;P/100자 당
+        					</div>
                             <hr>
                             <p style="font-size: 10pt;">- 마이페이지에서 파워번역가를 등록하면 상단에 번역게시물을 띄워드립니다.</p>
 	
@@ -183,7 +202,7 @@
                             <br><br>
                             <input type="hidden" value=${loginUser.memberId } name="memberId">
                             <center>
-                                <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 등록 </button>
+                                 <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 수정 </button>
                                 <button class="btn btn-secondary" type="reset" style="margin:0 20px; width:100px;"> 취소 </button>
                             </center>
                         </form>
@@ -212,6 +231,7 @@
     <!-- Scripts -->
     <!--템플릿 css-->
      <link rel="stylesheet" href="resources/css/main.css" />
+     
      
     <!--프로필 이미지 파일 업로드시 미리보기-->
     <script>
@@ -296,6 +316,7 @@
         }
     </script>
      
+
 
 
 </body>

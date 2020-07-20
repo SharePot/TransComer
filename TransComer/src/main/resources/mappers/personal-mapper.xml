@@ -14,6 +14,7 @@
 		<result property="personalCount" column="PERSONAL_COUNT" />
 		<result property="personalDStatus" column="PERSONAL_D_STATUS" />
 		<result property="powerYN" column="POWER_YN" />
+		<result property="personalFilePath" column="PERSONAL_FILE_PATH" />
 		<result property="memberId" column="MEMBER_ID" />
 	</resultMap>
 
@@ -22,10 +23,12 @@
 		SELECT * FROM PERSONAL ORDER BY PERSONAL_NO DESC
 	</select>
 	
+	
 	<!-- 1:1 번역가 게시글 등록 -->
 	<insert id="insertPersonal" parameterType="Personal">
-		INSERT INTO PERSONAL VALUES(PERSONAL_NO_SEQ.NEXTVAL, #{personalTitle}, #{personalContent}, SYSDATE, #{personalPLang}, #{personalTLang}, #{personalSchedule}, #{personalPrice}, 0, 'N', 'N', #{memberId})
+		INSERT INTO PERSONAL VALUES(PERSONAL_NO_SEQ.NEXTVAL, #{personalTitle}, #{personalContent}, SYSDATE, #{personalPLang}, #{personalTLang}, #{personalSchedule}, #{personalPrice}, 0, 'N', 'N', #{personalFilePath}, #{memberId})
 	</insert>
+	
 	
 	<!-- 1:1 게시판 검색 -->
 	<select id="searchPersonalList" parameterType="PersonalSearch" resultMap="personalResultSet">
@@ -55,10 +58,12 @@
 		ORDER BY PERSONAL_NO DESC
 	</select>
 	
+	
 	<!-- 1:1 의뢰 게시판 전체 수 조회 -->
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*) FROM PERSONAL
 	</select>
+	
 	
 	<!-- 1:1 의뢰 게시판 검색 후 게시물 갯수 조회 -->
 	<select id="getSearchListCount" parameterType="PersonalSearch" resultType="_int">
@@ -87,9 +92,40 @@
 		</where>
 	</select>
 	
+	
 	<!-- 1:1 의뢰 게시판 상세 조회시 조회수 증가 -->
 	<update id="updateCount" parameterType="_int">
-		UPDATE PERSONAL SET PERSONAL_COUNT = PERSONAL_COUNT + 1 WHERE MEMBER_ID = #{memberId}
+		UPDATE PERSONAL SET PERSONAL_COUNT = PERSONAL_COUNT + 1 WHERE PERSONAL_NO = #{personalNo}
 	</update>
+	
+	
+	<!-- 1:1 의뢰 게시글 상세조회 -->
+	<select id="selectPersonalOne" parameterType="_int" resultMap="personalResultSet">
+		SELECT * FROM PERSONAL WHERE PERSONAL_NO = #{personalNo}
+	</select>
+	
+	
+	<!-- 1:1 번역가 게시글 수정 -->
+	<update id="updatePersonal" parameterType="Personal">
+		UPDATE PERSONAL 
+		SET PERSONAL_TITLE=#{personalTitle}, 
+		PERSONAL_CONTENT=#{personalContent}, 
+		PERSONAL_SCHEDULE=#{personalSchedule}, 
+		PERSONAL_P_LANG=#{personalPLang}, 
+		PERSONAL_T_LANG=#{personalTLang}, 
+		PERSONAL_PRICE=#{personalPrice},
+		PERSONAL_FILE_PATH=#{personalFilePath}
+		WHERE PERSONAL_NO=#{personalNo}
+	</update>
+	
+	<!-- 1:1 번역가 게시글 삭제 -->
+	<delete id="deletePersonal" parameterType="_int" >
+		DELETE FROM PERSONAL WHERE PERSONAL_NO=#{personalNo}
+	</delete>
+	
+	<!-- 1:1 게시글 리뷰 작성 -->
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, #{revContent}, '', SYSDATE, #{personalNo}, #{memberId})
+	</insert>
 
 </mapper>
