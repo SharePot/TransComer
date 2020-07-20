@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chatMapper">
 
+	<!-- 채팅방 resultMap -->
+	<resultMap type="ChatRoom" id="chatRoomResultSet">
+		<id property="roomNo" column="room_no"></id>
+		<result property="roomUser1" column="room_user1"></result>
+		<result property="roomUser2" column="room_user2"></result>
+	</resultMap>
+	
 </mapper>
