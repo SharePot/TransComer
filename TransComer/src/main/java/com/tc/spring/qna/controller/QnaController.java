@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,6 +29,8 @@ public class QnaController {
 
 	@Autowired
 	private QnaService qnaService;
+	
+	@Autowired
 	private FileController fController;
 	
 	// Qna 전체 목록 보기
@@ -116,17 +119,20 @@ public class QnaController {
 	
 	// Qna 게시글 등록
 	@RequestMapping(value="qnaInsert.tc", method=RequestMethod.POST)
-	public String qnaInsert(Qna qna, Files files, Model model, @RequestParam(name="uploadFile",required=false)MultipartFile uploadFile, HttpServletRequest request, String memberId) {
+	public String qnaInsert(Qna qna, Files files, Model model, 
+			@RequestParam(name="uploadFile", required=false)MultipartFile[] uploadFile, MultipartHttpServletRequest request,  HttpServletRequest requestH, String memberId) {
 		
 		int resultQna = 0;
 		int resultFile = 0;
 		String path = null;
-		
+		String memId = "user1";
 		resultQna = qnaService.insertQna(qna, request);
 		
 		if (resultQna > 0) {
-			if (!uploadFile.getOriginalFilename().equals("")) {
-				resultFile = fController.insertFile(files, model, uploadFile, request, memberId);
+			for (int i = 0; i < uploadFile.length; i++) {
+				if (!uploadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memId);
+				}
 			}
 			path = "redirect:qlist.tc";
 		} else {
