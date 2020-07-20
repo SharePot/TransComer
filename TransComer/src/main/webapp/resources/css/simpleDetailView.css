@@ -126,25 +126,30 @@
     margin-left: 6px;
 }
 
-#reportBtn {
+#reportBtn, #adoptBtn {
     display: inline;
-    font-size: 12px;
-    color: orangered;
-}
-
-#adoptBtn {
-    margin-left: 10px;
-    height: 35px;
-    font-size: 15px;
-    margin-bottom: 5px;
-    margin-right: 20px;
+    color: orangred;
+    font-size: 15px !important;
+	text-decoration-line: none !important;
 }
 
 textarea, #updateBtn, #updateResetBtn {
     display: inline;
 }
 
+table td {
+	padding: 0 !important;
+}
 
+p, ul, ol, dl, table { 
+	
+	margin-bottom: 0 !important;
+	
+}
 
-
+#updateWindow, #deleteBtn {
+	font-size: 15px !important;
+	color : cadetblue !important;
+	text-decoration-line: none !important;
+}
 

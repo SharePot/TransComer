@@ -46,14 +46,25 @@
 		SELECT * FROM SIMPLE_REQUEST ORDER BY SIMPLE_DATE DESC
 	</select>
 	
+	<!-- 단순의뢰 게시글 하나 보기 -->
+	<select id="selectOne" resultMap="simpleResultSet">
+		SELECT * FROM SIMPLE_REQUEST WHERE SIMPLE_NO = #{simpleNo} AND SIMPLE_D_STATUS = 'N'
+		<!-- SELECT * FROM SIMPLE_REQUEST Q JOIN SIMPLE_REPLY P ON (Q.SIMPLE_NO = P.SREQ_NO) WHERE SIMPLE_NO = #{simpleNo} -->
+	</select>
+	
+	<!-- 나의 단순의뢰 질문 보기 -->
+	<select id="mySimpleList" resultMap="simpleResultSet">
+		SELECT * FROM SIMPLE_REQUEST WHERE SIMPLE_WRITER = #{simpleWriter} ORDER BY SIMPLE_DATE DESC
+	</select>
+	
 	<!-- 단순의뢰 질문 작성 -->
 	<insert id="insertSReq" parameterType="SimpleRequest">
-		INSERT INTO SIMPLE_REQUEST VALUES (SIMPLE_NO_SEQ.NEXTVAL, #{simpleTitle}, #{simpleContent}, SYSDATE, #{simplePLang}, #{simpleTLang}, 0, DEFAULT, DEFAULT, #{simpleWriter})
+		INSERT INTO SIMPLE_REQUEST VALUES (SIMPLE_NO_SEQ.NEXTVAL, #{simpleTitle}, #{simpleContent}, SYSDATE, #{simplePLang}, #{simpleTLang}, 1, DEFAULT, DEFAULT, #{simpleWriter})
 	</insert>
 	
 	<!-- 단순의뢰 질문 수정 -->
 	<update id="updateSReq" parameterType="SimpleRequest">
-		UPDATE SIMPLE_REQUEST SET SIMPLE_TITLE = #{simpleTitle}, SIMPLE_CONTENT = #{simpleContent}, SIMPLE_P_LANG = #{simplePLang}, SIMPLE_T_LANG = #{simpleTLang}, SIMPLE_DATE = SYSDATE
+		UPDATE SIMPLE_REQUEST SET SIMPLE_TITLE = #{simpleTitle}, SIMPLE_CONTENT = #{simpleContent}, SIMPLE_P_LANG = #{simplePLang}, SIMPLE_T_LANG = #{simpleTLang}, SIMPLE_DATE = SYSDATE WHERE SIMPLE_NO = #{simpleNo}
 	</update>
 	
 	<!-- 단순의뢰 질문 삭제 -->
@@ -63,7 +74,7 @@
 	
 	<!-- 단순의뢰 질문 개수 조회 -->
 	<select id="getSReqListCount" resultType="_int">
-		SELECT COUNT(*) FROM SIMPLE_REQUEST WHERE SIMPLE_D_STATUS = 'Y'
+		SELECT COUNT(*) FROM SIMPLE_REQUEST WHERE SIMPLE_D_STATUS = 'N'
 	</select>
 	
 	<!-- 단순의뢰 게시글 조회수 -->
@@ -71,11 +82,6 @@
 		UPDATE SIMPLE_REQUEST SET SIMPLE_COUNT = SIMPLE_COUNT + 1 WHERE SIMPLE_NO = #{simpleNo}
 	</update>
 	
-	<!-- 단순의뢰 게시글 하나 보기 -->
-	<select id="selectOne" resultMap="simpleResultSet">
-		SELECT * FROM SIMPLE_REQUEST WHERE SIMPLE_NO = #{simpleNo} AND SIMPLE_D_STATUS = 'N'
-		<!-- SELECT * FROM SIMPLE_REQUEST Q JOIN SIMPLE_REPLY P ON (Q.SIMPLE_NO = P.SREQ_NO) WHERE SIMPLE_NO = #{simpleNo} -->
-	</select>
 	
 	<!-- 단순의뢰 답변 조회 -->
 	<select id="selectResList" resultMap="sResResultSet" parameterType="_int">

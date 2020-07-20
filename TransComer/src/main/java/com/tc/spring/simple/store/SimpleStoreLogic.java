@@ -38,6 +38,14 @@ public class SimpleStoreLogic implements SimpleStore {
 		return sqlSession.selectOne("simpleMapper.selectOne", simpleNo);
 	}
 	
+	// 나의 단순의뢰 질문 보기
+	@Override
+	public ArrayList<SimpleRequest> mySimpleList(SimplePageInfo spi, String simpleWriter) {
+		int offset = (spi.getSpCurrentPage() - 1) * spi.getSpBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, spi.getSpBoardLimit());
+		return (ArrayList)sqlSession.selectList("simpleMapper.mySimpleList", simpleWriter, rowBounds);
+	}
+	
 	// 단순의뢰 게시글 조회수
 	@Override
 	public int addSReqReadCount(int simpleNo) {
@@ -124,6 +132,8 @@ public class SimpleStoreLogic implements SimpleStore {
 	public int memberAdoptCount(String simpleReplyWriter) {
 		return sqlSession.update("simpleMapper.memberAdoptCount", simpleReplyWriter);
 	}
+
+
 
 
 

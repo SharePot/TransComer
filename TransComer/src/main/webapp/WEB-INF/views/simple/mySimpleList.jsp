@@ -4,30 +4,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="resources/css/simpleListView.css" />
 <meta charset="UTF-8">
-<title> SharePot - 단순의뢰 </title>
+<title>Insert title here</title>
+<link rel="stylesheet" href="resources/css/simpleListView.css" />
 </head>
 <c:import url="../common/menuBar.jsp" />
 <body>
 	<div id="page-wrapper">
 		<section id="main">
 			<div id="boardWrapper">
-				<h1>단순의뢰</h1><br>
-				<c:if test="${!empty loginUser }">
-					<c:url var="simpleWrite" value="sReqInsertView.tc" />
-					<a  href="${simpleWrite }" >글쓰기</a>
-				</c:if>
-				<table border="1">
+				<table>
+					<h1>나의 단순의뢰 목록</h1><br>
 					<tr>
-						<th>번호</th>
-						<th>분류</th>
-						<th>제목</th>
-						<th>채택</th>
-						<th>작성자</th>
-						<th>조회수</th>
+						<td>번호</td>
+						<td>분류</td>
+						<td>제목</td>
+						<td>채택</td>
+						<td>조회수</td>
 					</tr>
-					<c:forEach var="sReq" items="${sReqList }">
+					<c:forEach var="sReq" items="${myReq }">
 						<tr>
 							<c:if test="${sReq.simpleDStatus eq 'N' }">
 								<td>${sReq.simpleNo }</td>
@@ -44,13 +39,12 @@
 								<c:if test="${sReq.simpleAStatus eq 'N' }">
 									<td>X</td>
 								</c:if>
-								<td>${sReq.simpleWriter }</td>
 								<td>${sReq.simpleCount }</td>
 							</c:if>
 						</tr>
 					</c:forEach>
-					<tr align="center" height="20">
-						<td colspan="6">
+					<tr align="center">
+						<td colspan="5">
 						
 							<!-- [이전] -->
 							<c:if test="${spi.spCurrentPage <= 1 }">[이전] &nbsp;</c:if>
@@ -62,7 +56,7 @@
 							</c:if>
 							
 							<!-- 페이지 -->
-							<c:forEach var="p" begin="${spi.spStartPage }" end="${spi.spEndPage }">
+							<c:forEach var="p" begin="${spi.spCurrentPage }" end="${spi.spEndPage }">
 								<c:if test="${p eq spCurrentPage }">
 									<font color="red"><b>[${p }]</b></font>
 								</c:if>
@@ -75,8 +69,8 @@
 							</c:forEach>
 							
 							<!-- [다음] -->
-							<c:if test="${spi.spCurrentPage >= spi.spMaxPage }">[다음] &nbsp;</c:if>
-							<c:if test="${spi.spCurrentPage < spi.spMaxPage }">
+							<c:if test="${spi.spCurrentPage <= spi.spMaxPage }">[다음] &nbsp;</c:if>
+							<c:if test="${spi.spCurrentPage > spi.spMaxPage }">
 								<c:url var="after" value="sReqListView.tc">
 									<c:param name="spPage" value="${spi.spCurrentPage + 1 }" />
 								</c:url>
@@ -85,25 +79,9 @@
 							
 						</td>
 					</tr>
-					<tr>
-						<td colspan="6" align="center">
-								<form action="sReqSearch.tc" name="searchForm" method="get">
-									<select id="searchCondition" name="searchCondition">
-										<option value="all" <c:if test="${simpleSearch.searchCondition == 'all' }">selected</c:if>>전체</option>
-										<option value="writer" <c:if test="${simpleSearch.searchCondition == 'writer' }">selected</c:if>>작성자</option>
-										<option value="title" <c:if test="${simpleSearch.searchCondition == 'title' }">selected</c:if>>제목</option>
-										<option value="content" <c:if test="${simpleSearch.searchCondition == 'content' }">selected</c:if>>내용</option>
-									</select>
-									<input type="search" name="searchValue" value="" id="searchValue">
-									<button>검색</button><br>
-								</form>
-						</td>
-					</tr>
 				</table>
 			</div>
 		</section>
 	</div>
-	
-	
 </body>
 </html>

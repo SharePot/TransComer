@@ -34,6 +34,12 @@ public class SimpleServiceImpl implements SimpleService {
 	public SimpleRequest selectOne(int simpleNo) {
 		return simpleStore.selectOne(simpleNo);
 	}
+	
+	// 나의 단순의뢰 질문 보기
+	@Override
+	public ArrayList<SimpleRequest> mySimpleList(SimplePageInfo spi, String simpleWriter) {
+		return simpleStore.mySimpleList(spi, simpleWriter);
+	}
 
 	// 단순의뢰 게시글 조회수
 	@Override
@@ -120,6 +126,8 @@ public class SimpleServiceImpl implements SimpleService {
 	public int memberAdoptCount(String simpleReplyWriter) {
 		return simpleStore.memberAdoptCount(simpleReplyWriter);
 	}
+
+
 
 
 

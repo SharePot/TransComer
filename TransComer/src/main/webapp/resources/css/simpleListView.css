@@ -6,3 +6,13 @@
 #boardWrapper h1 {
     font-size: 35px;
 }
+
+#searchCondition {
+	width: 150px !important ;
+	display: inline;
+}
+
+#searchValue {
+	height: 62px !important;
+	width: 400px !important ;
+}

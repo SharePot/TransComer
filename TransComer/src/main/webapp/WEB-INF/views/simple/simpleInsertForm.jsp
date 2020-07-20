@@ -30,11 +30,11 @@
                             <td>개발언어</td>
                             <td>
                                 <select name="simplePLang">
-                                    <option value="java">자바</option>
-                                    <option value="cLang">c언어</option>
-                                    <option value="python">파이썬</option>
-                                    <option value="js">JavaScript</option>
-                                    <option value="php">PHP</option>
+                                    <option value="자바">자바</option>
+                                    <option value="C언어">c언어</option>
+                                    <option value="파이썬">파이썬</option>
+                                    <option value="자바스크립트">JavaScript</option>
+                                    <option value="PHP">PHP</option>
                                 </select>
                             </td>
                         </tr>
@@ -43,10 +43,10 @@
                             <td>번역언어</td>
                             <td>
                                 <select name="simpleTLang">
-                                    <option value="kr">한국어</option>
-                                    <option value="eng">영어</option>
-                                    <option value="ch">중국어</option>
-                                    <option value="jpn">일본어</option>
+                                    <option value="한국어">한국어</option>
+                                    <option value="영어">영어</option>
+                                    <option value="중국어">중국어</option>
+                                    <option value="일본어">일본어</option>
                                 </select>
                             </td>
                         </tr>

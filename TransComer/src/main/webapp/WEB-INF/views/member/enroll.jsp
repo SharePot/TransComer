@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
-<html lang="ko">
+<html>
 <head>
 <title>SharePot</title>
 <meta charset="utf-8" />
@@ -21,39 +22,16 @@
 
 </style>
 </head>
-<body class="homepage is-preload">9
+<c:import url="../common/menuBar.jsp" />
+<body class="homepage is-preload">
+<form action="enroll.tc" method="post">
 	<div id="page-wrapper">
-
-		<!-- Header -->
-		<section id="header">
-
-			<!-- Logo -->
-			<h1>
-				<a href="index.html">SharePot</a>
-			</h1>
-
-			<!-- Nav -->
-			<nav id="nav">
-				<ul>
-					<li class="current"><a href="#">Home</a></li>
-					<li><a href="#">번역 의뢰</a>
-						<ul>
-							<li><a href="#">단순 의뢰</a></li>
-							<li><a href="#">1:1 의뢰</a></li>
-						</ul></li>
-					<li><a href="#">번역 공유</a></li>
-					<li><a href="#">스터디</a></li>
-					<li><a href="#">Q&amp;A</a></li>
-				</ul>
-			</nav>
-		</section>
-
 
 		<!-- Main -->
 		<section id="main">
-			<div class="container">
+			<div class="container" style="margin-right: 60px;">
 				<div class="row">
-					<div class="col-12">
+					<div class="col-12" id="maindiv" >
 						<!--<div class="form-group row">
                                     <div class="col-sm-2">
                                         <label style="margin-left: 15px;" for="inputId" class="col-form-label">아이디*</label>
@@ -65,32 +43,31 @@
                                         <button style="margin-left: 315px;"class="col-sm-">중복 확인</button>
                                     </div>
                                   </div>-->
-						
 						<!--이름-->
 						<label for="inputName"
 							class="col-sm-2 col-form-label col-md-3">이름*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="이름을 입력해주세요."
-								class="form-control" id="name">
+								class="form-control" id="name" name="memberName">
 						</div>
 						<br><br><br>
 						<!--아이디-->
 						<label for="inputId" class="col-sm-2 col-form-label col-md-3">아이디*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="아이디를 입력해주세요."
-								class="form-control" id="mid">
+								class="form-control" id="mid" name="memberId">
 						</div>
 						
-						<br> <br> <br> 
+						<br> <br> 
 						 <a style="color: red"><label id="idChcekArea"></label></a><!-- 중복체크 -->
 
 						<!--비밀번호-->
 						<br>
 						<label for="inputPassword"
 							class="col-sm-2 col-form-label col-md-3">비밀번호*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="password" placeholder="비밀번호를 입력해주세요."
-								class="form-control" id="password1">
+								class="form-control" id="password1" name="memberPw">
 						</div>
 
 						<br> <br> <br>
@@ -98,7 +75,7 @@
 						<!--비밀번호 확인-->
 						<label for="inputPasswordRe"
 							class="col-sm-2 col-form-label col-md-3">비밀번호 확인*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="password" placeholder="비밀번호를 입력해주세요."
 								class="form-control" id="password2">
 							<br>
@@ -117,9 +94,9 @@
                                 <input type="text" class="form-control" id="inlineFormInputGroupUsername" style="width: 47%; float: right; "  placeholder="google.com">
                               </div>-->
 						<label for="inputEmail" class="col-sm-2 col-form-label col-md-3">이메일*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="email" placeholder="OOOOO@gmail.com"
-								class="form-control" id="inputEmail">
+								class="form-control" id="inputEmail" name="memberEmail">
 						</div>
 
 
@@ -129,9 +106,9 @@
 						<!--폰 번호-->
 						<label for="inputPhone" class="col-sm-2 col-form-label col-md-3">폰
 							번호*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="010-0000-0000"
-								class="form-control" id="inputPhone" maxlength="13">
+								class="form-control" id="inputPhone" maxlength="13" name="memberPhone">
 						</div>
 						<br> <br> <br>
 
@@ -145,10 +122,10 @@
 						<!--우편번호-->
 						<label for="inputPost" class="col-sm-2 col-form-label col-md-3">우편
 							번호*</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" name="post" readonly
 								placeholder="우편번호를 입력해주세요." value="" class="form-control"
-								id="sample6_postcode" style="width: 70%; float: left;">
+								id="sample6_postcode" style="width: 70%; float: left">
 
 
 							<input type="button" onclick="sample6_execDaumPostcode()"
@@ -162,17 +139,17 @@
 
 						<!--기본주소-->
 						<label for="" class="col-sm-2 col-form-label col-md-3">도로명</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
-							<input type="text" name="addres1" readonly id="sample6_address"
+						<div style="float: left;" class="col-sm-10 col-md-9">
+							<input type="text" name="address1" readonly id="sample6_address"
 								placeholder="" class="form-control" value="">
 						</div>
 						<br> <br>
 
 						<!--상세주소-->
 						<label for="" class="col-sm-2 col-form-label col-md-3">상세주소</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="" id="sample6_detailAddress"
-								class="form-control" name="addres2" value="">
+								class="form-control" name="address2" value="">
 						</div>
 
 
@@ -181,8 +158,8 @@
 						<!--은행-->
 						<div>
 							<label class="col-md-3 col-sm-2">은행</label> <select
-								class="custom-select custom-select-sm-10 col-md-9"
-								style="width: 72.5%; margin-right: 12px; float: right;">
+								name="bankName"class="custom-select custom-select-sm-10 col-md-9"
+								style="width: 72.5%; margin-left: 12px; float: left;">
 								<option selected>은행을 선택해주세요.</option>
 								<option value="1">신한은행</option>
 								<option value="2">KB국민은행</option>
@@ -200,9 +177,9 @@
 
 						<!--계좌번호-->
 						<label for="inputAcoount" class="col-sm-2 col-form-label col-md-3">계좌번호</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="숫자만 입력해주세요." class="form-control"
-								maxlength="15" id="inputAcoount">
+							name="accountNumber"maxlength="15" id="inputAcoount">
 						</div>
 
 
@@ -212,9 +189,9 @@
 						<!--예금주-->
 						<label for="accountHolder"
 							class="col-sm-2 col-form-label col-md-3">예금주</label>
-						<div style="float: right;" class="col-sm-10 col-md-9">
+						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="예금주 명을 입력해주세요."
-								class="form-control" id="accountHolder" maxlength="15">
+							name="accountName" class="form-control" id="accountHolder" maxlength="15">
 						</div>
 
 
@@ -223,18 +200,16 @@
 					</div>
 				</div>
 				<br> <br>
+			</div>
 				<div style="text-align: center;">
 					<input type="button" id="resetBtn" value="돌아가기"
 						style="width: 120px; height: 40px; margin-left: 10%;">
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit"
 						name="submitBtn" value="등록하기" style="width: 120px; height: 40px;">
 				</div>
-			</div>
 
 
-			<br> <br> <br> <br> <br> <br> <br>
-			<br> <br> <br> <br> <br> <br> <br>
-			<br> <br>
+	
 
 		</section>
 		<!-- Footer -->
@@ -247,10 +222,9 @@
 				</div>
 			</div>
 		</section>
-		<br> <br> <br> <br> <br> <br> <br>
-		<br> <br>
-
+		
 	</div>
+</form>
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.dropotron.min.js"></script>

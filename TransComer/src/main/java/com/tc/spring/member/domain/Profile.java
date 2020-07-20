@@ -6,6 +6,7 @@ public class Profile {
 	
 	public int profileNo;
 	public int memberNo;
+	public String memberId;
 	public String pLang1;
 	public String pLang2;
 	public String pLang3;
@@ -25,13 +26,14 @@ public class Profile {
 	
 	public Profile() {}
 
-	public Profile(int profileNo, int memberNo, String pLang1, String pLang2, String pLang3, String tLang1,
-			String tLang2, String tLang3, String pLangGrade1, String pLangGrade2, String pLangGrade3,
+	public Profile(int profileNo, int memberNo, String memberId, String pLang1, String pLang2, String pLang3,
+			String tLang1, String tLang2, String tLang3, String pLangGrade1, String pLangGrade2, String pLangGrade3,
 			String tLangGrade1, String tLangGrade2, String tLangGrade3, String introduce, String profileFilePath,
 			Date profileDate, String profileStatus) {
 		super();
 		this.profileNo = profileNo;
 		this.memberNo = memberNo;
+		this.memberId = memberId;
 		this.pLang1 = pLang1;
 		this.pLang2 = pLang2;
 		this.pLang3 = pLang3;
@@ -64,6 +66,14 @@ public class Profile {
 
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getpLang1() {
@@ -196,12 +206,12 @@ public class Profile {
 
 	@Override
 	public String toString() {
-		return "Profile [profileNo=" + profileNo + ", memberNo=" + memberNo + ", pLang1=" + pLang1 + ", pLang2="
-				+ pLang2 + ", pLang3=" + pLang3 + ", tLang1=" + tLang1 + ", tLang2=" + tLang2 + ", tLang3=" + tLang3
-				+ ", pLangGrade1=" + pLangGrade1 + ", pLangGrade2=" + pLangGrade2 + ", pLangGrade3=" + pLangGrade3
-				+ ", tLangGrade1=" + tLangGrade1 + ", tLangGrade2=" + tLangGrade2 + ", tLangGrade3=" + tLangGrade3
-				+ ", introduce=" + introduce + ", profileFilePath=" + profileFilePath + ", profileDate=" + profileDate
-				+ ", profileStatus=" + profileStatus + "]";
+		return "Profile [profileNo=" + profileNo + ", memberNo=" + memberNo + ", memberId=" + memberId + ", pLang1="
+				+ pLang1 + ", pLang2=" + pLang2 + ", pLang3=" + pLang3 + ", tLang1=" + tLang1 + ", tLang2=" + tLang2
+				+ ", tLang3=" + tLang3 + ", pLangGrade1=" + pLangGrade1 + ", pLangGrade2=" + pLangGrade2
+				+ ", pLangGrade3=" + pLangGrade3 + ", tLangGrade1=" + tLangGrade1 + ", tLangGrade2=" + tLangGrade2
+				+ ", tLangGrade3=" + tLangGrade3 + ", introduce=" + introduce + ", profileFilePath=" + profileFilePath
+				+ ", profileDate=" + profileDate + ", profileStatus=" + profileStatus + "]";
 	}
 
 }

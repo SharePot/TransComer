@@ -39,6 +39,14 @@ public interface SimpleService {
 	 * @return
 	 */
 	public SimpleRequest selectOne(int simpleNo);
+
+	/**
+	 * 나의 단순의뢰 질문 보기
+	 * @param spi
+	 * @param simpleWriter
+	 * @return
+	 */
+	public ArrayList<SimpleRequest> mySimpleList(SimplePageInfo spi, String simpleWriter);
 	
 	/**
 	 * 단순의뢰 질문 작성

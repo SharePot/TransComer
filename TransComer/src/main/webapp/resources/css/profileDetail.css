@@ -1,0 +1,74 @@
+#main h1 {
+    font-size: 30px;
+}
+
+#contentSection {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#contentSection div {
+    height: 0 auto;
+    box-sizing: border-box;
+
+}
+
+#contentSection div:first-child {
+    padding: 0px !important;
+}
+
+#imgBox {
+    width: 260px;
+    height: 260px;
+    border-radius: 70%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#imgBox img {
+    width: 260px;
+    height: 260px;
+}
+
+#introduceSection p:first-child {
+    color: darkblue;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 15px !important;
+    display: inline;
+}
+
+#introduceSection pre:first-child {
+    font-size: 25px;
+}
+
+#profileSection {
+    text-align: center;
+    padding: 0px !important;
+}
+#profileSection p:first-child {
+    display: inline;
+    color: gray;
+}
+
+#profileSection p:nth-child(2) {
+    display: inline;
+    color: gray;
+}
+
+#profileSection a {
+    color: gray;
+}
+
+#profileSection a:hover {
+    color: black;
+}
+
+#langSection {
+    padding: 0px !important;
+}
+
+#langTb {
+    width: 80%;
+    margin: 0 auto;
+}

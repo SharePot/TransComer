@@ -17,11 +17,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <center>
-                            <h2>프로필 등록</h2>
-                        </center>
+                        <h2 align="center">프로필 등록</h2>
                         <hr>
-                        <form action="profileInsert.tc" method="post" id="profileForm">
+                        <form action="profileInsert.tc" method="post" id="profileForm" enctype="multipart/form-data">
                             <div id="profileContent">
                                 <br>
                                 <label>이름</label>
@@ -35,7 +33,7 @@
                                 <input type="text" id="personalTLang" name="personalTLang" placeholder="전화번호" readonly value="${loginUser.phone }">
                                 <br><br>
                                 <label>프로필 사진</label>
-                                <input type="file" name="profilePath" id="profile_pt" onchange="previewImage(this,'View_area')">
+                                <input type="file" name="profileFilePath" id="profile_pt" onchange="previewImage(this,'View_area')">
                                 <!--이미지 미리보기-->
                                 <div id='View_area' style=' margin-left: 50%; position:relative; width: 100px; height: 100px; color: black; border: 0px solid black; dispaly: inline;'></div>
                                 <br><br>
@@ -43,56 +41,50 @@
                                 <label>사용 가능 개발 언어</label>
                                 <div id="num1">
                                     <select name="pLang1" id="pLang1" style="margin-left: 20%;">
-                                        <option value="JAVA" selected>JAVA</option>
-                                        <option value="Javascript">Javascript</option>
-                                        <option value="C">C</option>
-                                        <option value="Cplus">C++</option>
-                                        <option value="Cshop">C#</option>
-                                        <option value="Python">Python</option>
+                                        <option value="자바">JAVA</option>
+                                        <option value="자바스크립트">Javascript</option>
+                                        <option value="C언어">C</option>
+                                        <option value="파이썬">Python</option>
                                         <option value="PHP">PHP</option>
-                                        <option value="RUBY">Ruby</option>
-                                        <option value="NONE">없음</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="pLangGrade1">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
                                 <div id="num2">
                                     <select name="pLang2" style="margin-left: 50%; margin-top:10px;">
-                                        <option value="JAVA" selected>JAVA</option>
-                                        <option value="Javascript">Javascript</option>
-                                        <option value="C">C</option>
-                                        <option value="Cplus">C++</option>
-                                        <option value="Cshop">C#</option>
-                                        <option value="Python">Python</option>
+                                        <option value="자바">JAVA</option>
+                                        <option value="자바스크립트">Javascript</option>
+                                        <option value="C언어">C</option>
+                                        <option value="파이썬">Python</option>
                                         <option value="PHP">PHP</option>
-                                        <option value="RUBY">Ruby</option>
-                                        <option value="NONE">없음</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="pLangGrade2">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
                                 <div id="num3">
                                     <select name="pLang3" style="margin-left: 50%; margin-top:10px;">
-                                        <option value="JAVA" selected>JAVA</option>
-                                        <option value="Javascript">Javascript</option>
-                                        <option value="C">C</option>
-                                        <option value="Cplus">C++</option>
-                                        <option value="Cshop">C#</option>
-                                        <option value="Python">Python</option>
+                                        <option value="자바">JAVA</option>
+                                        <option value="자바스크립트">Javascript</option>
+                                        <option value="C언어">C</option>
+                                        <option value="파이썬">Python</option>
                                         <option value="PHP">PHP</option>
-                                        <option value="RUBY">Ruby</option>
-                                        <option value="NONE">없음</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="pLangGrade3">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
 
@@ -100,53 +92,44 @@
                                 <label>사용 가능 언어</label>
                                 <div id="num1">
                                     <select name="tLang1" style="margin-left: 20%;">
-                                        <option value="ENG" selected>영어</option>
-                                        <option value="CHN">중국어</option>
-                                        <option value="JPN">일본어</option>
-                                        <option value="FRA">프랑스어</option>
-                                        <option value="ITA">이탈리아어</option>
-                                        <option value="ESP">스페인어</option>
-                                        <option value="RUS">러시아어</option>
-                                        <option value="NONE">없음</option>
+                                        <option value="영어">영어</option>
+                                        <option value="중국어">중국어</option>
+                                        <option value="일본어">일본어</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="tLangGrade1">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
                                 <div id="num2">
                                     <select name="tLang2" style="margin-left: 50%; margin-top:10px;">
-                                        <option value="ENG" selected>영어</option>
-                                        <option value="CHN">중국어</option>
-                                        <option value="JPN">일본어</option>
-                                        <option value="FRA">프랑스어</option>
-                                        <option value="ITA">이탈리아어</option>
-                                        <option value="ESP">스페인어</option>
-                                        <option value="RUS">러시아어</option>
-                                        <option value="NONE">없음</option>
+                                        <option value="영어">영어</option>
+                                        <option value="중국어">중국어</option>
+                                        <option value="일본어">일본어</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="tLangGrade2">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
                                 <div id="num3">
                                     <select name="tLang3" style="margin-left: 50%; margin-top:10px;">
-                                        <option value="ENG" selected>영어</option>
-                                        <option value="CHN">중국어</option>
-                                        <option value="JPN">일본어</option>
-                                        <option value="FRA">프랑스어</option>
-                                        <option value="ITA">이탈리아어</option>
-                                        <option value="ESP">스페인어</option>
-                                        <option value="RUS">러시아어</option>
-                                        <option value="NONE">없음</option>
+                                        <option value="영어">영어</option>
+                                        <option value="중국어">중국어</option>
+                                        <option value="일본어">일본어</option>
+                                        <option selected>선택</option>
                                     </select>
                                     <select name="tLangGrade3">
-                                        <option value="T" selected>상</option>
-                                        <option value="M" >중</option>
-                                        <option value="B" >하</option>
+                                        <option value="상" >상</option>
+                                        <option value="중" >중</option>
+                                        <option value="하" >하</option>
+                                        <option selected >선택</option>
                                     </select>
                                 </div>
 
@@ -162,7 +145,7 @@
                             <h3>프로필 공개여부</h3>
                             <br>
                             <div class="custom-control custom-radio">
-                                <input type="radio" name="profileStatus" value="open" id="jb-radio-1" class="custom-control-input">
+                                <input type="radio" name="profileStatus" value="open" id="jb-radio-1" class="custom-control-input" checked>
                                 <label class="custom-control-label" for="jb-radio-1">공개</label>
                             </div>
                             <div class="custom-control custom-radio">
@@ -176,7 +159,6 @@
                             <center>
                                 <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 등록 </button>
                                 <button class="btn btn-secondary" type="reset" style="margin:0 20px; width:100px;"> 취소 </button>
-                                <a onclick="test()">test</a>
                             </center>
                             
                         </form>
@@ -187,24 +169,6 @@
         </section>
 
     </div>
-
-    <!-- Scripts -->
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>-->
-    
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="assets/css/main.css" />
-
 
     <!--프로필 이미지 파일 업로드시 미리보기-->
     <script>

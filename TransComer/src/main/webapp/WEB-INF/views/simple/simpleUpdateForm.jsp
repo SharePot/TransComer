@@ -25,17 +25,18 @@
                 <h1 id="mainTitle">단순의뢰 수정하기</h1>
                 <hr>
                 <form action="sReqUpdate.tc" method="post">
+					<input type="hidden" id="simpleNo" value="${sReq.simpleNo }">
                     <table id="mainTb">
-
                         <tr>
                             <td>개발언어</td>
                             <td>
                                 <select name="simplePLang">
-                                    <option value="java">자바</option>
-                                    <option value="cLang">c언어</option>
-                                    <option value="python">파이썬</option>
-                                    <option value="js">JavaScript</option>
-                                    <option value="php">PHP</option>
+                                    <option value="자바">JAVA</option>
+                                    <option value="자바스크립트">Javascript</option>
+                                    <option value="C언어">C</option>
+                                    <option value="파이썬">Python</option>
+                                    <option value="PHP">PHP</option>
+                                    <option>선택</option>
                                 </select>
                             </td>
                         </tr>
@@ -44,10 +45,11 @@
                             <td>번역언어</td>
                             <td>
                                 <select name="simpleTLang">
-                                    <option value="kr">한국어</option>
-                                    <option value="eng">영어</option>
-                                    <option value="ch">중국어</option>
-                                    <option value="spa">스페인어</option>
+                                    <option value="한국어">한국어</option>
+                                    <option value="영어">영어</option>
+                                    <option value="중국어">중국어</option>
+                                    <option value="일본어">일본어</option>
+                                    <option>선택</option>
                                 </select>
                             </td>
                         </tr>
@@ -77,11 +79,18 @@
                 </form>
             </div>
 
-
+			<input type="hidden" id="tLang" value="${sReq.simpleTLang }">
+            <input type="hidden" id="pLang" value="${sReq.simplePLang }">
 
         </section>
 
         <script>
+        var pLang = $("#pLang").val();
+        var tLang = $("#tLang").val();
+        
+        $("select[name=simplePLang]").val(pLang1).prop("selected", true);
+        $("select[name=simpleTLang]").val(pLang1).prop("selected", true);
+        
             function fnChkByte(obj) {
                 var maxByte = 1000; //최대 입력 바이트 수
                 var str = obj.value;

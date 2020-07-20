@@ -19,6 +19,8 @@ public interface SimpleStore {
 	
 	public SimpleRequest selectOne(int simpleNo);
 	
+	public ArrayList<SimpleRequest> mySimpleList(SimplePageInfo spi, String simpleWriter);
+	
 	public int simpleReqInsert(SimpleRequest simpleReq);
 	
 	public int simpleReqUpdate(SimpleRequest simpleReq);

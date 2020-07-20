@@ -100,11 +100,20 @@
  		// 답변 조회
 		function getSimpleResList() {
 			var sReqNo = ${sReq.simpleNo };
+			
+			/* var page = 1; */ // 페이지 변수를 1로 초기화
+			
 			$.ajax({
 						url : "sResList.tc",
-						data : {simpleNo : sReqNo},
+						data : {simpleNo : sReqNo/* , page : page */},
 						dataType : "json",
 						success : function(data) {
+							
+							/* response = result.lists; // 반환값 중 데이터목록을 response변수에 삽입
+							paging = result.paging; // 페이징관련 데이터들을 paging변수에 삽입
+							
+							$("#replySection").empty(); */
+
 							$divSection = $("#replySection");
 							$divSection.html("");
 							
@@ -128,12 +137,12 @@
 															$adoptCountTwo = $("<p class='adoptCount'>").text(data[i].adopCount);
 														$etcTd = $("<td id='etc'>");
 															$replyDate = $("<p id='replyDate'>").text(data[i].simpleReplyDate);
-															$reportBtn = $("<a href='#' id='reportBtn'>").text("신고");
-															$updateWindow = $("<a href='#' id='updateWindow' onclick='updateWindow(this, " + data[i].simpleReplyNo +")'>").text("수정");
+															$reportBtn = $("<a href='#' id='reportBtn'>").text(" 신고");
+															$updateWindow = $("<a href='#' id='updateWindow' onclick='updateWindow(this, " + data[i].simpleReplyNo +")'>").text(" 수정");
 															$updateBtn = $("<button id='updateBtn' style='display:none;' onclick='updateBtn(this, " + data[i].simpleReplyNo +");'>").text("등록");
 															$updateResetBtn = $("<button id='updateResetBtn' style='display:none;' onclick='getSimpleResList()'>").text("취소");
-															$deleteBtn = $("<a href='#' id='deleteBtn' onclick='deleteBtn()'>").text("삭제");
-															$adoptBtn = $("<a href='#' id='adoptBtn' onclick='adoptBtn(this," + data[i].simpleReplyNo +");'>").text("채택");
+															$deleteBtn = $("<a href='#' id='deleteBtn' onclick='deleteBtn()'>").text(" 삭제");
+															$adoptBtn = $("<a href='#' id='adoptBtn' onclick='adoptBtn(this," + data[i].simpleReplyNo +");'>").text(" 채택하기");
 													$trThree = $("<tr>");
 														$tdTwo = $("<td colspan='2' >");
 															$replyContent = $("<p id='replyContent'>").text(decodeURIComponent(data[i].simpleReplyContent.replace(/\+/g, " ")));
@@ -267,6 +276,7 @@
 	  		}
 	  		
 	  	}
+	  	
 		
 	</script>
 </body>

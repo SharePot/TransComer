@@ -77,6 +77,29 @@ public class SimpleController {
 		return mv;
 	}
 	
+	// 내 단순의뢰 목록
+	@RequestMapping("mySimpleList.tc")
+	public ModelAndView mySimpleList(ModelAndView mv, HttpSession session,@RequestParam(value="spPage", required=false)Integer spPage) {
+		
+		int spCurrentPage = (spPage != null) ? spPage : 1;
+		int spListCount = simpleService.getSReqListCount();
+		SimplePageInfo spi = Pagination.getSimplePageInfo(spCurrentPage, spListCount);
+		
+		Member loginUser = (Member)session.getAttribute("loginUser"); 
+		String simpleWriter = loginUser.getMemberId();
+		
+		ArrayList<SimpleRequest> sReqList = simpleService.mySimpleList(spi, simpleWriter);
+		
+		if (sReqList != null) {
+			mv.addObject("myReq", sReqList).addObject("spi", spi).setViewName("simple/mySimpleList");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+		
+	}
+	
 	// 단순의뢰 질문 작성 폼 열기
 	@RequestMapping("sReqInsertView.tc")
 	public String sReqInsertView() {
