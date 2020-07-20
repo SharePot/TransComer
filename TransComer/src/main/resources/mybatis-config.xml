@@ -16,11 +16,13 @@
 		<typeAlias type="com.tc.spring.member.domain.PointChange" alias="PointChange"/>
 		<typeAlias type="com.tc.spring.member.domain.PointRefund" alias="PointRefund"/>
 		<typeAlias type="com.tc.spring.member.domain.Profile" alias="Profile"/>
-		<typeAlias type="com.tc.spring.member.domain.MemberSearch" alias="MemberSearch"/>
+		<!-- <typeAlias type="com.tc.spring.member.domain.MemberSearch" alias="MemberSearch"/> -->
 		
 		<typeAlias type="com.tc.spring.alarm.domain.Alarm" alias="Alarm"/>
 		
 		<typeAlias type="com.tc.spring.chat.domain.Chat" alias="Chat"/>
+		<typeAlias type="com.tc.spring.chat.domain.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="com.tc.spring.chat.domain.ChatMessage" alias="ChatMessage"/>
 		
 		<typeAlias type="com.tc.spring.comment.domain.Comment" alias="Comment"/>
 		
