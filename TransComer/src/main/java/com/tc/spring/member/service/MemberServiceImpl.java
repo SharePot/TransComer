@@ -2,8 +2,11 @@ package com.tc.spring.member.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
@@ -67,14 +70,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int getMemberSearchListCount(MemberSearch search) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.getMemberSearchListCount(search);
 	}
 
 	@Override
 	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi, MemberSearch search) {
-		// TODO Auto-generated method stub
-		return null;
+		return memberStore.selectMemberSearchList(pi, search);
 	}
 
 //포인트 환급=====================================================================================
@@ -109,10 +110,28 @@ public class MemberServiceImpl implements MemberService {
 	}
 	//포인트 변동=====================================================================================
 	@Override
-	public ArrayList<PointChange> selectPointChangeList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi) {
+		return memberStore.selectPointChangeList(pi);
 	}
+	
+	@Override
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId) {
+		return memberStore.selectPointChangeMemberList(pi, memberId);
+	}
+	
+
+	@Override
+	public int getPointChangeCount() {
+		return memberStore.getPointChangeCount();
+	}
+
+	@Override
+	public int getPointChangeMemberCount(String memberId) {
+		return memberStore.getPointChangeMemberCount(memberId);
+	}
+
+
+
 
 	@Override
 	public PointChange selectPointChangeOne() {
@@ -138,22 +157,21 @@ public class MemberServiceImpl implements MemberService {
 		return 0;
 	}
 
+//=======================================프로필
 	@Override
 	public ArrayList<Profile> selectProfileList() {
-		// TODO Auto-generated method stub
-		return null;
+		return memberStore.selectProfileList();
 	}
 
 	@Override
-	public Profile selectProfileOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile selectProfileOne(int memberNo) {
+		return memberStore.selectProfileOne(memberNo);
 	}
-//=======================================프로필
+	
 	@Override
-	public int insertPointChange(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertProfile(Profile profile, MultipartFile file, HttpServletRequest request) {
+		profile.setIntroduce(profile.getIntroduce().replace("\n", "<br>"));
+		return memberStore.insertProfile(profile);
 	}
 
 	@Override
@@ -167,10 +185,6 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-
-
 
 
 

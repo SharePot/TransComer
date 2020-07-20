@@ -2,6 +2,10 @@ package com.tc.spring.member.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.MemberSearch;
@@ -49,7 +53,14 @@ public interface MemberService {
 	
 	//=====================================================포인트 변동
 	
-	public ArrayList<PointChange> selectPointChangeList();
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi);
+	
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId);
+	
+	
+	public int getPointChangeCount();
+	
+	public int getPointChangeMemberCount(String memberId);
 	
 	public PointChange selectPointChangeOne();
 	
@@ -59,16 +70,18 @@ public interface MemberService {
 	
 	public int deletePoingChange(int pointNo);
 	
+	
+	
 	//====================================================프로필
+	
 	
 	public ArrayList<Profile> selectProfileList();
 	
-	public Profile selectProfileOne();
+	public Profile selectProfileOne(int memberNo);
 	
-	public int insertPointChange(Profile profile);
+	public int insertProfile(Profile profile, MultipartFile file, HttpServletRequest request);
 	
 	public int updateProfile(Profile profile);
 	
 	public int deleteProfile(int memberNo);
-	
 }

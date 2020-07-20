@@ -117,11 +117,39 @@ public class MemberStoreLogic implements MemberStore {
 	
 	//포인트 변동=====================================================================================
 	@Override
-	public ArrayList<PointChange> selectPointChangeList() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.selecPointChangeList",null,rowbounds);
+	}
+	
+
+	@Override
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberPointChangeList",memberId,rowbounds);
+	}
+	
+
+	@Override
+	public int getPointChangeCount() {
+		return sqlSession.selectOne("memberMapper.getPointChangeListCount");
 	}
 
+	@Override
+	public int getPointChangeMemberCount(String memberId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.getPointChangeMemberListCount",memberId);
+	}
+
+
+	
+	
+
+	
+
+	
 	@Override
 	public PointChange selectPointChangeOne() {
 		// TODO Auto-generated method stub
@@ -144,24 +172,22 @@ public class MemberStoreLogic implements MemberStore {
 	public int deletePoingChange(int pointNo) {
 		// TODO Auto-generated method stub
 		return 0;
+		
 	}
 //프로필===============================================================
 	@Override
 	public ArrayList<Profile> selectProfileList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList)sqlSession.selectList("memberMapper.selectProfileList");
 	}
 
 	@Override
-	public Profile selectProfileOne() {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile selectProfileOne(int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectProfileOne", memberNo);
 	}
-
+	
 	@Override
-	public int insertPointChange(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertProfile(Profile profile) {
+		return sqlSession.insert("memberMapper.insertProfile", profile);
 	}
 
 	@Override
@@ -177,9 +203,6 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 
-	
-	
-	
 	
 	
 	

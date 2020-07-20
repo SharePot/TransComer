@@ -19,10 +19,24 @@
    <br>
    <br>
 
-   <table align="center" width="450" border="1" cellspacing="0"
-      style="clear: right;" id="tb">
+   <table align="center" width="450" border="1" cellspacing="0" style="clear: right;" id="tb">
+     <c:if test="${loginUser.memberId eq study.memberId }">
+         <tr>
+            <td colspan="2" align="right">
+            	<c:url var="studyUpdate" value="studyUploadView.tc">
+            	<c:param name="studyNo" value="${study.studyNo }"></c:param> <!-- ?뒤에 보내는 값을 넣어줘야함 -->
+            	<!-- 쿼리스트링을 보내주어야 컨트롤러 메소드의 매개변수(파라미터)가 받아서 처리 가능 -->
+            	</c:url>
+            	<c:url var="studyDelete" value="studyDelete.tc">
+            		<c:param name="studyNo" value="${study.studyNo }"></c:param>
+            	</c:url>
+               <a href="${studyUpdate }">수정하기</a> &nbsp;&nbsp;
+               <a href="${studyDelete }">삭제하기</a>
+            </td>
+         </tr>
+      </c:if>
       <tr>
-         <td width="80">번호</td>
+         <td width="10%">번호</td>
          <td>${study.studyNo }</td>
       </tr>
       <tr>
@@ -63,45 +77,24 @@
          <td>첨부파일</td>
          <td>${study.studyFilePath }</td>
       </tr>
-      <c:if test="${loginUser.memberId eq study.memberId }">
-         <tr>
-            <td colspan="2" align="center">
-            	<c:url var="studyUpdate" value="studyUploadView.tc">
-            	<c:param name="studyNo" value="${study.studyNo }"></c:param> <!-- ?뒤에 보내는 값을 넣어줘야함 -->
-            	<!-- 쿼리스트링을 보내주어야 컨트롤러 메소드의 매개변수(파라미터)가 받아서 처리 가능 -->
-            	</c:url>
-            	<c:url var="studyDelete" value="studyDelete.tc">
-            		<c:param name="studyNo" value="${study.studyNo }"></c:param>
-            	</c:url>
-               <a href="${studyUpdate }">수정페이지로 이동</a> &nbsp;&nbsp;
-               <a href="${studyDelete }">삭제하기</a>
-            </td>
-         </tr>
-      </c:if>
-      
    </table>
-
-
-   <p align="center">
-
-      <c:url var="home" value="home.kh" />
-      <a href="${home }">시작페이지로 이동</a>
-      <c:url var="nlist" value="nlist.kh" />
-      <a href="${nlist }">목록 전체보기</a>
+    <br><br>
+   
       
+         <hr>
         <!-- 댓글 등록  -->
-   <table align="center" width="500" border="1" cellspacing="0" id="commentTable">
+   <table align="center" width="50%" border="1" cellspacing="0" id="commentTable">
       <tr>
       <td>
       	<!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
           <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
-          <label>공개여부&nbsp;: &nbsp;&nbsp;</label>
+          <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
           <select id="commentYN" name="commentYN">
             <option value="Y" >공개</option>
             <option value="N" >비공개</option>
           </select>
           </td>
-         <td><textarea cols="55" rows="3" id="content"></textarea>
+         <td><textarea cols="70" rows="3" id="content"></textarea>
         <input type="hidden" id="commentCondition" name="commentCondition" value="study"></td>
          
          <td>
@@ -111,7 +104,7 @@
    </table>
    
    
-   
+
    <!-- 댓글 목록  -->
    <table id="studyTable" align="center" width="500" border="1" cellspacing="0" heigh="1000">
       <thead>
@@ -119,11 +112,30 @@
             <td colspan="2"><b id="count"></b></td>
             <input type="hidden" id="commentCondition" name="commentCondition" value="study">
          </tr>
+         <tr>
+         <th>댓글 번호</th>
+         <th>작성자</th>
+         <th width="40%">내용</th>
+         <th>작성 날짜</th>
+         <th>수정</th>
+         <th>삭제</th>
+         
+         </tr>
       </thead>
       <tbody>
 	
       </tbody>
    </table>
+   <br><br><br>
+    <hr>
+   <p align="center">
+
+      <c:url var="home" value="home.tc" />
+      <a href="${home }">시작페이지로 이동</a>
+      <c:url var="studylist" value="studyList.tc" />
+      <a href="${studylist }">목록 전체보기</a>
+  
+   
    </section>
    </div>
        <script>

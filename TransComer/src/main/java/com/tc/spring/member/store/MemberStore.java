@@ -48,7 +48,13 @@ public interface MemberStore {
 	public ArrayList<PointRefund> selectPointRefundCheck(String refundYn);
 	//포인트 변동=====================================================
 	
-	public ArrayList<PointChange> selectPointChangeList();
+	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi);
+	
+	public int getPointChangeCount();
+	
+	public int getPointChangeMemberCount(String memberId);
+	
+	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId);
 	
 	public PointChange selectPointChangeOne();
 	
@@ -59,15 +65,14 @@ public interface MemberStore {
 	public int deletePoingChange(int pointNo);
 	
 	//프로필====================================================
-	
+
 	public ArrayList<Profile> selectProfileList();
 	
-	public Profile selectProfileOne();
+	public Profile selectProfileOne(int memberNo);
 	
-	public int insertPointChange(Profile profile);
+	public int insertProfile(Profile profile);
 	
 	public int updateProfile(Profile profile);
 	
 	public int deleteProfile(int memberNo);
-
 }

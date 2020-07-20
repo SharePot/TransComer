@@ -8,7 +8,12 @@
 <title>스터디 글 작성</title>
 </head>
 <body>
+
 	<c:import url="../common/menuBar.jsp" />
+	 <div id="page-wrapper">
+	   <!-- Main -->
+        <section id="main">
+	
 	<br style="clear:both">
 	<h1 align="center">스터디 글쓰기</h1>
 	
@@ -27,8 +32,8 @@
 				<td>카테고리</td>
 				<td>
 				<select id="studyCategory" name="studyCategory">
-            <option value="GROUP" >그룹</option>
-            <option value="PERSONAL" >개인</option>
+            <option value="GROUP">그룹</option>
+            <option value="PERSONAL">개인</option>
             <option value="PROJECT">프로젝트</option>
             <option value="ETC">기타</option>
          </select>
@@ -57,6 +62,9 @@
 		<c:url var="list" value="studyList.tc"/>
 		<a href="${list }">목록 전체보기</a>
 	</p>
+
 	<br><br><br><br><br><br><br><br><br><br><br><br>
+	</section>
+		</div>
 </body>
 </html>
