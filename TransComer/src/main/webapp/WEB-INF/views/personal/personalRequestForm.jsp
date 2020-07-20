@@ -42,7 +42,7 @@
                             <h2>1:1 의뢰 신청</h2>
                         </center>
                         <hr>
-                        <form action="pinsert.tc" method="post" id="personalForm" enctype="Multipart/form-data">
+                        <form action="pReqInsert.tc" method="post" id="personalForm" enctype="Multipart/form-data">
                             <h3>* 번역가 정보</h3>
                             <br>
                             <label>번역가</label>
@@ -76,7 +76,7 @@
                             <br>
                             <input type="file" name="uploadFile" style="margin:0;"/>
                             <!--파일 여러개 넣기-->
-                            <input multiple="multiple" type="file" name="uploadFile[]" style="margin:0;"/>
+                            <input multiple="multiple" type="file" name="reqUploadFile[]" style="margin:0;"/>
                             <br><br>
 
                             <hr>
@@ -87,7 +87,7 @@
                                 현재 글자수 :&nbsp;<span id="counter">###</span>
                             </div>
                             <br>
-                            <h4 id="price" style="float:right;">현재가격 :</h4>
+                            <h4 id="price" style="float:right;">현재가격 : <input readonly id="req_Price" name="pReqPrice" value="${PersonalReqRep.pReqPrice}"></h4>
                             <br>
                             <p style="float:right; font-size:13px;">(100자 당 가격 : ${personal.personalPrice }원)</p>
                             <br><br>
@@ -95,7 +95,7 @@
                             <hr>
                             <h4>세부요청 사항</h4>
                             <br>
-                            <textarea placeholder="요청사항을 입력해주세요" style="height:100px;"></textarea>
+                            <textarea id="pReqCommnet" placeholder="요청사항을 입력해주세요" style="height:100px;"></textarea>
 
                             <br><br>
                             <center>

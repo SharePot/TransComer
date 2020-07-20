@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.review.domain.Review;
 
@@ -69,6 +70,12 @@ public class PersonalStoreLogic implements PersonalStore {
 	public int getSearchListCount(PersonalSearch search) {
 		return sqlSession.selectOne("personalMapper.getSearchListCount", search);
 	}
+	
+	@Override
+	public int insertRequest(PersonalReqRep personalReqRep) {
+		return sqlSession.insert("personalMapper.insertRequest", personalReqRep);
+	}
+	
 	
 	@Override
 	public int insertReview(Review review) {

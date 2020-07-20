@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.store.PersonalStore;
 import com.tc.spring.review.domain.Review;
@@ -49,13 +50,6 @@ public class PersonalServiceImpl implements PersonalService {
 		return personalStore.insertPersonal(personal);
 	}
 
-	/*
-	 * @Override public int insertPersonal(Personal personal, MultipartFile file,
-	 * HttpServletRequest request) {
-	 * personal.setPersonalContent(personal.getPersonalContent().replace("\n",
-	 * "<br>")); return personalStore.insertPersonal(personal); }
-	 */
-
 	@Override
 	public int updatePersonal(Personal personal) {
 		// textarea의 갱행문자를 <br>로 변경
@@ -82,6 +76,16 @@ public class PersonalServiceImpl implements PersonalService {
 		// personalStore.getSearchListCount(search));
 		return personalStore.getSearchListCount(search);
 	}
+	
+	@Override
+	public int insertRequest(PersonalReqRep personalReqRep, MultipartFile file, HttpServletRequest request) {
+		// textarea의 갱행문자를 <br>로 변경
+		personalReqRep.setpReqContent(personalReqRep.getpReqContent().replace("\n", "<br>"));
+		personalReqRep.setpReqDetail(personalReqRep.getpReqDetail().replace("\n", "<br>"));
+		
+		return personalStore.insertRequest(personalReqRep);
+	}
+	
 	
 	@Override
 	public int insertReview(Review review) {

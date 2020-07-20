@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.review.domain.Review;
 import com.tc.spring.study.domain.StudySearch;
@@ -91,9 +92,23 @@ public interface PersonalService {
 	/**
 	 * 1:1 의뢰 게시판 검색한 결과 갯수 조회
 	 * 
-	 * @param personalNo
+	 * @param search
 	 * @return
 	 */
 
+	public int insertRequest(PersonalReqRep personalReqRep, MultipartFile uploadFile, HttpServletRequest request);
+	/**
+	 * 1:1 의뢰 신청 등록
+	 * 
+	 * @param personalReqRep
+	 * @return
+	 */
+	
 	public int insertReview(Review review);
+	/**
+	 * 1:1 의뢰 리뷰 등록
+	 * 
+	 * @param review
+	 * @return
+	 */
 }
