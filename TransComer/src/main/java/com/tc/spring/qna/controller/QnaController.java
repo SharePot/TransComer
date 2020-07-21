@@ -152,13 +152,16 @@ public class QnaController {
 	
 	// Qna 게시글 수정
 	@RequestMapping(value="qupdate.tc", method=RequestMethod.POST)
-	public String qnaUpdate(Qna qna, Files files, Model model, HttpServletRequest request, MultipartFile reloadFile, String memberId) {
+	public String qnaUpdate(Qna qna, Files files, Model model, MultipartHttpServletRequest request, HttpServletRequest requestH,
+			@RequestParam(name="reloadFile", required=false)MultipartFile[] reloadFile, String memberId) {
 		
 		int resultQna = qnaService.updateQna(qna);
 		int resultFile = 0;
 		if(resultQna > 0) {
-			if (!reloadFile.getOriginalFilename().equals("")) {
-				resultFile = fController.updateFile(files, model, request, reloadFile, memberId);
+			for(int i = 0; i < reloadFile.length; i++) {
+				if (!reloadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.updateFile(files, model, requestH, reloadFile[i], memberId);
+				}
 			}
 			return "redirect:qdetail.tc?qnaNo="+qna.getQnaNo();
 		} else {
