@@ -27,7 +27,7 @@
 		<typeAlias type="com.tc.spring.files.domain.Files" alias="Files"/>
 		
 		<typeAlias type="com.tc.spring.personal.domain.Personal" alias="Personal"/>
-		<typeAlias type="com.tc.spring.personal.domain.PersonalRequestAndResult" alias="PersonalRequestAndResult"/>
+		<typeAlias type="com.tc.spring.personal.domain.PersonalReqRep" alias="PersonalReqRep"/>
 		<typeAlias type="com.tc.spring.personal.domain.PersonalSearch" alias="PersonalSearch"/>
 		
 		<typeAlias type="com.tc.spring.qna.domain.Qna" alias="Qna"/>

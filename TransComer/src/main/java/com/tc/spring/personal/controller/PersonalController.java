@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tc.spring.common.Pagination;
+import com.tc.spring.files.controller.FileController;
+import com.tc.spring.files.domain.Files;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
@@ -34,6 +36,9 @@ public class PersonalController {
 
 	@Autowired
 	private PersonalService personalService;
+	
+	@Autowired
+	private FileController fController;
 
 	// 1:1게시판 전체 조회
 	@RequestMapping("plist.tc")
@@ -306,12 +311,20 @@ public class PersonalController {
 	
 	// 1:1 의뢰 신청 등록하기
 	@RequestMapping(value = "pReqInsert.tc", method=RequestMethod.POST)
-	public String requestInsert(PersonalReqRep personalReqRep, Model model, @RequestParam(name="uploadFile",required=false)MultipartFile uploadFile,HttpServletRequest request) {
+	public String requestInsert(PersonalReqRep personalReqRep, Files files, Model model, @RequestParam(name="uploadFile", required=false)MultipartFile[] uploadFile, MultipartHttpServletRequest request,  HttpServletRequest requestH, String memberId) {
 		
+		int result = 0;
+		int resultFile = 0;
 		String path = null;
-		int result = personalService.insertRequest(personalReqRep, uploadFile, request);
+		result = personalService.insertRequest(personalReqRep, request);
+		
 		if (result > 0) {
-			return "redirect:plist.tc";
+			for (int i = 0; i < uploadFile.length; i++) {
+				if (!uploadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
+				}
+			}
+			path =  "redirect:plist.tc";
 		} else {
 			model.addAttribute("msg", "등록실패");
 			path = "common/errorPage";
@@ -353,25 +366,4 @@ public class PersonalController {
 	        }
 	    }*/
 
-
-	
-	//리뷰=============================================================================
-	
-	// 1:1 리뷰 작성하기
-	@RequestMapping("pReview.tc")
-	@ResponseBody
-	public String addReview(Review review, HttpSession session) {
-		Member loginUser = (Member)session.getAttribute("loginUser");
-		String revWriteMemberId = loginUser.getMemberId();
-		review.setMemberId(revWriteMemberId);
-		int result = personalService.insertReview(review);
-		if(result > 0) {
-			return "success";
-		}else {
-			return "fail";
-		}
-		
-	}
-	
-	
 }

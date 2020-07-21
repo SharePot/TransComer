@@ -78,7 +78,7 @@ public class PersonalServiceImpl implements PersonalService {
 	}
 	
 	@Override
-	public int insertRequest(PersonalReqRep personalReqRep, MultipartFile file, HttpServletRequest request) {
+	public int insertRequest(PersonalReqRep personalReqRep, HttpServletRequest request) {
 		// textarea의 갱행문자를 <br>로 변경
 		personalReqRep.setpReqContent(personalReqRep.getpReqContent().replace("\n", "<br>"));
 		personalReqRep.setpReqDetail(personalReqRep.getpReqDetail().replace("\n", "<br>"));
@@ -87,9 +87,4 @@ public class PersonalServiceImpl implements PersonalService {
 	}
 	
 	
-	@Override
-	public int insertReview(Review review) {
-		return personalStore.insertReview(review);
-	}
-
 }

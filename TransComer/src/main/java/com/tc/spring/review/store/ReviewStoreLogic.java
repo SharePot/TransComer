@@ -16,15 +16,13 @@ public class ReviewStoreLogic implements ReviewStore {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<Review> selectList(ReviewPageInfo rPi) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Review> selectList(int personalNo) {
+		return (ArrayList)sqlSession.selectList("reviewMapper.selectReviewList", personalNo);
 	}
 
 	@Override
 	public int insertReview(Review review) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("reviewMapper.insertReview", review);
 	}
 
 	@Override
