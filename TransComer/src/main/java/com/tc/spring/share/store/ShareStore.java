@@ -35,5 +35,11 @@ public interface ShareStore {
 	 * @return
 	 */
 	public int deleteShare(int shareNo);
+	
+	/**
+	 * 관리자가 번역공유 신청글 전체 조회
+	 * @return
+	 */
+	public ArrayList<Share> adminShareList();
 
 }

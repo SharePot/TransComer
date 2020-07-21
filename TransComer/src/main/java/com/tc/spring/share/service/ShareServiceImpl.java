@@ -37,4 +37,10 @@ public class ShareServiceImpl implements ShareService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public ArrayList<Share> adminShareList() {
+		// TODO Auto-generated method stub
+		return shareStore.adminShareList();
+	}
 }

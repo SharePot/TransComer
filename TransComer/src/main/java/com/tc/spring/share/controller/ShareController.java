@@ -1,10 +1,13 @@
 package com.tc.spring.share.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,4 +56,24 @@ public class ShareController {
 
 	public void deleteZipFile(String fileName, HttpServletRequest request) {
 	}
+
+	// 관리자 - 번역공유 승인 신청 리스트 페이지 이동
+	@RequestMapping("adminShareList.tc")
+	public ModelAndView adminShareList(ModelAndView mv) {
+		ArrayList<Share> shareList = shareService.adminShareList();
+		if (!shareList.isEmpty()) {
+			// 리스트가 비어있지 않으면
+			mv.addObject("shareList", shareList);
+			mv.setViewName("admin/adminShareList");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+
+	// 관리자 - 번역공유 신청글을 승인/반려를 하기위한 상세페이지 이동
+	public String adminShareOne(int shareNo, Model model) {
+		return "";
+	}
+
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,31 +20,8 @@
     <div id="page-wrapper">
 
         <!-- Header -->
-        <section id="header">
-
-            <!-- Logo -->
-            <h1><a href="index.html">SharePot</a></h1>
-
-            <!-- Nav -->
-            <nav id="nav">
-                <ul>
-                    <li class="current"><a href="#">Home</a></li>
-                    <li>
-                        <a href="#">번역 의뢰</a>
-                        <ul>
-                            <li><a href="#">단순 의뢰</a></li>
-                            <li><a href="#">1:1 의뢰</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">번역 공유</a></li>
-                    <li><a href="#">스터디</a></li>
-                    <li><a href="#">Q&amp;A</a></li>
-                </ul>
-            </nav>
-            
-            <%-- <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
-            
-        </section>
+        <%-- <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
+        <c:import url="../common/menuBar.jsp"/>
 
         <!-- Main -->
         <section id="main">
@@ -65,7 +43,6 @@
                         <hr>
                     </div>
                     <div class="col-12">
-                        <!--메인 내용 구역 2(지워도 됨, 자유롭게 추가)-->
                         <!--번역 공유 신청 리스트 테이블-->
                         <table class="table table-hover">
                             <thead class="thead-light">
@@ -80,19 +57,27 @@
                             </thead>
                             <tbody>
                                 <!--반복되는 테이블 데이터 출력부분-->
-                                <tr class="text-center">
-                                    <th scope="row">1</th>
-                                    <td>user01</td>
-                                    <td>JAVA</td>
-                                    <td>영어</td>
-                                    <td>AJAX 오류 해결 번역</td>
-                                    <td>
-                                        <!--if 문으로 해당 글의 승인/반려/미처리 상태를 체크하여 표시-->
-                                        <a class="btn btn-primary" style="color: white">승인 / 반려</a>
-                                        <!--<button class="btn btn-success">승인</button>-->
-                                        <!--<button class="btn btn-warning">반려</button>-->
-                                    </td>
-                                </tr>
+                                <c:forEach var="share" items="${shareList }">
+	                                <tr class="text-center">
+	                                    <th scope="row">${share.shareNo }</th>
+	                                    <td>${share.memberId }</td>
+	                                    <td>${share.pLanguage }</td>
+	                                    <td>${share.tLanguage }</td>
+	                                    <td>${share.shareTitle }</td>
+	                                    <td>
+	                                        <!--if 문으로 해당 글의 승인/반려/미처리 상태를 체크하여 표시-->
+	                                        <c:if test="${share.shareYN eq 'N' }">
+		                                        <a class="btn btn-primary" style="color: white">승인 / 반려</a>
+	                                        </c:if>
+	                                        <c:if test="${share.shareYN eq 'Y' }">
+		                                        <button class="btn btn-success">승인 완료</button>
+	                                        </c:if>
+	                                        <c:if test="${share.shareYN eq 'R' }">
+		                                        <button class="btn btn-warning">반려 처리</button>
+	                                        </c:if>
+	                                    </td>
+	                                </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
                     </div>
