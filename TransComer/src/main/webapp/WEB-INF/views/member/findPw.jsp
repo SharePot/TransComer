@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
     <head>
         <meta charset="utf-8">
         <title>비밀번호 찾기</title>
@@ -310,6 +310,32 @@
         #icon {
           width:60%;
         }
+        
+        #pwCh1, #pwCh2{
+        background-color: #f6f6f6;
+          border: none;
+          color: #0d0d0d;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 5px 0 5px 0;
+          width: 85%;
+          border: 2px solid #f6f6f6;
+          -webkit-transition: all 0.5s ease-in-out;
+          -moz-transition: all 0.5s ease-in-out;
+          -ms-transition: all 0.5s ease-in-out;
+          -o-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out;
+          -webkit-border-radius: 5px 5px 5px 5px;
+          border-radius: 5px 5px 5px 5px;
+        }
+        
+        #pwdBtn{
+        	width: 85%;
+        	height: 55px;
+        }
 
         </style>
     </head>
@@ -325,16 +351,16 @@
                 </div>-->
                  <ul class="nav nav-tabs">
                   <li class="nav-item">
-                    <a class="nav-link disabled" href="#">아이디 찾기</a>
+                    <a class="nav-link disabled" href="#">비밀번호 찾기</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">비밀번호 찾기</a>
-                  </li>
+                  <!-- <li class="nav-item">
+                    <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">아이디  찾기</a>
+                  </li> -->
                 </ul>
                
                 <!-- Login Form -->
-                <form action="findPW_After.jsp" method="post" id="formInfo">
-                  <input type="text" id="mId" class="fadeIn second" name="ID" placeholder="이메일">
+                <div id="ChangeArea">
+                  <input type="text" id="mId" class="fadeIn second" name="ID" placeholder="아이디">
 
                   <!--<input type="text" id="mName" class="fadeIn second" name="name" placeholder="이름">-->
                 
@@ -343,7 +369,7 @@
                     <input type="text" id="mPhone" class="fadeIn  third" name="phone" placeholder="전화번호" maxlength="13">
                     </div>
                     <div class="col-xs-2">
-                    <input type="button"  style="width: 115px; height: 55px;" class="fadeIn fourth" id="phoneBtn" value=" 전송 하기">
+                    <input type="button"  style="width: 110px; height: 55px;" class="fadeIn fourth" id="phoneBtn" value="전송 하기">
                   </div>
                     </div>
                     
@@ -352,12 +378,12 @@
                     <input type="text" id="NumCheck" class="fadeIn third" placeholder="인증번호">
                     </div>
                     <div class="col-xs-2">
-                    <input type="button" class="fadeIn fourth" id="Check" value="인증 확인" style="width: 115px; height: 55px;">
+                    <input type="button" class="fadeIn fourth" id="Check" value="인증 확인" style="width: 110px; height: 55px;">
                   </div>
                     </div>
                     
                   <input type="button" class="fadeIn fourth" id="FinalCheck" value="비밀번호 찾기" style="width: 85%; height: 55px;">
-                </form>
+                </div>
 
                 <!-- Remind Passowrd -->
                 <div id="formFooter">
@@ -370,47 +396,77 @@
         <script>
         var Num = 0;
         var check = 0;
+        var originId;
+        
          $("#phoneBtn").click(function () {
              if ($("#mId").val().length == 0) {
                     alert("아이디를 입력해주세요");
                     return;
-                }
-                if ($("#mName").val().length == 0) {
-                   alert("이름을 입력해주세요");
-                   return;
-                }
-                if ($("#mPhone").val().length == 0) {
+             }
+             if ($("#mPhone").val().length == 0) {
                     alert("전화번호를 입력해주세요");
                     return;
-                }
-                     
+             }
+             
             $.ajax({
-               url : "/FindPwd",
+               url : "findPwd.tc",
                type : "POST",
                data:{
                      mId : $("#mId").val(),
-                     mName : $("#mName").val(),
                      mPhone : $("#mPhone").val()
                   },
                success : function(data) {
                   Num = data;
                   if(data >= 1){
                      alert("인증번호가 전송되었습니다");
+                     originId = $("#mId").val();
                      $("#mId").attr("readonly","readonly");
                   }else{                                       
                      alert(data);
                   }
                }
             });
+
+            
          });
-         
+
+		function RePass(){ 
+			<!-- 비밀번호 유효성 검사 -->
+				
+			if(checkPassword($('#pwCh1').val())){
+				$("#PassRe").submit();
+			}
+					
+			function checkPassword(password/*,id*/){
+			
+				if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
+					alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+					$('#pwCh1').val('').focus(); 
+					return false;
+				}
+				if(/(\w)\1\1\1/.test(password)){
+					alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+					$('#pwCh1').val('').focus(); 
+					return false;
+				}
+				var idOne = $("#pwCh1").val();
+				var idTwo = $("#pwCh2").val();
+				if(idOne != idTwo){
+					alert('비밀번호가 일치하지 않습니다.');
+					return false;	
+				}
+				return true; 
+			} 
+		 
+		};
+
+        
          $("#Check").click(function () {
             var a = Num;
             var b = $("#NumCheck").val();
             if(parseInt(a) == parseInt(b)){
-               alert("인증이 완료되었습니다");
                check = 1;
-               
+               alert("인증이 완료되었습니다");
             }else{
                if($("#NumCheck").val() == ""){
                   alert("인증번호를 입력해주세요");
@@ -427,10 +483,6 @@
                     alert("아이디를 입력해주세요");
                     return;
                 }
-                if ($("#mName").val().length == 0) {
-                   alert("이름을 입력해주세요");
-                   return;
-                }
                 if ($("#mPhone").val().length == 0) {
                     alert("전화번호를 입력해주세요");
                     return;
@@ -439,11 +491,23 @@
                    alert("휴대폰인증이 완료되지 않았습니다.");
                 }
                 if(check == 1){
-                   alert("인증이 완료되었습니다.\n 비밀번호 변경 페이지로 이동합니다.");
-                   $("#formInfo").submit();
+                	$("#ChangeArea").html("<form action='PwdRe.tc' method='POST' id='PassRe'>"
+                            + "<div style='margin-top:5px'>"
+                            + "<input type='password' name='pass' id='pwCh1' placeholder='비밀번호'>" 
+                            + "<br>"
+                            + "<input type='password' id='pwCh2' placeholder='비밀번호 확인'>" 
+                            + "<input type='hidden' name='userId' value="+originId+">"
+                            + "<br>"
+                            + "<input type='button' id='pwdBtn' class='fadeIn fourth' value='변경하기' onclick='RePass()'>"
+                            + "</div>"
+                            + "</form>");
+
                 }
          });
         </script>
+
+	 
+        
 		 <!--전화번호 Script-->
        <script>
             var autoHypenPhone = function(str) {
@@ -482,5 +546,5 @@
              this.value = autoHypenPhone(this.value);
           }
        </script>
-    </body>
+</body>
 </html>

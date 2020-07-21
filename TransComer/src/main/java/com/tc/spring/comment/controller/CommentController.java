@@ -42,6 +42,7 @@ public class CommentController {
 		comment.setShareNo(shareNo);
 		comment.setStudyNo(studyNo);
 		
+		
 		ArrayList<Comment> commentList=commentService.selectCommentList(comment);
 		
 		
@@ -98,6 +99,18 @@ public class CommentController {
 		}else {
 			return "fail";
 		}
+	}
+	
+
+	public int getCommentListCount(int shareNo,int studyNo,int qnaNo,String commentCondition) {
+		Comment comment = new Comment();
+		comment.setCommentCondition(commentCondition);
+		comment.setQnaNo(qnaNo);
+		comment.setShareNo(shareNo);
+		comment.setStudyNo(studyNo);
+		
+		int commentCount=commentService.getCommentListCount(comment);
+		return commentCount;
 	}
 		
 }

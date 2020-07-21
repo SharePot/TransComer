@@ -323,21 +323,23 @@
 
                 <!-- Icon -->
                 <!--<div class="fadeIn first">
-                  <img src="/img/logo.png" id="icon" alt="User Icon" />
+                  <img src="/img/logo.png" id="icon" alt="User Icon"ddd
                 </div>
                 -->
-                <ul class="nav nav-tabs">
+                <!-- <ul class="nav nav-tabs">
                   <li class="nav-item">
-                    <a class="nav-link active" href="#">아이디 찾기</a>
+                    <a class="nav-link active" href>아이디 찾기</a>
                   </li>
                  
                   <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">비밀번호 찾기</a>
                   </li>
-                </ul>
+                </ul> -->
                 <br>
                 <!-- Login Form -->
                 <form action="" method="post" id="formInfo">
+                <!-- 아이디 영역 -->
+                <div id="IdInfo"> 
                   <input type="text" id="mEmail" class="fadeIn second" name="EMAIL" placeholder="이메일" >
 					
 				<!--<form action="" method="post" id="formInfo">
@@ -351,59 +353,47 @@
                     
                   </div>-->
                     
-                    <div class="row">
-                
-                    </div>
-                    
-                  <input type="button" class="fadeIn fourth" id="FinalCheck" value="아이디 찾기" style="width: 85%; height: 55px;">
+                  <input type="button" class="fadeIn fourth" id="idCheck" value="아이디 찾기" style="width: 85%; height: 55px;">
+                </div>
                 </form>
 
                 <!-- Remind Passowrd -->
                 <div id="formFooter">
+                  <!-- 메인페이지 jsp나오면 링크달기 -->
+                  
+      
+                  <!-- <a class="underlineHover" href="#" onclick="hide('IdInfo')">뒤로가기</a> -->
                   <a class="underlineHover" href="#">메인페이지로 돌아가기</a>
                 </div>
 
-				</form>
+				
 				  
         	</div>
 		</div>
-       <!--전화번호 Script-->
+     
+    
+   		
        <script>
-            var autoHypenPhone = function(str) {
-             str = str.replace(/[^0-9]/g, '');
-             var tmp = '';
-             if (str.length < 4) {
-                return str;
-             } else if (str.length < 7) {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3);
-                return tmp;
-             } else if (str.length < 11) {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3, 3);
-                tmp += '-';
-                tmp += str.substr(6);
-                return tmp;
-             } else {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3, 4);
-                tmp += '-';
-                tmp += str.substr(7);
-                return tmp;
-             }
+		$("#idCheck").click(function (){
+			$.ajax({
+                url : "findID.tc",
+                dataType:"json",
+                type : "GET",
+                data:{
+                      memberEmail : $("#mEmail").val()
+                   },
+				success:function(data){
+					$("#IdInfo").empty();
+					$("#IdInfo").text(data.userId);
+					
+				}
+                   
+      		});
+		});
+			
 
-             return str;
-          }
-        
-          var phoneNum = document.getElementById('mPhone');
-
-          phoneNum.onkeyup = function() {
-             console.log(this.value);
-             this.value = autoHypenPhone(this.value);
-          }
+       
+      
        </script>
      
 

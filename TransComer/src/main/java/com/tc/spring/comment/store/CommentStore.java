@@ -9,7 +9,7 @@ public interface CommentStore {
 
 	public ArrayList<Comment> selectCommentList(Comment comment);
 
-	public int getCommentListCount();
+	public int getCommentListCount(Comment comment);
 	
 	public int insertComment(Comment comment);
 	

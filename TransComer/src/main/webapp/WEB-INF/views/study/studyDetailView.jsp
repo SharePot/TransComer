@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 상세</title>
+<title>SharePot - 스터디 게시글 조회</title>
 </head>
 <body>
 	<div class="page-wrapper">

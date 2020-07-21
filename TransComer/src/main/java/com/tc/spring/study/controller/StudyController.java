@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tc.spring.comment.controller.CommentController;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.study.domain.Study;
 import com.tc.spring.study.domain.StudyPageInfo;
@@ -28,6 +29,9 @@ public class StudyController {
 
 	@Autowired
 	private StudyService studyService;
+	
+	@Autowired
+	private CommentController cController; 
 
 	//스터디 전체 목록
 	@RequestMapping("studyList.tc")
@@ -36,8 +40,17 @@ public class StudyController {
 		int currentPage=(page!=null) ? page : 1;
 		int studyListCount = studyService.getListCount();
 	
+		int shareNo=0;
+		int qnaNo=0;
+		String commentCondition="study";
 		StudyPageInfo pi=Pagination.getStudyPageInfo(currentPage,studyListCount);
 		ArrayList<Study> list=studyService.selectStudyList(pi);
+		
+		for (int i=0; i<list.size(); i++) {
+			int commentCount=cController.getCommentListCount(shareNo, list.get(i).getStudyNo(), qnaNo, commentCondition);
+			list.get(i).setCommentCount(commentCount);
+		}
+		
 		if(!list.isEmpty()) {
 			mv.addObject("list",list);
 			mv.addObject("pi",pi);

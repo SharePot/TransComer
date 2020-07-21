@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>스터디 글 작성</title>
+<title>SharePot - 스터디 글 작성</title>
 </head>
 <body>
 

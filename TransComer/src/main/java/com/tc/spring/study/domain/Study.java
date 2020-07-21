@@ -10,15 +10,15 @@ public class Study {
 	private String studyContent;
 	private Date studyWriteDate;
 	private int studyCount;
-	private String studyFilePath;
+	private String studyFilePath; 
+	private int commentCount;
 
 	public Study() {
 
 	}
 
-
 	public Study(int studyNo, String memberId, String studyCategory, String studyTitle, String studyContent,
-			Date studyWriteDate, int studyCount, String studyFilePath) {
+			Date studyWriteDate, int studyCount, String studyFilePath, int commentCount) {
 		super();
 		this.studyNo = studyNo;
 		this.memberId = memberId;
@@ -28,11 +28,8 @@ public class Study {
 		this.studyWriteDate = studyWriteDate;
 		this.studyCount = studyCount;
 		this.studyFilePath = studyFilePath;
+		this.commentCount = commentCount;
 	}
-
-
-
-
 
 	public int getStudyNo() {
 		return studyNo;
@@ -100,16 +97,22 @@ public class Study {
 		this.studyFilePath = studyFilePath;
 	}
 
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Study [studyNo=" + studyNo + ", memberId=" + memberId + ", studyCategory=" + studyCategory
 				+ ", studyTitle=" + studyTitle + ", studyContent=" + studyContent + ", studyWriteDate=" + studyWriteDate
-				+ ", studyCount=" + studyCount + ", studyFilePath=" + studyFilePath + "]";
+				+ ", studyCount=" + studyCount + ", studyFilePath=" + studyFilePath + ", commentCount=" + commentCount
+				+ "]";
 	}
 
-
-
-	
-	
 }

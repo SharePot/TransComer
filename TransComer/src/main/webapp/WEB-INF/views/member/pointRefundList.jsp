@@ -6,7 +6,7 @@
 <head>
 <link rel="stylesheet" href="resources/css/pointRefundList.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SharePot - 포인트 환급 신청</title>
+<title>SharePot - 포인트 환급 신청 목록</title>
 </head>
 <c:import url="../common/menuBar.jsp" />
 <body>
@@ -95,7 +95,7 @@
 				
 				
 			<!-- 페이지 -->
-			<c:forEach var="p" begin="${pi.currentPage }" end="${pi.endPage }">
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
 				<c:if test="${p eq currentPage }">
 					<font color="red" size="4"><b>[${p }]</b></font>
 				</c:if>

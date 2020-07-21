@@ -51,9 +51,9 @@ ORDER BY COMMENT_NO
 	UPDATE COMMENTS SET COMMENT_CONTENT=#{commentContent}, COMMENT_WRITE_DATE=SYSDATE WHERE COMMENT_NO=#{commentNo}
 </update>
 
-<select id="getCommentListCount" resultType="_int">
-	SELECT COUNT(*) FROM COMMENT
-	<choose>
+<select id="getCommentListCount" parameterType="Comment" resultType="_int">
+	SELECT COUNT(*) FROM COMMENTS
+	 <choose>
 		<when test="commentCondition=='share'">
 		WHERE SHARE_NO=#{shareNo}
 		</when>
@@ -63,7 +63,7 @@ ORDER BY COMMENT_NO
 		<otherwise>
 		WHERE STUDY_NO=#{studyNo}
 		</otherwise>	
-	</choose>
+	</choose> 
 	
 </select>
 
