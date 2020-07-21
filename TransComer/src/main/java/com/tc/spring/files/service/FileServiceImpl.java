@@ -1,5 +1,7 @@
 package com.tc.spring.files.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,11 @@ public class FileServiceImpl implements FileService{
 
 	@Autowired
 	private FileStore fileStore;
+	
+	@Override
+	public ArrayList<Files> selectFileList(Files files) {
+		return fileStore.selectFileList(files);
+	}
 
 	@Override
 	public int insertFile(Files files, MultipartFile file, HttpServletRequest request) {
@@ -29,6 +36,5 @@ public class FileServiceImpl implements FileService{
 	public int deleteFile(String filePath) {
 		return fileStore.deleteFile(filePath);
 	}
-
 	
 }

@@ -113,7 +113,10 @@
 							                <tr>
 							                    <th>파일 업로드</th>
 							                    <td>
-							                        <input type="file" name="reloadFile" class="form-control-file border">
+							                    	<c:forEach items="${flist }" var="f">
+							                    		${f.fileName}<br>
+							                    		<input type="file" name="reloadFile" class="form-control-file border" />
+							                  		</c:forEach>
 							                    </td>
 							                </tr>
 							                <tr align="center">

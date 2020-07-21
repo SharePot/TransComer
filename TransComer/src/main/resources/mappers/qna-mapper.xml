@@ -83,6 +83,12 @@
 		SELECT * FROM QNA
 		WHERE QNA_NO = #{qnaNo}
 	</select>
+	
+	<!-- QnA 최신글 번호 조회 -->
+	<select id="selectQnaLatestNo" parameterType="string" resultType="_int">
+		SELECT QNA_NO FROM (SELECT * FROM QNA ORDER BY QNA_NO DESC) 
+		WHERE ROWNUM = 1
+	</select>
   	
   	<!-- 공지사항 등록 쿼리 -->
   	<insert id="insertQna" parameterType="Qna">

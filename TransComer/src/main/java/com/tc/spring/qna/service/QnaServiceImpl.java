@@ -58,12 +58,16 @@ public class QnaServiceImpl implements QnaService{
 	public Qna selectQna(int qnaNo) {
 		return qnaStore.selectQna(qnaNo);
 	}
+	
+	@Override
+	public int selectQnaLatestNo(String memberId) {
+		return qnaStore.selectQnaLatestNo(memberId);
+	}
 
 	@Override
 	public int insertQna(Qna qna, HttpServletRequest request) {
 		return qnaStore.insertQna(qna);
 	}
-
 
 	@Override
 	public int updateQna(Qna qna) {
@@ -74,6 +78,8 @@ public class QnaServiceImpl implements QnaService{
 	public int deleteQna(int qnaNo) {
 		return qnaStore.deleteQna(qnaNo);
 	}
+
+	
 
 	
 	

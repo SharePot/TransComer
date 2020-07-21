@@ -2,6 +2,7 @@ package com.tc.spring.files.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,6 +65,11 @@ public class FileController {
 		return filePath;
 	}
 	
+	public ArrayList<Files> selectFileList(Files files) {
+		ArrayList<Files> flist = fileService.selectFileList(files);
+		return flist;
+	}
+	
 	public int updateFile(Files files, Model model, HttpServletRequest request, MultipartFile reloadFile, String memberId) {
 		// 새로 업로드된 파일이 있을 경우
 		if (reloadFile != null && !reloadFile.isEmpty()) {
@@ -77,6 +83,7 @@ public class FileController {
 			
 			// 새로 업로드된 파일이 잘 저장이 되었다면 디비 저장
 			if( savePath != null ) {
+				files.setMemberId(memberId);
 				files.setFileName(reloadFile.getOriginalFilename());
 				files.setFilePath(savePath);
 			}

@@ -16,7 +16,7 @@
 		<typeAlias type="com.tc.spring.member.domain.PointChange" alias="PointChange"/>
 		<typeAlias type="com.tc.spring.member.domain.PointRefund" alias="PointRefund"/>
 		<typeAlias type="com.tc.spring.member.domain.Profile" alias="Profile"/>
-		<!-- <typeAlias type="com.tc.spring.member.domain.MemberSearch" alias="MemberSearch"/> -->
+		<typeAlias type="com.tc.spring.member.domain.MemberSearch" alias="MemberSearch"/>
 		
 		<typeAlias type="com.tc.spring.alarm.domain.Alarm" alias="Alarm"/>
 		

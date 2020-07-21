@@ -37,6 +37,9 @@ public interface QnaStore {
 
 	// QnA 상세조회
 	public Qna selectQna(int qnaNo);
+	
+	// QnA 최신글 번호 조회
+	public int selectQnaLatestNo(String memberId);
 
 	// QnA 수정
 	public int updateQna(Qna qna);

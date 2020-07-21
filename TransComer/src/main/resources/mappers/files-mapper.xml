@@ -7,11 +7,48 @@
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="fileName" column="FILE_NAME" />
 		<result property="filePath" column="FILE_PATH" />
+		<result property="qnaNo" column="QNA_NO" />
+		<result property="shareNo" column="SHARE_NO" />
+		<result property="studyNo" column="STUDY_NO" />
+		<result property="personalNo" column="PERSONAL_NO" />
 	</resultMap>
+	
+	<select id="selectFileList" parameterType="Files" resultMap="filesResultSet">
+		SELECT * FROM FILES
+		<where>
+			<choose>
+				<when test="qnaNo > 0">
+					QNA_NO = #{qnaNo}
+				</when>
+				<when test="shareNo > 0">
+					SHARE_NO = #{shareNo}
+				</when>
+				<when test="studyNo > 0">
+					STUDY_NO = #{studyNo}
+				</when>
+				<when test="personalNo > 0">
+					PERSONAL_NO = #{personalNo}
+				</when>
+			</choose>
+		</where>
+	</select>
 	
 	<insert id="insertFiles" parameterType="Files">
 		INSERT INTO FILES
-		VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath})
+		<choose>
+			<when test="qnaNo > 0">
+				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, #{qnaNo}, DEFAULT, DEFAULT, DEFAULT)
+			</when>
+			<when test="shareNo > 0">
+				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, #{shareNo}, DEFAULT, DEFAULT)
+			</when>
+			<when test="studyNo > 0">
+				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, DEFAULT, #{studyNo}, DEFAULT)
+			</when>
+			<when test="personalNo > 0">
+				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, DEFAULT, DEFAULT, #{personalNo})
+			</when>
+		</choose>
 	</insert>
 	
 	<update id="updateFiles" parameterType="Files">
@@ -19,7 +56,7 @@
 		WHERE FILE_NO = #{fileNo}
 	</update>
 	
-	<delete id="deleteFiles" parameterType="_int">
+	<delete id="deleteFiles" parameterType="string">
 		DELETE FROM FILES WHERE FILE_PATH = #{filePath}
 	</delete>
 </mapper>

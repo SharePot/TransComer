@@ -112,8 +112,8 @@
 							                </tr>
 							                <tr>
 							                    <th>파일 업로드</th>
-							                    <td>
-							                        <input type="file" multiple="multiple" name="uploadFile" class="form-control-file border"> 
+							                    <td id="fileUp">
+							                    	<button type="button" class="btn btn-info btn-sm" id="addFile" onclick="return addFiles();">파일 추가</button>
 							                    </td>
 							                        
 							                </tr>
@@ -137,6 +137,13 @@
 						var qCategory = $("#qnaCategorySelect option:selected").val();
 						$("#qnaCategory").val(qCategory);
 					});
+					
+					function addFiles() {
+						var addfile = "<input type='file' name='uploadFile' class='form-control-file border'>"
+						var td = document.getElementById("fileUp");
+						
+						td.innerHTML += addfile;
+					}
 				</script>
 
 			<!-- Footer -->

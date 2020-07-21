@@ -76,6 +76,11 @@ public class QnaStoreLogic implements QnaStore {
 	public Qna selectQna(int qnaNo) {
 		return sqlSession.selectOne("qnaMapper.selectOne", qnaNo);
 	}
+	
+	@Override
+	public int selectQnaLatestNo(String memberId) {
+		return sqlSession.selectOne("qnaMapper.selectQnaLatestNo", memberId);
+	}
 
 	@Override
 	public int insertQna(Qna qna) {
@@ -91,8 +96,6 @@ public class QnaStoreLogic implements QnaStore {
 	public int deleteQna(int qnaNo) {
 		return sqlSession.delete("qnaMapper.deleteQna", qnaNo);
 	}
-
-	
 	
 	
 }

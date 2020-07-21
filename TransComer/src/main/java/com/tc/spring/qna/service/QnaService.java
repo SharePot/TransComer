@@ -12,7 +12,6 @@ import com.tc.spring.qna.domain.QnaSearch;
 
 public interface QnaService {
 
-	
 	// 전체 게시글 수
 	public int getListCount();
 	
@@ -39,6 +38,9 @@ public interface QnaService {
 	
 	// QnA 상세조회
 	public Qna selectQna(int qnaNo);
+	
+	// QnA 최신글 번호 조회
+	public int selectQnaLatestNo(String memberId);
 	
 	// QnA 수정
 	public int updateQna(Qna qna);

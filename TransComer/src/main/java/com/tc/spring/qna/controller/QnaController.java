@@ -100,6 +100,15 @@ public class QnaController {
 		
 		qnaService.addReadCount(qnaNo); // 조회수 증가
 		Qna qna = qnaService.selectQna(qnaNo); // 게시글 상세조회
+		
+		Files fCategory = new Files();
+		fCategory.setQnaNo(qnaNo);
+		fCategory.setShareNo(0);
+		fCategory.setStudyNo(0);
+		fCategory.setPersonalNo(0);
+		
+		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
+		
 		if ( qna != null ) {
 			// 메소드 체이닝 방식
 			mv.addObject("qna", qna)
@@ -126,9 +135,12 @@ public class QnaController {
 		int resultFile = 0;
 		String path = null;
 		String memId = "user1";
-		resultQna = qnaService.insertQna(qna, request);
+		resultQna = qnaService.insertQna(qna, requestH);
 		
 		if (resultQna > 0) {
+			int qnaLatestNo = qnaService.selectQnaLatestNo(memId);
+			files.setQnaNo(qnaLatestNo);
+			
 			for (int i = 0; i < uploadFile.length; i++) {
 				if (!uploadFile[i].getOriginalFilename().equals("")) {
 					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memId);
@@ -145,22 +157,39 @@ public class QnaController {
 	// QnA 게시글 수정 화면
 	@RequestMapping("qupview.tc")
 	public String qnaUpdateView(int qnaNo, Model model) {
+		
+		Files fCategory = new Files();
+		fCategory.setQnaNo(qnaNo);
+		fCategory.setShareNo(0);
+		fCategory.setStudyNo(0);
+		fCategory.setPersonalNo(0);
+		
+		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
+		
 		model.addAttribute("qna", qnaService.selectQna(qnaNo));
+		model.addAttribute("flist", fileList);
 		return "qna/qnaUpdateForm";
 	}
 	
-	
 	// Qna 게시글 수정
 	@RequestMapping(value="qupdate.tc", method=RequestMethod.POST)
-	public String qnaUpdate(Qna qna, Files files, Model model, MultipartHttpServletRequest request, HttpServletRequest requestH,
+	public String qnaUpdate(Qna qna, Model model, MultipartHttpServletRequest request, HttpServletRequest requestH,
 			@RequestParam(name="reloadFile", required=false)MultipartFile[] reloadFile, String memberId) {
-		
 		int resultQna = qnaService.updateQna(qna);
 		int resultFile = 0;
+		
 		if(resultQna > 0) {
+			Files fCategory = new Files();
+			fCategory.setQnaNo(qna.getQnaNo());
+			fCategory.setShareNo(0);
+			fCategory.setStudyNo(0);
+			fCategory.setPersonalNo(0);
+			
+			ArrayList<Files> fileList = fController.selectFileList(fCategory);
+			
 			for(int i = 0; i < reloadFile.length; i++) {
 				if (!reloadFile[i].getOriginalFilename().equals("")) {
-					resultFile = fController.updateFile(files, model, requestH, reloadFile[i], memberId);
+					resultFile = fController.updateFile(fileList.get(i), model, requestH, reloadFile[i], memberId);
 				}
 			}
 			return "redirect:qdetail.tc?qnaNo="+qna.getQnaNo();
@@ -178,9 +207,21 @@ public class QnaController {
 		int resultFile = 0;
 		
 		if(resultQna > 0) {
-			if (fileName != null) {
-				resultFile = fController.deleteFile(fileName, request, memberId);
+			
+			Files fCategory = new Files();
+			fCategory.setQnaNo(qnaNo);
+			fCategory.setShareNo(0);
+			fCategory.setStudyNo(0);
+			fCategory.setPersonalNo(0);
+			
+			ArrayList<Files> fileList = fController.selectFileList(fCategory);
+			
+			for(int i = 0; i < fileList.size(); i++) {
+				if (!fileList.isEmpty()) {
+					resultFile = fController.deleteFile(fileList.get(i).getFileName(), request, memberId);
+				}
 			}
+			
 			/*rd.addFlashAttribute("msg","게시글 삭제 성공");
 			return "redirect:qlist.tc";*/
 		}
