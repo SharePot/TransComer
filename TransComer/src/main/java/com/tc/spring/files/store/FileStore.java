@@ -12,5 +12,5 @@ public interface FileStore {
 	
 	public int updateFile(Files files);
 	
-	public int deleteFile(String filePath);
+	public int deleteFile(Files files);
 }

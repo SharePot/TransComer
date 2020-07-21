@@ -119,6 +119,7 @@
 							                </tr>
 							                <tr align="center">
 							                    <td colspan="2">
+							                    	<input type="hidden" name="memberId" value="${loginUser.memberId }"/>
 							                        <button type="submit" class="btn btn-secondary" id="submitBtn">완료</button>
 							                        &nbsp;&nbsp;
 							                        <button type="reset" class="btn btn-secondary">취소</button>

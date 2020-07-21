@@ -3,6 +3,7 @@ package com.tc.spring.share.domain;
 import java.sql.Date;
 
 public class Share {
+	//뷰단의 name값이랑 동일하게
 	private int shareNo;
 	private String memberId;
 	private String shareTitle;

@@ -33,8 +33,8 @@ public class FileServiceImpl implements FileService{
 	}
 
 	@Override
-	public int deleteFile(String filePath) {
-		return fileStore.deleteFile(filePath);
+	public int deleteFile(Files files) {
+		return fileStore.deleteFile(files);
 	}
 	
 }

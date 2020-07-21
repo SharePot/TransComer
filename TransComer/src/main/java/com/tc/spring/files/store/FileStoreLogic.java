@@ -30,8 +30,8 @@ public class FileStoreLogic implements FileStore {
 	}
 
 	@Override
-	public int deleteFile(String filePath) {
-		return sqlSession.delete("filesMapper.deleteFiles", filePath);
+	public int deleteFile(Files files) {
+		return sqlSession.delete("filesMapper.deleteFiles", files);
 	}
 
 	

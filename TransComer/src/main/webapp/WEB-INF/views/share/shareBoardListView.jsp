@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <html lang="ko">
 <head>
@@ -110,7 +111,7 @@ pagination{
 			<div id="contents">
 				<div class="container">
 					<!--select박스 memberweb보기-->
-					<select id="lang" class="custom-select custom-select-sm-10 col-md-9"
+					<select id="clang" class="custom-select custom-select-sm-10 col-md-9"
 								style="height: 8%; width: 13%; margin-right:  10px;">
 						<option selected>언어</option>
 						<option>C/C++</option>
@@ -128,6 +129,7 @@ pagination{
 						<option>Japanese</option>
 					
 					</select>
+					
 					<table>
 						<thead>
 							<tr>
@@ -141,73 +143,74 @@ pagination{
 							</tr>
 						</thead>
 						<tbody>
+						<c:forEach items="${slist }" var="sl">
 							<tr>
-								<td>1</td>
-								<td>Java</td>
-								<td>NullpointerException </td>
-								<td>Korean</td>
-								<td>이씨</td>
-								<td>2020.07.06</td>
-								<td>15</td>
+								<td>${sl.shareNo}</td>
+								<td>${sl.pLanguage}</td>
+								<c:url value="sdetail.tc" var="detail">
+								   <c:param name="shareNo" value="${sl.shareNo}" />
+								</c:url>
+								<td><a href='${detail}'>${sl.shareTitle}</a></td>
+								<td>${sl.tLanguage}</td>
+								<td>${sl.memberId}</td>
+								<td>${sl.sWriteDate}</td>
+								<td>${sl.shareCount}</td>
 							</tr>
-
-							<tr>
-								<td>2</td>
-								<td>C++</td>
-								<td>컴파일러가 뭐에요?</td>
-								<td>English</td>
-								<td>박씨</td>
-								<td>2020.07.06</td>
-								<td>17</td>
-							</tr>
-
-							<tr>
-								<td>3</td>
-								<td>English</td>
-								<td>영어 본문 번역해주세요</td>
-								<td>Chinese</td>
-								<td>김씨</td>
-								<td>2020.07.06</td>
-								<td>18</td>
-							</tr>
-													
-							<tr>
-								<td>4</td>
-								<td>Japanese</td>
-								<td>일어 본문 번역해주세요</td>
-								<td>Korean</td>
-								<td>홍씨</td>
-								<td>2020.07.06</td>
-								<td>8</td>
-							</tr>
-							
-							<tr>
-								<td>5</td>
-								<td>Chinese</td>
-								<td>중국어 본문 번역해주세요</td>
-								<td>Korean</td>
-								<td>양씨</td>
-								<td>2020.07.06</td>
-								<td>8</td>
-							</tr>
+						</c:forEach>
 						</tbody>
 					</table>
 					<hr />
-					<div style="text-align: center;">
+					<div class="container d-flex justify-content-center">
+				                    <div class="row searchbox">
+				                        <form action="ssearch.tc" method="get">
+				                            <table>
+				                                <tr>
+				                                    <td>
+				                                        <div class="dropdown">
+				                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+				                                                <span id="search_concept">검색 조건</span>
+				                                            </button>
+				                                            <div class="dropdown-menu searchSelect">
+				                                                <a class="dropdown-item" href="#title">제목</a>
+				                                                <a class="dropdown-item" href="#content">내용</a>
+				                                                <a class="dropdown-item" href="#writer">작성자</a>
+				                                            </div>
+				                                        </div>
+				                                    </td>
+				                                    <td>
+				                                        <div class="input-group mb3 searchDiv">
+				                                            <input type="text" class="form-control" name="searchValue" placeholder="검색어 입력" size="50" autocomplete="off">
+				                                            <div class="input-group-append">
+				                                                <button class="btn btn-secondary btn-filter" type="submit"><span class="fas fa-search"></span></button>
+				                                            </div>
+				                                            <input type="hidden" name="searchCondition" value="all" id="search_param">
+				                                        </div>
+				                                    </td>
+				                                </tr>
+				                            </table>
+				                        </form>
+				                	</div>
+				                	<div class="d-flex justify-content-end">
+				                		<!--<button type="button" class="btn btn-info" onclick="location.href='qWriterView.tc">글쓰기</button>-->
+										<a class="btn btn-primary" href="shareWriterView.tc" style="font-size: 15px; padding: 10px; float: right;" >작성</a>
+				                	</div>
+				                </div>
+					<!-- <div style="text-align: center;">
 						 <select id="selectBox"
 								class="custom-select custom-select-sm-10 col-md-9"
 								style="height: 8%; width: 16%; margin-right:  10px;">
 								<option selected>검색</option>
-								<!--<option value="1">링크</option>-->
+								<option value="1">링크</option>
 								<option value="2">제목</option>
 								<option value="3">내용</option>
 								<option value="4">작성자</option>
 							</select>
-						<!--<input  type="text" placeholder="검색어를 입력해주세요." style="width: 70%; margin-top: 10px;">-->
+						<input  type="text" placeholder="검색어를 입력해주세요." style="width: 70%; margin-top: 10px;">
 						<input id="search" type="text" placeholder="검색어를 입력해주세요."  style="padding:6px;">
-					<button class="btn btn-primary"  type="submit" style="font-size: 15px; padding: 10px; float: right;" >신청서 작성</button>
+					<a class="btn btn-primary" href="shareWriterView.tc" style="font-size: 15px; padding: 10px; float: right;" >신청서 작성</a>
 					</div>
-					<br>
+					<br> -->
+					
 					
 					<div class="d-flex justify-content-center">
 						<ul class="pagination">
@@ -238,6 +241,50 @@ pagination{
 		<br>
 		<br>
 	</div>
+	
+	<script>
+
+	$(function(){
+		   $("#lang").change( function(e){
+		      var clang = $("#clang").val(); 
+		      var lang = $("#lang").val();
+		      $.ajax({
+		         url: "selectLang.tc",
+		         data: {clang:clang, lang:lang},
+		         type: "post",
+		         complete: function(){ 
+
+			        
+		            }
+		      })
+		   });
+		  });
+
+
+
+
+
+	</script>
+	<script>
+
+	
+       	    $(document).ready(function(e) {
+       	        $('.searchSelect').find('a').click(function(e) {
+       	            e.preventDefault();
+       	            var param = $(this).attr("href").replace("#", "");
+       	            var concept = $(this).text();
+       	            $('#search_concept').text(concept);
+       	            $('.input-group #search_param').val(param);
+       	        });
+       	        $('.btn-filter').click(function(e) {
+       	            if ($('.input-group #search_param').val() == "all") {
+       	                alert("검색조건을 선택해주세요");
+       	                e.preventDefault();
+       	            }
+       	        });
+       	    });
+
+       	</script>
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.dropotron.min.js"></script>

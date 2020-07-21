@@ -81,6 +81,13 @@ public class Files {
 	public void setPersonalNo(int personalNo) {
 		this.personalNo = personalNo;
 	}
+
+	@Override
+	public String toString() {
+		return "Files [fileNo=" + fileNo + ", memberId=" + memberId + ", fileName=" + fileName + ", filePath="
+				+ filePath + ", qnaNo=" + qnaNo + ", shareNo=" + shareNo + ", studyNo=" + studyNo + ", personalNo="
+				+ personalNo + "]";
+	}
 	
 	
 }

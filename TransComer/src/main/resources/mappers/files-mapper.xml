@@ -53,10 +53,44 @@
 	
 	<update id="updateFiles" parameterType="Files">
 		UPDATE FILES SET FILE_NAME = #{fileName}, FILE_PATH = #{filePath}
-		WHERE FILE_NO = #{fileNo}
+		<where>
+		FILE_NO = ${fileNo}
+			<choose>
+				<when test="qnaNo > 0">
+					AND QNA_NO = #{qnaNo}
+				</when>
+				<when test="shareNo > 0">
+					AND SHARE_NO = #{shareNo}
+				</when>
+				<when test="studyNo > 0">
+					AND STUDY_NO = #{studyNo}
+				</when>
+				<when test="personalNo > 0">
+					AND PERSONAL_NO = #{personalNo}
+				</when>
+			</choose>
+		</where>
 	</update>
 	
-	<delete id="deleteFiles" parameterType="string">
-		DELETE FROM FILES WHERE FILE_PATH = #{filePath}
+	<delete id="deleteFiles" parameterType="Files">
+		DELETE FROM FILES 
+		<where>
+			FILE_PATH = #{filePath}
+			<choose>
+				<when test="qnaNo > 0">
+					AND QNA_NO = #{qnaNo}
+				</when>
+				<when test="shareNo > 0">
+					AND SHARE_NO = #{shareNo}
+				</when>
+				<when test="studyNo > 0">
+					AND STUDY_NO = #{studyNo}
+				</when>
+				<when test="personalNo > 0">
+					AND PERSONAL_NO = #{personalNo}
+				</when>
+			</choose>
+		</where>
+		
 	</delete>
 </mapper>

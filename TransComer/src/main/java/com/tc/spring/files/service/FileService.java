@@ -16,5 +16,5 @@ public interface FileService {
 	
 	public int updateFile(Files files);
 	
-	public int deleteFile(String filePath);
+	public int deleteFile(Files files);
 }

@@ -94,6 +94,7 @@
 				                                            <c:url var="qdetail" value="qdetail.tc">
 				                                                <c:param name="qnaNo" value="${q.qnaNo }" />
 				                                                <c:param name="page" value="${qPi.currentPage }" />
+				                                                <c:param name="memberId" value="${loginUser.memberId }" />
 				                                            </c:url>
 				                                            <a href="${qdetail }">${q.qnaTitle }</a>
 				                                        <%-- </c:if>

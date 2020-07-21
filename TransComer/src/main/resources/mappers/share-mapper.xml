@@ -2,4 +2,85 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="shareMapper">
 
+	<resultMap type="Share" id="ShareResultSet">
+		<id property="shareNo" column="SHARE_NO" />
+		<result property="shareTitle" column="SHARE_TITLE" />
+		<result property="pLanguage" column="P_LANGUAGE" />
+		<result property="tLanguage" column="T_LANGUAGE" />
+		<result property="shareContent" column="SHARE_CONTENT" />
+		<result property="sWriteDate" column="S_WRITE_DATE" />
+		<result property="shareCount" column="SHARE_COUNT" />
+		<result property="shareYN" column="SHARE_YN" />
+		<result property="memberId" column="MEMBER_ID" />
+	</resultMap>
+
+	<!-- 목록조회 쿼리 -->
+	<select id="selectList" parameterType="Share" resultMap="ShareResultSet">
+		SELECT * 
+		FROM MATERIAL_SHARE
+		WHERE SHARE_YN = 'Y'
+		ORDER BY SHARE_NO DESC
+	</select>	
+	
+	<!-- 게시글 상세조회 -->
+	<select id="selectShare" parameterType="hashMap" resultType="hashMap">
+		SELECT DISTINCT S.*, F.*
+		FROM MATERIAL_SHARE S
+		JOIN FILES F
+		ON S.MEMBER_ID = F.MEMBER_ID
+		WHERE F.SHARE_NO = #{shareNo}
+	</select>
+	<!-- 조회수 -->
+	<update id="addReadCount" parameterType="_int">
+		UPDATE MATERIAL_SHARE
+		SET SHARE_COUNT = SHARE_COUNT+1
+		WHERE SHARE_NO = #{shareNo}
+	</update>
+
+	<!-- 게시글 등록 -->
+ 	<insert id="insertShare" parameterType="Share">
+ 		INSERT INTO MATERIAL_SHARE 
+ 		VALUES (MATERIAL_SHARE_NO_SEQ.NEXTVAL, #{shareTitle}, #{pLanguage}, #{tLanguage}, #{shareContent}, SYSDATE, DEFAULT, DEFAULT, #{memberId})
+ 	</insert>
+ 	
+ 	<!-- 파일 등록 -->
+ 	<insert id="fileInsert" parameterType="Files">
+ 		INSERT INTO FILES
+ 		VALUES (FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, MATERIAL_SHARE_NO_SEQ.CURRVAL)
+ 	</insert>
+ 	
+ 	<!-- 검색조건 -->
+ 	<select id="getSearchListCount" parameterType="ShareSearch" resultType="_int">
+		SELECT COUNT(*) FROM MATERIAL_SHARE
+			<where>
+  			<choose>
+	  			<when test="searchCondition == 'title'">
+	  				SHARE_TITLE LIKE '%' || #{searchValue} || '%'  		
+		  		</when>
+		  		<when test="searchCondition == 'writer'">
+		  			MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<when test="searchCondition == 'content'">
+		  			SHARE_CONTENT LIKE '%' || #{searchValue} || '%'
+		  		</when>
+  			</choose>
+  			</where>
+	</select>
+	
+	<select id="searchShareList" parameterType="shareSearch" resultMap="ShareResultSet">
+  		SELECT * FROM MATERIAL_SHARE
+  		<where>
+  			<choose>
+	  			<when test="searchCondition == 'title'">
+	  				SHARE_TITLE LIKE '%' || #{searchValue} || '%'  		
+		  		</when>
+		  		<when test="searchCondition == 'writer'">
+		  			MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  		</when>
+		  		<when test="searchCondition == 'content'">
+		  			SHARE_CONTENT LIKE '%' || #{searchValue} || '%'
+		  		</when>
+  			</choose>
+  			</where>
+	</select>
 </mapper>

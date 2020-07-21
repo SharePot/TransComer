@@ -112,81 +112,31 @@
 				                <br>
 				                <div align="right">
 				                	<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='qlist.tc'">목록</button>&nbsp;
-				                	<c:if test="${qna.memberId eq sessionScope.member.memberId }">
+				                	<c:if test="${qna.memberId eq loginUser.memberId }">
 				                		<button type="button" class="btn btn-primary btn-sm" onclick="location.href='qupview.tc?qnaNo=${qna.qnaNo }'">수정</button>&nbsp;
 				                		<button type="button" class="btn btn-warning btn-sm" onclick="return question();">삭제</button>
 				                	</c:if>
 				                </div>
 				                <hr style="width:700px;">
 				            </div>
-							
-							<!-- 댓글 부분 -->
-				            <h4 align="center">comment ${fn:length(content.comments) }</h4>
-
-				            <div class="container d-flex justify-content-center">
-				                <form class="form-inline d-flex justify-content-center" action="/writeComment" method="post">
-				                    <input type="hidden" name="qnaNo" value="${qna.qnaNo }" />
-				                    <input type="text" class="form-control" name="comment" placeholder="댓글입력" size="50">
-				                    &nbsp;
-				                    <button class="btn btn-outline-secondary" type="submit">작성</button>
-				                </form>
-				            </div>
-
 				            <br>
-
-				            <%-- <div class="container" style="width : 700px;">
-							         <table class=" table table-borderless">
-							             <thead>
-							                 <tr>
-							                     <th style="width:50%">댓글</th>
-							                     <th>아이디</th>
-							                     <th>날짜</th>
-							                     <th></th>
-							                 </tr>
-							             </thead>
-
-							             <tbody>
-							                 <c:forEach items="${content.comments }" var="comment">
-							                     <tr>
-							                         <td>${comment.commentContent }</td>
-							                         <td>${comment.memberId }</td>
-							                         <td>${comment.commentRegDate }</td>
-							                         <td><a href="#Redirect" onclick="showModifyComment(this,'${comment.commentContent }','${comment.memberId }','${comment.commentRegDate }');">수정</a>
-							                             &nbsp;<a href="/deleteComment?commentNo=${comment.commentNo}&productNo=${content.productNo}" onclick="">삭제</a>
-							                         </td>
-							                     </tr>
-
-
-							                     <tr class="commentUpdate" style="display: none;">
-							                         <td><input type="text" class="form-control-sm commentContentUpdate" style="width:400px" id="modifyMent" value="${comment.commentContent }" /></td>
-							                         <!-- id="modifyMent(this,)" this 내가 클릭한 태그 의미 -->
-							                         <td><a href="javascript:void(0)" onclick="modifyComment(this,'${comment.commentNo}');">수정완료</a> <!-- a href="javascript:void(0)"는 하이퍼링크가 다른데로 이동하는 기능 하는데 그걸 없애주는 코드 -->
-							                             <a href="javascript:void(0)" onclick='modifyCancel(this)'>취소</a></td>
-							                     </tr>
-							                 </c:forEach>
-							             </tbody>
-							         </table>
-							     </div> --%>
-
-				            <%-- <form action="/updateComment" id="modifyForm" method="post">
-							         <input type="hidden" id="upcomment" name="upcomment">
-							         <input type="hidden" id="upproductNo" name="upproductNo" value="${content.productNo }">
-							         <input type="hidden" id="upCommentNo" name="upCommentNo">
-							     </form> --%>
 				        </div>
-
+				        
 				        <Script>
 				        	/* 게시글 삭제 ajax */
 				            function question() {
 				                var result = window.confirm("정말로 삭제 하시겠습니까?");
-				                console.log(result);
 				                if (result) {
 				                	var qnaNo = ${qna.qnaNo }
+				                	var memberId = "${loginUser.memberId}"
 				                	$.ajax ({
-				                		url : "/qdelete.tc",
+				                		url : "qdelete.tc",
 				    					type : "GET",
 				    					datatype : 'json',
-				    					data : {"qnaNo" : qnaNo},
+				    					data : {
+				    						"qnaNo" : qnaNo,
+				    						"memberId" : memberId
+				    					},
 				    					success : function(data) {
 				    						location.href = "qlist.tc";
 				    					}
@@ -195,42 +145,54 @@
 				                    return false;
 				                }
 				            }
-
-				            function showModifyComment(obj, commentContent, memberId, commentRegDate) {
-				                console.log(obj);
-				                $(obj).parents("tr").next().show();
-				                $(obj).parents("tr").hide();
-				            }
-
-				            function modifyCancel(obj) {
-				                $(obj).parents("tr").prev().show();
-				                $(obj).parents("tr").hide();
-				            }
-
-				            function modifyComment(obj, commentNo) {
-				                var comment = $(".commentContentUpdate").val();
-				                $("#upCommentNo").val(commentNo);
-				                $("#upcomment").val(comment);
-				                $("#upproductNo").val($("#upproductNo").val());
-				                $("#modifyForm").submit();
-				            }
-				            $('#report').click(function() {
-				                $('#reportForm').show();
-				            });
-				            $('#reportCancel').click(function() {
-				                $('#reportForm').hide();
-				            })
-				            $("#reportCheck").click(function() {
-				                if (confirm("신고하시겠습니까?") == true) {
-				                    top.window.opener = top;
-				                    document.form.submit();
-				                    window.close();
-				                } else {
-				                    return false;
-				                }
-				            });
 				        </Script>
 				    </div>
+				    
+				    <!-- 댓글 부분 -->
+				    <input type="hidden" id="loginId" value="${loginUser.memberId }">
+				    <input type="hidden" id="writerId" value="${qna.memberId }">
+				    <div class="container">
+				        <table align="center" width="100%" border="1" cellspacing="0" id="commentTable">
+				            <tr>
+				                <td>
+				                    <!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
+                                        <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
+				                    <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
+				                    <select id="commentYN" name="commentYN">
+				                        <option value="Y">공개</option>
+				                        <option value="N">비공개</option>
+				                    </select>
+				                </td>
+				                <td><textarea cols="70" rows="3" id="content"></textarea>
+				                    <input type="hidden" id="commentCondition" name="commentCondition" value="qna"></td>
+
+				                <td>
+				                    <button id="submitQnaComment">등록하기</button>
+				                </td>
+				            </tr>
+				        </table>
+
+				        <table id="qnaTable" align="center" width="500" border="1" cellspacing="0" heigh="1000">
+				            <thead>
+				                <tr>
+				                    <td colspan="2"><b id="count"></b></td>
+				                    <input type="hidden" id="commentCondition" name="commentCondition" value="qna">
+				                </tr>
+				                <tr>
+				                    <th>댓글번호</th>
+				                    <th>작성자</th>
+				                    <th width="40%">내용</th>
+				                    <th>작성 날짜</th>
+				                    <th>수정</th>
+				                    <th>삭제</th>
+
+				                </tr>
+				            </thead>
+				            <tbody>
+
+				            </tbody>
+				        </table>
+		            </div>
 				</section>
 
 
@@ -257,6 +219,186 @@
 		<script src="/resources/js/breakpoints.min.js"></script>
 		<script src="/resources/js/util.js"></script>
 		<script src="/resources/js/main.js"></script>
+		
+		<script>
+		    $(function() {
+		        // 초기 페이지 로딩 시 댓글 불러오기
+		        getCommentList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
+
+		        /*     setInterval(function() {
+		           	 getCommentList();
+		             }, 10000); //10초 마다 불러옴 */
+
+		        // 댓글 등록 ajax
+		        $("#submitQnaComment").on("click", function() {
+
+		            var content = $("#content").val(); // 댓글의 내용
+		            var refQnaNo = ${qna.qnaNo }; // 어느 게시글의 댓글인지 알려줌
+		            var commentYN = $("#commentYN").val();
+		            var commentCondition = $("#commentCondition").val();
+		            
+		            console.log(refQnaNo);
+		            $.ajax({
+		                url: "insertComment.tc",
+		                data: {
+		                    commentContent: content,
+		                    qnaNo: refQnaNo,
+		                    commentYN: commentYN,
+		                    commentCondition: commentCondition
+		                },
+		                type: "post",
+		                success: function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
+		                    if (data == "success") { //결과값이 success이면
+		                        getCommentList(); //목록을 가져오도록
+		                        $("#content").val("");
+		                    }
+		                }
+		            });
+		        });
+		    });
+		    //댓글 삭제
+		    
+		    function deleteComment(obj, commentNo) {
+		        var result = window.confirm("정말로 댓글을 삭제 하시겠습니까?");
+		        console.log(commentNo);
+		        if (result) {
+		            $.ajax({
+		                url: "deleteComment.tc",
+		                type: "post",
+		                data: {
+		                    commentNo: commentNo
+		                },
+		                //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+		                success: function(data) {
+		                    if (data == "success") {
+		                        getCommentList();
+		                        console.log("삭제 완료");
+		                    }
+		                }
+		            })
+		        } else {
+		            console.log("취소");
+		        };
+		    };
+
+		    //댓글 수정창 
+		    function modifyComment(obj, commentNo) {
+		        console.log(obj);
+		        $(obj).parents("tr").children().eq(3).show();
+		        $(obj).parents("tr").children().eq(5).show();
+		        $(obj).parents("tr").children().eq(8).show();
+		        $(obj).parents("tr").children().eq(2).hide();
+		        $(obj).hide();
+		        $(obj).parents("tr").children().eq(7).hide();
+		    }
+
+		    //댓글 수정 입력
+		    function modifyConformComment(obj, commentNo) {
+		        var result = window.confirm("정말로 댓글을 수정 하시겠습니까?");
+		        console.log(commentNo);
+		        var commentContent = decodeURIComponent($(obj).parents("tr").children().eq(3).children("textarea").val());
+		        console.log(commentContent);
+		        $.ajax({
+		            url: "updateComment.tc",
+		            type: "post",
+		            data: {
+		                commentNo: commentNo,
+		                commentContent: commentContent
+		            },
+		            //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+		            success: function(data) {
+		                if (data == "success") {
+		                    getCommentList();
+		                    console.log("수정 완료");
+		                    alert("댓글이 수정되었습니다.");
+		                }
+		            }
+		        });
+		    };
+
+
+
+		    // 댓글 리스트 불러오는 ajax 함수
+		    function getCommentList() {
+		        var qnaNo = ${qna.qnaNo };
+		        var shareNo = 0;
+		        var studyNo = 0;
+		        var commentCondition = "qna";
+		        $.ajax({
+		            url: "commentList.tc",
+		            data: {
+		                studyNo: studyNo,
+		                shareNo: shareNo,
+		                qnaNo: qnaNo,
+		                commentCondition: commentCondition
+		            },
+		            dataType: "json", //응답이 오는 data는(밑에꺼) json형태 이다.
+		            success: function(data) { //controller에서 json으로 받아오는 코드 만들어줌
+		                $tableBody = $("#qnaTable tbody");
+		                $tableBody.html("");
+
+		                var $tr;
+		                var $commentNo;
+		                var $memberId;
+		                var $commentContent;
+		                var $commentWriteDate;
+		                var $deleteButton;
+		                var $modifyButton;
+
+
+		                $("#count").text("댓글 (" + data.length + ")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
+		                if (data.length > 0) {
+		                    for (var i in data) {
+		                        $tr = $("<tr class='trClass'>");
+		                        var commentNoRead = data[i].commentNo;
+		                        var commentContentRead = decodeURIComponent(data[i].commentContent);
+		                        $commentNo = $("<td width='100' id='commentNo'>").text(data[i].commentNo);
+		                        $memberId = $("<td width='100'>").text(data[i].memberId);
+		                        //내용(복호화)
+		                        $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
+		                        $commentNewContent = $("<td style='display:none;'><textarea>" + commentContentRead + "</textarea>");
+		                        //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
+		                        $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
+		                        $loginId = $("#loginId").val();
+		                        $writerId = $("writerId").val();
+		                        $modifyButton = $("<td>").html("<button class='btn btn-info btn-sm' id='modifyComment' onclick='modifyComment(this," + commentNoRead + ");'>수정</button>")
+		                        $modifyConformButton = $("<td style='display:none;'>").html("<button class='button' id='modifyConformComment' onclick='modifyConformComment(this," + commentNoRead + ");'>수정완료</button>")
+		                        $deleteButton = $("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this," + commentNoRead + ");'>삭제</button>");
+		                        $cancelButton = $("<td style='display:none;'>").html("<button class='button' id='cancelComment' onclick='getCommentList()'>취소</button>");
+
+
+		                        if ($loginId == data[i].memberId || $loginId == $writerId) {
+		                            $tr.append($commentNo);
+		                            $tr.append($memberId);
+		                            $tr.append($commentContent);
+		                            $tr.append($commentNewContent);
+		                            $tr.append($commentWriteDate);
+
+		                            if (data[i].memberId == $loginId) {
+		                                $tr.append($modifyConformButton);
+		                                $tr.append($modifyButton);
+		                                $tr.append($deleteButton);
+		                                $tr.append($cancelButton);
+
+		                                console.log($loginId);
+		                                console.log(commentNoRead);
+		                                console.log($deleteButton);
+		                            }
+		                            $tableBody.append($tr); //(위에 코드 써있는) 파란색 댓글목록의 tablebody부분에 넣어줌
+		                        }
+		                    }
+		                } else { //데이터가 없을때
+		                    $tr = $("<tr>");
+		                    $rContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
+
+		                    $tr.append($commentContent);
+		                    $tableBody.append($tr);
+		                }
+
+		            }
+		        });
+		    }
+		</script>
 
 	</body>
 </html>

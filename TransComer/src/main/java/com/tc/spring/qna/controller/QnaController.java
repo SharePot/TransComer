@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -134,16 +135,15 @@ public class QnaController {
 		int resultQna = 0;
 		int resultFile = 0;
 		String path = null;
-		String memId = "user1";
 		resultQna = qnaService.insertQna(qna, requestH);
 		
 		if (resultQna > 0) {
-			int qnaLatestNo = qnaService.selectQnaLatestNo(memId);
+			int qnaLatestNo = qnaService.selectQnaLatestNo(memberId);
 			files.setQnaNo(qnaLatestNo);
 			
 			for (int i = 0; i < uploadFile.length; i++) {
 				if (!uploadFile[i].getOriginalFilename().equals("")) {
-					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memId);
+					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
 				}
 			}
 			path = "redirect:qlist.tc";
@@ -201,7 +201,8 @@ public class QnaController {
 	
 	// Qna 게시글 삭제
 	@RequestMapping(value="qdelete.tc", method=RequestMethod.GET)
-	public void qnaDelete(int qnaNo, String fileName, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
+	@ResponseBody
+	public void qnaDelete(int qnaNo, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
 		Qna qna = qnaService.selectQna(qnaNo);
 		int resultQna = qnaService.deleteQna(qnaNo);
 		int resultFile = 0;
@@ -218,7 +219,8 @@ public class QnaController {
 			
 			for(int i = 0; i < fileList.size(); i++) {
 				if (!fileList.isEmpty()) {
-					resultFile = fController.deleteFile(fileList.get(i).getFileName(), request, memberId);
+					String del = "yes";
+					resultFile = fController.deleteFile(fileList.get(i), request, memberId, del);
 				}
 			}
 			
