@@ -37,7 +37,7 @@ public class CommentStoreLogic implements CommentStore {
 	}
 
 	@Override
-	public int getCommentListCount() {
-		return sqlSession.selectOne("commentMapper.getCommentListCount");
+	public int getCommentListCount(Comment comment) {
+		return sqlSession.selectOne("commentMapper.getCommentListCount",comment);
 	}
 }

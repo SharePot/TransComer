@@ -39,21 +39,20 @@
 							<tr>
 							<td>은행명</td>
 							<td>
-								<input type="hidden" name="bank"  value="${accountInfo }"  size="6">
-							${accountInfo }
+								<input type="text" name="bank"  value="${accountInfo }"  size="6">
 							</td>
 							</tr>
 					</c:if>
 					<c:if test="${status.index eq 1 }">
 						<tr>
 							<td>예금주</td>
-							<td><input type="hidden" name="accountOwner"  value="${accountInfo }">${accountInfo }</td>
+							<td><input type="text" name="accountOwner"  value="${accountInfo }"></td>
 						</tr>
 					</c:if>
 					<c:if test="${status.index eq 2}">
 						<tr>
 							<td>계좌번호</td>
-							<td><input type="hidden" name="account"   value="${accountInfo }">${accountInfo }</td>
+							<td><input type="text" name="account"   value="${accountInfo }"></td>
 						</tr>
 					</c:if>
 				</c:forTokens>

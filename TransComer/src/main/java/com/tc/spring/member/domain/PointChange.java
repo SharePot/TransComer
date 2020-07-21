@@ -9,19 +9,24 @@ public class PointChange {
 	public Date pointUpdateDate;
 	public int pointAmount;
 	public String pointContent;
+	public String pointStatus;
 	
 	public PointChange() {}
 
 
-
-	public PointChange(int pointNo, String memberId, Date pointUpdateDate, int pointAmount, String pointContent) {
+	public PointChange(int pointNo, String memberId, Date pointUpdateDate, int pointAmount, String pointContent,
+			String pointStatus) {
 		super();
 		this.pointNo = pointNo;
 		this.memberId = memberId;
 		this.pointUpdateDate = pointUpdateDate;
 		this.pointAmount = pointAmount;
 		this.pointContent = pointContent;
+		this.pointStatus = pointStatus;
 	}
+
+
+
 
 
 
@@ -79,14 +84,45 @@ public class PointChange {
 
 
 
+	/**
+	 * @return the pointStatus
+	 */
+	public String getPointStatus() {
+		return pointStatus;
+	}
+
+
+
+
+
+
+	/**
+	 * @param pointStatus the pointStatus to set
+	 */
+	public void setPointStatus(String pointStatus) {
+		this.pointStatus = pointStatus;
+	}
+
+
+
+
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "PointChange [pointNo=" + pointNo + ", memberId=" + memberId + ", pointUpdateDate=" + pointUpdateDate
-				+ ", pointAmount=" + pointAmount + ", pointContent=" + pointContent + "]";
+				+ ", pointAmount=" + pointAmount + ", pointContent=" + pointContent + ", pointStatus=" + pointStatus
+				+ "]";
 	}
+
+
+
+
+
+
 
 
 	

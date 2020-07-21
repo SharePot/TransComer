@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>SharePot - 1:1 의뢰 결제</title>
 </head>
 <body>
 <center><h1>포인트결제</h1></center>

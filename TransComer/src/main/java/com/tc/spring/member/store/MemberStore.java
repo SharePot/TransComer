@@ -1,6 +1,8 @@
+
 package com.tc.spring.member.store;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
@@ -33,6 +35,14 @@ public interface MemberStore {
 	
 	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi,MemberSearch search);
 	
+	public String findId(String memberEemail);
+
+	public int findPassword(Map<String, Object> vo);
+
+	public int updatePwd(Map<String, Object> set);
+
+	public int checkMember(Member member);
+
 	
 	//포인트 환급=======================================================
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
@@ -56,13 +66,10 @@ public interface MemberStore {
 	
 	public ArrayList<PointChange> selectPointChangeMemberList(MemberPageInfo pi,String memberId);
 	
-	public PointChange selectPointChangeOne();
-	
 	public int insertPointChange(PointChange pc);
 	
-	public int updatePointChage(PointChange pc);
+	public int updateMemberPoint(int point);
 	
-	public int deletePoingChange(int pointNo);
 	
 	//프로필====================================================
 

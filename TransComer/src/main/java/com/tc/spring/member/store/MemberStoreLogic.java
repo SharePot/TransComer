@@ -1,6 +1,7 @@
 package com.tc.spring.member.store;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -19,6 +20,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
 
 	@Override
 	   public Member loginMember(Member member) {
@@ -46,20 +48,20 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int insertMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = sqlSession.insert("memberMapper.insertMember", member);
+		return result;
 	}
 
 	@Override
 	public int updateMember(Member member) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("memberMapper.updateMember", member);
 	}
 
 	@Override
 	public int deleteMember(String memberId) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("memberMapper.deleteMember", memberId);
 	}
 	
 	@Override
@@ -80,6 +82,30 @@ public class MemberStoreLogic implements MemberStore {
 		return (ArrayList)sqlSession.selectList("memberMapper.searchMemberList",search,rowbounds);
 	}
 
+	@Override
+	public String findId(String memberEemail) {
+		String userId = sqlSession.selectOne("memberMapper.findId", memberEemail);
+
+		return userId;
+
+	}
+
+	@Override
+	public int findPassword(Map<String, Object> vo) {
+		int result = sqlSession.selectOne("memberMapper.findPwd", vo);
+
+		return result;
+	}
+
+	@Override
+	public int updatePwd(Map<String, Object> set) {
+		return sqlSession.update("memberMapper.updatePwd", set);
+	}
+
+	@Override
+	public int checkMember(Member member) {
+		return sqlSession.selectOne("memberMapper.checkMmember", member);
+	}
 
 	//포인트 환급=====================================================================================
 	@Override
@@ -144,35 +170,15 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 
-	
-	
-
-	
-
-	
-	@Override
-	public PointChange selectPointChangeOne() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public int insertPointChange(PointChange pc) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("memberMapper.insertPointChange",pc);
 	}
 
-	@Override
-	public int updatePointChage(PointChange pc) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public int deletePoingChange(int pointNo) {
-		// TODO Auto-generated method stub
-		return 0;
-		
+	
+	public int updateMemberPoint(int point) {
+		return sqlSession.update("memberMapper.updateMemberPoint",point);
 	}
 //프로필===============================================================
 	@Override

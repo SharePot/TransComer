@@ -23,6 +23,7 @@
    <table align="center" border="1">
       <tr>
          <th>번호</th>
+         <th>카테고리</th>
          <th>제목</th>
          <th>작성자</th>
          <th>날짜</th>
@@ -31,14 +32,29 @@
       </tr>
       <c:forEach var="study" items="${list }">
          <tr>
-		         <td>${study.studyNo }</td>
-		<td >
+		         <td class="studyNo">${study.studyNo }</td>
+		         <td>
+			         <c:set var="category" value="${study.studyCategory}" />
+			         <c:if test="${category eq 'PROJECT'}">
+			       		  프로젝트
+			         </c:if>
+			         <c:if test="${category eq 'GROUP'}">
+			       		  그룹
+			         </c:if>
+			         <c:if test="${category eq 'PERSONAL'}">
+			       		  개인
+			         </c:if>
+			         <c:if test="${category eq 'ETC'}">
+			       		  개인
+			         </c:if>
+			      </td>
+		<td id="commentCount">
 			<c:if test="${ !empty loginUser }">
 				<c:url var="studyDetail" value="studyDetail.tc">
 					<c:param name="studyNo" value="${study.studyNo }" />
 					<c:param name="page" value="${pi.studyCurrentPage }" />					
 				</c:url>					
-				<a href="${studyDetail }">${study.studyTitle }</a>
+				<a href="${studyDetail }">${study.studyTitle } (${study.commentCount })</a>
 			</c:if>
 			<c:if test="${ empty loginUser }">
 				${study.studyTitle }
@@ -130,5 +146,43 @@
    </div>
    </section>
    </div>
+   
+<!--  <script>
+  $( document ).ready(function() {
+	        
+	   		var studyNoList = [];
+	   		$(".studyNo").each(function(i){
+	   			studyNoList.push($(this).html());
+	   			});
+	   		
+	   		var list=
+	   		{
+	   			 "commentCondition":"study",
+	   				"studyNoList":studyNoList,
+	   				"qnaNo":0,
+	   				"shareNo":0
+	   		};
+	   		
+	   		
+	   		console.log(studyNoList);
+	   		console.log(list); 
+	   		 
+	         $.ajax({
+	            url:"commentList.tc",
+	            data:{list:list},
+	            dataType:"json",
+	            success:function(data){ 
+	            	if( data.length > 0 ) {
+	            		console.log(data[i])
+	            		   for ( var i in data ) {
+	            		  $td = $("#commentCount");
+	    	              $td.append("("+data[i]+")");
+	            	}
+	            }
+	             
+	         }
+   })
+   })
+   </script>  -->
 </body>
 </html>

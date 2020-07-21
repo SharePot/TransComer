@@ -1,6 +1,7 @@
 package com.tc.spring.member.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,8 +30,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int checkIdDup(String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.checkIdDup(memberId);
 	}
 
 	@Override
@@ -46,20 +46,17 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int insertMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.insertMember(member);
 	}
 
 	@Override
 	public int updateMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.updateMember(member);
 	}
 
 	@Override
 	public int deleteMember(String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.deleteMember(memberId);
 	}
 	
 
@@ -77,6 +74,28 @@ public class MemberServiceImpl implements MemberService {
 	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi, MemberSearch search) {
 		return memberStore.selectMemberSearchList(pi, search);
 	}
+	
+	@Override
+	public String findId(String memberEemail) {
+
+		return memberStore.findId(memberEemail);
+	}
+
+	@Override
+	public int findPassword(Map<String, Object> vo) {
+		return memberStore.findPassword(vo);
+	}
+
+	@Override
+	public int updatePwd(Map<String, Object> set) {
+		return memberStore.updatePwd(set);
+	}
+
+	@Override
+	public int checkMember(Member member) {
+		return memberStore.checkMember(member);
+	}
+	
 
 //포인트 환급=====================================================================================
 	@Override
@@ -134,28 +153,15 @@ public class MemberServiceImpl implements MemberService {
 
 
 	@Override
-	public PointChange selectPointChangeOne() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int insertPointChange(PointChange pc) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.insertPointChange(pc);
 	}
 
 	@Override
-	public int updatePointChage(PointChange pc) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateMemberPoint(int point) {
+		return memberStore.updateMemberPoint(point);
 	}
 
-	@Override
-	public int deletePoingChange(int pointNo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 //=======================================프로필
 	@Override

@@ -1,6 +1,7 @@
 package com.tc.spring.member.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,13 @@ public interface MemberService {
 	
 	public ArrayList<Member> selectMemberSearchList(MemberPageInfo pi,MemberSearch search);
 	
+	public String findId(String memberEemail);
+
+	public int findPassword(Map<String, Object> vo);
+
+	public int updatePwd(Map<String, Object> set);
+
+	public int checkMember(Member member);
 	
 	//=======================================================포인트 환급
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
@@ -62,14 +70,9 @@ public interface MemberService {
 	
 	public int getPointChangeMemberCount(String memberId);
 	
-	public PointChange selectPointChangeOne();
-	
 	public int insertPointChange(PointChange pc);
 	
-	public int updatePointChage(PointChange pc);
-	
-	public int deletePoingChange(int pointNo);
-	
+	public int updateMemberPoint(int point);
 	
 	
 	//====================================================프로필

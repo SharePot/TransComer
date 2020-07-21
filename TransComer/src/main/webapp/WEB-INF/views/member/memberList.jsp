@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>SharePot - 회원 전체 리스트</title>
 <style>
 	#mainWrapper {
 		width: 80%;

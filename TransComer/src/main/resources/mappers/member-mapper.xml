@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 
-<!-- 멤버관련 -->
-<resultMap type="Member" id="memberResultSet">
+	<!-- 회원 관련 -->
+	<resultMap type="Member" id="memberResultSet">
          <id property="memberNo" column="MEMBER_NO"/>
          <result property="memberId" column="MEMBER_ID"/>
          <result property="memberPw" column="MEMBER_PW"/>
@@ -20,10 +20,10 @@
    </resultMap>
    
    <!-- 로그인 -->
-   <select id="selectMemberLogin" parameterType="Member" resultMap="memberResultSet">
-      SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw}
-   </select>
-   
+	<select id="selectMemberLogin" resultMap="memberResultSet" parameterType="Member"> 
+	SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw} 
+	</select>
+	
    <!-- 회원 전체 리스트 -->
      <select id="selectMemberList" parameterType="Member" resultMap="memberResultSet">
       SELECT * FROM MEMBER
@@ -33,6 +33,15 @@
    <select id="getMemberListCount" resultType="_int">
    	SELECT COUNT(*) FROM MEMBER 
    </select>
+   
+   <!-- 회원정보 수정 -->
+   	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_PW = #{memberPw}, MEMBER_EMAIL = #{email}, MEMBER_PHONE = #{phone}, MEMBER_ADDRESS = #{address}, ACCOUNT_INFO = #{account}
+		<!-- UPDATE_DATE = SYSDATE -->
+		WHERE MEMBER_ID = #{memberId }
+	</update>
+	
    
    <!-- 회원 검색별 전체 인원수  -->
    <select id="getMemberSearchListCount" parameterType="MemberSearch" resultType="_int">
@@ -48,7 +57,6 @@
 			<when test="memberSearchCondition=='name'">
 			AND MEMBER_NAME LIKE '%' || #{memberSearchValue} || '%'  			
 			</when>
-		
 		</choose>
 	</where>	
    </select>
@@ -67,7 +75,6 @@
 			<when test="memberSearchCondition =='name'">
 			AND MEMBER_NAME LIKE '%' || #{memberSearchValue} || '%'  			
 			</when>
-		
 		</choose>
 	</where>	
 	ORDER BY MEMBER_NO DESC
@@ -80,10 +87,48 @@
    SELECT * FROM MEMBER WHERE MEMBER_NO=#{memberNo}
    </select>
    
-   <!-- 회원 포인트 업데이트 -->
-	<update id="updateMemberPoint" parameterType="Member">
-	UPDATE MEMBER SET MEMBER_POINT=#{point} WHERE MEMBER_ID=#{memberId}
+   <!-- <resultMap type="String" id="testMap">
+		<id property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+	</resultMap> -->
+
+
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(MEM_NO_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName},
+		#{email}, #{address}, #{phone}, 0, #{account},
+		default, default, default, SYSDATE)
+	</insert>
+
+	<!-- 아이디찾기 -->
+	<select id="findId" parameterType="String" resultType="String">
+		SELECT
+		MEMBER_ID
+		FROM MEMBER
+		WHERE MEMBER_EMAIL = #{email}
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<select id="findPwd" parameterType="hashMap" resultType="_int">
+		SELECT
+		COUNT(*)
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId} AND MEMBER_PHONE = #{phone}
+	</select>
+
+	<!-- 비밀번호 변경 -->
+	<update id="updatePwd" parameterType="hashMap">
+		UPDATE MEMBER
+		SET MEMBER_PW
+		= #{pass}
+		WHERE MEMBER_ID = #{userId}
 	</update>
+	
+ 
+	
+	
+	
 
 <!-- 포인트 변동 관련 -->
    <resultMap type="PointChange" id="pointChangeResultSet">
@@ -92,15 +137,32 @@
    <result property="pointUpdateDate" column="POINT_UPDATE_DATE"/>
    <result property="pointAmount" column="POINT_AMOUNT"/>
    <result property="pointContent" column="POINT_CONTENT"/>
+   <result property="pointStatus" column="POINT_STATUS"/>
    </resultMap>
    
    
-      <!-- 회원 전체 인원수  -->
+      
+      <!-- 포인트 변동 리스트 회원별-->
+   <select id="selectMemberPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
+   </select>
+   
+   <!-- 포인트 차감(결제)포인트 변동 추가 -->
+	<insert id="insertPointChange"  parameterType="PointChange">
+	INSERT INTO POINT_HISTORIES VALUES(POINT_NO_SEQ.NEXTVAL,SYSDATE,#{pointAmount},#{pointContent},#{pointStatus},#{memberId})
+	</insert>
+   
+  <!-- 회원 포인트 업데이트 -->
+	<update id="updateMemberPoint" parameterType="Member">
+	UPDATE MEMBER SET MEMBER_POINT=#{point} WHERE MEMBER_ID=#{memberId}
+	</update>
+   
+      <!-- 포인트 변동내역 회원 전체 개수  -->
    <select id="getPointChangeMemberListCount" resultType="_int">
    	SELECT COUNT(*) FROM POINT_HISTORIES 
    </select>
    
-      <!-- 회원 전체 인원수  -->
+      <!-- 포인트 변동내역 회원 별 전체 개수  -->
    <select id="getPointChangeListCount" resultType="_int">
    	SELECT COUNT(*) FROM POINT_HISTORIES  WHERE MEMBER_ID=#{memberId}
    </select>
@@ -110,26 +172,17 @@
    SELECT * FROM POINT_HISTORIES 
    </select>
    
-   
-      <!-- 포인트 변동 리스트 회원별-->
-   <select id="selectMemberPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
-   SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
-   </select>
-   
-   <!-- 포인트 차감(결제) -->
-	<insert id="insertPointChange"  parameterType="PointChange">
-	INSERT INTO POINT_HISTORIES VALUES(POINT_NO_SEQ.NEXTVAL,#{memberId},SYSDATE,#{pointAmount},#{pointContent})
-	</insert>
 
-<!-- 포인트 환급 관련 -->
+
+	<!-- 포인트 환급 관련 -->
    <resultMap type="PointRefund" id="pointRefundResultSet">
-   <id property="refundNo" column="REFUND_NO"/>
-   <result property="refundPoint" column="REFUND_POINT"/>
-   <result property="memberId" column="MEMBER_ID"/>
-   <result property="refundYn" column="REFUND_YN"/>
-   <result property="accountInfo" column="ACCOUNT_INFO"/>
-   <result property="refundRequestDate" column="REFUND_REQUEST_DATE"/>
-   <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
+	   <id property="refundNo" column="REFUND_NO"/>
+	   <result property="refundPoint" column="REFUND_POINT"/>
+	   <result property="memberId" column="MEMBER_ID"/>
+	   <result property="refundYn" column="REFUND_YN"/>
+	   <result property="accountInfo" column="ACCOUNT_INFO"/>
+	   <result property="refundRequestDate" column="REFUND_REQUEST_DATE"/>
+	   <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
    </resultMap>
    
    <!-- 포인트 환급 전체리스트 -->

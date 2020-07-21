@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public int getCommentListCount() {
-		return commentStore.getCommentListCount();
+	public int getCommentListCount(Comment comment) {
+		return commentStore.getCommentListCount(comment);
 	}
 }
