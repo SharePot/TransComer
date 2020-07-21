@@ -42,8 +42,14 @@ public class ShareStoreLogic implements ShareStore {
 	@Override
 	public ArrayList<Share> adminShareList() {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("shareMapper.adminShareList");
+		return (ArrayList) sqlSession.selectList("shareMapper.adminShareList");
 	}
-	
-	
+
+	// 관리자 - 번역공유 신청글 상세 조회
+	@Override
+	public Share adminSelectShareOne(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("shareMapper.adminSelectShareOne", shareNo);
+	}
+
 }

@@ -38,9 +38,17 @@ public class ShareServiceImpl implements ShareService {
 		return 0;
 	}
 
+	// 관리자 - 번역공유 신청 리스트 전체 조회
 	@Override
 	public ArrayList<Share> adminShareList() {
 		// TODO Auto-generated method stub
 		return shareStore.adminShareList();
+	}
+
+	// 관리자 - 번역공유 신청글 상세 조회
+	@Override
+	public Share adminSelectShareOne(int shareNo) {
+		// TODO Auto-generated method stub
+		return shareStore.adminSelectShareOne(shareNo);
 	}
 }

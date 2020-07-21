@@ -67,7 +67,11 @@
 	                                    <td>
 	                                        <!--if 문으로 해당 글의 승인/반려/미처리 상태를 체크하여 표시-->
 	                                        <c:if test="${share.shareYN eq 'N' }">
-		                                        <a class="btn btn-primary" style="color: white">승인 / 반려</a>
+		                                        <c:url var="ndetail" value="ndetail.kh">
+		                                        	<!-- 쿼리 스트링: ?뒤에오는것 -->
+		                                        	<c:param name="nId" value="${n.nId }"></c:param>
+		                                        </c:url>
+		                                        <a href="adminSelectShareOne.tc" class="btn btn-primary" style="color: white">승인 / 반려</a>
 	                                        </c:if>
 	                                        <c:if test="${share.shareYN eq 'Y' }">
 		                                        <button class="btn btn-success">승인 완료</button>

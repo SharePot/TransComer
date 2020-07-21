@@ -72,8 +72,15 @@ public class ShareController {
 	}
 
 	// 관리자 - 번역공유 신청글을 승인/반려를 하기위한 상세페이지 이동
+	@RequestMapping("adminSelectShareOne.tc")
 	public String adminShareOne(int shareNo, Model model) {
-		return "";
+		Share share = shareService.adminSelectShareOne(shareNo);
+		if (share != null) {
+			model.addAttribute("share", share);
+			return "admin/adminShareDetail";
+		} else {
+			return "common/errorPage";
+		}
 	}
 
 }

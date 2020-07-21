@@ -41,5 +41,11 @@ public interface ShareStore {
 	 * @return
 	 */
 	public ArrayList<Share> adminShareList();
-
+	
+	/**
+	 * 관리자가 번역공유 신청글 상세 조회
+	 * @param shareNo
+	 * @return
+	 */
+	public Share adminSelectShareOne(int shareNo);
 }
