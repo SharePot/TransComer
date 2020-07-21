@@ -77,10 +77,4 @@ public class PersonalStoreLogic implements PersonalStore {
 	}
 	
 	
-	@Override
-	public int insertReview(Review review) {
-		return sqlSession.insert("personalMapper.insertReview", review);
-	}
-	
-	
 }

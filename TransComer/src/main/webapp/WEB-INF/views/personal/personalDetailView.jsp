@@ -14,7 +14,6 @@
             height: 150px;
             border-radius: 70%;
             overflow: hidden;
-            /*justify-content: center;*/
         }
 
         .imgbox2 {
@@ -39,9 +38,7 @@
         #buy {
             width: 80%;
             border-radius: 5px;
-            /*display: inline-block;*/
             margin: 0 10%;
-            /*padding: 0.75em 1em;*/
             background: #fff;
         }
 
@@ -98,21 +95,26 @@
                             <footer>
                             	<!-- 작성자가 아니면 구매하기 버튼, 작성자이면 수정/삭제 버튼  -->
                             	<c:if test="${loginUser.memberId != personal.memberId }">
-								 	<button type="button" class="btn btn-warning btn-lg btn-block" onclick="location.href = 'pRequestView.tc?personalNo=${personal.personalNo}'">의뢰하기</button>
+                            		<c:if test="${ !empty loginUser }">
+                            			<button type="button" class="btn btn-warning btn-lg btn-block" onclick="location.href = 'pRequestView.tc?personalNo=${personal.personalNo}'">의뢰하기</button>
+                            		</c:if>
+                            		<!-- 로그인이 안 되어있는 경우 -->
+                            		<c:if test="${ empty loginUser }">
+                            		<button type="button" class="btn btn-warning btn-lg btn-block" onclick="requestPersonal()" >의뢰하기</button>
+                            		</c:if>
 								</c:if>
                                 <c:if test="${loginUser.memberId eq personal.memberId }">
 	                                <c:url var="pUpdate" value="pWriterUpdateView.tc">
 										<c:param name="personalNo" value="${personal.personalNo }" />
-										<!-- 쿼리스트링을 보내주어야 컨트롤러의 메소드의 매개변수(파라미터)가 받아서 처리 가능 -->
 									</c:url>
 									<c:url var="pDelete" value="pWriterDelete.tc">
 										<c:param name="personalNo" value="${personal.personalNo }" />
 									</c:url>
-										<center>
-		                                	<button class="btn btn-primary" style="margin:0 10px; width:35%;" onclick="location.href = '${pUpdate }'"> 수정 </button>
-		                               		<%-- <button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="location.href = '${pDelete }'"> 삭제 </button> --%>
-		                               		<button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="deletePersonal()"> 삭제 </button>
-		                           		</center>
+									<center>
+		                                <button class="btn btn-primary" style="margin:0 10px; width:35%;" onclick="location.href = '${pUpdate }'"> 수정 </button>
+		                               	<%-- <button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="location.href = '${pDelete }'"> 삭제 </button> --%>
+		                               	<button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="deletePersonal()"> 삭제 </button>
+		                           	</center>
 								</c:if>
                             </footer>
                         </section>
@@ -132,13 +134,11 @@
                             </li>
                         </ul>
 
-                        <!-- Tab panes -->
                         <div class="tab-content">
+                         <!-- 서비스 소개 탭 -->
                             <div id="move1" class="container tab-pane active" align="center"><br>
                                 <div id="moveInfo1" class="container tab-pane active">
-                                    <center>
-                                        <h3>서비스 소개</h3>
-                                    </center>
+                                    <center><h3>서비스 소개</h3></center>
                                 </div>
                                 <hr>
                                 <div id="moveExplain1" class="container tab-pane active">
@@ -146,52 +146,61 @@
                                 </div>
                             </div>
 
-
+							<!-- 리뷰/후기 탭 -->
                             <div id="move2" class="container tab-pane fade" align="center"><br>
                                 <div id="moveInfo2" class="tab-pane active">
                                     <center>
                                         <h3>서비스 후기</h3>
                                     </center>
                                     <br>
+                                    <!-- 별점 -->
                                     <div style="background: white; height:100px; padding:20px 0; border:0.3px solid lightgray">
                                         <h2>4.0</h2>
                                         <h3 style="color:orange">★★★★☆</h3>
                                     </div>
                                 </div>
+                                
                                 <hr>
-                                <table class="table table-borderless">
-                                    <tr>
-                                        <td rowspan="2" style="width:50px">
-                                            <div class="imgbox2">
-                                                <img class="profile" src="/imges/girl.png">
-                                            </div>
-                                        </td>
-                                        <td style="font-style: bold; color: darkblue">@아이디</td>
-                                    </tr>
-                                    <tr>
-                                        <td>촉박한 시간, 늦은 새벽 시간 연락도 이해주셔서 너무 너무 감사드립니다.
-                                            <br>크몽 사업 번창하시기를 바라겠습니다. 감사합니다!</td>
-                                    </tr>
-                                </table>
-                                <hr>
+                                <!-- 리뷰 목록 -->
+								<table class="table table-borderless">
+									<tr>
+										<td rowspan="2" style="width: 50px">
+											<div class="imgbox2">
+												<img class="profile" src="">
+											</div>
+										</td>
+										<td style="font-style: bold; color: darkblue">${r.memberId}</td>
+									</tr>
+									<tr>
+										<td>${r.revContent }</td>
+									</tr>
+								</table>
+								
+								
+								<hr>
+								<!-- 리뷰 등록  -->
                                 <div class="col-sm-12 col-md-12">
-                                    <form action="pReview.tc">
-                                        <textarea id="Q_Contents" class="DOC_TEXT" name="rvContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
-                                        <br>
-                                        <span style="color:#aaa;" id="counter">(0 / 최대 50자)</span>
-
-                                        <%-- <input type="hidden" name="" value="${}"> --%>
-
-                                        <input type="submit" class="btn btn-success" value="등록">
-                                        <input type="reset" class="btn" value="취소">
-                                    </form>
+                               		<c:if test="${ !empty loginUser }">
+	                                    <form action="pReview.tc">
+	                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
+	                                        <input type="hidden" name="personalNo" value="${personal.personalNo }" />
+	                                        <textarea id="Q_Contents" class="DOC_TEXT" name="revContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
+	                                        <br>
+	                                        <span style="color:#aaa;" id="counter">(0 / 최대 50자)</span>
+	
+	                                        <%-- <input type="hidden" name="" value="${}"> --%>
+	
+	                                        <input type="submit" class="btn btn-success" value="등록">
+	                                        <input type="reset" class="btn" value="취소">
+	                                    </form>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
 
+					<!-- 프로필 -->
                     <div class="col-4 col-6-medium col-12-small">
                         <section class="box" style=" border: 0px;">
                             <center>
@@ -256,6 +265,16 @@
     			   return false;
     			}
 		}
+    	
+    	function requestPersonal() {
+    		if (confirm("로그인 후에 이용가능합니다.") == true){  
+				self.location.href = "loginPage.tc";
+			}else{   
+			   return false;
+			}
+    	}
+    	
+    	
     </script>
     
     

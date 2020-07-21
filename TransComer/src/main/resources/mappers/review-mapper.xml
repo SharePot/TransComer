@@ -2,4 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="reviewMapper">
 
+	<resultMap type="Review" id="ReviewResultSet">
+		<id property="reviewNo" column="REV_NO" />
+		<result property="revTargetMemberId" column="REV_TARGET_MEMBER_ID" />
+		<result property="revContent" column="REV_CONTENT" />
+		<result property="starRage" column="STAR_RAGE" />
+		<result property="revWriteDate" column="REV_WRITE_DATE" />
+		<result property="personalNo" column="PERSONAL_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+	</resultMap>
+
+
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, #{revContent}, '0', SYSDATE, #{personalNo}, #{memberId})
+	</insert>
+
+	<select id="selectReviewList" parameterType="_int">
+		SELECT * FROM REVIEW
+		JOIN PERSONAL USING (PERSONAL_NO) WHERE PERSONAL_NO = #{personalNo}
+		ORDER BY REV_NO DESC
+	</select>
+
+<!-- JOIN PERSONAL P ON (R.MEMBER_ID = P.MEMBER_ID)
+WHERE R.MEMBER_ID = #{memberId} -->
+
 </mapper>

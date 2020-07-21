@@ -7,7 +7,7 @@ import com.tc.spring.review.domain.ReviewPageInfo;
 
 public interface ReviewStore {
 
-	public ArrayList<Review> selectList(ReviewPageInfo rPi);
+	public ArrayList<Review> selectList(int personalNo);
 
 	public int insertReview(Review review);
 

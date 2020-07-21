@@ -34,8 +34,5 @@ public interface PersonalStore {
 	
 	public int insertRequest(PersonalReqRep personalReqRep);
 
-	public int insertReview(Review review);
-
-
 
 }

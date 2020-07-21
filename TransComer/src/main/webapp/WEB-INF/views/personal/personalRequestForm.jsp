@@ -46,7 +46,7 @@
                             <h3>* 번역가 정보</h3>
                             <br>
                             <label>번역가</label>
-                            <input type="text" id="memberId" name="memberId" placeholder="번역가 이름" readonly value="${personal.memberId }">
+                            <input type="text" id="pRepTranslator" name="pRepTranslator" placeholder="번역가 이름" readonly value="${personal.memberId }">
                             <br><br>
                             <label>개발언어</label>
                             <input type="text" id="personalPLang" name="personalPLang" placeholder="번역가의 개발언어" readonly value="${personal.personalPLang} ">
@@ -63,6 +63,7 @@
 
                             <hr>
                             <h3>* 번역신청 내용 작성</h3>
+                            <input type="hidden" id="memberId" name="memberId" value="${loginUser.memberId }">
                             <br>
                             <label>신청 개발언어</label>
                             <input type="text" id="pReqPLang" name="pReqPLang" placeholder="의뢰 개발언어">
@@ -74,20 +75,24 @@
                             <hr>
                             <h4>첨부파일(최대 5개까지 첨부)</h4>
                             <br>
-                            <input type="file" name="uploadFile" style="margin:0;"/>
                             <!--파일 여러개 넣기-->
-                            <input multiple="multiple" type="file" name="reqUploadFile[]" style="margin:0;"/>
-                            <br><br>
+                            <!-- <input multiple="multiple" type="file" name="uploadFile[]" style="margin:0;"/> -->
+                            <!-- <input type="file" name="uploadFile" id="uploadFile"> -->
+							<div id="fileUp">
+								<button type="button" class="btn btn-info" id="addFile" onclick="addFiles();">파일 추가</button>
+							</div>
+
+							<br><br>
 
                             <hr>
                             <h4>번역 의뢰 내용</h4>
                             <br>
                             <div class="wrap">
-                                <textarea id="pReqContent" placeholder="번역을 원하는 내용을 입력하세요" style="height:300px; margin-bottom:10px;"></textarea>
+                                <textarea id="pReqContent" name="pReqContent" placeholder="번역을 원하는 내용을 입력하세요" style="height:300px; margin-bottom:10px;"></textarea>
                                 현재 글자수 :&nbsp;<span id="counter">###</span>
                             </div>
                             <br>
-                            <h4 id="price" style="float:right;">현재가격 : <input readonly id="req_Price" name="pReqPrice" value="${PersonalReqRep.pReqPrice}"></h4>
+                            <h4 id="price" style="float:right;"><input readonly id="pReqPrice" name="pReqPrice"></h4>
                             <br>
                             <p style="float:right; font-size:13px;">(100자 당 가격 : ${personal.personalPrice }원)</p>
                             <br><br>
@@ -95,11 +100,12 @@
                             <hr>
                             <h4>세부요청 사항</h4>
                             <br>
-                            <textarea id="pReqCommnet" placeholder="요청사항을 입력해주세요" style="height:100px;"></textarea>
+                            <textarea id="pReqDetail" name="pReqDetail" placeholder="요청사항을 입력해주세요" style="height:100px;"></textarea>
 
                             <br><br>
                             <center>
-                                <button type="button" class="btn btn-primary btn-lg" type="submit"> 신청하기 </button>
+                                <button class="btn btn-primary btn-lg" type="submit"> 신청하기 </button>
+                                <button class="btn btn-warning btn-lg" type="reset"> 취소 </button>
                             </center>
                         </form>
                     </div>
@@ -137,19 +143,47 @@
             });
             $('#pReqContent').keyup();
         });
-    </script>
 
-    <script>
-	    $(function() {
+        
+	   /*  $(function() {
 	        $('#pReqContent').keyup(function(e) {
 	            var pReqContent = $(this).val();
 	            var personalPrice = "${personal.personalPrice}";
 	            $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
 	            $('#price').html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * personalPrice + '원');
+	            
+	        });
+	        $('#pReqContent').keyup();
+	    }); */
+
+	    
+	    
+	    $(function() {
+	        $('#pReqContent').keyup(function(e) {
+	            var pReqContent = $(this).val();
+	            var personalPrice = "${personal.personalPrice}";
+	            $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
+	            var price = $('#price').html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * personalPrice + '원');
+	            $('#pReqPrice').val(price);
+
 	        });
 	        $('#pReqContent').keyup();
 	    });
-    </script>
+	    
+	    
+	    var count = 0;
+	    function addFiles() {
+			count++;
+			if (count < 6) {
+				$addfile = $("<input type='file' name='uploadFile' class='form-control-file border'>");
+				var td = $("#fileUp");
+
+				td.append($addfile);
+			}
+		}
+		
+		
+	</script>
 
 
 </body></html>

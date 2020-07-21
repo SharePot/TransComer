@@ -96,7 +96,7 @@ public interface PersonalService {
 	 * @return
 	 */
 
-	public int insertRequest(PersonalReqRep personalReqRep, MultipartFile uploadFile, HttpServletRequest request);
+	public int insertRequest(PersonalReqRep personalReqRep, HttpServletRequest request);
 	/**
 	 * 1:1 의뢰 신청 등록
 	 * 
@@ -104,11 +104,5 @@ public interface PersonalService {
 	 * @return
 	 */
 	
-	public int insertReview(Review review);
-	/**
-	 * 1:1 의뢰 리뷰 등록
-	 * 
-	 * @param review
-	 * @return
-	 */
+
 }
