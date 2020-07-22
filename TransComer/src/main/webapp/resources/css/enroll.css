@@ -1,0 +1,49 @@
+#wrapper {
+    margin: 0 auto;
+    width: 50%;
+}
+
+#title {
+    font-size: 30px;
+    text-align: center;
+    color: darkslategray;
+}
+
+#btn {
+    text-align: center !important;
+}
+
+#post td {
+    vertical-align: middle !important;
+}
+
+#sample6_postcode {
+    width: 100% !important;
+}
+
+table tr {
+    border-top: solid 0px #dddddd !important;
+}
+
+table tr td:first-child {
+    width: 20%;
+    text-align: right;
+}
+
+table tr td:nth-child(3) {
+    width: 20%;
+    text-align: left;
+    padding: 0 !important;
+}
+
+.itemTitle {
+    font-size: 17px;
+}
+
+.checkId, #btn input {
+    background: lightblue !important;
+    font-weight: 400 !important;
+    width: 130px;
+    padding: 8px !important;
+}
+

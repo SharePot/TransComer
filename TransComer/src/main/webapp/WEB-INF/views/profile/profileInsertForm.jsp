@@ -33,7 +33,7 @@
                                 <input type="text" id="personalTLang" name="personalTLang" placeholder="전화번호" readonly value="${loginUser.phone }">
                                 <br><br>
                                 <label>프로필 사진</label>
-                                <input type="file" name="profileFilePath" id="profile_pt" onchange="previewImage(this,'View_area')">
+                                <input type="file" name="uploadFile" id="profile_pt" onchange="previewImage(this,'View_area')">
                                 <!--이미지 미리보기-->
                                 <div id='View_area' style=' margin-left: 50%; position:relative; width: 100px; height: 100px; color: black; border: 0px solid black; dispaly: inline;'></div>
                                 <br><br>
@@ -159,7 +159,10 @@
                             <center>
                                 <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 등록 </button>
                                 <button class="btn btn-secondary" type="reset" style="margin:0 20px; width:100px;"> 취소 </button>
+                            	<a onclick="test()">test</a>
                             </center>
+                            
+                            <input type="hidden" name="memberId" value="${loginUser.memberId }">
                             
                         </form>
 

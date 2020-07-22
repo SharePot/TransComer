@@ -23,7 +23,6 @@
 
             <div id="contentSection">
 
-
                 <p id="titleInfo">&#91; ${sReq.simplePLang } &#47; ${sReq.simpleTLang } &#93; ${sReq.simpleTitle }</p>
                 <p id="contentInfo">${sReq.simpleWriter } ${sReq.simpleDate } ${sReq.simpleCount }</p>
                 <p id="modyInfo">
@@ -45,7 +44,6 @@
 
                 <div id="contentWrapper">
                     <p id="content">${sReq.simpleContent }</p>
-                    <p id="letterCount">자</p>
                 </div>
 	                <div id="replySection"> 
 	                
@@ -55,10 +53,10 @@
 					<input type="hidden" id="simpleAStatus" value="${sReq.simpleAStatus }">
                     <table id="replyTb">
 
-                        <tr>
-                            <td id="rContentWrapper"><textarea cols="75" rows="4" type="text" id="simpleReplyContent"></textarea></td>
-                            <td id="rSubmitWrapper"><button class="btn btn-primary" id="rSubmit">등록</button></td>
-                        </tr>
+	                        <tr>
+	                            <td id="rContentWrapper"><textarea cols="75" rows="4" type="text" id="simpleReplyContent"></textarea></td>
+	                            <td id="rSubmitWrapper"><button class="btn btn-primary" id="rSubmit">등록</button></td>
+	                        </tr>
 
                     </table>
 
@@ -101,18 +99,11 @@
 		function getSimpleResList() {
 			var sReqNo = ${sReq.simpleNo };
 			
-			/* var page = 1; */ // 페이지 변수를 1로 초기화
-			
 			$.ajax({
 						url : "sResList.tc",
 						data : {simpleNo : sReqNo/* , page : page */},
 						dataType : "json",
 						success : function(data) {
-							
-							/* response = result.lists; // 반환값 중 데이터목록을 response변수에 삽입
-							paging = result.paging; // 페이징관련 데이터들을 paging변수에 삽입
-							
-							$("#replySection").empty(); */
 
 							$divSection = $("#replySection");
 							$divSection.html("");
@@ -131,6 +122,7 @@
 														$tdOne = $("<td colspan='2'>");
 															$replyWriter = $("<p id='replyWriter'>").text(data[i].simpleReplyWriter);
 															$replyInfo = $("<p id='replyInfo'>").text("님의 답변");
+															$replyInfoA = $("<p id='replyInfo'>").text("님의 답변이 채택되었습니다.");
 													$trTwo = $("<tr>");
 														$adoptTd = $("<td id='adopt'>");
 															$adoptCountOne = $("<p class='adoptCount'>").text("책택된 답변수 : ");
@@ -181,7 +173,10 @@
 										if (data[i].simpleReplyStatus == 'Y') {
 											$updateWindow.detach();
 											$deleteBtn.detach();
+											$replyInfo.detach();
+											$replyWriter.after($replyInfoA);
 										}
+										
 										
 										$trTwo.after($trThree);
 										$trThree.append($tdTwo);
@@ -269,11 +264,16 @@
 		  			data : {simpleReplyNo : simpleReplyNo, sReqNo : sReqNo, simpleReplyWriter : simpleReplyWriter},
 		  			type : "post",
 		  			success : function (data) {
-		  				getSimpleResList();
 		  				alter("답변을 채택하였습니다.");
+		  				getSimpleResList();
+		  				$("#adoptBtn").hide();
 		  			}
 		  		});
+		  		
+		  		
 	  		}
+	  		
+	  		location.reload(true);
 	  		
 	  	}
 	  	

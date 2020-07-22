@@ -18,17 +18,39 @@
 			<hr>
 			<ul id="pageList">
 				<li>
+					<c:url var="detail" value="memberDetail.tc">
+							<c:param name="memberNo" value="${loginUser.memberNo }" />
+						</c:url>
 					<img src="/resources/css/images/user2.png" class="itemImg">
-					<a href="memberDetail.tc">내 정보 보기 / 수정하기</a>
+					<a href="${detail }">내 정보 보기</a>
 				</li>
-				<li>
-					<img src="/resources/css/images/login.png" class="itemImg">
-					<a href="profileInsertView.tc">경력 프로필 등록 / 수정하기</a>
-				</li>
+				<c:if test="${loginUser.profileStatus eq 'N' }">
+					<li>
+						<c:url var="insert" value="profileInsertView.tc">
+							<c:param name="memberNo" value="${loginUser.memberNo }" />
+						</c:url>
+						<img src="/resources/css/images/login.png" class="itemImg">
+						<a href="${insert }">프로필 등록하기</a>
+					</li>
+				</c:if>
+					
+				<c:if test="${loginUser.profileStatus ne 'N' }">
+					<li>
+						<c:url var="profileView" value="profileDetail.tc">
+							<c:param name="memberNo" value="${loginUser.memberNo }" />
+						</c:url>
+						<img src="/resources/css/images/login.png" class="itemImg">
+						<a href="${profileView }">프로필 보기</a>
+					</li>
+				</c:if>
 					
 				<li>
 					<img src="/resources/css/images/paper.png" class="itemImg">
-					<a href="myPersonalList.tc">나의 의뢰 문의 내역</a>
+					<a href="">1:1 의뢰 문의 내역</a>
+				</li>
+				<li>
+					<img src="/resources/css/images/paper.png" class="itemImg">
+					<a href="mySimpleList.tc">단순 의뢰 문의 내역</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/wallet.png" class="itemImg">
@@ -48,7 +70,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/doorway.png" class="itemImg">
-					<a href="">회원 탈퇴하기</a>
+					<a href="deleteMemberView.tc">회원 탈퇴하기</a>
 				</li>
 			</ul>
                        

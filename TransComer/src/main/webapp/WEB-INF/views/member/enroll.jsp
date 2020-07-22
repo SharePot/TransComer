@@ -4,261 +4,164 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>SharePot</title>
+<link rel="stylesheet" href="resources/css/enroll.css" />
+<title>SharePot - 회원가입</title>
 <meta charset="utf-8" />
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="assets/css/main.css" />
-
-<style>
-
-</style>
 </head>
 <c:import url="../common/menuBar.jsp" />
 <body class="homepage is-preload">
-<form action="enroll.tc" method="post">
-	<div id="page-wrapper">
-
-		<!-- Main -->
-		<section id="main">
-			<div class="container" style="margin-right: 60px;">
-				<div class="row">
-					<div class="col-12" id="maindiv" >
-						<!--<div class="form-group row">
-                                    <div class="col-sm-2">
-                                        <label style="margin-left: 15px;" for="inputId" class="col-form-label">아이디*</label>
-                                    </div>
-                                    <div class="col-sm-5">
-                                      <input style="margin-left: 105px; width: 150%"type="inputId" placeholder="아이디를 입력해주세요." class="form-control" id="inputId" >
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <button style="margin-left: 315px;"class="col-sm-">중복 확인</button>
-                                    </div>
-                                  </div>-->
-						<!--이름-->
-						<label for="inputName"
-							class="col-sm-2 col-form-label col-md-3">이름*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="이름을 입력해주세요."
-								class="form-control" id="name" name="memberName">
-						</div>
-						<br><br><br>
-						<!--아이디-->
-						<label for="inputId" class="col-sm-2 col-form-label col-md-3">아이디*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="아이디를 입력해주세요."
-								class="form-control" id="mid" name="memberId">
-						</div>
-						
-						<br> <br> 
-						 <a style="color: red"><label id="idChcekArea"></label></a><!-- 중복체크 -->
-
-						<!--비밀번호-->
-						<br>
-						<label for="inputPassword"
-							class="col-sm-2 col-form-label col-md-3">비밀번호*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="password" placeholder="비밀번호를 입력해주세요."
-								class="form-control" id="password1" name="memberPw">
-						</div>
-
-						<br> <br> <br>
-
-						<!--비밀번호 확인-->
-						<label for="inputPasswordRe"
-							class="col-sm-2 col-form-label col-md-3">비밀번호 확인*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="password" placeholder="비밀번호를 입력해주세요."
-								class="form-control" id="password2">
-							<br>
-						<font id="chkNotice" size="3" style="text-align: center;"></font>
-						</div>
-						
-						<br> <br> <br><br><br>
-
-
-						<!--이메일-->
-						<!--<label for="inputEmail"  class="col-sm-2 col-md-3 col-form-label">이메일*</label>
-                              <div  style="float: right;" class="col-sm-10 col-md-9">
-                              <input type="text" placeholder="이메일을 입력해주세요." class="form-control" id="inputEmail" style="width: 47%; float: left;">      
-                              <div class="input-group-text" 
-                                   style="width: 6%; float: left;" >@</div>
-                                <input type="text" class="form-control" id="inlineFormInputGroupUsername" style="width: 47%; float: right; "  placeholder="google.com">
-                              </div>-->
-						<label for="inputEmail" class="col-sm-2 col-form-label col-md-3">이메일*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="email" placeholder="OOOOO@gmail.com"
-								class="form-control" id="inputEmail" name="memberEmail">
-						</div>
-
-
-						<br> <br> <br>
-
-
-						<!--폰 번호-->
-						<label for="inputPhone" class="col-sm-2 col-form-label col-md-3">폰
-							번호*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="010-0000-0000"
-								class="form-control" id="inputPhone" maxlength="13" name="memberPhone">
-						</div>
-						<br> <br> <br>
-
-
-						<!--우편번호-->
-						<!--<label for="inputPost"  class="col-sm-2 col-form-label col-md-3">우편 번호*</label>
-                              <div  style="float: right;" class="col-sm-10 col-md-9">
-                              <input type="text" readonly placeholder="우편번호를 입력해주세요." class="form-control" id="inputPost">
-                              </div>-->
-
-						<!--우편번호-->
-						<label for="inputPost" class="col-sm-2 col-form-label col-md-3">우편
-							번호*</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="post" readonly
-								placeholder="우편번호를 입력해주세요." value="" class="form-control"
-								id="sample6_postcode" style="width: 70%; float: left">
-
-
-							<input type="button" onclick="sample6_execDaumPostcode()"
-								class="btn btn-primary" value="검색"
-								style="float: left; margin-left: 10px; height: 40px;">
-
-
-						</div>
-
-						<br> <br>
-
-						<!--기본주소-->
-						<label for="" class="col-sm-2 col-form-label col-md-3">도로명</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="address1" readonly id="sample6_address"
-								placeholder="" class="form-control" value="">
-						</div>
-						<br> <br>
-
-						<!--상세주소-->
-						<label for="" class="col-sm-2 col-form-label col-md-3">상세주소</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="" id="sample6_detailAddress"
-								class="form-control" name="address2" value="">
-						</div>
-
-
-						<br> <br> <br>
-
-						<!--은행-->
-						<div>
-							<label class="col-md-3 col-sm-2">은행</label> <select
-								name="bankName"class="custom-select custom-select-sm-10 col-md-9"
-								style="width: 72.5%; margin-left: 12px; float: left;">
-								<option selected>은행을 선택해주세요.</option>
-								<option value="1">신한은행</option>
-								<option value="2">KB국민은행</option>
-								<option value="3">하나은행</option>
-								<option value="3">Citibank</option>
-								<option value="3">KEB</option>
-								<option value="3">우리은행</option>
-							</select>
-						</div>
-						<br> <br> <br>
-
-
-						<!--<label for="bank" class="col-sm-2 col-form-label col-md-3">은행</label>
-                               <select style="margin-right: 12.5px; width: 72.5%; float: right;"class="col-sm-10 col">-->
-
-						<!--계좌번호-->
-						<label for="inputAcoount" class="col-sm-2 col-form-label col-md-3">계좌번호</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="숫자만 입력해주세요." class="form-control"
-							name="accountNumber"maxlength="15" id="inputAcoount">
-						</div>
-
-
-						<br> <br> <br>
-
-
-						<!--예금주-->
-						<label for="accountHolder"
-							class="col-sm-2 col-form-label col-md-3">예금주</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="예금주 명을 입력해주세요."
-							name="accountName" class="form-control" id="accountHolder" maxlength="15">
-						</div>
-
-
-
-
-					</div>
-				</div>
-				<br> <br>
-			</div>
-				<div style="text-align: center;">
-					<input type="button" id="resetBtn" value="돌아가기"
-						style="width: 120px; height: 40px; margin-left: 10%;">
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit"
-						name="submitBtn" value="등록하기" style="width: 120px; height: 40px;">
+		<div id="page-wrapper">
+			<!-- Main -->
+			<section id="main">
+				<div id="wrapper">
+				<h1 id="title">SharePot 회원가입</h1><br>
+				<form action="minsert.tc" method="post">
+					<table>
+						<tr> <!-- 아이디 -->
+							<td><label for="inputId" class="itemTitle">아이디 *</label></td>
+							<td><input type="text" placeholder="아이디를 입력해주세요." class="item" id="inputId" name="memberId"></td>
+                            <td>
+                            	<!-- <p id="chkId">사용중인 아이디입니다.</p>
+                            	<p id="errorId">사용가능한 아이디입니다.</p>
+                            	<p id="emptyId">아이디를 입력해주세요.</p> -->
+                            	<input type="button" onclick="checkId()" value="중복확인" >
+							</td>
+						</tr>
+						<tr> <!-- 비밀번호 -->
+							<td><label for="inputPassword" class="itemTitle">비밀번호 *</label></td>
+							<td colspan="2"><input type="password" placeholder="비밀번호를 입력해주세요." id="password1" name="memberPw"></td>
+						</tr>
+						<tr> <!-- 비밀번호 확인 -->
+							<td><label for="inputPasswordRe" class="itemTitle">비밀번호 확인 *</label></td>
+							<td><input type="password" placeholder="비밀번호를 입력해주세요." id="password2"></td>
+							<td><div id="chkNotice"></div></td>
+						</tr>
+						<tr> <!-- 이름 -->
+							<td><label for="inputName" class="itemTitle">이름 *</label></td>
+							<td colspan="2"><input type="text" placeholder="이름을 입력해주세요." id="name" name="memberName"></td>
+						</tr>
+						<tr> <!-- 이메일 -->
+							<td><label for="inputEmail" class="itemTitle">이메일 *</label></td>
+							<td colspan="2"><input type="text" placeholder="OOOOO@gmail.com" id="inputEmail" name="email"></td>
+						</tr>
+						<tr> <!-- 휴대폰번호 -->
+							<td><label for="inputPhone" class="itemTitle">폰번호 *</label></td>
+							<td colspan="2"><input type="text" placeholder="전화번호를 입력해주세요" id="inputPhone" maxlength="13" name="phone"></td>
+						</tr>
+						<tr id="post"> <!-- 우편번호 -->
+							<td><label for="inputPost"  class="itemTitle">우편 번호 *</label></td>
+							<td><input type="text" name="post" readonly placeholder="우편번호를 입력해주세요." value=""  id="sample6_postcode" style="width: 70%; float: left"></td>
+							<td><input type="button" onclick="sample6_execDaumPostcode()" value="검색" ></td>
+						</tr>
+						<tr> <!-- 기본주소 -->
+							<td><label for="" class="itemTitle">도로명</label></td>
+							<td colspan="2"><input type="text" name="address1" readonly id="sample6_address" value=""></td>
+						</tr>
+						<tr> <!-- 상세주소 -->
+							<td><label for="" class="itemTitle">상세주소</label></td>
+							<td colspan="2"><input type="text" placeholder="" id="sample6_detailAddress" name="address2" value=""></td>
+						</tr>
+						<tr> <!-- 은행 -->
+							<td><label for="inputAcoount" class="itemTitle">은행명</label></td>
+							<td colspan="2"><input type="text" placeholder="은행을 입력해주세요." name="bankName" maxlength="15" id=""></td>
+						</tr>
+						<tr> <!-- 계좌번호 -->
+							<td><label for="inputAcoount" class="itemTitle">계좌번호</label></td>
+							<td colspan="2"><input type="text" placeholder="숫자만 입력해주세요." name="accountNumber" maxlength="15" id="inputAcoount"></td>
+						</tr>
+						<tr> <!-- 예금주 -->
+							<td><label for="accountHolder" class="itemTitle">예금주</label></td>
+							<td colspan="2"><input type="text" placeholder="예금주 명을 입력해주세요." name="accountName" id="accountHolder" maxlength="15"></td>
+						</tr>
+						<tr> <!-- 버튼 -->
+							<td colspan="3" id="btn">
+								<button type="reset">돌아가기</button>
+								<button name="submitBtn" type="submit">가입하기</button>
+								<a onclick="enroll();">test</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+					
 				</div>
 
+			</section>
 
+		</div>
+
+	<script>
 	
-
-		</section>
-		<!-- Footer -->
-		<section id="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-8 col-12-medium"></div>
-					<div class="col-4 col-12-medium"></div>
-					<div class="col-12"></div>
-				</div>
-			</div>
-		</section>
+		function enroll() {
+			
+			var memberId = $("#inputId").val();
+			var memberPw = $("#password1").val();
+			var memberPwRe = $("#password2").val();
+			var memberName = $("#name").val();
+			var memberEmail = $("#inputEmail").val();
+			var memberPhone = $("#inputPhone").val();
+			var memberAddress = $("#sample6_postcode").val();
+			
+			if (memberId == 0) {
+				alert("아이디를 입력해주세요")
+				return false;
+			} else if (memberPw == 0) {
+				alert("비밀번호를 입력해주세요")
+				return false;
+			} else if (memberPwRe == 0) {
+				alert("비밀번호를 한번 더 입력해주세요")
+				return false;
+			} else if (memberName == 0) {
+				alert("이름을 입력해주세요")
+				return false;
+			} else if (memberEmail == 0) {
+				alert("이메일을 입력해주세요")
+				return false;
+			} else if (memberPhone == 0) {
+				alert("전화번호를 입력해주세요")
+				return false;
+			} else if (memberAddress == 0) {
+				alert("주소를 입력해주세요")
+				return false;
+			} 
+			
+		alert("환영합니다! SharePot 회원가입이 완료되었습니다!");
+		return true; 
 		
-	</div>
-</form>
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
-	<!--id 중복체크-->
+		}
 	
-	<script type="text/javascript">
-       $("#mId").keyup(function () {
-          $.ajax({
-                url : "/IdCheck",
-                type : "POST",
-                data:{
-                      mId : $("#mId").val()
-                   },
-                success : function(data) {
-                   if(data >= 1){
-                      $("#idChcekArea").text("이미 있는 아이디입니다.");
-                   }else{       
-                      $("#idChcekArea").text("사용 가능한 아이디 입니다.");
-                   }
-                }
-             });
-      });
-       
-    </script>
-	 <!-- 비밀번호 유효성 검사 -->
-   <script>
-		 $("#password1").change(function(){
+	</script>
+	
+	<script>
+	
+	<!--id 중복체크-->
+	function checkId() {
+
+		var memberId = $("#inputId").val();
+		$.ajax({
+			url : "IdCheck.tc",
+			data : {memberId : memberId},
+			success : function(result) {
+				if (result == "true" && memberId != 0) {
+					alert("사용가능한 아이디입니다.");
+				} else if (memberId == 0) {
+					alert("아이디를 입력해주세요.");
+				} else {
+					alert("사용중인 아이디입니다.");
+				}
+				
+			}
+			
+		});
+	}
+		
+	</script>
+	
+	<script>
+	<!-- 비밀번호 유효성 검사 -->
+	$("#password1").change(function(){
 		checkPassword($('#password1').val()/*,$('id').val()*/);
 	});
+	
 	function checkPassword(password/*,id*/){
 
 		if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
@@ -266,52 +169,38 @@
 			$('#password').val('').focus();
 			return false;
 		}    
-		var checkNumber = password.search(/[0-9]/g);
-		var checkEnglish = password.search(/[a-z]/ig);
-		if(checkNumber <0 || checkEnglish <0){
-			alert("숫자와 영문자를 혼용하여야 합니다.");
-			$('#password').val('').focus();
-			return false;
-		}
+		
 		if(/(\w)\1\1\1/.test(password)){
 			alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
 			$('#password').val('').focus();
 			return false;
 		}
-
-		/*if(password.search(id) > -1){
-			alert("비밀번호에 아이디가 포함되었습니다.");
-			$('#password').val('').focus();
-			return false;
-		}
-		return true;*/
+		return true;
 	}
  
 	</script>
-	
+	<script>
 	<!--비밀번호 확인-->
-	<script>
 	$(function(){
-    $('#password1').keyup(function(){
-      $('#chkNotice').html('');
-    });
-
-    $('#password2').keyup(function(){
-
-        if($('#password1').val() != $('#password2').val()){
-          $('#chkNotice').html('비밀번호 일치하지 않음<br><br>');
-          $('#chkNotice').attr('color', '#f82a2aa3');
-        } else{
-          $('#chkNotice').html('비밀번호 일치함<br><br>');
-          $('#chkNotice').attr('color', '#199894b3');
-        }
-
-    });
-});	
-	</script>
+	    $('#password1').keyup(function(){
+	      $('#chkNotice').html('');
+	    });
 	
-	<!-- 폰 번호 Scripts -->
+	    $('#password2').keyup(function(){
+	
+	        if($('#password1').val() != $('#password2').val()){
+	          $('#chkNotice').html('비밀번호 일치하지 않음<br><br>');
+	          $('#chkNotice').attr('color', '#f82a2aa3');
+	        } else{
+	          $('#chkNotice').html('비밀번호 일치함<br><br>');
+	          $('#chkNotice').attr('color', '#199894b3');
+	        }
+	
+	    });
+	});		
+	</script>
 	<script>
+	<!-- 폰 번호 Scripts -->
 		var autoHypenPhone = function(str) {
 			str = str.replace(/[^0-9]/g, '');
 			var tmp = '';
@@ -348,9 +237,8 @@
 			this.value = autoHypenPhone(this.value);
 		}
 	</script>
-
-	<!--계좌번호 Scripts-->
 	<script>
+	<!--계좌번호 Scripts-->
 		onKeyup = "this.value=this.value.replace(/[^0-9]/g,'');"
 		var replaceNotInt = /[^0-9]/gi;
 
@@ -369,14 +257,14 @@
 			});
 
 		});
+		
 	</script>
 
 
 	<!--주소 api-->
 	<!--<input type="text" id="sample6_extraAddress" placeholder="참고항목">-->
 
-	<script
-		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		function sample6_execDaumPostcode() {
 			new daum.Postcode(

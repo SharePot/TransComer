@@ -104,6 +104,7 @@
   	};
   	
   	function readBtn(obj, alarmNo) {
+  		
   		$.ajax ({
   			url : "readAlarm.tc",
   			data : {alarmNo : alarmNo},
@@ -112,6 +113,7 @@
   				getAlarmList();
   			}
   		});
+  		
   	}
 	</script>
 

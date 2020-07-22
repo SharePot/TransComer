@@ -40,6 +40,10 @@
 						<c:param name="memberNo" value="${loginUser.memberNo }" />
 					</c:url>
 					<a href="${update }">수정하기</a>
+					<c:url var="delete" value="profileDelete.tc">
+							<c:param name="memberNo" value="${loginUser.memberNo }" />
+						</c:url>
+					<a href="${delete }" onclick="deleteProfile();">삭제하기</a>
 				
 				</div>
 				<div class="col-lg-8 col-md-7 col-sm-12" id="langSection">
@@ -77,6 +81,20 @@
 			
 		</section>
 	</div>
+	
+	<script>
+	
+		function deleteProfile() {
+			
+			var result = window.confirm("프로필을 삭제하시겠습니까?");
+			if (result) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+	</script>
 
 </body>
 </html>

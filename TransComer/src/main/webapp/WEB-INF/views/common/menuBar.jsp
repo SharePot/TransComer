@@ -18,7 +18,7 @@
 				<c:url var="login" value="loginPage.tc" />
 				<c:if test="${ empty sessionScope.loginUser }">
 					<li><a href="${login }">로그인</a></li>
-					<li><a>회원가입</a></li>
+					<li><a href="erollView.tc">회원가입</a></li>
 				</c:if>
 				
 				<c:url var="logout" value="logout.tc" />
@@ -52,6 +52,7 @@
                     <li>
                     <c:url var="sList" value="sReqListView.tc" />
 					<c:url var="pList" value="plist.tc" />
+					<c:url var="study" value="studyList.tc" />
                         <a href="#">번역 의뢰</a>
                         <ul>
                             <li><a href="${sList }">단순의뢰</a></li>
@@ -59,7 +60,7 @@
                         </ul>
                     </li>
                     <li><a href="#">번역 공유</a></li>
-                    <li><a href="studyList.tc">스터디</a></li>
+                    <li><a href="${study }">스터디</a></li>
                     <li><a href="qlist.tc">Q&amp;A</a></li>
                 </ul>
             </nav>
