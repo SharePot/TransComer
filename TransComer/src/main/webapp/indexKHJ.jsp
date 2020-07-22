@@ -7,6 +7,10 @@
 <title>현꾸의 인덱스</title>
 </head>
 <body>
+	<a href="adminShareList.tc">관리자 번역공유 승인 리스트</a><br>
+	<a href="indexLDE.jsp">다은언니 인덱스</a><br>
+	<a href="indexGY.jsp">빛나님 인덱스</a><br>
+	<a href="indexBN.jsp">가영님 인덱스</a><br>
 
 </body>
 </html>
