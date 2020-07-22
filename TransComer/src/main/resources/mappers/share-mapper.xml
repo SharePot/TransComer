@@ -83,4 +83,29 @@
   			</choose>
   			</where>
 	</select>
+	
+	<!-- 관리자, 번역공유 신청 목록을 모두 조회 -->
+	<select id="adminShareList" resultMap="ShareResultSet">
+		SELECT * FROM MATERIAL_SHARE
+	</select>
+	
+	<!-- 관리자, 번역공유 신청글 상세 보기 -->
+	<select id="adminSelectShareOne" parameterType="_int" resultMap="ShareResultSet">
+		SELECT * FROM MATERIAL_SHARE
+		WHERE SHARE_NO = #{shareNo}
+	</select>
+	
+	<!-- 관리자, 번역공유 신청글 '승인'(Y) 처리  -->
+	<update id="updateShareYnY" parameterType="_int">
+		UPDATE MATERIAL_SHARE
+		SET SHARE_YN = 'Y'
+		WHERE SHARE_NO = #{shareNo}
+	</update>
+	
+	<!-- 관리자, 번역공유 신청글 '반려'(R) 처리  -->
+	<update id="updateShareYnR" parameterType="_int">
+		UPDATE MATERIAL_SHARE
+		SET SHARE_YN = 'R'
+		WHERE SHARE_NO = #{shareNo}
+	</update>
 </mapper>

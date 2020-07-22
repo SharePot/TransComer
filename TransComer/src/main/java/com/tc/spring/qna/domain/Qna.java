@@ -11,11 +11,12 @@ public class Qna {
 	private String qnaContent;
 	private Date qnaWriteDate;
 	private int qnaCount;
+	private int commentCount;
 	
 	public Qna() {}
 
 	public Qna(int qnaNo, String memberId, String qnaCategory, String qnaTitle, String qnaContent, Date qnaWriteDate,
-			int qnaCount) {
+			int qnaCount, int commentCount) {
 		super();
 		this.qnaNo = qnaNo;
 		this.memberId = memberId;
@@ -24,6 +25,7 @@ public class Qna {
 		this.qnaContent = qnaContent;
 		this.qnaWriteDate = qnaWriteDate;
 		this.qnaCount = qnaCount;
+		this.commentCount = commentCount;
 	}
 
 	public int getQnaNo() {
@@ -82,13 +84,18 @@ public class Qna {
 		this.qnaCount = qnaCount;
 	}
 
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnaNo=" + qnaNo + ", memberId=" + memberId + ", qnaCategory=" + qnaCategory + ", qnaTitle="
 				+ qnaTitle + ", qnaContent=" + qnaContent + ", qnaWriteDate=" + qnaWriteDate + ", qnaCount=" + qnaCount
-				+ "]";
+				+ ", commentCount=" + commentCount + "]";
 	}
-
-	
 	
 }

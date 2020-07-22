@@ -40,13 +40,6 @@ public class ShareServiceImpl implements ShareService {
 		return 0;
 	}
 
-
-	@Override
-	public ArrayList<Share> selectAdminShareList(SharePageInfo sPi) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public ArrayList<Share> searchShareList(ShareSearch shareSearch, SharePageInfo sPi) {
 		return shareStore.searchShareList(shareSearch, sPi);
@@ -89,5 +82,32 @@ public class ShareServiceImpl implements ShareService {
 		return shareStore.insertFile(f);
 	}
 
+	// 관리자 - 번역공유 신청 리스트 전체 조회
+	@Override
+	public ArrayList<Share> adminShareList() {
+		// TODO Auto-generated method stub
+		return shareStore.adminShareList();
+	}
+
+	// 관리자 - 번역공유 신청글 상세 조회
+	@Override
+	public Share adminSelectShareOne(int shareNo) {
+		// TODO Auto-generated method stub
+		return shareStore.adminSelectShareOne(shareNo);
+	}
+
+	// 관리자가 번역공유 신청글 '승인'(Y)하기
+	@Override
+	public int updateShareYnY(int shareNo) {
+		// TODO Auto-generated method stub
+		return shareStore.updateShareYnY(shareNo);
+	}
+
+	// 관리자가 번역공유 신청글 '반려'(R)하기
+	@Override
+	public int updateShareYnR(int shareNo) {
+		// TODO Auto-generated method stub
+		return shareStore.updateShareYnR(shareNo);
+	}
 	
 }

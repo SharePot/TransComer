@@ -19,10 +19,6 @@ public interface ShareStore {
 		// 검색 게시글 수
 		public int getSearchListCount(ShareSearch shareSearch);
 		
-		
-		// 관리자 문의 조회
-		public ArrayList<Share> selectAdminQnaList(SharePageInfo sPi);
-
 		// 조회수 증가
 		public int addReadCount(int ShareNo);
 		
@@ -46,6 +42,32 @@ public interface ShareStore {
 
 		public int insertFile(Files f);
 
+		/**
+		 * 관리자가 번역공유 신청글 전체 조회
+		 * @return
+		 */
+		public ArrayList<Share> adminShareList();
+		
+		/**
+		 * 관리자가 번역공유 신청글 상세 조회
+		 * @param shareNo
+		 * @return
+		 */
+		public Share adminSelectShareOne(int shareNo);
+		
+		/**
+		 * 관리자가 번역공유 신청글 '승인'(Y)하기
+		 * @param shareNo
+		 * @return
+		 */
+		public int updateShareYnY(int shareNo);
+		
+		/**
+		 * 관리자가 번역공유 신청글 '반려'(R)하기
+		 * @param shareNo
+		 * @return
+		 */
+		public int updateShareYnR(int shareNo);
 }	
 	
 	/**
