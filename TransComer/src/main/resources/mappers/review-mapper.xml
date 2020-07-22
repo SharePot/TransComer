@@ -14,13 +14,16 @@
 
 
 	<insert id="insertReview" parameterType="Review">
-		INSERT INTO REVIEW VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, #{revContent}, '0', SYSDATE, #{personalNo}, #{memberId})
+		INSERT INTO REVIEW 
+		VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, 
+		#{revContent}, '0', SYSDATE, #{personalNo}, #{memberId})
 	</insert>
 
-	<select id="selectReviewList" parameterType="_int">
-		SELECT * FROM REVIEW
-		JOIN PERSONAL USING (PERSONAL_NO) WHERE PERSONAL_NO = #{personalNo}
-		ORDER BY REV_NO DESC
+	<select id="selectReviewList" resultMap="ReviewResultSet" parameterType="_int">
+		SELECT * FROM REVIEW R
+		JOIN PERSONAL P ON (R.PERSONAL_NO = P.PERSONAL_NO)
+		WHERE R.PERSONAL_NO = #{personalNo}
+		ORDER BY REV_NO DESC		
 	</select>
 
 <!-- JOIN PERSONAL P ON (R.MEMBER_ID = P.MEMBER_ID)

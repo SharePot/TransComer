@@ -34,5 +34,7 @@ public interface PersonalStore {
 	
 	public int insertRequest(PersonalReqRep personalReqRep);
 
+	public int selectPersonalLastNo(String memberId);
+
 
 }

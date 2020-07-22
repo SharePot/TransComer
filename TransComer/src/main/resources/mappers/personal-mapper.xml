@@ -32,6 +32,7 @@
 		<result property="pReqPrice" column="P_REQ_PRICE"/>
 		<result property="pReqAccept" column="P_REQ_ACCEPT"/>
 		<result property="pReqCheckBuy" column="P_REQ_CHECK_BUY"/>
+		<result property="personalNo" column="PERSONAL_NO"/>
 		<result property="memberId" column="MEMBER_ID"/>
 	</resultMap>
 	
@@ -143,11 +144,19 @@
 		DELETE FROM PERSONAL WHERE PERSONAL_NO=#{personalNo}
 	</delete>
 	
+	
 	<!-- 1:1 의뢰 신청 -->
 	<insert id="insertRequest" parameterType="PersonalReqRep">
 		INSERT INTO PERSONAL_REQ_REP VALUES(P_REQ_NO_SEQ.NEXTVAL, #{pReqContent}, #{pReqPLang}, #{pReqTLang}, #{pReqDetail}, SYSDATE, SYSDATE,
-		#{pRepTranslator}, '번역결과', ${pReqPrice}, 'N', 'N', #{memberId})
+		#{pRepTranslator}, '', #{pReqPrice}, 'N', 'N', #{personalNo}, #{memberId})
 	</insert>
+	
+	
+	<!-- 1:1 의뢰 최신글 번호 조회 -->
+	<select id="selectPersonalLastNo" parameterType="string" resultType="_int">
+		SELECT P_REQ_NO FROM (SELECT * FROM PERSONAL_REQ_REP ORDER BY P_REQ_NO DESC) 
+		WHERE ROWNUM = 1
+	</select>
 	
 	
 </mapper>

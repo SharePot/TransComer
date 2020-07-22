@@ -44,6 +44,7 @@
                         <hr>
                         <form action="pReqInsert.tc" method="post" id="personalForm" enctype="Multipart/form-data">
                             <h3>* 번역가 정보</h3>
+                            <input type="hidden" id="personalNo" name="personalNo" value="${personal.personalNo }">
                             <br>
                             <label>번역가</label>
                             <input type="text" id="pRepTranslator" name="pRepTranslator" placeholder="번역가 이름" readonly value="${personal.memberId }">
@@ -92,7 +93,8 @@
                                 현재 글자수 :&nbsp;<span id="counter">###</span>
                             </div>
                             <br>
-                            <h4 id="price" style="float:right;"><input readonly id="pReqPrice" name="pReqPrice"></h4>
+                          <!--   가격 측정 -->
+                            <h4 id="price" style="float:right;"></h4>
                             <br>
                             <p style="float:right; font-size:13px;">(100자 당 가격 : ${personal.personalPrice }원)</p>
                             <br><br>
@@ -163,12 +165,13 @@
 	            var pReqContent = $(this).val();
 	            var personalPrice = "${personal.personalPrice}";
 	            $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
-	            var price = $('#price').html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * personalPrice + '원');
-	            $('#pReqPrice').val(price);
-
+	            $price = $("#price").html('현재가격 : ' + parseInt((pReqContent.length / 100) + 1) * personalPrice + '원');
+	            var price2 = parseInt((pReqContent.length / 100) + 1) * personalPrice;
+	            $pReqPrice=$('#price');
+	            $pReqPrice2=$("<input class='pReqPrice' type='hidden' readonly id='pReqPrice' name='pReqPrice' value="+price2+">");
+	            $pReqPrice.append($pReqPrice2);
 	        });
-	        $('#pReqContent').keyup();
-	    });
+    });
 	    
 	    
 	    var count = 0;

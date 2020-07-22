@@ -103,6 +103,12 @@ public interface PersonalService {
 	 * @param personalReqRep
 	 * @return
 	 */
-	
+
+	public int selectPersonalLastNo(String memberId);
+	/**
+	 * 1:1 의뢰 신청 최신글 조회
+	 * @param memberId
+	 * @return
+	 */
 
 }

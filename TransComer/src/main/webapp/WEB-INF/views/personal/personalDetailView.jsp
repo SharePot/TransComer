@@ -91,6 +91,7 @@
                             <p>- 작업일정 : ${personal.personalSchedule } 일
                                 <br>- 사용가능 언어 : ${personal.personalTLang }
                                 <br>- 사용가능 개발언어: ${personal.personalPLang }
+                                <br>- 글 번호 :  ${personal.personalNo}
                             </p>
                             <footer>
                             	<!-- 작성자가 아니면 구매하기 버튼, 작성자이면 수정/삭제 버튼  -->
@@ -112,7 +113,6 @@
 									</c:url>
 									<center>
 		                                <button class="btn btn-primary" style="margin:0 10px; width:35%;" onclick="location.href = '${pUpdate }'"> 수정 </button>
-		                               	<%-- <button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="location.href = '${pDelete }'"> 삭제 </button> --%>
 		                               	<button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="deletePersonal()"> 삭제 </button>
 		                           	</center>
 								</c:if>
@@ -162,35 +162,43 @@
                                 
                                 <hr>
                                 <!-- 리뷰 목록 -->
-								<table class="table table-borderless">
-									<tr>
-										<td rowspan="2" style="width: 50px">
-											<div class="imgbox2">
-												<img class="profile" src="">
-											</div>
-										</td>
-										<td style="font-style: bold; color: darkblue">${r.memberId}</td>
-									</tr>
-									<tr>
-										<td>${r.revContent }</td>
-									</tr>
-								</table>
+                                <div id="reviewDiv">
+									<table class="table table-borderless" id="rTable">
+										
+									</table>
+								</div>
+                                
+                                <!-- <div id="reviewDiv">
+									<table class="table table-borderless" id="rTable">
+										<tr>
+											<td rowspan="2" style="width: 50px">
+												<div class="imgbox2">
+													<img class="profile" src="">
+												</div>
+											</td>
+											<td style="font-style: bold; color: darkblue">작성자 아이디</td>
+											<td style="text-align:right;">작성 날짜</td>
+										</tr>
+										<tr>
+											<td colspan="2">리뷰 내용</td>
+										</tr>
+									</table>
+								</div> -->
 								
 								
 								<hr>
 								<!-- 리뷰 등록  -->
                                 <div class="col-sm-12 col-md-12">
                                		<c:if test="${ !empty loginUser }">
-	                                    <form action="pReview.tc">
+	                                    <form>
 	                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
 	                                        <input type="hidden" name="personalNo" value="${personal.personalNo }" />
-	                                        <textarea id="Q_Contents" class="DOC_TEXT" name="revContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
+	                                        <textarea id="content" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
+	                                        <!-- <textarea id="Q_Contents" class="DOC_TEXT" name="revContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea> -->
 	                                        <br>
 	                                        <span style="color:#aaa;" id="counter">(0 / 최대 50자)</span>
 	
-	                                        <%-- <input type="hidden" name="" value="${}"> --%>
-	
-	                                        <input type="submit" class="btn btn-success" value="등록">
+	                                        <input type="submit" id="submit" class="btn btn-success" value="등록">
 	                                        <input type="reset" class="btn" value="취소">
 	                                    </form>
                                     </c:if>
@@ -275,8 +283,97 @@
     	}
     	
     	
+    	/* 리뷰 */
+    	
+    	$(function(){
+         // 초기 페이지 로딩 시 댓글 불러오기
+         getReviewList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
+         
+         /* setInterval(function() {
+        	 getReviewList();
+         }, 10000); //10초 마다 불러옴 */
+         
+         
+         // 댓글 등록 Ajax
+         $("#submit").on("click", function() {
+			
+        	 var revContent = $("#content").val(); // 댓글의 내용
+        	 var rPersonalNo = "${personal.personalNo}"; // 어느 게시글의 댓글인지 알려줌
+        	 var revTargetMemberId = "${personal.memberId}";
+        	 
+        	 alert("revContent"+revContent);
+        	 alert("rPersonalNo"+rPersonalNo);
+        	 alert("revTargetMemberId"+revTargetMemberId);
+        	 
+        	 
+        	 $.ajax({
+        		 url : "pReview.tc",
+        		 data : {
+        			 revContent:revContent,
+        			 personalNo:rPersonalNo,
+        			 revTargetMemberId:revTargetMemberId
+        		},
+        		/*  data : {revContent:revContent, personalNo:rPersonalNo, memberId:revTargetMemberId}, */
+        		 type : "get",
+        		 success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
+                     if(data == "success") { //결과값이 success이면
+                    	 getReviewList(); //목록을 가져오도록
+                    	 $("#content").val(""); 
+                    	}
+        		 	}
+        		 });
+        	 });
+         });
+    	
+    	
+    	// 리뷰 리스트 불러오기
+    	function getReviewList() {
+    		var personalNo = ${personal.personalNo};
+    		$.ajax({
+    			url : "pReviewList.tc", 
+    			data : {personalNo:personalNo},
+    			dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+    			success:function(data){	//controller에서 json으로 받아오는 코드 만들어줌
+    				$tableBody = $("#reviewDiv");
+    				$tableBody.html("");
+    				
+    				var $tr;
+    				var $memberId;
+    				var $revContent;
+    				var $revWriteDate;
+    				
+    				if( data.length > 0 ) { 
+    					for( var i in data) {
+    						//var reviewContentRead = decodeURIComponent(data[i].revContent);
+    						$tr = $("<tr>");
+    						$memberId = $("<td>").text(data[i].memberId);
+    						//내용(복호화)
+    						$revWriteDate = $("<td style='text-align:right;'>").text(data[i].revWriteDate);
+    						$tr = $("<tr>");
+    						$revContent = $("<td colspan='2'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
+    						
+    						 $tr.append($memberId);
+    						 $tr.append($revContent);
+    						 $tr.append($revWriteDate);
+    						 $tableBody.append($tr);
+    						 
+    						 console.log("댓글 내용 : " + decodeURIComponent(data[i].revContent));
+    						 console.log("댓글 내용 : " + data[i].revContent);
+    					}
+    				}else{	// 데이터가 없을 때
+    					$tr =  $("<tr>");
+    					$revContent = $("<td colspan='2'>").text("등록된 댓글이 없습니다.");
+    					
+    					$tr.append($revContent);
+    					$tableBody.append($tr);
+    				}
+    			}
+    		});
+		}
+    	
+    	
+         
     </script>
     
     
-
 </body></html>

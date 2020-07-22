@@ -86,5 +86,9 @@ public class PersonalServiceImpl implements PersonalService {
 		return personalStore.insertRequest(personalReqRep);
 	}
 	
+	@Override
+	public int selectPersonalLastNo(String memberId) {
+		return personalStore.selectPersonalLastNo(memberId);
+	}
 	
 }
