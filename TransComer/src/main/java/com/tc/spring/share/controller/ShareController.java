@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,6 +56,7 @@ public class ShareController {
 	}
 
 	public void deleteZipFile(String fileName, HttpServletRequest request) {
+		
 	}
 
 	// 관리자 - 번역공유 승인 신청 리스트 페이지 이동
@@ -77,10 +79,33 @@ public class ShareController {
 		Share share = shareService.adminSelectShareOne(shareNo);
 		if (share != null) {
 			model.addAttribute("share", share);
-			return "admin/adminShareDetail";
+			return "admin/adminShareDetailCheck";
 		} else {
 			return "common/errorPage";
 		}
 	}
 
+	// 관리자 - 번역공유 신청글 '승인'(Y)하기
+	@RequestMapping(value = "updateShareYnY.tc", method = RequestMethod.GET)
+	public String updateShareYnY(@RequestParam int shareNo) {
+		int result = shareService.updateShareYnY(shareNo);
+		if (result > 0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 관리자 - 번역공유 신청글 '반려'(N)하기
+	@RequestMapping(value = "updateShareYnR.tc", method = RequestMethod.GET)
+	public String updateShareYnR(@RequestParam int shareNo) {
+		int result = shareService.updateShareYnR(shareNo);
+		if (result > 0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+	
+	
 }

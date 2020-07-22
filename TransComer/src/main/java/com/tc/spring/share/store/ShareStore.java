@@ -48,4 +48,18 @@ public interface ShareStore {
 	 * @return
 	 */
 	public Share adminSelectShareOne(int shareNo);
+	
+	/**
+	 * 관리자가 번역공유 신청글 '승인'(Y)하기
+	 * @param shareNo
+	 * @return
+	 */
+	public int updateShareYnY(int shareNo);
+	
+	/**
+	 * 관리자가 번역공유 신청글 '반려'(R)하기
+	 * @param shareNo
+	 * @return
+	 */
+	public int updateShareYnR(int shareNo);
 }

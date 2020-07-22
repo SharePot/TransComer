@@ -52,4 +52,18 @@ public class ShareStoreLogic implements ShareStore {
 		return sqlSession.selectOne("shareMapper.adminSelectShareOne", shareNo);
 	}
 
+	// 관리자가 번역공유 신청글 '승인'(Y)하기
+	@Override
+	public int updateShareYnY(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("shareMapper.updateShareYnY", shareNo);
+	}
+
+	// 관리자가 번역공유 신청글 '반려'(R)하기
+	@Override
+	public int updateShareYnR(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("shareMapper.updateShareYnR", shareNo);
+	}
+
 }
