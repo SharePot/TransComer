@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tc.spring.comment.controller.CommentController;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
@@ -34,6 +35,9 @@ public class QnaController {
 	@Autowired
 	private FileController fController;
 	
+	@Autowired
+	private CommentController cController;
+	
 	// Qna 전체 목록 보기
 	@RequestMapping("qlist.tc")
 	public ModelAndView selectQnaList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
@@ -42,6 +46,15 @@ public class QnaController {
 		QnaPageInfo qPi = Pagination.getQnaPageInfo(currentPage, listCount);
 		
 		ArrayList<Qna> qList = qnaService.selectList(qPi);
+		
+		int shareNo=0;
+		int studyNo=0;
+		String commentCondition="qna";
+		
+		for (int i=0; i<qList.size(); i++) {
+			int commentCount=cController.getCommentListCount(shareNo, studyNo, qList.get(i).getQnaNo(), commentCondition);
+			qList.get(i).setCommentCount(commentCount);
+		}
 		
 		if(!qList.isEmpty()) {
 			mv.addObject("qlist", qList);
@@ -106,7 +119,13 @@ public class QnaController {
 		fCategory.setQnaNo(qnaNo);
 		fCategory.setShareNo(0);
 		fCategory.setStudyNo(0);
-		fCategory.setPersonalNo(0);
+		fCategory.setpReqNo(0);
+		
+		int shareNo=0;
+		int studyNo=0;
+		String commentCondition="qna";
+		int commentCount=cController.getCommentListCount(shareNo, studyNo, qnaNo, commentCondition);
+		qna.setCommentCount(commentCount);
 		
 		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
 		
@@ -162,7 +181,7 @@ public class QnaController {
 		fCategory.setQnaNo(qnaNo);
 		fCategory.setShareNo(0);
 		fCategory.setStudyNo(0);
-		fCategory.setPersonalNo(0);
+		fCategory.setpReqNo(0);
 		
 		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
 		
@@ -183,7 +202,7 @@ public class QnaController {
 			fCategory.setQnaNo(qna.getQnaNo());
 			fCategory.setShareNo(0);
 			fCategory.setStudyNo(0);
-			fCategory.setPersonalNo(0);
+			fCategory.setpReqNo(0);
 			
 			ArrayList<Files> fileList = fController.selectFileList(fCategory);
 			
@@ -213,7 +232,7 @@ public class QnaController {
 			fCategory.setQnaNo(qnaNo);
 			fCategory.setShareNo(0);
 			fCategory.setStudyNo(0);
-			fCategory.setPersonalNo(0);
+			fCategory.setpReqNo(0);
 			
 			ArrayList<Files> fileList = fController.selectFileList(fCategory);
 			

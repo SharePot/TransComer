@@ -80,26 +80,6 @@ public class ShareController {
 		return mv;
 	}
 	
-	// 관리자 목록 보기
-	@RequestMapping("sAdminlist.tc")
-	public ModelAndView selectShareAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
-		int currentPage = (page != null) ? page : 1;
-		int listCount = shareService.getAdminListCount();
-		SharePageInfo sPi = Pagination.getSharePageInfo(currentPage, listCount);
-		
-		ArrayList<Share> sAdminList = shareService.selectAdminShareList(sPi);
-		
-		if(!sAdminList.isEmpty()) {
-			mv.addObject("salist", sAdminList);
-			mv.addObject("sPi", sPi);
-			mv.setViewName("admin/");
-		} else {
-			mv.addObject("msg", "관리자 문의글 조회 실패");
-			mv.setViewName("common/errorPage");
-		}
-		return mv;
-	}
-	
 	// 글 상세보기
 	@RequestMapping("sdetail.tc")
 	public ModelAndView shareDetail(ModelAndView mv, int shareNo){
@@ -216,6 +196,75 @@ public class ShareController {
 			model.addAttribute("msg","게시글 삭제 실패");
 			return "common/errorPage";
 		}
+	}*/
+	
+	// 관리자 - 번역공유 승인 신청 리스트 페이지 이동
+	@RequestMapping("adminShareList.tc")
+	public ModelAndView adminShareList(ModelAndView mv) {
+		ArrayList<Share> shareList = shareService.adminShareList();
+		if (!shareList.isEmpty()) {
+			// 리스트가 비어있지 않으면
+			mv.addObject("shareList", shareList);
+			mv.setViewName("admin/adminShareList");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	// 관리자 - 번역공유 신청글을 승인/반려를 하기위한 상세페이지 이동
+	@RequestMapping("adminSelectShareOne.tc")
+	public String adminShareOne(int shareNo, Model model) {
+		Share share = shareService.adminSelectShareOne(shareNo);
+		if (share != null) {
+			model.addAttribute("share", share);
+			return "admin/adminShareDetailCheck";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 관리자 - 번역공유 신청글 '승인'(Y)하기
+	@RequestMapping(value = "updateShareYnY.tc", method = RequestMethod.GET)
+	public String updateShareYnY(@RequestParam int shareNo) {
+		int result = shareService.updateShareYnY(shareNo);
+		if (result > 0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 관리자 - 번역공유 신청글 '반려'(N)하기
+	@RequestMapping(value = "updateShareYnR.tc", method = RequestMethod.GET)
+	public String updateShareYnR(@RequestParam int shareNo) {
+		int result = shareService.updateShareYnR(shareNo);
+		if (result > 0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+	
+	
+	/*// 관리자 목록 보기
+	@RequestMapping("sAdminlist.tc")
+	public ModelAndView selectShareAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int listCount = shareService.getAdminListCount();
+		SharePageInfo sPi = Pagination.getSharePageInfo(currentPage, listCount);
+		
+		ArrayList<Share> sAdminList = shareService.selectAdminShareList(sPi);
+		
+		if(!sAdminList.isEmpty()) {
+			mv.addObject("salist", sAdminList);
+			mv.addObject("sPi", sPi);
+			mv.setViewName("admin/");
+		} else {
+			mv.addObject("msg", "관리자 문의글 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
 	}*/
 
 	/*

@@ -95,7 +95,7 @@
 				                    </div>
 				                    <div class="col-md-3" style="margin-top:5px;">
 				                        <i class="fas fa-comment" style="font-size:25px; margin-left:30px;"></i>
-				                        40
+				                        ${qna.commentCount }
 				                        <i class="fas fa-eye" style="font-size:25px;"></i>
 				                        ${qna.qnaCount }
 
@@ -185,12 +185,13 @@
 				                    <th>작성 날짜</th>
 				                    <th>수정</th>
 				                    <th>삭제</th>
-
 				                </tr>
 				            </thead>
 				            <tbody>
 
 				            </tbody>
+				            <tfoot>
+				            </tfoot>
 				        </table>
 		            </div>
 				</section>

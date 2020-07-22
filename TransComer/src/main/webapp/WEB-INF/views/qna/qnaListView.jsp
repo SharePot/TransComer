@@ -105,7 +105,7 @@
 				                                    <td style="text-align:center;">${q.memberId }</td>
 				                                    <td style="text-align:center;">${q.qnaWriteDate }</td>
 				                                    <td style="text-align:center;">${q.qnaCount }</td>
-				                                    <td style="text-align:center;">0</td>
+				                                    <td style="text-align:center;">${q.commentCount }</td>
 				                                </tr>
 				                            </c:forEach>
 				                        </tbody>
