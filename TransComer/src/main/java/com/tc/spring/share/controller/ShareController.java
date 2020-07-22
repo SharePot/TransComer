@@ -71,8 +71,9 @@ public class ShareController {
 			mv.setViewName("common/errorPage");
 		}
 		return mv;
-	}
+	} 
 
+	
 	// 관리자 - 번역공유 신청글을 승인/반려를 하기위한 상세페이지 이동
 	@RequestMapping("adminSelectShareOne.tc")
 	public String adminShareOne(int shareNo, Model model) {
