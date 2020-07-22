@@ -76,5 +76,8 @@ public class PersonalStoreLogic implements PersonalStore {
 		return sqlSession.insert("personalMapper.insertRequest", personalReqRep);
 	}
 	
+	public int selectPersonalLastNo(String memberId) {
+		return sqlSession.selectOne("personalMapper.selectPersonalLastNo", memberId);
+	}
 	
 }

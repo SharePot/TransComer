@@ -10,7 +10,7 @@
 		<result property="qnaNo" column="QNA_NO" />
 		<result property="shareNo" column="SHARE_NO" />
 		<result property="studyNo" column="STUDY_NO" />
-		<result property="personalNo" column="PERSONAL_NO" />
+		<result property="pReqNo" column="P_REQ_NO" />
 	</resultMap>
 	
 	<select id="selectFileList" parameterType="Files" resultMap="filesResultSet">
@@ -26,8 +26,8 @@
 				<when test="studyNo > 0">
 					STUDY_NO = #{studyNo}
 				</when>
-				<when test="personalNo > 0">
-					PERSONAL_NO = #{personalNo}
+				<when test="pReqNo > 0">
+					P_REQ_NO = #{pReqNo}
 				</when>
 			</choose>
 		</where>
@@ -45,8 +45,8 @@
 			<when test="studyNo > 0">
 				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, DEFAULT, #{studyNo}, DEFAULT)
 			</when>
-			<when test="personalNo > 0">
-				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, DEFAULT, DEFAULT, #{personalNo})
+			<when test="pReqNo > 0">
+				VALUES(FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, DEFAULT, DEFAULT, DEFAULT, #{pReqNo})
 			</when>
 		</choose>
 	</insert>
@@ -65,8 +65,8 @@
 				<when test="studyNo > 0">
 					AND STUDY_NO = #{studyNo}
 				</when>
-				<when test="personalNo > 0">
-					AND PERSONAL_NO = #{personalNo}
+				<when test="pReqNo > 0">
+					AND P_REQ_NO = #{pReqNo}
 				</when>
 			</choose>
 		</where>
@@ -86,8 +86,8 @@
 				<when test="studyNo > 0">
 					AND STUDY_NO = #{studyNo}
 				</when>
-				<when test="personalNo > 0">
-					AND PERSONAL_NO = #{personalNo}
+				<when test="pReqNo > 0">
+					AND P_REQ_NO = #{pReqNo}
 				</when>
 			</choose>
 		</where>

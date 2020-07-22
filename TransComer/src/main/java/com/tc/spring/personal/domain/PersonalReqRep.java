@@ -16,13 +16,14 @@ public class PersonalReqRep {
 	private int pReqPrice;
 	private String pReqAccept;
 	private String pReqCheckBuy;
+	private int personalNo;
 	private String memberId;
 
 	public PersonalReqRep() {}
 
 	public PersonalReqRep(int pReqNo, String pReqContent, String pReqPLang, String pReqTLang, String pReqDetail,
 			Date pReqDate, Date pReqPredict, String pRepTranslator, String pRepResult, int pReqPrice, String pReqAccept,
-			String pReqCheckBuy, String memberId) {
+			String pReqCheckBuy, int personalNo, String memberId) {
 		super();
 		this.pReqNo = pReqNo;
 		this.pReqContent = pReqContent;
@@ -36,6 +37,7 @@ public class PersonalReqRep {
 		this.pReqPrice = pReqPrice;
 		this.pReqAccept = pReqAccept;
 		this.pReqCheckBuy = pReqCheckBuy;
+		this.personalNo = personalNo;
 		this.memberId = memberId;
 	}
 
@@ -135,6 +137,14 @@ public class PersonalReqRep {
 		this.pReqCheckBuy = pReqCheckBuy;
 	}
 
+	public int getPersonalNo() {
+		return personalNo;
+	}
+
+	public void setPersonalNo(int personalNo) {
+		this.personalNo = personalNo;
+	}
+
 	public String getMemberId() {
 		return memberId;
 	}
@@ -149,8 +159,8 @@ public class PersonalReqRep {
 				+ ", pReqTLang=" + pReqTLang + ", pReqDetail=" + pReqDetail + ", pReqDate=" + pReqDate
 				+ ", pReqPredict=" + pReqPredict + ", pRepTranslator=" + pRepTranslator + ", pRepResult=" + pRepResult
 				+ ", pReqPrice=" + pReqPrice + ", pReqAccept=" + pReqAccept + ", pReqCheckBuy=" + pReqCheckBuy
-				+ ", memberId=" + memberId + "]";
+				+ ", personalNo=" + personalNo + ", memberId=" + memberId + "]";
 	}
-	
+
 	
 }

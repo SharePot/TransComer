@@ -316,9 +316,12 @@ public class PersonalController {
 		int result = 0;
 		int resultFile = 0;
 		String path = null;
-		result = personalService.insertRequest(personalReqRep, request);
+		result = personalService.insertRequest(personalReqRep, requestH);
 		
 		if (result > 0) {
+			int pReqLastNo = personalService.selectPersonalLastNo(memberId);
+			files.setpReqNo(pReqLastNo);
+			
 			for (int i = 0; i < uploadFile.length; i++) {
 				if (!uploadFile[i].getOriginalFilename().equals("")) {
 					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
@@ -332,6 +335,37 @@ public class PersonalController {
 		return path;
 		
 	}
+	
+	
+	
+	
+	
+	
+	/*@RequestMapping(value = "pReqInsert.tc", method=RequestMethod.POST)
+	public String requestInsert(PersonalReqRep personalReqRep, Files files, Model model, @RequestParam(name="uploadFile", required=false)MultipartFile[] uploadFile, MultipartHttpServletRequest request,  HttpServletRequest requestH, String memberId) {
+		
+		int result = 0;
+		int resultFile = 0;
+		String path = null;
+		result = personalService.insertRequest(personalReqRep, requestH);
+		
+		if (result > 0) {
+			int personalLastNo = personalService.selectPersonalLastNo(memberId);
+			files.setPersonalNo(personalLastNo);
+			
+			for (int i = 0; i < uploadFile.length; i++) {
+				if (!uploadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
+				}
+			}
+			path =  "redirect:plist.tc";
+		} else {
+			model.addAttribute("msg", "등록실패");
+			path = "common/errorPage";
+		}
+		return path;
+		
+	}*/
 	
 	
 	
