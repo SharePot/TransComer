@@ -25,6 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
+import com.tc.spring.member.controller.MemberController;
+import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.PointChange;
+import com.tc.spring.member.service.MemberService;
 import com.tc.spring.share.domain.Share;
 import com.tc.spring.share.domain.SharePageInfo;
 import com.tc.spring.share.domain.ShareSearch;
@@ -36,7 +40,14 @@ public class ShareController {
 
 	@Autowired
 	private ShareService shareService;
+	@Autowired
 	private FileController fController;
+	
+	@Autowired
+	private MemberController mController;
+	
+	@Autowired
+	private MemberService mService;
 	
 	// 공유 글 전체 목록 보기
 	@RequestMapping("slist.tc")
@@ -75,26 +86,6 @@ public class ShareController {
 			mv.setViewName("share/shareSharchListView"); //페이지
 		} else {
 			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
-		}
-		return mv;
-	}
-	
-	// 관리자 목록 보기
-	@RequestMapping("sAdminlist.tc")
-	public ModelAndView selectShareAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
-		int currentPage = (page != null) ? page : 1;
-		int listCount = shareService.getAdminListCount();
-		SharePageInfo sPi = Pagination.getSharePageInfo(currentPage, listCount);
-		
-		ArrayList<Share> sAdminList = shareService.selectAdminShareList(sPi);
-		
-		if(!sAdminList.isEmpty()) {
-			mv.addObject("salist", sAdminList);
-			mv.addObject("sPi", sPi);
-			mv.setViewName("admin/");
-		} else {
-			mv.addObject("msg", "관리자 문의글 조회 실패");
 			mv.setViewName("common/errorPage");
 		}
 		return mv;
@@ -176,7 +167,7 @@ public class ShareController {
 	      return renameFileName;
 	}
 
-	// 게시글 수정 화면
+	/*// 게시글 수정 화면
 	@RequestMapping("supview.tc")
 	public String shareUpdateView(int shareNo, Model model) {
 		model.addAttribute("share", shareService.selectShare(shareNo));
@@ -199,7 +190,7 @@ public class ShareController {
 			model.addAttribute("msg", "게시글 수정 실패");
 			return "common/errorPage";
 		}
-	}
+	}*/
 	
 	// 게시글 삭제
 	/*@RequestMapping("sdelete.tc")
@@ -216,6 +207,90 @@ public class ShareController {
 			model.addAttribute("msg","게시글 삭제 실패");
 			return "common/errorPage";
 		}
+	}*/
+	
+	// 관리자 - 번역공유 승인 신청 리스트 페이지 이동
+	@RequestMapping("adminShareList.tc")
+	public ModelAndView adminShareList(ModelAndView mv) {
+		ArrayList<Share> shareList = shareService.adminShareList();
+		if (!shareList.isEmpty()) {
+			// 리스트가 비어있지 않으면
+			mv.addObject("shareList", shareList);
+			mv.setViewName("admin/adminShareList");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	// 관리자 - 번역공유 신청글을 승인/반려를 하기위한 상세페이지 이동
+	@RequestMapping("adminSelectShareOne.tc")
+	public String adminShareOne(int shareNo, Model model) {
+		Share share = shareService.adminSelectShareOne(shareNo);
+		if (share != null) {
+			model.addAttribute("share", share);
+			return "admin/adminShareDetailCheck";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 관리자 - 번역공유 신청글 '승인'(Y)하기
+	@RequestMapping(value = "updateShareYnY.tc", method = RequestMethod.GET)
+	public String updateShareYnY(@RequestParam int shareNo,String memberId) {
+		int result = shareService.updateShareYnY(shareNo);
+		
+		/*포인트 변동 내역 추가 및 업데이트를 위한 코드*/
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("번역 공유 승인");
+		pointChange.setPointAmount(3000);
+		pointChange.setPointStatus("ADD");
+		pointChange.setMemberId(memberId);
+		
+		Member member=mService.selectMemberOne(memberId);
+		member.setPoint(member.getPoint()+3000);
+		
+		int insertPointChange=mController.pointChangeInsert(pointChange);
+		int updateMemberPhoint=mController.updateMemberPoint(member);
+		
+		
+		if (result > 0 && insertPointChange>0 && updateMemberPhoint>0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 관리자 - 번역공유 신청글 '반려'(N)하기
+	@RequestMapping(value = "updateShareYnR.tc", method = RequestMethod.GET)
+	public String updateShareYnR(@RequestParam int shareNo) {
+		int result = shareService.updateShareYnR(shareNo);
+		if (result > 0) {
+			return "redirect:/adminShareList.tc";
+		} else {
+			return "common/errorPage";
+		}
+	}
+	
+	
+	/*// 관리자 목록 보기
+	@RequestMapping("sAdminlist.tc")
+	public ModelAndView selectShareAdminList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int listCount = shareService.getAdminListCount();
+		SharePageInfo sPi = Pagination.getSharePageInfo(currentPage, listCount);
+		
+		ArrayList<Share> sAdminList = shareService.selectAdminShareList(sPi);
+		
+		if(!sAdminList.isEmpty()) {
+			mv.addObject("salist", sAdminList);
+			mv.addObject("sPi", sPi);
+			mv.setViewName("admin/");
+		} else {
+			mv.addObject("msg", "관리자 문의글 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
 	}*/
 
 	/*

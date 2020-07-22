@@ -29,6 +29,7 @@
             	</c:url>
             	<c:url var="studyDelete" value="studyDelete.tc">
             		<c:param name="studyNo" value="${study.studyNo }"></c:param>
+            		<c:param name="memberId" value="${loginUser.memberId }"></c:param>
             	</c:url>
                <a href="${studyUpdate }">수정하기</a> &nbsp;&nbsp;
                <a href="${studyDelete }">삭제하기</a>
@@ -72,10 +73,6 @@
       <tr height="300">
          <td>내용</td>
          <td>${study.studyContent }</td>
-      </tr>
-      <tr>
-         <td>첨부파일</td>
-         <td>${study.studyFilePath }</td>
       </tr>
    </table>
     <br><br>

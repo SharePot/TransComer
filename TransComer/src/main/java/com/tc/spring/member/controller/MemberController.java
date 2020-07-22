@@ -39,112 +39,109 @@ import net.nurigo.java_sdk.Coolsms;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
-
-@SessionAttributes({"loginUser"})
+@SessionAttributes({ "loginUser" })
 @Controller
 public class MemberController {
 
-	
 	@Autowired
 	private MemberService memberService;
-	
-	//회원리스트
+
+	// 회원리스트
 	@RequestMapping("memberList.tc")
-	public ModelAndView memberList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
-		int currentPage=(page!=null) ? page : 1;
-		int memberListCount=memberService.getMemberListCount();
-		
-		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, memberListCount);
-		ArrayList<Member> list=memberService.selectMemberList(pi);
-		
-		if(!list.isEmpty()) {
-			mv.addObject("list",list);
-			mv.addObject("pi",pi);
+	public ModelAndView memberList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int memberListCount = memberService.getMemberListCount();
+
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, memberListCount);
+		ArrayList<Member> list = memberService.selectMemberList(pi);
+
+		if (!list.isEmpty()) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
 			mv.setViewName("member/memberList");
-		}else {
-			mv.addObject("msg","회원리스트 조회 실패");
+		} else {
+			mv.addObject("msg", "회원리스트 조회 실패");
 			mv.setViewName("common/errorPage");
 		}
 		return mv;
 	}
-	
-/*	//로그인
-	@RequestMapping(value="login.tc",method=RequestMethod.POST)
-	   public ModelAndView memberLogin(Member member,ModelAndView mv) {
-	      Member loginUser = memberService.loginMember(member);
-	      
-	      if (loginUser != null) {
-	         mv.addObject("loginUser", loginUser);
-	         mv.setViewName("home");
-	      } else {
-	         mv.setViewName("common/errorPage");
-	      }
-	      
-	      return mv;
-	      
-	   }*/
-	
-		//로그인
-	@RequestMapping(value="login.tc",method=RequestMethod.POST)
+
+	/*
+	 * //로그인
+	 * 
+	 * @RequestMapping(value="login.tc",method=RequestMethod.POST) public
+	 * ModelAndView memberLogin(Member member,ModelAndView mv) { Member loginUser =
+	 * memberService.loginMember(member);
+	 * 
+	 * if (loginUser != null) { mv.addObject("loginUser", loginUser);
+	 * mv.setViewName("home"); } else { mv.setViewName("common/errorPage"); }
+	 * 
+	 * return mv;
+	 * 
+	 * }
+	 */
+
+	// 로그인
+	@RequestMapping(value = "login.tc", method = RequestMethod.POST)
 	@ResponseBody
-	   public String memberLogin(Member member,Model model) {
-	      Member loginUser = memberService.loginMember(member);
-	      
-	      if (loginUser != null) {
-	    	  model.addAttribute("loginUser", loginUser);
-	    	  return "success";
-	      } else {
-	    	  return "fail";
-	      }
-	   }
-	
-	//로그인 페이지
+	public String memberLogin(Member member, Model model) {
+		Member loginUser = memberService.loginMember(member);
+
+		if (loginUser != null) {
+			model.addAttribute("loginUser", loginUser);
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+
+	// 로그인 페이지
 	@RequestMapping("loginPage.tc")
 	public String loginPage() {
 		return "member/login";
 	}
-	
-	//로그아웃
-	   @RequestMapping("logout.tc")
-	   public String memberLogout(SessionStatus status) {
-	      status.setComplete();
-	      return "redirect:home.tc";
-	   }
-	   
-	   //멤버 세부사항
-	   @RequestMapping("memberDetail.tc")
-		public String memberSelectOne(Model model,int memberNo) {
-			model.addAttribute("member",memberService.selectMemberOne(memberNo));
-			return "member/memberDetail";
-		}
-		
-	
-	 //멤버 검색
-		@RequestMapping("memberSearch.tc")
-		public String memberSearch(MemberSearch search, Model model,@RequestParam(value="page",required=false)Integer page) {
-			int currentPage=(page!=null) ? page : 1;
-			int MemberSearchListCount = memberService.getMemberSearchListCount(search);
-			MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, MemberSearchListCount);
-			ArrayList<Member> searchList=memberService.selectMemberSearchList(pi, search);
-			
-			model.addAttribute("list",searchList);
-			model.addAttribute("search",search);
-			model.addAttribute("pi",pi);
-			return "member/memberList";
-		}
-	//회원 마이페이지
-		@RequestMapping("myPage.tc")
-		   public String myPage() {
-		      return "member/myPage";
-		   }
 
+	// 로그아웃
+	@RequestMapping("logout.tc")
+	public String memberLogout(SessionStatus status) {
+		status.setComplete();
+		return "redirect:home.tc";
+	}
 
-	//관리자페이지
-  @RequestMapping("adminPage.tc")
-  	public String adminPage() {
-		      return "member/adminPage";
-		   }
-  
+	// 멤버 세부사항
+	@RequestMapping("memberDetail.tc")
+	public String memberSelectOne(Model model, String String) {
+		model.addAttribute("member", memberService.selectMemberOne(String));
+		return "member/memberDetail";
+	}
+
+	// 멤버 검색
+	@RequestMapping("memberSearch.tc")
+	public String memberSearch(MemberSearch search, Model model,
+			@RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int MemberSearchListCount = memberService.getMemberSearchListCount(search);
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, MemberSearchListCount);
+		ArrayList<Member> searchList = memberService.selectMemberSearchList(pi, search);
+
+		model.addAttribute("list", searchList);
+		model.addAttribute("search", search);
+		model.addAttribute("pi", pi);
+		return "member/memberList";
+	}
+
+	// 회원 마이페이지
+	@RequestMapping("myPage.tc")
+	public String myPage() {
+		return "member/myPage";
+	}
+
+	// 관리자페이지
+	@RequestMapping("adminPage.tc")
+	public String adminPage() {
+		return "member/adminPage";
+	}
+
 	// 로그인 아이디 중복 체크
 	@RequestMapping("IdCheck.tc")
 	@ResponseBody
@@ -158,360 +155,487 @@ public class MemberController {
 		return re;
 
 	}
-	
+
 	// 비밀번호 변경
-		@RequestMapping("PwdRe.tc")
-		public String ChangePwd(String pass, String userId) {
+	@RequestMapping("PwdRe.tc")
+	public String ChangePwd(String pass, String userId) {
 
-			Map<String, Object> set = new HashMap<String, Object>();
-			set.put("pass", pass);
-			set.put("userId", userId);
-			System.out.println(set);
+		Map<String, Object> set = new HashMap<String, Object>();
+		set.put("pass", pass);
+		set.put("userId", userId);
+		System.out.println(set);
 
-			int result = memberService.updatePwd(set);
+		int result = memberService.updatePwd(set);
 
-			return ""; // 페이지 입력
-		}
-
-		// 비밀번호 찾기
-		@PostMapping(value = "findPwd.tc")
-		public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
-			/* System.out.println("컨트롤러"); */
-			String memberId = request.getParameter("mId");
-			String memberPhone = request.getParameter("mPhone");
-			Map<String, Object> vo = new HashMap<String, Object>();
-			vo.put("memberId", memberId);
-			vo.put("memberPhone", memberPhone);
-			int result = memberService.findPassword(vo);
-
-			if (result > 0) {
-				int random = (int) Math.floor(Math.random() * 1000000 + 1);
-				String num = String.valueOf(random);
-				System.out.println("인증번호  : " + num);
-
-				String api_key = "NCSQRYFYWSSQWR9L";
-				String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
-				Message coolsms = new Message(api_key, api_secret);
-			
-
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("to", memberPhone);
-				params.put("from", "01022632566");
-				params.put("type", "SMS");
-				params.put("text", "[Farms] - 인증번호는 : " + num + "입니다.");
-
-				response.getWriter().println(num);
-				/*
-				 * try { JSONObject obj = (JSONObject) coolsms.send(params);
-				 * response.getWriter().println(num); } catch (CoolsmsException e) {
-				 * System.out.println(e.getMessage()); System.out.println(e.getCode()); }
-				 */
-
-			} else {
-				response.setCharacterEncoding("utf-8");
-				response.getWriter().println("올바른 인증번호를 입력해주세요");
-			}
-
-		}
-
-		// 아이디 찾기
-		@RequestMapping(value = "findID.tc", method = RequestMethod.GET)
-		public void findId(String memberEmail, HttpServletResponse res) throws JsonIOException, IOException {
-			Map<String, Object> map = new HashMap<String, Object>();
-
-			String userId = memberService.findId(memberEmail);
-			System.out.println(userId);
-
-			if (userId == null) {
-				map.put("userId", "등록된 아이디가 없습니다.");
-			} else {
-				map.put("userId", "" + userId + "");
-				// key값 , 벨류 값
-			}
-
-			Gson gson = new Gson();
-			gson.toJson(map, res.getWriter());
-
-		}
-
-
-		// 회원가입 화면
-		@RequestMapping("enrollView.tc")
-		public String enrollView() {
-			return "member/enroll";
-		}
-		
-		// 회원가입
-		@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
-		public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
-				String bankName, String accountNumber, String accountName) {
-			member.setAddress(post + "," + address1 + "," + address2);
-			member.setAccount(bankName + "," + accountNumber + "," + accountName);
-			// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
-			int result = memberService.insertMember(member);
-			System.out.println("result 값은 ? : " + result);
-			if (result > 0) {
-				mv.setViewName("home");
-				// model과 mv의 차이점: https://hongku.tistory.com/116
-			} else {
-				mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
-				mv.setViewName("common/errorPage");
-				// model 비즈니스로직 수행하는 곳
-			}
-			return mv;
-		}
-		
-	public String idDuplicateCheck(String userId) {
-		return null;
+		return ""; // 페이지 입력
 	}
-	
-	// 마이페이지
-		@RequestMapping("myinfo.tc")
-		public String myInfoView() {
-			return null; // jsp만들면 넣기
-		}
-	
-		// 회원정보 수정
-		@RequestMapping(value = "mupdate.tc", method = RequestMethod.POST)
-		public String memberUpdate(Member member, Model model, String post, String address1, String address2,
-				String bankName, String accountNumber, String accountName, RedirectAttributes rd) {
-			member.setAddress(post + "," + address1 + "," + address2);
-			member.setAccount(bankName + "," + accountNumber + "," + accountName);
-			int result = memberService.updateMember(member);
-			if (result > 0) {
-				model.addAttribute("loginUser", member);
-				rd.addFlashAttribute("msg", "회원정보 수정이 완료되었습니다.");
-				return "redirect:home.tc"; // 경로 설정 해주기
 
-			} else {
-				model.addAttribute("msg", "회원정보 수정에 실패하였습니다.");
-				return "common/errorPage";
-			}
+	// 비밀번호 찾기
+	@PostMapping(value = "findPwd.tc")
+	public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		/* System.out.println("컨트롤러"); */
+		String memberId = request.getParameter("mId");
+		String memberPhone = request.getParameter("mPhone");
+		Map<String, Object> vo = new HashMap<String, Object>();
+		vo.put("memberId", memberId);
+		vo.put("memberPhone", memberPhone);
+		int result = memberService.findPassword(vo);
+
+		if (result > 0) {
+			int random = (int) Math.floor(Math.random() * 1000000 + 1);
+			String num = String.valueOf(random);
+			System.out.println("인증번호  : " + num);
+
+			String api_key = "NCSQRYFYWSSQWR9L";
+			String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
+			Message coolsms = new Message(api_key, api_secret);
+
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("to", memberPhone);
+			params.put("from", "01022632566");
+			params.put("type", "SMS");
+			params.put("text", "[Farms] - 인증번호는 : " + num + "입니다.");
+
+			response.getWriter().println(num);
+			/*
+			 * try { JSONObject obj = (JSONObject) coolsms.send(params);
+			 * response.getWriter().println(num); } catch (CoolsmsException e) {
+			 * System.out.println(e.getMessage()); System.out.println(e.getCode()); }
+			 */
+
+		} else {
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().println("올바른 인증번호를 입력해주세요");
 		}
-	
-		//탈퇴
-	public String memberDelete(String userId,Model model,SessionStatus status) {
-		return null;
+
 	}
-	
-	
-	
-	//포인트변동=============================================================================
 
-	//관리자페이지에서 포인트 변동리스트 전체
-	@RequestMapping("pointChangeList.tc")
-	public ModelAndView pointChageList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
-		int currentPage=(page!=null) ? page :1;
-		int pointChangeListCount=memberService.getPointRefundListCount();
-		
-		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
-		ArrayList<PointChange> list=memberService.selectPointChangeList(pi);
-		
-		if(!list.isEmpty()) {
-			mv.addObject("list",list);
-			mv.addObject("pi",pi);
-			mv.setViewName("member/pointChangeList");
-		}else {
-			mv.addObject("msg","포인트 변동 리스트 조회 실패");
-			 mv.setViewName("common/errorPage");
+	// 아이디 찾기
+	@RequestMapping(value = "findID.tc", method = RequestMethod.GET)
+	public void findId(String memberEmail, HttpServletResponse res) throws JsonIOException, IOException {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		String userId = memberService.findId(memberEmail);
+		System.out.println(userId);
+
+		if (userId == null) {
+			map.put("userId", "등록된 아이디가 없습니다.");
+		} else {
+			map.put("userId", "" + userId + "");
+			// key값 , 벨류 값
 		}
-		
+
+		Gson gson = new Gson();
+		gson.toJson(map, res.getWriter());
+
+	}
+
+	// 회원가입 페이지
+	@RequestMapping("erollView.tc")
+	public String enrollView() {
+		return "member/enroll";
+	}
+
+	// 회원가입
+	@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
+	public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
+			String bankName, String accountNumber, String accountName) {
+		member.setAddress(post + "," + address1 + "," + address2);
+		member.setAccount(bankName + "," + accountNumber + "," + accountName);
+		// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
+		int result = memberService.insertMember(member);
+		System.out.println("result 값은 ? : " + result);
+		if (result > 0) {
+			mv.setViewName("home");
+			// model과 mv의 차이점: https://hongku.tistory.com/116
+		} else {
+			mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
+			mv.setViewName("common/errorPage");
+			// model 비즈니스로직 수행하는 곳
+		}
 		return mv;
 	}
-	
 
+	// 회원정보 수정
+	@RequestMapping(value = "mupdate.tc", method = RequestMethod.POST)
+	public String memberUpdate(Member member, Model model, String post, String address1, String address2,
+			String bankName, String accountNumber, String accountName, RedirectAttributes rd) {
+		member.setAddress(post + "," + address1 + "," + address2);
+		member.setAccount(bankName + "," + accountNumber + "," + accountName);
+		int result = memberService.updateMember(member);
+		if (result > 0) {
+			model.addAttribute("loginUser", member);
+			rd.addFlashAttribute("msg", "회원정보 수정이 완료되었습니다.");
+			return "redirect:home.tc"; // 경로 설정 해주기
 
-	
-	//회원 마이페이지에서 포인트 변동리스트 전체
-		@RequestMapping("pointChangeMemberList.tc")
-		public String pointChageMemberList(String memberId,Model model,@RequestParam(value="page",required=false)Integer page) {
-		int currentPage=(page!=null) ? page: 1;
-			int pointChangeMemberListCount=memberService.getPointChangeMemberCount(memberId);
-			MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointChangeMemberListCount);
-			ArrayList<PointChange> list=memberService.selectPointChangeMemberList(pi, memberId);
-			
-			model.addAttribute("list",list);
-			model.addAttribute("memberId",memberId);
-			model.addAttribute("pi",pi);
-			return "member/memberPointChangeList";
-		}
-		
-	@RequestMapping(value="pointChangeInsert.tc" ,method=RequestMethod.POST)
-	public String pointChangeInsert(PointChange pc, Model model) {
-		int result=memberService.insertPointChange(pc);
-		if(result>0) {
-			return "member/myPage";
-		}else{
-				model.addAttribute("msg","포인트 변동 내역 추가 실패");	
-			}
-		return "common/errorPage";
-				}
-	
-	
-	
-	@RequestMapping(value="updateMemberPoint.tc",method=RequestMethod.POST)
-	public String updateMemberPoint (int point,Model model) {
-		int result=memberService.updateMemberPoint(point);
-		if(result>0) {
-			return "member/myPage";
-		}else {
-			model.addAttribute("msg","포인트 변경 실패");
+		} else {
+			model.addAttribute("msg", "회원정보 수정에 실패하였습니다.");
 			return "common/errorPage";
 		}
 	}
-	
 
-		
+	// 탈퇴화면
+	@RequestMapping("deleteMemberView.tc")
+	public String deleteView() {
+		return "member/deleteMember";
+	}
 
-	
-	//포인트 환급=============================================================================
-	
-	//포인트 환급 리스트 조회
-	@RequestMapping("pointRefundList.tc")
-	public ModelAndView pointRefundList(ModelAndView mv,@RequestParam(value="page",required=false)Integer page) {
-		int currentPage=(page!=null) ? page : 1;
-		int pointRefundListCount=memberService.getPointRefundListCount();
+	// 탈퇴하기
+	@RequestMapping(value = "memberDelete.tc", method = { RequestMethod.POST, RequestMethod.GET })
+	public String memberDelete(String memberId, Model model, SessionStatus status) {
+
+		int result = memberService.deleteMember(memberId);
+
+		if (result > 0) {
+			status.setComplete();
+			return "redirect:home.tc";
+		} else {
+			return "common/errorPage";
+		}
+
+	}
+
+	// 아이디 중복 검사
+	@ResponseBody
+	@RequestMapping("enrollIdCheck.tc")
+	public String idDuplicateCheck(String memberId) {
+
+		boolean isUsable = memberService.checkIdDup(memberId) == 0 ? true : false;
+		return isUsable + "";
+
+	}
+
+	// 포인트 충전 페이지
+	@RequestMapping("paymentView.tc")
+	public String paymentView() {
+		return "member/payment";
+	}
+
+	// 포인트 충전(결제 api)
+	@RequestMapping("payment.tc")
+	public String payMent(String userId, int amounts, Model model) {
+
+		/*포인트 변동 내역 추가 및 업데이트를 위한 코드*/
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("포인트 충전");
+		pointChange.setPointAmount(amounts);
+		pointChange.setPointStatus("ADD");
+		pointChange.setMemberId(userId);
 		
-		MemberPageInfo pi=Pagination.getMemberPageInfo(currentPage, pointRefundListCount);
-		ArrayList<PointRefund> list=memberService.selectPointRefundList(pi);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("amount", amounts);
+		int result = memberService.payMent(map);
+		int insertPointChange=pointChangeInsert(pointChange);
 		
-		if(!list.isEmpty()) {
-			mv.addObject("list",list);
-			mv.addObject("pi",pi);
-			mv.setViewName("member/pointRefundList");
-		}else {
-			mv.addObject("msg","포인트 환급 리스트 조회 실패");
+		Member loginUser = memberService.userRefrash(userId);
+		model.addAttribute("loginUser", loginUser);
+
+		if (result > 0 && insertPointChange>0) {
+			return "redirect:home.tc";
+		} else { // 실패 했을때
+			return "common/errorPage";
+		}
+	}
+
+	// 포인트변동=============================================================================
+
+	// 관리자페이지에서 포인트 변동리스트 전체
+	@RequestMapping("pointChangeList.tc")
+	public ModelAndView pointChageList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int pointChangeListCount = memberService.getPointRefundListCount();
+
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
+		ArrayList<PointChange> list = memberService.selectPointChangeList(pi);
+
+		if (!list.isEmpty()) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.setViewName("member/pointCha" + "" + "ngeList");
+		} else {
+			mv.addObject("msg", "포인트 변동 리스트 조회 실패");
 			mv.setViewName("common/errorPage");
 		}
-		
+
 		return mv;
 	}
-	
-	//포인트 환급신청 화면
+
+	// 회원 마이페이지에서 포인트 변동리스트 전체
+	@RequestMapping("pointChangeMemberList.tc")
+	public String pointChageMemberList(String memberId, Model model,
+			@RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int pointChangeMemberListCount = memberService.getPointChangeMemberCount(memberId);
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeMemberListCount);
+		ArrayList<PointChange> list = memberService.selectPointChangeMemberList(pi, memberId);
+
+		model.addAttribute("list", list);
+		model.addAttribute("memberId", memberId);
+		model.addAttribute("pi", pi);
+		return "member/memberPointChangeList";
+	}
+
+	/*
+	 * @RequestMapping(value="pointChangeInsert.tc" ,method=RequestMethod.POST)
+	 * public String pointChangeInsert(PointChange pc, Model model) { int
+	 * result=memberService.insertPointChange(pc); if(result>0) { return
+	 * "member/myPage"; }else{ model.addAttribute("msg","포인트 변동 내역 추가 실패"); } return
+	 * "common/errorPage"; }
+	 */
+	// 포인트 변동 추가
+	public int pointChangeInsert(PointChange pc) {
+		int result = memberService.insertPointChange(pc);
+		return result;
+	}
+
+	/*
+	 * @RequestMapping(value="updateMemberPoint.tc",method=RequestMethod.POST)
+	 * public String updateMemberPoint (int point,Model model) { int
+	 * result=memberService.updateMemberPoint(point); if(result>0) { return
+	 * "member/myPage"; }else { model.addAttribute("msg","포인트 변경 실패"); return
+	 * "common/errorPage"; } }
+	 */
+	// 회원 포인트 업데이트
+	public int updateMemberPoint(Member member) {
+		int result = memberService.updateMemberPoint(member);
+		return result;
+
+	}
+
+	// 포인트 환급=============================================================================
+
+	// 포인트 환급 리스트 조회
+	@RequestMapping("pointRefundList.tc")
+	public ModelAndView pointRefundList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
+		int currentPage = (page != null) ? page : 1;
+		int pointRefundListCount = memberService.getPointRefundListCount();
+
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointRefundListCount);
+		ArrayList<PointRefund> list = memberService.selectPointRefundList(pi);
+
+		if (!list.isEmpty()) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.setViewName("member/pointRefundList");
+		} else {
+			mv.addObject("msg", "포인트 환급 리스트 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+
+		return mv;
+	}
+
+	// 포인트 환급신청 화면
 	@RequestMapping("pointRefundRequestView.tc")
 	public String pointRefundRequestView() {
 		return "member/pointRefundRequestForm";
 	}
-	
-	//포인트 환급 신청
-	@RequestMapping(value="pointRefundInsert.tc",method=RequestMethod.POST)
-	public String pointRefundInsert(PointRefund pointRefund, Model model,String bank,String accountOwner,String account ) {
-		pointRefund.setAccountInfo(bank+","+accountOwner+","+account);
-		int result=memberService.insertPointRefund(pointRefund);
-		if(result>0) {
+
+	// 포인트 환급 신청
+	@RequestMapping(value = "pointRefundInsert.tc", method = RequestMethod.POST)
+	public String pointRefundInsert(PointRefund pointRefund, Model model, String bank, String accountOwner,
+			String account) {
+		pointRefund.setAccountInfo(bank + "," + accountOwner + "," + account);
+		int result = memberService.insertPointRefund(pointRefund);
+		if (result > 0) {
 			return "member/myPage";
-		}else {
-		model.addAttribute("msg","포인트 환급 신청 실패");	
+		} else {
+			model.addAttribute("msg", "포인트 환급 신청 실패");
 		}
 		return "common/errorPage";
 	}
-	
-	
-	//포인트 환급 확정화면
+
+	// 포인트 환급 확정화면
 	@RequestMapping("pointRefundCheckView.tc")
-	public String pointRefundCheckView(Model model,int refundNo) {
-		model.addAttribute("pointRefund",memberService.selectPointRefundOne(refundNo));
+	public String pointRefundCheckView(Model model, int refundNo) {
+		model.addAttribute("pointRefund", memberService.selectPointRefundOne(refundNo));
 		return "member/pointRefundCheckView";
 	}
 
-	
-	//포인트 환급 확정 및 반려
-	@RequestMapping(value="pointRefundUpdate.tc", method=RequestMethod.GET)
-	public String pointRefundUpdate (PointRefund pointRefund,Model model) {
-		int result=memberService.updatePointRefund(pointRefund);
-		if(result>0) {
-			return "pointRefundList.tc";
-		}else{
-			model.addAttribute("msg","포인트 환급 확정 및 반려 실패");
+	// 포인트 환급 확정 및 반려
+	@RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
+	public String pointRefundUpdate(PointRefund pointRefund, Model model) {
+		
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("포인트 환급");
+		pointChange.setPointAmount(pointRefund.getRefundPoint());
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(pointRefund.getMemberId());
+		
+		Member member=memberService.selectMemberOne(pointRefund.getMemberId());
+		member.setPoint(member.getPoint()-pointRefund.getRefundPoint());
+		
+		int insertPointChange=pointChangeInsert(pointChange);
+		int updateMemberPhoint=updateMemberPoint(member);
+		int result = memberService.updatePointRefund(pointRefund);
+		
+		if (result > 0 && insertPointChange>0 && updateMemberPhoint>0) {
+			return "member/pointRefundList";
+		} else {
+			model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
 			return "common/errorPage";
 		}
 	}
-	
-	//=============================================================================
-	
+
+	// =============================================================================
+
 	// 프로필 등록 회원 전체 리스트
-		@RequestMapping("profileList.tc")
-		public ModelAndView profileList(ModelAndView mv) {
-			ArrayList<Profile> pfList = memberService.selectProfileList();
-			if (!pfList.isEmpty()) {
-				mv.addObject("pfList", pfList);
-				mv.setViewName("member/memberList");
-			} else {
-				mv.setViewName("common/errorPage");
+	@RequestMapping("profileList.tc")
+	public ModelAndView profileList(ModelAndView mv) {
+		ArrayList<Profile> pfList = memberService.selectProfileList();
+		if (!pfList.isEmpty()) {
+			mv.addObject("pfList", pfList);
+			mv.setViewName("profile/profileList");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+
+		return mv;
+
+	}
+
+	// 프로필 상세보기
+	@RequestMapping("profileDetail.tc")
+	public String profileDetail(int memberNo, Model model) {
+		Profile profile = memberService.selectProfileOne(memberNo);
+		if (profile != null) {
+			model.addAttribute("profile", profile);
+			return "profile/profileList";
+		} else {
+			return "common/errorPage";
+		}
+	}
+
+	// 프로필 등록 화면 열기
+	@RequestMapping("profileInsertView.tc")
+	public String profileInsertView() {
+		return "profile/profileInsertForm";
+
+	}
+
+	// 프로필 등록
+	@RequestMapping(value = "profileInsert.tc", method = RequestMethod.POST)
+	public String insertProfile(Profile profile, int memberNo, Model model,
+			@RequestParam(name = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest request) {
+
+		if (!uploadFile.getOriginalFilename().equals("")) {
+			String filePath = saveFile(uploadFile, request);
+			if (filePath != null) {
+				profile.setProfileFilePath(uploadFile.getOriginalFilename());
+			}
+		}
+
+		String path = null;
+
+		int result = memberService.insertProfile(profile, uploadFile, request);
+		int profileStatus = memberService.updateStatusY(memberNo);
+
+		if (result > 0) {
+			if (profileStatus > 0) {
+				path = "redirect:profileDetail.tc?memberNo=" + profile.getMemberNo();
+			}
+			path = "redirect:profileDetail.tc?memberNo=" + profile.getMemberNo();
+		} else {
+			path = "common/errorPage";
+		}
+
+		return path;
+	}
+
+	// 파일 저장
+	public String saveFile(MultipartFile file, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+
+		File folder = new File(savePath);
+
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+
+		String filePath = folder + "\\" + file.getOriginalFilename();
+
+		try {
+			file.transferTo(new File(filePath));
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return filePath;
+
+	}
+
+	// 프로필 수정 화면
+	@RequestMapping("profileUpdateView.tc")
+	public String noticeUpdateView(int memberNo, Model model) {
+		model.addAttribute("profile", memberService.selectProfileOne(memberNo));
+		return "profile/profileUpdateForm";
+	}
+
+	// 프로필 수정하기
+	@RequestMapping(value = "profileUpdate.tc", method = RequestMethod.POST)
+	public String ProfileUpdate(Profile profile, Model model, HttpServletRequest request, MultipartFile reloadFile) {
+
+		if (reloadFile != null && !reloadFile.isEmpty()) {
+
+			if (profile.getProfileFilePath() != null) {
+				deleteFile(profile.getProfileFilePath(), request);
 			}
 
-			return mv;
+			String savePath = saveFile(reloadFile, request);
 
-		}
-
-		// 프로필 상세보기
-		@RequestMapping("profileDetail.tc")
-		public String profileDetail(int memberNo, Model model) {
-			Profile profile = memberService.selectProfileOne(memberNo);
-			if (profile != null) {
-				model.addAttribute("profile", profile);
-				return "member/profileList";
-			} else {
-				return "common/errorPage";
+			if (savePath != null) {
+				profile.setProfileFilePath(reloadFile.getOriginalFilename());
 			}
-		}
-
-		// 프로필 등록 화면 열기
-		@RequestMapping("profileInsertView.tc")
-		public String profileInsertView() {
-			return "member/profileInsertForm";
 
 		}
 
-		// 프로필 등록
-		@RequestMapping(value = "profileInsert.tc", method = RequestMethod.POST)
-		public String insertProfile(Profile profile, Model model, HttpServletRequest request,
-				@RequestParam(name = "uploadFile", required = false) MultipartFile uploadFile) {
+		int result = memberService.updateProfile(profile);
+		if (result > 0) {
+			return "redirect:profileDetail.tc?memberNo=" + profile.getMemberNo();
+		} else {
+			return "common/errorPage";
+		}
 
-			if (!uploadFile.getOriginalFilename().equals("")) {
-				String filePath = saveFile(uploadFile, request);
+	}
 
-				if (filePath != null) {
-					profile.setProfileFilePath(uploadFile.getOriginalFilename());
+	// 파일 삭제하기
+	public void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resorces");
+		String savePath = root + "\\uploadFiles";
+
+		File deleteFile = new File(savePath + "\\" + fileName);
+
+		if (deleteFile.exists()) {
+			deleteFile.delete();
+		}
+	}
+
+	// 프로필 삭제하기
+	@RequestMapping("profileDelete.tc")
+	public String profileDelete(int memberNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
+
+		Profile profile = memberService.selectProfileOne(memberNo);
+		int result = memberService.deleteProfile(memberNo);
+		int profileStatusN = memberService.updateStatusN(memberNo);
+
+		if (result > 0) {
+			if (profile.getProfileFilePath() != null) {
+				deleteFile(profile.getProfileFilePath(), request);
+
+				if (profileStatusN > 0) {
+					return "redirect:myPage.tc";
 				}
 			}
-
-			int result = 0;
-			String path = null;
-
-			result = memberService.insertProfile(profile, uploadFile, request);
-			System.out.println(profile.toString());
-
-			if (result > 0) {
-				path = "redirect:profileList.tc";
-			} else {
-				path = "common/errorPage";
-			}
-
-			return path;
+			return "redirect:myPage.tc";
 		}
 
-		// 파일 저장
-		public String saveFile(MultipartFile file, HttpServletRequest request) {
-			String root = request.getSession().getServletContext().getRealPath("resources");
-			String savePath = root + "\\uploadFiles";
+		return "common/errorPage";
+	}
 
-			File folder = new File(savePath);
-
-			if (!folder.exists()) {
-				folder.mkdir();
-			}
-
-			String filePath = folder + "\\" + file.getOriginalFilename();
-
-			try {
-				file.transferTo(new File(filePath));
-			} catch (IllegalStateException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return filePath;
-
-		}
-	
 }

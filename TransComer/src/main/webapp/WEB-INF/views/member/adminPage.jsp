@@ -36,7 +36,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/wallet.png" class="itemImg">
-					<a href="">번역글 승인</a>
+					<a href="adminShareList.tc">번역글 승인</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/money.png" class="itemImg">

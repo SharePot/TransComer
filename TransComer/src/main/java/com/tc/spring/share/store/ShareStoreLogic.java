@@ -36,13 +36,6 @@ public class ShareStoreLogic implements ShareStore {
 		return 0;
 	}
 
-
-	@Override
-	public ArrayList<Share> selectAdminQnaList(SharePageInfo sPi) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public int addReadCount(int ShareNo) {
 		return sqlSession.update("shareMapper.addReadCount", ShareNo);
@@ -83,6 +76,34 @@ public class ShareStoreLogic implements ShareStore {
 	@Override
 	public int insertFile(Files f) {
 		return sqlSession.insert("shareMapper.fileInsert", f);
+	}
+
+	// 관리자 - 번역공유 신청 전체 조회
+	@Override
+	public ArrayList<Share> adminShareList() {
+		// TODO Auto-generated method stub
+		return (ArrayList) sqlSession.selectList("shareMapper.adminShareList");
+	}
+
+	// 관리자 - 번역공유 신청글 상세 조회
+	@Override
+	public Share adminSelectShareOne(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("shareMapper.adminSelectShareOne", shareNo);
+	}
+
+	// 관리자가 번역공유 신청글 '승인'(Y)하기
+	@Override
+	public int updateShareYnY(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("shareMapper.updateShareYnY", shareNo);
+	}
+
+	// 관리자가 번역공유 신청글 '반려'(R)하기
+	@Override
+	public int updateShareYnR(int shareNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("shareMapper.updateShareYnR", shareNo);
 	}
 
 }

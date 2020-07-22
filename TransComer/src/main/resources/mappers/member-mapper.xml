@@ -17,6 +17,7 @@
          <result property="contentCount" column="CONTENTS_COUNT"/>
          <result property="adoptCount" column="ADOPT_COUNT"/>
          <result property="enrollDate" column="MEMBER_ENROLL_DATE"/>
+         <result property="profileStatus" column="PROFILE_STATUS"/>
    </resultMap>
    
    <!-- 로그인 -->
@@ -84,7 +85,7 @@
    
    <!-- 회원 한명 선택 -->
    <select id="selectMemberOne" parameterType="Member" resultMap="memberResultSet">
-   SELECT * FROM MEMBER WHERE MEMBER_NO=#{memberNo}
+   SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId}
    </select>
    
    <!-- <resultMap type="String" id="testMap">
@@ -98,7 +99,7 @@
 		INSERT INTO MEMBER
 		VALUES(MEM_NO_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName},
 		#{email}, #{address}, #{phone}, 0, #{account},
-		default, default, default, SYSDATE)
+		default, default, default, SYSDATE, default)
 	</insert>
 
 	<!-- 아이디찾기 -->
@@ -125,9 +126,19 @@
 		WHERE MEMBER_ID = #{userId}
 	</update>
 	
- 
+ <!-- 아이디 중복 체크 -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = #{memberId}
+	</select>
 	
-	
+	<!-- 결제 api -->
+	<update id="payMents" parameterType="hashmap"> 
+	UPDATE MEMBER SET MEMBER_POINT = MEMBER_POINT + #{amount} WHERE MEMBER_ID = #{userId} 
+	</update>
+
+	<select id="userRefrash" parameterType="String" resultMap="memberResultSet">
+	 SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId}
+	  </select>
 	
 
 <!-- 포인트 변동 관련 -->
@@ -144,7 +155,7 @@
       
       <!-- 포인트 변동 리스트 회원별-->
    <select id="selectMemberPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
-   SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
+   SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId} ORDER BY POINT_NO DESC
    </select>
    
    <!-- 포인트 차감(결제)포인트 변동 추가 -->
@@ -156,6 +167,8 @@
 	<update id="updateMemberPoint" parameterType="Member">
 	UPDATE MEMBER SET MEMBER_POINT=#{point} WHERE MEMBER_ID=#{memberId}
 	</update>
+	
+	
    
       <!-- 포인트 변동내역 회원 전체 개수  -->
    <select id="getPointChangeMemberListCount" resultType="_int">

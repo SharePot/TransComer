@@ -45,7 +45,9 @@
 			</tr>
 			<tr>
 				<td>첨부파일</td>
-				<td><input type="file" name="uploadFile"></td>
+				<td id="fileUp">
+                	<button type="button" class="btn btn-info btn-sm" id="addFile" onclick="return addFiles();">파일 추가</button>
+                </td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
@@ -66,5 +68,13 @@
 	<br><br><br><br><br><br><br><br><br><br><br><br>
 	</section>
 		</div>
+	<script>
+	function addFiles() {
+		var addfile = "<input type='file' name='uploadFile' class='form-control-file border'>"
+		var td = document.getElementById("fileUp");
+		
+		td.innerHTML += addfile;
+	}
+	</script>
 </body>
 </html>

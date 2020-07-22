@@ -29,10 +29,9 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int checkIdDup(String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne("memberMapper.checkId", memberId);
 	}
-
+	
 	@Override
 	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
@@ -42,8 +41,8 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 	@Override
-	public Member selectMemberOne(int memberNo) {
-		return sqlSession.selectOne("memberMapper.selectMemberOne",memberNo);
+	public Member selectMemberOne(String memberId) {
+		return sqlSession.selectOne("memberMapper.selectMemberOne",memberId);
 	}
 
 	@Override
@@ -60,7 +59,6 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int deleteMember(String memberId) {
-		// TODO Auto-generated method stub
 		return sqlSession.delete("memberMapper.deleteMember", memberId);
 	}
 	
@@ -106,6 +104,17 @@ public class MemberStoreLogic implements MemberStore {
 	public int checkMember(Member member) {
 		return sqlSession.selectOne("memberMapper.checkMmember", member);
 	}
+	
+	@Override
+	public int payMent(Map<String, Object> map) {
+		return sqlSession.update("memberMapper.payMents", map);
+	}
+
+	@Override
+	public Member userRefrash(String id) {
+		return sqlSession.selectOne("memberMapper.userRefrash", id);
+	}
+
 
 	//포인트 환급=====================================================================================
 	@Override
@@ -177,8 +186,8 @@ public class MemberStoreLogic implements MemberStore {
 
 
 	
-	public int updateMemberPoint(int point) {
-		return sqlSession.update("memberMapper.updateMemberPoint",point);
+	public int updateMemberPoint(Member member) {
+		return sqlSession.update("memberMapper.updateMemberPoint",member);
 	}
 //프로필===============================================================
 	@Override
@@ -186,6 +195,11 @@ public class MemberStoreLogic implements MemberStore {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectProfileList");
 	}
 
+	@Override
+	public Profile countProfile(int memberNo) {
+		return sqlSession.selectOne("memberMapper.countProfile", memberNo);
+	}
+	
 	@Override
 	public Profile selectProfileOne(int memberNo) {
 		return sqlSession.selectOne("memberMapper.selectProfileOne", memberNo);
@@ -198,14 +212,22 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int updateProfile(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("memberMapper.updateProfile", profile);
 	}
 
 	@Override
 	public int deleteProfile(int memberNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("memberMapper.deleteProfile", memberNo);
+	}
+
+	@Override
+	public int updateStatusY(int memberNo) {
+		return sqlSession.update("memberMapper.updateStatusY", memberNo);
+	}
+
+	@Override
+	public int updateStatusN(int memberNo) {
+		return sqlSession.update("memberMapper.updateStatusN", memberNo);
 	}
 
 

@@ -61,5 +61,12 @@ public interface StudyStore {
 	 * @return
 	 */
 	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi);
+	
+	/**
+	 * 스터디 최신글 번호
+	 * @param memberId
+	 * @return
+	 */
+	public int selectStudyLatestNo(String memberId);
 }
 
