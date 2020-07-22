@@ -185,12 +185,13 @@
 				                    <th>작성 날짜</th>
 				                    <th>수정</th>
 				                    <th>삭제</th>
-
 				                </tr>
 				            </thead>
 				            <tbody>
 
 				            </tbody>
+				            <tfoot>
+				            </tfoot>
 				        </table>
 		            </div>
 				</section>
