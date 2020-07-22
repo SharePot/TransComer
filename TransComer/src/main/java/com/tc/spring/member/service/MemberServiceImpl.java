@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 	public int checkIdDup(String memberId) {
 		return memberStore.checkIdDup(memberId);
 	}
-
+	
 	@Override
 	public ArrayList<Member> selectMemberList(MemberPageInfo pi) {
 		ArrayList<Member> list=memberStore.selectMemberList(pi);
@@ -40,8 +40,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member selectMemberOne(int memberNo) {
-		return memberStore.selectMemberOne(memberNo);
+	public Member selectMemberOne(String memberId) {
+		return memberStore.selectMemberOne(memberId);
 	}
 
 	@Override
@@ -94,6 +94,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int checkMember(Member member) {
 		return memberStore.checkMember(member);
+	}
+	
+
+	@Override
+	public int payMent(Map<String, Object> map) {
+		return memberStore.payMent(map);
+	}
+
+	@Override
+	public Member userRefrash(String id) {
+		return memberStore.userRefrash(id);
 	}
 	
 
@@ -158,8 +169,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int updateMemberPoint(int point) {
-		return memberStore.updateMemberPoint(point);
+	public int updateMemberPoint(Member member) {
+		return memberStore.updateMemberPoint(member);
 	}
 
 
@@ -169,6 +180,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberStore.selectProfileList();
 	}
 
+	@Override
+	public Profile countProfile(int memberNo) {
+		return memberStore.countProfile(memberNo);
+	}
+	
 	@Override
 	public Profile selectProfileOne(int memberNo) {
 		return memberStore.selectProfileOne(memberNo);
@@ -182,14 +198,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updateProfile(Profile profile) {
-		// TODO Auto-generated method stub
-		return 0;
+		profile.setIntroduce(profile.getIntroduce().replace("\n", "<br>"));
+		return memberStore.updateProfile(profile);
 	}
 
 	@Override
 	public int deleteProfile(int memberNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberStore.deleteProfile(memberNo);
+	}
+
+	@Override
+	public int updateStatusY(int memberNo) {
+		return memberStore.updateStatusY(memberNo);
+	}
+
+	@Override
+	public int updateStatusN(int memberNo) {
+		return memberStore.updateStatusN(memberNo);
 	}
 
 

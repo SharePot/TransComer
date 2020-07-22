@@ -33,15 +33,9 @@
                         <!--페이지 제목, 아이콘-->
                         <div class="d-flex justify-content-center">
                             <!--아이콘 -->
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-folder" fill="currentColor" 
-
-xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-
-
-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
-                                <path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637
-
--7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-folder" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
+                                <path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
                             </svg>&nbsp;&nbsp;&nbsp;&nbsp;
                             <!--페이지 내용 제목-->
                             <span class="h3">번역자료 공유 신청 목록</span>
@@ -77,9 +71,7 @@ xmlns="http://www.w3.org/2000/svg">
 		                                        	<!-- 쿼리 스트링: ?뒤에오는것 -->
 		                                        	<c:param name="shareNo" value="${share.shareNo }"></c:param>
 		                                        </c:url>
-		                                        <a href="${adminSelectShareOne }" class="btn btn-primary" style="color: white; text-decoration: 
-
-none;">승인 / 반려</a>
+		                                        <a href="${adminSelectShareOne }" class="btn btn-primary" style="color: white; text-decoration: none;">승인 / 반려</a>
 	                                        </c:if>
 	                                        <c:if test="${share.shareYN eq 'Y' }">
 		                                        <button class="btn btn-success">승인 완료</button>

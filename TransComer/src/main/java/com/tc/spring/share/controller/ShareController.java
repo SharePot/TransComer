@@ -25,6 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
+import com.tc.spring.member.controller.MemberController;
+import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.PointChange;
+import com.tc.spring.member.service.MemberService;
 import com.tc.spring.share.domain.Share;
 import com.tc.spring.share.domain.SharePageInfo;
 import com.tc.spring.share.domain.ShareSearch;
@@ -36,7 +40,14 @@ public class ShareController {
 
 	@Autowired
 	private ShareService shareService;
+	@Autowired
 	private FileController fController;
+	
+	@Autowired
+	private MemberController mController;
+	
+	@Autowired
+	private MemberService mService;
 	
 	// 공유 글 전체 목록 보기
 	@RequestMapping("slist.tc")
@@ -156,7 +167,7 @@ public class ShareController {
 	      return renameFileName;
 	}
 
-	// 게시글 수정 화면
+	/*// 게시글 수정 화면
 	@RequestMapping("supview.tc")
 	public String shareUpdateView(int shareNo, Model model) {
 		model.addAttribute("share", shareService.selectShare(shareNo));
@@ -179,7 +190,7 @@ public class ShareController {
 			model.addAttribute("msg", "게시글 수정 실패");
 			return "common/errorPage";
 		}
-	}
+	}*/
 	
 	// 게시글 삭제
 	/*@RequestMapping("sdelete.tc")
@@ -226,9 +237,24 @@ public class ShareController {
 
 	// 관리자 - 번역공유 신청글 '승인'(Y)하기
 	@RequestMapping(value = "updateShareYnY.tc", method = RequestMethod.GET)
-	public String updateShareYnY(@RequestParam int shareNo) {
+	public String updateShareYnY(@RequestParam int shareNo,String memberId) {
 		int result = shareService.updateShareYnY(shareNo);
-		if (result > 0) {
+		
+		/*포인트 변동 내역 추가 및 업데이트를 위한 코드*/
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("번역 공유 승인");
+		pointChange.setPointAmount(3000);
+		pointChange.setPointStatus("ADD");
+		pointChange.setMemberId(memberId);
+		
+		Member member=mService.selectMemberOne(memberId);
+		member.setPoint(member.getPoint()+3000);
+		
+		int insertPointChange=mController.pointChangeInsert(pointChange);
+		int updateMemberPhoint=mController.updateMemberPoint(member);
+		
+		
+		if (result > 0 && insertPointChange>0 && updateMemberPhoint>0) {
 			return "redirect:/adminShareList.tc";
 		} else {
 			return "common/errorPage";

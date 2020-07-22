@@ -47,7 +47,7 @@ public interface StudyService {
 	 * @param study
 	 * @return
 	 */
-	public int insertStudy(Study study, MultipartFile file, HttpServletRequest request);
+	public int insertStudy(Study study, HttpServletRequest request);
 	/**
 	 * 스터디 수정
 	 * @param study
@@ -68,7 +68,12 @@ public interface StudyService {
 	 */
 	public ArrayList<Study> searchStudyList(StudySearch search,StudyPageInfo pi);
 
-
+	/**
+	 * 스터디 최신글 번호
+	 * @param memberId
+	 * @return
+	 */
+	public int selectStudyLatestNo(String memberId);
 
 	
 }

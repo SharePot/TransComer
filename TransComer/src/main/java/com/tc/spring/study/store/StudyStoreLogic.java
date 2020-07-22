@@ -67,5 +67,10 @@ public class StudyStoreLogic implements StudyStore{
 		return sqlSession.selectOne("studyMapper.getStudySearchListCount",search);
 	}
 
+	@Override
+	public int selectStudyLatestNo(String memberId) {
+		return sqlSession.selectOne("studyMapper.selectStudyLatestNo", memberId);
+	}
+
 	
 }

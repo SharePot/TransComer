@@ -35,7 +35,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public int insertStudy(Study study, MultipartFile file, HttpServletRequest request) {
+	public int insertStudy(Study study, HttpServletRequest request) {
 		study.setStudyContent(study.getStudyContent().replace("\n", "<br>"));
 		return studyStore.insertStudy(study);
 	}
@@ -64,6 +64,11 @@ public class StudyServiceImpl implements StudyService {
 	@Override
 	public int getSearchListCount(StudySearch search) {
 		return  studyStore.getSearchListCount(search);
+	}
+
+	@Override
+	public int selectStudyLatestNo(String memberId) {
+		return studyStore.selectStudyLatestNo(memberId);
 	}
 
 

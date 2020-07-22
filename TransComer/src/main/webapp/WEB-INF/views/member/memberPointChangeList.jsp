@@ -31,8 +31,8 @@
  <td>${point.pointUpdateDate}</td>
  <td>${point.pointContent}</td>
  <td>${point.pointAmount}</td>
- <td><c:if test="${point.pointStatus eq 'ADD'}">충전  </c:if>
-<c:if test="${point.pointStatus ne 'ADD'}">차감</c:if></td>
+ <c:if test="${point.pointStatus eq 'ADD'}"><td color="blue">충전</td></c:if>
+<c:if test="${point.pointStatus ne 'ADD'}"><td color="red">차감</td></c:if>
 
  </tr>
  </c:forEach>

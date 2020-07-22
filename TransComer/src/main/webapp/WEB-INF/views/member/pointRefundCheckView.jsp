@@ -62,6 +62,8 @@
 		       <c:url var="conform" value="pointRefundUpdate.tc">
                <c:param name="refundYn" value="Y"/>
                <c:param name="refundNo" value="${pointRefund.refundNo }"/>
+               <c:param name="refundPoint" value="${pointRefund.refundPoint }"/>
+               <c:param name="memberId" value="${pointRefund.memberId }"/>
             </c:url>
                   <c:url var="reject" value="pointRefundUpdate.tc">
                <c:param name="refundNo" value="N"/>

@@ -28,7 +28,6 @@
          <th>작성자</th>
          <th>날짜</th>
          <th>조회수</th>
-         <th>첨부파일</th>
       </tr>
       <c:forEach var="study" items="${list }">
          <tr>
@@ -64,14 +63,6 @@
          <td >${study.memberId }</td>
          <td >${study.studyWriteDate }</td>
          <td>${study.studyCount }</td>
-         <td >
-            <c:if test="${ !empty study.studyFilePath }">
-               ◎
-            </c:if>
-            <c:if test="${ empty study.studyFilePath }">
-               &nbsp;
-            </c:if>
-         </td>
       </tr>
       </c:forEach>
       

@@ -35,8 +35,6 @@ public interface ShareService {
 		// 상세조회
 		public ArrayList<HashMap<String, Object>> selectShare(int shareNo);
 		
-		// 수정
-		public int updateShare(Share share);
 		
 		// 삭제
 		public int deleteShare(int shareNo);

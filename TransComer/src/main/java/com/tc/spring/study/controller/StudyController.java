@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tc.spring.comment.controller.CommentController;
 import com.tc.spring.common.Pagination;
+import com.tc.spring.files.controller.FileController;
+import com.tc.spring.files.domain.Files;
 import com.tc.spring.study.domain.Study;
 import com.tc.spring.study.domain.StudyPageInfo;
 import com.tc.spring.study.domain.StudySearch;
@@ -31,7 +34,10 @@ public class StudyController {
 	private StudyService studyService;
 	
 	@Autowired
-	private CommentController cController; 
+	private CommentController cController;
+	
+	@Autowired
+	private FileController fController;
 
 	//스터디 전체 목록
 	@RequestMapping("studyList.tc")
@@ -104,25 +110,30 @@ public class StudyController {
 	
 	//스터디 게시물 등록
 	@RequestMapping(value="studyInsert.tc",method=RequestMethod.POST)
-	public String insertStudy(Study study, Model model,@RequestParam(name="uploadFile",required=false)MultipartFile uploadFile,HttpServletRequest request) {
+	public String insertStudy(Study study, Files files, Model model,
+			@RequestParam(name="uploadFile",required=false)MultipartFile[] uploadFile, MultipartHttpServletRequest request, HttpServletRequest requestH, String memberId) {
 		
-		if(!uploadFile.getOriginalFilename().equals("")) {
-			String filePath=saveFile(uploadFile, request);
-			if(filePath !=null) {
-				study.setStudyFilePath(uploadFile.getOriginalFilename());
-			}
-		}
-		
-		
-		int result=0;
+		int resultStudy=0;
+		int resultFile=0;
 		String path=null;
-		result=studyService.insertStudy(study,uploadFile,request);
-		if(result>0) {
+		resultStudy=studyService.insertStudy(study, request);
+		
+		
+		if(resultStudy > 0) {
+			int studyLatestNo = studyService.selectStudyLatestNo(memberId);
+			files.setStudyNo(studyLatestNo);
+			
+			for (int i = 0; i < uploadFile.length; i++ ) {
+				if (!uploadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
+				}
+			}
 			path="redirect:studyList.tc";
 		}else {
 			model.addAttribute("msg","스터디 게시물 등록 실패");
 			path="common/errorPage";
 		}
+		
 		return path;
 	}
 	
@@ -155,27 +166,43 @@ public class StudyController {
 		//스터디 수정폼
 		@RequestMapping("studyUploadView.tc")
 		public String studyUpdateView(int studyNo,Model model) {
+			
+			Files fCategory = new Files();
+			fCategory.setQnaNo(0);
+			fCategory.setShareNo(0);
+			fCategory.setStudyNo(studyNo);
+			fCategory.setPersonalNo(0);
+			
+			ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
+			
 			model.addAttribute("study",studyService.selectStudyOne(studyNo));
+			model.addAttribute("flist", fileList);
 			return "study/studyUpdateForm";
 		}
 		
 		//스터디 수정
 	@RequestMapping(value="studyUpdate.tc",method=RequestMethod.POST)	
-	public String updateStudy(Study study, Model model, HttpServletRequest request,MultipartFile reloadFile,@RequestParam(value="page", required=false)Integer page) {
+	public String updateStudy(Study study, Model model, HttpServletRequest requestH, MultipartHttpServletRequest request,
+			@RequestParam(name="reloadFile", required=false)MultipartFile[] reloadFile, @RequestParam(value="page", required=false)Integer page, String memberId) {
 		
-		if(reloadFile !=null && reloadFile.isEmpty()) {
-			if(study.getStudyFilePath() !=null) {
-				deleteFile(study.getStudyFilePath(),request);
-			}
+		
+		int resultStudy=studyService.updateStudy(study);
+		int resultFile = 0;
+		
+		if(resultStudy>0) {
+			Files fCategory = new Files();
+			fCategory.setQnaNo(0);
+			fCategory.setShareNo(0);
+			fCategory.setStudyNo(study.getStudyNo());
+			fCategory.setPersonalNo(0);
 			
-			String savePath=saveFile(reloadFile,request);
+			ArrayList<Files> fileList = fController.selectFileList(fCategory);
 			
-			if(savePath!=null) {
-				study.setStudyFilePath(reloadFile.getOriginalFilename());
+			for(int i = 0; i < reloadFile.length; i++) {
+				if (!reloadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.updateFile(fileList.get(i), model, requestH, reloadFile[i], memberId);
+				}
 			}
-		}
-		int result=studyService.updateStudy(study);
-		if(result>0) {
 			return "redirect:studyDetail.tc?studyNo="+study.getStudyNo();
 		}else {
 			model.addAttribute("msg","스터디 게시물 수정 실패");
@@ -186,13 +213,26 @@ public class StudyController {
 
 	//스터디 삭제
 	@RequestMapping("studyDelete.tc")
-	public String deleteStudy(int studyNo, Model model, HttpServletRequest request, RedirectAttributes rd) {
+	public String deleteStudy(int studyNo, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
 		Study study=studyService.selectStudyOne(studyNo);
-		int result=studyService.deleteStudy(studyNo);
-		if(result>0) {
-			if(study.getStudyFilePath() !=null) {
-				deleteFile(study.getStudyFilePath(), request);
+		int resultStudy=studyService.deleteStudy(studyNo);
+		int resultFile=0;
+		if(resultStudy>0) {
+			Files fCategory = new Files();
+			fCategory.setQnaNo(0);
+			fCategory.setShareNo(0);
+			fCategory.setStudyNo(studyNo);
+			fCategory.setPersonalNo(0);
+			
+			ArrayList<Files> fileList = fController.selectFileList(fCategory);
+			
+			for(int i = 0; i < fileList.size(); i++) {
+				if (!fileList.isEmpty()) {
+					String del = "yes";
+					resultFile = fController.deleteFile(fileList.get(i), request, memberId, del);
+				}
 			}
+			
 			rd.addFlashAttribute("msg","스터디 삭제 성공");
 			return "redirect:studyList.tc";
 		}else {
@@ -201,15 +241,4 @@ public class StudyController {
 		return "common/errorPage";
 	}
 	
-	public void deleteFile(String fileName, HttpServletRequest request) {
-		String root=request.getSession().getServletContext().getRealPath("resources");
-		
-		String savePath=root+"\\studyUploadFiles";
-		
-		File deleteFile= new File(savePath+"\\"+fileName);
-		
-		if(deleteFile.exists()) {
-			deleteFile.delete();
-		}
-	}
 }

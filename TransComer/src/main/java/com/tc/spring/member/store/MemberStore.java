@@ -21,7 +21,7 @@ public interface MemberStore {
 
 	public ArrayList<Member> selectMemberList(MemberPageInfo pi);
 	
-	public Member selectMemberOne(int memberNo);
+	public Member selectMemberOne(String memberId);
 	
 	public int insertMember(Member member);
 	
@@ -43,6 +43,10 @@ public interface MemberStore {
 
 	public int checkMember(Member member);
 
+	
+	public int payMent(Map<String, Object> map);
+
+	public Member userRefrash(String id);
 	
 	//포인트 환급=======================================================
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
@@ -68,12 +72,14 @@ public interface MemberStore {
 	
 	public int insertPointChange(PointChange pc);
 	
-	public int updateMemberPoint(int point);
+	public int updateMemberPoint(Member member);
 	
 	
 	//프로필====================================================
 
 	public ArrayList<Profile> selectProfileList();
+	
+	public Profile countProfile(int memberNo);
 	
 	public Profile selectProfileOne(int memberNo);
 	
@@ -82,4 +88,8 @@ public interface MemberStore {
 	public int updateProfile(Profile profile);
 	
 	public int deleteProfile(int memberNo);
+	
+	public int updateStatusY(int memberNo);
+	
+	public int updateStatusN(int memberNo);
 }

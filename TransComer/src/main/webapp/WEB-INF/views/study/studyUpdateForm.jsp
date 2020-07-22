@@ -21,7 +21,6 @@
 	
 	<form action="studyUpdate.tc" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="studyNo" value="${study.studyNo }">
-		<input type="hidden" name="studyFilePath" value="${study.studyFilePath }">
 		
 		<table align="center" border="1" cellspacing="0">
 			<tr>
@@ -43,17 +42,15 @@
 			<tr>
 				<td>첨부파일</td>
 				<td>
-				<input type="file" name="reloadFile">
-				<c:if test="${! empty study.studyFilePath }">
-					<a href="${contextPath }/resources/studyUploadFiles/${study.studyFilePath }">
-					<%-- ${contextPath } context root가져오는  내장객체 쓰는거임 --%>
-					${study.studyFilePath }
-					</a>
-				</c:if>
+				<c:forEach items="${flist }" var="f">
+             		${f.fileName}<br>
+             		<input type="file" name="reloadFile" class="form-control-file border" />
+           		</c:forEach>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
+				<input type="hidden" name="memberId" value="${loginUser.memberId }" />
 				<input type="submit" value="수정">&nbsp; &nbsp;
 					<input type="reset" value="취소">
 				</td>

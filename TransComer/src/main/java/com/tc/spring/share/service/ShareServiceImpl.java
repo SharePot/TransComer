@@ -56,12 +56,6 @@ public class ShareServiceImpl implements ShareService {
 	}
 
 	@Override
-	public int updateShare(Share share) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int deleteShare(int shareNo) {
 		// TODO Auto-generated method stub
 		return 0;

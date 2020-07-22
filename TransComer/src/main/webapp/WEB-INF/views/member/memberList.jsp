@@ -41,7 +41,7 @@
 				 	<td align="center">${member.memberNo }</td>
 			        <td align="center">
 			         	<c:url var="memberDetail" value="memberDetail.tc">
-							<c:param name="memberNo" value="${member.memberNo }" />
+							<c:param name="memberId" value="${member.memberId }" />
 						</c:url>					
 						<a href="${memberDetail}">${member.memberId }</a>
 			        </td>
