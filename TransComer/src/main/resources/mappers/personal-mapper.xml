@@ -20,8 +20,8 @@
 	
 	
 	<resultMap type="PersonalReqRep" id="personalReqRepResultSet">
-		<id property="pReqNo" column="P_REQ_NO "/>
-		<result property="pReqContent" column="P_REQ_CONTENT "/>
+		<id property="pReqNo" column="P_REQ_NO"/>
+		<result property="pReqContent" column="P_REQ_CONTENT"/>
 		<result property="pReqPLang" column="REQ_P_LANG"/> 
 		<result property="pReqTLang" column="REQ_T_LANG"/> 
 		<result property="pReqDetail" column="P_REQ_DETAIL"/>
@@ -157,6 +157,67 @@
 		SELECT P_REQ_NO FROM (SELECT * FROM PERSONAL_REQ_REP ORDER BY P_REQ_NO DESC) 
 		WHERE ROWNUM = 1
 	</select>
+	
+	<!-- ============== 0723~ 현꾸 작성부분 ============= -->
+	<!-- 회원이 의뢰신청 목록 보기 -->
+	<select id="selectDoReqRepList" parameterType="string" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE MEMBER_ID = #{memberId}
+		ORDER BY P_REQ_NO DESC
+	</select>
+	
+	<!-- 회원이 의뢰신청한 글 갯수 -->
+	<select id="doReqRepListCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL_REQ_REP
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 회원이 의뢰받은 목록 보기 -->
+	<select id="selectGetReqRepList" parameterType="string" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE P_REP_TRANSLATOR = #{memberId}
+		ORDER BY P_REQ_NO DESC
+	</select>
+	
+	<!-- 회원이 의뢰받은 글 갯수 -->
+	<select id="getReqRepListCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL_REQ_REP
+		WHERE P_REP_TRANSLATOR = #{memberId}
+	</select>
+	
+	<!-- 의뢰 신청 데이터 한 개 상세조회 -->
+	<select id="selectReqRepOne" parameterType="_int" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE P_REQ_NO = #{pReqNo}
+	</select>
+	
+	<!-- 의뢰 결과 글 작성/답변하기 (번역결과 내용 업데이트) -->
+	<update id="updateReqRepResult" parameterType="PersonalReqRep">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REP_RESULT = #{pRepResult}
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
+	
+	<!-- 의뢰 신청 글 승인하기(Accept : 'Y') -->
+	<update id="updateReqRepAcceptY" parameterType="_int">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REQ_ACCEPT = 'Y'
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
+
+	<!-- 의뢰 신청 글 반려하기(Accept : 'R') -->
+	<update id="updateReqRepAcceptR" parameterType="_int">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REQ_ACCEPT = 'R'
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
+	
+	<!-- 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y') -->
+	<update id="updateReqRepCheckBuyY" parameterType="_int">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REQ_CHECK_BUY = 'Y'
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
 	
 	
 </mapper>

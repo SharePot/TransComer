@@ -70,14 +70,73 @@ public class PersonalStoreLogic implements PersonalStore {
 	public int getSearchListCount(PersonalSearch search) {
 		return sqlSession.selectOne("personalMapper.getSearchListCount", search);
 	}
-	
+
 	@Override
 	public int insertRequest(PersonalReqRep personalReqRep) {
 		return sqlSession.insert("personalMapper.insertRequest", personalReqRep);
 	}
-	
+
 	public int selectPersonalLastNo(String memberId) {
 		return sqlSession.selectOne("personalMapper.selectPersonalLastNo", memberId);
 	}
-	
+
+	// ================ 0723 ~ 현꾸 작성 ==============
+	// 의뢰 신청한 목록
+	@Override
+	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId, PersonalPageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getPersonalLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getPersonalLimit());
+		return (ArrayList) sqlSession.selectList("personalMapper.selectDoReqRepList", memberId, rowBounds);
+	}
+
+	// 의뢰 신청글 갯수
+	@Override
+	public int doReqRepListCnt(String memberId) {
+		return sqlSession.selectOne("personalMapper.doReqRepListCnt", memberId);
+	}
+
+	// 의뢰 받은 목록
+	@Override
+	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId, PersonalPageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getPersonalLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getPersonalLimit());
+		return (ArrayList) sqlSession.selectList("personalMapper.selectGetReqRepList", memberId, rowBounds);
+	}
+
+	// 의뢰 받은글 갯수
+	@Override
+	public int getReqRepListCnt(String memberId) {
+		return sqlSession.selectOne("personalMapper.getReqRepListCnt", memberId);
+	}
+
+	// 의뢰 신청 데이터 한개 상세 조회
+	@Override
+	public PersonalReqRep selectReqRepOne(int pReqNo) {
+		return sqlSession.selectOne("personalMapper.selectReqRepOne", pReqNo);
+	}
+
+	// 의뢰 결과 글 작성 - 번역 결과 내용 업데이트
+	@Override
+	public int updateReqRepResult(PersonalReqRep personalReqRep) {
+		return sqlSession.update("personalMapper.updateReqRepResult", personalReqRep);
+	}
+
+	// 의뢰 신청 글 승인하기(Accept : 'Y')
+	@Override
+	public int updateReqRepAcceptY(int pReqNo) {
+		return sqlSession.update("personalMapper.updateReqRepAcceptY", pReqNo);
+	}
+
+	// 의뢰 신청 글 반려하기(Accept : 'R')
+	@Override
+	public int updateReqRepAcceptR(int pReqNo) {
+		return sqlSession.update("personalMapper.updateReqRepAcceptR", pReqNo);
+	}
+
+	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
+	@Override
+	public int updateReqRepCheckBuyY(int pReqNo) {
+		return sqlSession.update("personalMapper.updateReqRepCheckBuyY", pReqNo);
+	}
+
 }

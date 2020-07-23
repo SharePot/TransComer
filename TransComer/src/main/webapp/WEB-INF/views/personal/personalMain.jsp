@@ -145,7 +145,6 @@
 				         			</c:url>
 				         				<li class="page-item"><a class="page-link" href="${after }">&raquo;</a></li>
 				      			</c:if>
-				            	
 				            	</ul>
 				            </div>
 				            
