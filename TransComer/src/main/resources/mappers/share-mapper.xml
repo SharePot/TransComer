@@ -23,12 +23,9 @@
 	</select>	
 	
 	<!-- 게시글 상세조회 -->
-	<select id="selectShare" parameterType="hashMap" resultType="hashMap">
-		SELECT DISTINCT S.*, F.*
-		FROM MATERIAL_SHARE S
-		JOIN FILES F
-		ON S.MEMBER_ID = F.MEMBER_ID
-		WHERE F.SHARE_NO = #{shareNo}
+	<select id="selectShare" resultMap="ShareResultSet">
+		SELECT * FROM MATERIAL_SHARE
+		WHERE SHARE_NO = #{shareNo}
 	</select>
 	<!-- 조회수 -->
 	<update id="addReadCount" parameterType="_int">
@@ -82,6 +79,11 @@
 		  		</when>
   			</choose>
   			</where>
+	</select>
+	
+	<select id="selectShareLatestNo" parameterType="string" resultType="_int">
+		SELECT SHARE_NO FROM (SELECT * FROM SHARE ORDER BY SHARE_NO DESC) 
+		WHERE ROWNUM = 1 AND MEMBER_ID = #{memberId}
 	</select>
 	
 	<!-- 관리자, 번역공유 신청 목록을 모두 조회 -->

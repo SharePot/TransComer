@@ -38,15 +38,15 @@
 		      </tr>
 		      <c:forEach var="member" items="${list }">
 		         <tr>
-				 	<td align="center">${member.memberNo }</td>
-			        <td align="center">
+				 	<td >${member.memberNo }</td>
+			        <td >
 			         	<c:url var="memberDetail" value="memberDetail.tc">
 							<c:param name="memberId" value="${member.memberId }" />
 						</c:url>					
 						<a href="${memberDetail}">${member.memberId }</a>
 			        </td>
-			        <td align="center">${member.memberName }</td>
-			        <td align="center">${member.email }</td>
+			        <td >${member.memberName }</td>
+			        <td >${member.email }</td>
 			        <c:if test="${member.account eq null }">
 				        <td></td>
 				        <td></td>
@@ -65,7 +65,7 @@
 							</c:if>
 						</c:forTokens>
 					</c:if>
-			        <td align="center">
+			        <td >
 			        	<c:if test="${member.status eq 'BLACKLIST' }">
 			         		X
 			         	</c:if>
@@ -73,7 +73,7 @@
 			         		O
 			         	</c:if>
 			        </td>
-			        <td align="center">
+			        <td >
 			        	<c:if test="${member.status eq 'PREMIUM' }">
 			         		O
 			         	</c:if>
@@ -97,8 +97,8 @@
 		      
 		      
 		      <!-- 페이징 처리 -->
-				      <tr align="center" height="20">
-				         <td colspan="6">
+				      <tr align="center"  height="20">
+				         <td  align="center"colspan="9">
 						   <!-- [이전] -->
 						<c:if test="${pi.currentPage <= 1 }">
 							[이전] &nbsp;
@@ -143,18 +143,24 @@
 		         </td>
 		      </tr>
 		   </table>
-		       <div id="searchArea" align="center">
-		      <form action="memberSearch.tc" name="searchForm" method="get">
-		         <select id="memberSearchCondition" name="memberSearchCondition">
-		            <option value="all" <c:if test="${search.memberSearchCondition == 'all' }">selected</c:if>>전체</option>
-		            <option value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
-		            <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
-		            <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
-		         </select>
-		         <input type="search" name="memberSearchValue" value="">
-		         <button>검색</button><br>
-		      </form>
-		   </div>
+		          <div id="searchArea" align="center">
+      <form action="memberSearch.tc" name="searchForm" method="get">
+         <select id="memberSearchCondition" name="memberSearchCondition">
+            <option id="status" value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
+            <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
+            <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
+         </select>
+	         <input type="text" list="browsers" id="textSearch" name="memberSearchValue">
+	         <datalist id="browsers">
+	         <option value="BLACKLIST" <c:if test="${search.memberSearchValue == 'BLACKLIST' }">selected</c:if>>블랙리스트</option>
+	         <option value="PREMIUM" <c:if test="${search.memberSearchValue == 'PREMIUM' }">selected</c:if>>프리미엄</option>
+	         <option value="ADMIN" <c:if test="${search.memberSearchValue == 'ADMIN' }">selected</c:if>>관리자</option>
+	         <option value="DROP" <c:if test="${search.memberSearchValue == 'DROP' }">selected</c:if>>탈퇴회원</option>
+	         <option value="PRIMARY" <c:if test="${search.memberSearchValue == 'PRIMARY' }">selected</c:if>>일반회원</option>
+	       </datalist>
+         <button>검색</button><br>
+      </form>
+   </div>
 		   
 		   <a onclick="test()">test</a>
 		   

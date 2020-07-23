@@ -150,10 +150,10 @@ pagination {
 							<!--파일 첨부 -->
 							<!--onchange: 스크립트로 데이터 변경이 있을 때 동작되는 함수 -->
 							<!--onchange 피라미터 갯수를 스크립트의 갯수와 동일하게 입력 -->
-
+							
 							<input style="background-color: white; width: 45%;" type="file"
 								name="uploadFile" onchange="checkFile(this, 2)"> &nbsp; 
-								
+							
 							<input style="background-color: white; width: 45%; margin-right: 5px;"
 							type="file" name="uploadFile" onchange="checkFile(this, 2)"> <br>
 							

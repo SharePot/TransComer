@@ -66,20 +66,6 @@ public class MemberController {
 		return mv;
 	}
 
-	/*
-	 * //로그인
-	 * 
-	 * @RequestMapping(value="login.tc",method=RequestMethod.POST) public
-	 * ModelAndView memberLogin(Member member,ModelAndView mv) { Member loginUser =
-	 * memberService.loginMember(member);
-	 * 
-	 * if (loginUser != null) { mv.addObject("loginUser", loginUser);
-	 * mv.setViewName("home"); } else { mv.setViewName("common/errorPage"); }
-	 * 
-	 * return mv;
-	 * 
-	 * }
-	 */
 
 	// 로그인
 	@RequestMapping(value = "login.tc", method = RequestMethod.POST)
@@ -197,12 +183,7 @@ public class MemberController {
 			params.put("text", "[Farms] - 인증번호는 : " + num + "입니다.");
 
 			response.getWriter().println(num);
-			/*
-			 * try { JSONObject obj = (JSONObject) coolsms.send(params);
-			 * response.getWriter().println(num); } catch (CoolsmsException e) {
-			 * System.out.println(e.getMessage()); System.out.println(e.getCode()); }
-			 */
-
+		
 		} else {
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().println("올바른 인증번호를 입력해주세요");
@@ -326,7 +307,9 @@ public class MemberController {
 		map.put("userId", userId);
 		map.put("amount", amounts);
 		int result = memberService.payMent(map);
-		int insertPointChange=pointChangeInsert(pointChange);
+		int insertPointChange=memberService.insertPointChange
+				
+				(pointChange);
 		
 		Member loginUser = memberService.userRefrash(userId);
 		model.addAttribute("loginUser", loginUser);
@@ -337,7 +320,59 @@ public class MemberController {
 			return "common/errorPage";
 		}
 	}
+	
+	
+	
+	//프리미엄 가입 화면
+	@RequestMapping("premiumEnrollView.tc")
+	public String premiupEnrollView() {
+		return "member/premiumEnroll";
+	}
+	
+	//프리미엄 결제 화면
+		@RequestMapping("premiumPayment.tc")
+		public String premiumPayment() {
+			return "member/premiumPointPayment";
+		}
+		
+	//프리미엄 가입 메소드
+	@RequestMapping(value = "memberUpdatePreminum.tc", method = RequestMethod.POST)
+	public String memberUpdatePreminum(Member member, Model model) {
+		member.setStatus("PREMIUM");
+		
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("프리미엄 가입");
+		pointChange.setPointAmount(13000);
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(member.getMemberId());
+		
+		Member member2 = memberService.selectMemberOne(member.getMemberId());
+		member2.setPoint(member2.getPoint()-13000);
+		
+		int insertPointChange=memberService.insertPointChange(pointChange);
+		int updateMemberPhoint=memberService.updateMemberPoint(member2);
+		int result = memberService.memberUpdatePreminum(member);
+		
+		if (result > 0 && insertPointChange>0&& updateMemberPhoint>0) {
+			return "member/myPage";
+		} else {
+			model.addAttribute("msg", "프리미엄 가입 실패");
+			return "common/errorPage";
+		}
+	}
+	//프리미엄 해지 메소드
+		public String memberUpdatePrimary(Member member, Model model) {
+			int result = memberService.memberUpdatePrimary(member);
+			
+			if (result > 0) {
+				return "member/adminPage";
+			} else {
+				model.addAttribute("msg", "프리미엄 해지 실패");
+				return "common/errorPage";
+			}
+		}
 
+	
 	// 포인트변동=============================================================================
 
 	// 관리자페이지에서 포인트 변동리스트 전체
@@ -352,7 +387,7 @@ public class MemberController {
 		if (!list.isEmpty()) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
-			mv.setViewName("member/pointCha" + "" + "ngeList");
+			mv.setViewName("member/pointChangeList");
 		} else {
 			mv.addObject("msg", "포인트 변동 리스트 조회 실패");
 			mv.setViewName("common/errorPage");
@@ -376,33 +411,7 @@ public class MemberController {
 		return "member/memberPointChangeList";
 	}
 
-	/*
-	 * @RequestMapping(value="pointChangeInsert.tc" ,method=RequestMethod.POST)
-	 * public String pointChangeInsert(PointChange pc, Model model) { int
-	 * result=memberService.insertPointChange(pc); if(result>0) { return
-	 * "member/myPage"; }else{ model.addAttribute("msg","포인트 변동 내역 추가 실패"); } return
-	 * "common/errorPage"; }
-	 */
-	// 포인트 변동 추가
-	public int pointChangeInsert(PointChange pc) {
-		int result = memberService.insertPointChange(pc);
-		return result;
-	}
-
-	/*
-	 * @RequestMapping(value="updateMemberPoint.tc",method=RequestMethod.POST)
-	 * public String updateMemberPoint (int point,Model model) { int
-	 * result=memberService.updateMemberPoint(point); if(result>0) { return
-	 * "member/myPage"; }else { model.addAttribute("msg","포인트 변경 실패"); return
-	 * "common/errorPage"; } }
-	 */
-	// 회원 포인트 업데이트
-	public int updateMemberPoint(Member member) {
-		int result = memberService.updateMemberPoint(member);
-		return result;
-
-	}
-
+	
 	// 포인트 환급=============================================================================
 
 	// 포인트 환급 리스트 조회
@@ -437,8 +446,20 @@ public class MemberController {
 	public String pointRefundInsert(PointRefund pointRefund, Model model, String bank, String accountOwner,
 			String account) {
 		pointRefund.setAccountInfo(bank + "," + accountOwner + "," + account);
+		
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("포인트 환급");
+		pointChange.setPointAmount(pointRefund.getRefundPoint());
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(pointRefund.getMemberId());
+		
+		Member member=memberService.selectMemberOne(pointRefund.getMemberId());
+		member.setPoint(member.getPoint()-pointRefund.getRefundPoint());
+		
+		int insertPointChange=memberService.insertPointChange(pointChange);
+		int updateMemberPhoint=memberService.updateMemberPoint(member);
 		int result = memberService.insertPointRefund(pointRefund);
-		if (result > 0) {
+		if (result > 0  && insertPointChange>0 && updateMemberPhoint>0) {
 			return "member/myPage";
 		} else {
 			model.addAttribute("msg", "포인트 환급 신청 실패");
@@ -456,21 +477,9 @@ public class MemberController {
 	// 포인트 환급 확정 및 반려
 	@RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
 	public String pointRefundUpdate(PointRefund pointRefund, Model model) {
-		
-		PointChange pointChange= new PointChange();
-		pointChange.setPointContent("포인트 환급");
-		pointChange.setPointAmount(pointRefund.getRefundPoint());
-		pointChange.setPointStatus("LESS");
-		pointChange.setMemberId(pointRefund.getMemberId());
-		
-		Member member=memberService.selectMemberOne(pointRefund.getMemberId());
-		member.setPoint(member.getPoint()-pointRefund.getRefundPoint());
-		
-		int insertPointChange=pointChangeInsert(pointChange);
-		int updateMemberPhoint=updateMemberPoint(member);
 		int result = memberService.updatePointRefund(pointRefund);
 		
-		if (result > 0 && insertPointChange>0 && updateMemberPhoint>0) {
+		if (result > 0) {
 			return "member/pointRefundList";
 		} else {
 			model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");

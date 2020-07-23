@@ -107,6 +107,18 @@ public class MemberServiceImpl implements MemberService {
 		return memberStore.userRefrash(id);
 	}
 	
+	@Override
+	public int memberUpdatePreminum(Member member) {
+		return memberStore.memberUpdatePreminum(member);
+	}
+
+
+	@Override
+	public int memberUpdatePrimary(Member member) {
+		return memberStore.memberUpdatePrimary(member);
+	}
+
+	
 
 //포인트 환급=====================================================================================
 	@Override

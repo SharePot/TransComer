@@ -47,6 +47,10 @@ public interface MemberService {
 	public int payMent(Map<String, Object> map);
 
 	public Member userRefrash(String id);
+	
+	public int memberUpdatePreminum(Member member);
+	
+	public int memberUpdatePrimary(Member member);
 
 	// =======================================================포인트 환급
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);

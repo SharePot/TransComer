@@ -116,6 +116,19 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 
+	@Override
+	public int memberUpdatePreminum(Member member) {
+		return sqlSession.update("memberMapper.memberUpdatePreminum",member);
+	}
+
+
+	@Override
+	public int memberUpdatePrimary(Member member) {
+		return sqlSession.update("memberMapper.memberUpdatePrimary",member);
+	}
+
+	
+
 	//포인트 환급=====================================================================================
 	@Override
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi) {
@@ -230,8 +243,6 @@ public class MemberStoreLogic implements MemberStore {
 		return sqlSession.update("memberMapper.updateStatusN", memberNo);
 	}
 
-
-	
 	
 	
 	
