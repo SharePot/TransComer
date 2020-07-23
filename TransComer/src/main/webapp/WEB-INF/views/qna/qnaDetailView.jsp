@@ -55,20 +55,20 @@
 
 				    <!-- Nav -->
 				    <nav id="nav">
-				        <ul>
-				            <li class="current"><a href="#">Home</a></li>
-				            <li>
-				                <a href="#">번역 의뢰</a>
-				                <ul>
-				                    <li><a href="#">단순 의뢰</a></li>
-				                    <li><a href="#">1:1 의뢰</a></li>
-				                </ul>
-				            </li>
-				            <li><a href="#">번역 공유</a></li>
-				            <li><a href="#">스터디</a></li>
-				            <li><a href="qlist.tc">Q&amp;A</a></li>
-				        </ul>
-				    </nav>
+						<ul>
+							<li class="current"><a href="#">Home</a></li>
+							<li><c:url var="sList" value="sReqListView.tc" /> <c:url
+									var="pList" value="plist.tc" /> <c:url var="study"
+									value="studyList.tc" /> <a href="#">번역 의뢰</a>
+								<ul>
+									<li><a href="${sList }">단순의뢰</a></li>
+									<li><a href="${pList }">1:1 의뢰</a></li>
+								</ul></li>
+							<li><a href="#">번역 공유</a></li>
+							<li><a href="${study }">스터디</a></li>
+							<li><a href="qlist.tc">Q&amp;A</a></li>
+						</ul>
+					</nav>
 				</section>
 
 				<!-- Main -->
@@ -326,78 +326,133 @@
 		        var studyNo = 0;
 		        var commentCondition = "qna";
 		        $.ajax({
-		            url: "commentList.tc",
-		            data: {
-		                studyNo: studyNo,
-		                shareNo: shareNo,
-		                qnaNo: qnaNo,
-		                commentCondition: commentCondition
-		            },
-		            dataType: "json", //응답이 오는 data는(밑에꺼) json형태 이다.
-		            success: function(data) { //controller에서 json으로 받아오는 코드 만들어줌
-		                $tableBody = $("#qnaTable tbody");
-		                $tableBody.html("");
+	                  url: "commentList.tc",
+	                  data: {
+	                      studyNo: studyNo,
+	                      shareNo: shareNo,
+	                      qnaNo: qnaNo,
+	                      commentCondition: commentCondition
+	                  },
+	                  dataType: "json", //응답이 오는 data는(밑에꺼) json형태 이다.
+	                  success: function(data) { //controller에서 json으로 받아오는 코드 만들어줌
+	                      $tableBody = $("#qnaTable tbody");
+	                      $tableBody.html("");
 
-		                var $tr;
-		                var $commentNo;
-		                var $memberId;
-		                var $commentContent;
-		                var $commentWriteDate;
-		                var $deleteButton;
-		                var $modifyButton;
+	                      var $tr;
+	                      var $commentNo;
+	                      var $memberId;
+	                      var $commentContent;
+	                      var $commentWriteDate;
+	                      var $deleteButton;
+	                      var $modifyButton;
+	                      
+	                      var currentPage;
+	                      var startPage;
+	                      var endPage;
+	                      var maxPage;
+	                      
+	                      var pageLimit=5;
+	                      
+	                      if ( currentPage == null ) {
+	                    	  currentPage = 1;
+	                      }
+	                      
+	                      $("#count").text("댓글 (" + data.length + ")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
+	                      if (data.length > 0) {
+	                    	  maxPage = parseInt((data.length / 5) + 0.8);
+	                    	  startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+		       				  endPage = startPage + pageLimit - 1;
+	                    	  
+	                          for (var i = (currentPage*5)-5; i < currentPage*5; i++) {
+	                              $tr = $("<tr class='trClass'>");
+	                              var commentNoRead = data[i].commentNo;
+	                              var commentContentRead = decodeURIComponent(data[i].commentContent);
+	                              $commentNo = $("<td width='100' id='commentNo'>").text(data[i].commentNo);
+	                              $memberId = $("<td width='100'>").text(data[i].memberId);
+	                              //내용(복호화)
+	                              $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
+	                              $commentNewContent = $("<td style='display:none;'><textarea>" + commentContentRead + "</textarea>");
+	                              //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
+	                              $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
+	                              $loginId = $("#loginId").val();
+	                              $writerId = $("writerId").val();
+	                              $modifyButton = $("<td>").html("<button class='btn btn-info btn-sm' id='modifyComment' onclick='modifyComment(this," + commentNoRead + ");'>수정</button>")
+	                              $modifyConformButton = $("<td style='display:none;'>").html("<button class='button' id='modifyConformComment' onclick='modifyConformComment(this," + commentNoRead + ");'>수정완료</button>")
+	                              $deleteButton = $("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this," + commentNoRead + ");'>삭제</button>");
+	                              $cancelButton = $("<td style='display:none;'>").html("<button class='button' id='cancelComment' onclick='getCommentList()'>취소</button>");
 
 
-		                $("#count").text("댓글 (" + data.length + ")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
-		                if (data.length > 0) {
-		                    for (var i in data) {
-		                        $tr = $("<tr class='trClass'>");
-		                        var commentNoRead = data[i].commentNo;
-		                        var commentContentRead = decodeURIComponent(data[i].commentContent);
-		                        $commentNo = $("<td width='100' id='commentNo'>").text(data[i].commentNo);
-		                        $memberId = $("<td width='100'>").text(data[i].memberId);
-		                        //내용(복호화)
-		                        $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
-		                        $commentNewContent = $("<td style='display:none;'><textarea>" + commentContentRead + "</textarea>");
-		                        //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
-		                        $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
-		                        $loginId = $("#loginId").val();
-		                        $writerId = $("writerId").val();
-		                        $modifyButton = $("<td>").html("<button class='btn btn-info btn-sm' id='modifyComment' onclick='modifyComment(this," + commentNoRead + ");'>수정</button>")
-		                        $modifyConformButton = $("<td style='display:none;'>").html("<button class='button' id='modifyConformComment' onclick='modifyConformComment(this," + commentNoRead + ");'>수정완료</button>")
-		                        $deleteButton = $("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this," + commentNoRead + ");'>삭제</button>");
-		                        $cancelButton = $("<td style='display:none;'>").html("<button class='button' id='cancelComment' onclick='getCommentList()'>취소</button>");
+	                              if ($loginId == data[i].memberId || $loginId == $writerId) {
+	                                  $tr.append($commentNo);
+	                                  $tr.append($memberId);
+	                                  $tr.append($commentContent);
+	                                  $tr.append($commentNewContent);
+	                                  $tr.append($commentWriteDate);
+
+	                                  if (data[i].memberId == $loginId) {
+	                                      $tr.append($modifyConformButton);
+	                                      $tr.append($modifyButton);
+	                                      $tr.append($deleteButton);
+	                                      $tr.append($cancelButton);
+
+	                                      console.log($loginId);
+	                                      console.log(commentNoRead);
+	                                      console.log($deleteButton);
+	                                  }
+	                                  $tableBody.append($tr); //(위에 코드 써있는) 파란색 댓글목록의 tablebody부분에 넣어줌
+	                              }
+	                          }
+							/* var tbody =
+	                          "<tr align='center' height='20'>
+	                              <td colspan='6'>
+	                                  <!-- [이전] -->
+	                                  <c:if test="${pi.studyCurrentPage <= 1 }">
+	                                      [이전] &nbsp;
+	                                  </c:if>
+	                                  <c:if test="${pi. studyCurrentPage > 1 }">
+	                                      <c:url var="before" value="studyList.tc">
+	                                          <c:param name="page" value="${pi.studyCurrentPage - 1 }" />
+	                                      </c:url>
+	                                      <a href="${before }">[이전]</a> &nbsp;
+	                                  </c:if>
 
 
-		                        if ($loginId == data[i].memberId || $loginId == $writerId) {
-		                            $tr.append($commentNo);
-		                            $tr.append($memberId);
-		                            $tr.append($commentContent);
-		                            $tr.append($commentNewContent);
-		                            $tr.append($commentWriteDate);
+	                                  <!-- 페이지 -->
+	                                  <c:forEach var="p" begin="${pi.studyStartPage }" end="${pi.studyEndPage }">
+	                                      <c:if test="${p eq studyCurrentPage }">
+	                                          <font color="red" size="4"><b>[${p }]</b></font>
+	                                      </c:if>
+	                                      <c:if test="${p ne studyCurrentPage }">
+	                                          <c:url var="pagination" value="studyList.tc">
+	                                              <c:param name="page" value="${p }" />
+	                                          </c:url>
+	                                          <a href="${pagination }">${p }</a> &nbsp;
+	                                      </c:if>
+	                                  </c:forEach>
 
-		                            if (data[i].memberId == $loginId) {
-		                                $tr.append($modifyConformButton);
-		                                $tr.append($modifyButton);
-		                                $tr.append($deleteButton);
-		                                $tr.append($cancelButton);
+	                                  <!-- [다음] -->
+	                                  <c:if test="${pi.studyCurrentPage >= pi.studyMaxPage }">
+	                                      [다음] &nbsp;
+	                                  </c:if>
+	                                  <c:if test="${pi. studyCurrentPage < pi.studyMaxPage }">
+	                                      <c:url var="after" value="studyList.tc">
+	                                          <c:param name="page" value="${pi.studyCurrentPage + 1 }" />
+	                                      </c:url>
+	                                      <a href="${after }">[다음]</a> &nbsp;
+	                                  </c:if>
+	                              </td>
+	                          </tr> */
 
-		                                console.log($loginId);
-		                                console.log(commentNoRead);
-		                                console.log($deleteButton);
-		                            }
-		                            $tableBody.append($tr); //(위에 코드 써있는) 파란색 댓글목록의 tablebody부분에 넣어줌
-		                        }
-		                    }
-		                } else { //데이터가 없을때
-		                    $tr = $("<tr>");
-		                    $rContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
+	                          } else { //데이터가 없을때
+	                          $tr = $("<tr>");
+	                          $rContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
 
-		                    $tr.append($commentContent);
-		                    $tableBody.append($tr);
-		                }
+	                          $tr.append($commentContent);
+	                          $tableBody.append($tr);
+	                      }
 
-		            }
-		        });
+	                  }
+	              });
 		    }
 		</script>
 
