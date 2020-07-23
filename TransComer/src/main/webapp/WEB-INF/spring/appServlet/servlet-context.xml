@@ -5,17 +5,21 @@
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/websocket
-        http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 	<!-- 상단에, 웹소켓 관련 추가 -->
 	<!-- xmlns:websocket, xsi:schemaLocation에서 2개, (1)websocket, (2)websocket/spring-webscoket.xsd추가 -->
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- 스케쥴러 어노테이션 -->
+	<task:annotation-driven />
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven ignore-default-model-on-redirect="false" />
@@ -31,6 +35,8 @@
 	
 	<context:component-scan base-package="com.tc.spring" />
 	
+	
+	
 	<!-- 웹소켓 1, echoHandler 클래스 등록(빈으로)-->
 	<beans:bean id="echoHandler" class="com.tc.spring.chat.controller.EchoHandler"></beans:bean>
 	
@@ -43,7 +49,6 @@
 		<websocket:handshake-interceptors>
 			<beans:bean class="com.tc.spring.chat.interceptor.HandshakeInterceptor"></beans:bean>
 		</websocket:handshake-interceptors>
-	
 	</websocket:handlers>
 	
 	<!-- AOP -->
