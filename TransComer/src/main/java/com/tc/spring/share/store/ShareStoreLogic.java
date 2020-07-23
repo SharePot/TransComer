@@ -52,8 +52,8 @@ public class ShareStoreLogic implements ShareStore {
 	}
 
 	@Override
-	public ArrayList<HashMap<String, Object>> selectShare(int shareNo) {
-		return (ArrayList)sqlSession.selectList("shareMapper.selectShare", shareNo);
+	public Share selectShare(int shareNo) {
+		return sqlSession.selectOne("shareMapper.selectShare", shareNo);
 	}
 
 	@Override
@@ -104,6 +104,11 @@ public class ShareStoreLogic implements ShareStore {
 	public int updateShareYnR(int shareNo) {
 		// TODO Auto-generated method stub
 		return sqlSession.update("shareMapper.updateShareYnR", shareNo);
+	}
+
+	@Override
+	public int selectShareLatestNo(String memberId) {
+		return sqlSession.selectOne("shareMapper.selectShareLatestNo", memberId);
 	}
 
 }

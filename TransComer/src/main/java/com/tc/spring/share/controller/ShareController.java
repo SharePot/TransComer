@@ -43,8 +43,6 @@ public class ShareController {
 	@Autowired
 	private FileController fController;
 	
-	@Autowired
-	private MemberController mController;
 	
 	@Autowired
 	private MemberService mService;
@@ -96,12 +94,21 @@ public class ShareController {
 	public ModelAndView shareDetail(ModelAndView mv, int shareNo){
 		int result = shareService.addReadCount(shareNo); // 조회수 증가
 		System.out.println("result :" + result);
-		ArrayList<HashMap<String, Object>> share = shareService.selectShare(shareNo);
+		Share share = shareService.selectShare(shareNo);
+		
+		Files fCategory = new Files();
+		fCategory.setQnaNo(0);
+		fCategory.setShareNo(shareNo);
+		fCategory.setStudyNo(0);
+		fCategory.setpReqNo(0);
+		
+		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
 		
 		if ( share != null ) {
 			// 메소드 체이닝 방식
-			mv.addObject("share", share)
-			.setViewName("share/shareDetailView");
+			mv.addObject("share", share);
+			mv.addObject("flist", fileList);
+			mv.setViewName("share/shareDetailView");
 		} else {
 			mv.addObject("msg", "게시글 상세조회 실패!").setViewName("common/errorPage");
 		}
@@ -117,25 +124,23 @@ public class ShareController {
 	
 	// 실제 DB 등록
 	@RequestMapping(value="shareInsert.tc", method=RequestMethod.POST)
-	public String shareInsert(Share share, Model model, HttpServletRequest request, MultipartFile[] uploadFile, Files f) {
+	public String shareInsert(Share share, Model model, HttpServletRequest requestH, MultipartHttpServletRequest request,
+			@RequestParam(name="uploadFile", required=false)MultipartFile[] uploadFile, Files f, String memberId) {
 		
 		int resultShare = shareService.insertShare(share);
+		int resultFile = 0;
 		String path = null;
+		
 		if (resultShare > 0) {
-			if(uploadFile.length > 0) {
-		         for(int i=0; i<uploadFile.length; i++) {
-		            if(!uploadFile[i].getOriginalFilename().contentEquals("")) {
-		               String renameFileName = saveFile(uploadFile[i], request);
-		               if(renameFileName != null) {   // 파일이 잘 저장된 경우
-		            	   f.setFileName(uploadFile[i].getOriginalFilename());
-		            	   f.setFilePath(renameFileName);
-		            	   f.setMemberId(share.getMemberId());
-		               }
-		            }
-		            
-		            int resultFile = shareService.insertFile(f);
-		           }
-		      }
+			int shareLatestNo = shareService.selectShareLatestNo(memberId);
+			f.setShareNo(shareLatestNo);
+			
+			for (int i = 0; i < uploadFile.length; i++) {
+				if (!uploadFile[i].getOriginalFilename().equals("")) {
+					resultFile = fController.insertFile(f, model, uploadFile[i], requestH, memberId);
+				}
+			}
+			
 			path = "redirect:slist.tc";
 		} else {
 			model.addAttribute("msg", "게시물 등록 실패");
@@ -145,69 +150,38 @@ public class ShareController {
 		return path;
 	}
 	
-	private String saveFile(MultipartFile uploadFile, HttpServletRequest request) {
-		String root = request.getSession().getServletContext().getRealPath("resources");
-	      String savePath = root + "\\uploadFiles";
-	      File folder = new File(savePath);
-	      
-	      if(!folder.exists()){
-	         folder.mkdirs();
-	      }
-	      
-	      String originFileName = uploadFile.getOriginalFilename();
-	      UUID uuid = UUID.randomUUID();
-	      String renameFileName = uuid.toString() + "." + originFileName.substring(originFileName.lastIndexOf(".")+1);
-	      String filePath = folder + "\\" +renameFileName;
-	      try {
-	         uploadFile.transferTo(new File(filePath));
-	      }catch(Exception e) {
-	         System.out.println("파일 전송 에러 : " + e.getMessage());
-	      }
-	      
-	      return renameFileName;
-	}
-
-	/*// 게시글 수정 화면
-	@RequestMapping("supview.tc")
-	public String shareUpdateView(int shareNo, Model model) {
-		model.addAttribute("share", shareService.selectShare(shareNo));
-		return "share/";
-	}
-	
-	
-	// 게시글 수정
-	@RequestMapping(value="supdate.tc", method=RequestMethod.POST)
-	public String qnaUpdate(Share share, Files files, Model model, HttpServletRequest request, MultipartFile reloadFile, String memberId) {
-		
-		int resultShare = shareService.updateShare(share);
-		int resultFile = 0;
-		if(resultShare > 0) {
-			if (!reloadFile.getOriginalFilename().equals("")) {
-				resultFile = fController.updateFile(files, model, request, reloadFile, memberId);
-			}
-			return "redirect:sdetail.tc?shareNo="+share.getShareNo();
-		} else {
-			model.addAttribute("msg", "게시글 수정 실패");
-			return "common/errorPage";
-		}
-	}*/
 	
 	// 게시글 삭제
-	/*@RequestMapping("sdelete.tc")
-	public String shareDelete(int shareNo, Files files, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
+	@RequestMapping("sdelete.tc")
+	public String shareDelete(int shareNo, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
 		// Share share = shareService.selectShare(shareNo);
 		int resultShare = shareService.deleteShare(shareNo);
 		int resultFile = 0;
 		
 		if(resultShare > 0) {
-			resultFile = fController.deleteFile(files, request, memberId);
+			
+			Files fCategory = new Files();
+			fCategory.setQnaNo(0);
+			fCategory.setShareNo(shareNo);
+			fCategory.setStudyNo(0);
+			fCategory.setpReqNo(0);
+			
+			ArrayList<Files> fileList = fController.selectFileList(fCategory);
+			
+			for(int i = 0; i < fileList.size(); i++) {
+				if (!fileList.isEmpty()) {
+					String del = "yes";
+					resultFile = fController.deleteFile(fileList.get(i), request, memberId, del);
+				}
+			}
+			
 			rd.addFlashAttribute("msg","게시글 삭제 성공");
 			return "redirect:slist.tc";
 		}else {
 			model.addAttribute("msg","게시글 삭제 실패");
 			return "common/errorPage";
 		}
-	}*/
+	}
 	
 	// 관리자 - 번역공유 승인 신청 리스트 페이지 이동
 	@RequestMapping("adminShareList.tc")
@@ -250,8 +224,8 @@ public class ShareController {
 		Member member=mService.selectMemberOne(memberId);
 		member.setPoint(member.getPoint()+3000);
 		
-		int insertPointChange=mController.pointChangeInsert(pointChange);
-		int updateMemberPhoint=mController.updateMemberPoint(member);
+		int insertPointChange=mService.insertPointChange(pointChange);
+		int updateMemberPhoint=mService.updateMemberPoint(member);
 		
 		
 		if (result > 0 && insertPointChange>0 && updateMemberPhoint>0) {

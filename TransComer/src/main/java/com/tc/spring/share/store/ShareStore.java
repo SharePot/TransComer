@@ -30,7 +30,7 @@ public interface ShareStore {
 		
 		
 		// 글 상세조회
-		public ArrayList<HashMap<String, Object>> selectShare(int shareNo);
+		public Share selectShare(int shareNo);
 
 		// 글  수정
 		public int updateShare(Share share);
@@ -41,6 +41,8 @@ public interface ShareStore {
 		public ArrayList<Share> selectAllList(SharePageInfo sPi);
 
 		public int insertFile(Files f);
+		
+		public int selectShareLatestNo(String memberId);
 
 		/**
 		 * 관리자가 번역공유 신청글 전체 조회

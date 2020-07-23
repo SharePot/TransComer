@@ -33,34 +33,53 @@
 		<td>환급 신청 포인트<br><p style="font-size:1px;">100,000 포인트 이상부터 환급 가능(단위 10,000)</p></td>
 		<td><input type="number" min="100000" step="10000" name="refundPoint" id="refundPoint" value="100000"></td>
 	</tr>
-	<tr>
+
+	<c:if test="${loginUser.account ne null}">
 	 <c:forTokens var="accountInfo" items="${loginUser.account }" delims="," varStatus="status">
 					<c:if test="${status.index eq 0 }">
 							<tr>
 							<td>은행명</td>
 							<td>
-								<input type="text" name="bank"  value="${accountInfo }"  size="6">
+								<input type="text" name="bank" id="bank" value="${accountInfo }"  size="6">
 							</td>
 							</tr>
 					</c:if>
 					<c:if test="${status.index eq 1 }">
 						<tr>
 							<td>예금주</td>
-							<td><input type="text" name="accountOwner"  value="${accountInfo }"></td>
+							<td><input type="text" name="accountOwner"  id="accountOwner" value="${accountInfo }"></td>
 						</tr>
 					</c:if>
 					<c:if test="${status.index eq 2}">
 						<tr>
 							<td>계좌번호</td>
-							<td><input type="text" name="account"   value="${accountInfo }"></td>
+							<td><input type="text" name="account" id="account"  value="${accountInfo }"></td>
 						</tr>
 					</c:if>
 				</c:forTokens>
+				</c:if>
+				<c:if test="${loginUser.account eq null}">
+						<tr>
+							<td>은행명</td>
+							<td>
+								<input type="text" name="bank" id="bank2" value=""  size="6">
+							</td>
+							</tr>
+						<tr>
+							<td>예금주</td>
+							<td><input type="text" name="accountOwner"  id="accountOwner2" value=""></td>
+						</tr>
+						<tr>
+							<td>계좌번호</td>
+							<td><input type="text" name="account" id="account2"  value=""></td>
+						</tr>
+				</c:if>
 					<tr><td colspan="2" align="center"><span id="message" style="color:blue;"></span></td></tr>
 				<tr>
 				<td colspan="2" align="center">
 					<input type="submit" onclick="return check();" value="환급 신청">&nbsp; &nbsp;
 					<input type="reset" value="취소">
+					<input type="hidden" id="acc" value="${loginUser.memberId }">
 				</td>
 			</tr>
 </table>
@@ -68,17 +87,27 @@
 </div>
 </section>
 </div>
-
 <script>
 
 
 function check(){
 	var havepoint=$("#havePoint").val();
-	console.log(havepoint);	
-if($("#havePoint").val() < $("#refundPoint").val()){
+	var bank=$("#bank").val();
+	var accountOwner=$("#accountOwner").val();
+	var account=$("#account").val();
+	var bank2=$("#bank2").val();
+	var accountOwner2=$("#accountOwner2").val();
+	var account2=$("#account2").val();
+if($("#havePoint").val() < $("#refundPoint").val() ){
 	$("#message").html("보유 포인트보다 환급 요청한 포인트가 더 높습니다.");
 	return false;
-}	
+}	else if(bank==null || accountOwner ==null || account==null ||bank2==null || accountOwner2 ==null || account2==null){
+	$("#message").html("환급 받을 계좌 정보를 입력해주세요.");
+	return false; 
+}else{
+	alert("환급 신청이 완료되었습니다.");	
+}
+
 	
 }
 

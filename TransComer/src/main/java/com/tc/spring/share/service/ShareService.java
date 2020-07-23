@@ -33,7 +33,7 @@ public interface ShareService {
 		// 등록
 		
 		// 상세조회
-		public ArrayList<HashMap<String, Object>> selectShare(int shareNo);
+		public Share selectShare(int shareNo);
 		
 		
 		// 삭제
@@ -44,6 +44,8 @@ public interface ShareService {
 		public int insertShare(Share share);
 
 		public int insertFile(Files f); 
+		
+		public int selectShareLatestNo(String memberId);
 		
 		
 		/**

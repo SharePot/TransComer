@@ -51,7 +51,7 @@ public class ShareServiceImpl implements ShareService {
 	}
 
 	@Override
-	public ArrayList<HashMap<String, Object>> selectShare(int shareNo) {
+	public Share selectShare(int shareNo) {
 		return shareStore.selectShare(shareNo);
 	}
 
@@ -102,6 +102,11 @@ public class ShareServiceImpl implements ShareService {
 	public int updateShareYnR(int shareNo) {
 		// TODO Auto-generated method stub
 		return shareStore.updateShareYnR(shareNo);
+	}
+
+	@Override
+	public int selectShareLatestNo(String memberId) {
+		return shareStore.selectShareLatestNo(memberId);
 	}
 	
 }

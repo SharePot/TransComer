@@ -171,7 +171,7 @@ public class StudyController {
 			fCategory.setQnaNo(0);
 			fCategory.setShareNo(0);
 			fCategory.setStudyNo(studyNo);
-			fCategory.setPersonalNo(0);
+			fCategory.setpReqNo(0);
 			
 			ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
 			
@@ -182,6 +182,8 @@ public class StudyController {
 		
 		//스터디 수정
 	@RequestMapping(value="studyUpdate.tc",method=RequestMethod.POST)	
+	
+	
 	public String updateStudy(Study study, Model model, HttpServletRequest requestH, MultipartHttpServletRequest request,
 			@RequestParam(name="reloadFile", required=false)MultipartFile[] reloadFile, @RequestParam(value="page", required=false)Integer page, String memberId) {
 		
@@ -194,7 +196,7 @@ public class StudyController {
 			fCategory.setQnaNo(0);
 			fCategory.setShareNo(0);
 			fCategory.setStudyNo(study.getStudyNo());
-			fCategory.setPersonalNo(0);
+			fCategory.setpReqNo(0);
 			
 			ArrayList<Files> fileList = fController.selectFileList(fCategory);
 			
@@ -222,7 +224,7 @@ public class StudyController {
 			fCategory.setQnaNo(0);
 			fCategory.setShareNo(0);
 			fCategory.setStudyNo(studyNo);
-			fCategory.setPersonalNo(0);
+			fCategory.setpReqNo(0);
 			
 			ArrayList<Files> fileList = fController.selectFileList(fCategory);
 			
