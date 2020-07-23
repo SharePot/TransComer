@@ -27,7 +27,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/emergency.png" class="itemImg">
-					<a href="">신고 리스트</a>
+					<a href="rANDblist.tc">신고 리스트</a>
 				</li>
 					
 				<li>

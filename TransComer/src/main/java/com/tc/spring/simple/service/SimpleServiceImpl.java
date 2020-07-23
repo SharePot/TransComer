@@ -127,11 +127,4 @@ public class SimpleServiceImpl implements SimpleService {
 		return simpleStore.memberAdoptCount(simpleReplyWriter);
 	}
 
-
-
-
-
-
-
-
 }

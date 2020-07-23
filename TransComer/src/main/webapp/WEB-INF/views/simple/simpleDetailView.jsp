@@ -51,6 +51,9 @@
 					<input type="hidden" id="loginId" value="${loginUser.memberId }">
 					<input type="hidden" id="simpleWriter" value="${sReq.simpleWriter }">
 					<input type="hidden" id="simpleAStatus" value="${sReq.simpleAStatus }">
+					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
+					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
+					<input type="hidden" id="adoptCount" value="${loginUser.adoptCount }">
                     <table id="replyTb">
 
 	                        <tr>
@@ -113,6 +116,7 @@
 										$responseWriter = $("<input type='hidden' id='responseWriter' value=" + data[i].simpleReplyWriter + ">");
 										$simpleReplyNo = $("<input type='hidden' id='simpleReplyNo' value=" + data[i].simpleReplyNo + ">");
 										$loginId = $("#loginId").val();
+										$adoptCount = $("#adoptCount").val();
 										$simpleWriter = $("#simpleWriter").val();
 										$simpleAStatus = $("#simpleAStatus").val();
 										$replyWrapperDiv = $("<div id='replyWrapper'>");
@@ -126,10 +130,10 @@
 													$trTwo = $("<tr>");
 														$adoptTd = $("<td id='adopt'>");
 															$adoptCountOne = $("<p class='adoptCount'>").text("책택된 답변수 : ");
-															$adoptCountTwo = $("<p class='adoptCount'>").text(data[i].adopCount);
+															$adoptCountTwo = $("<p class='adoptCount'>").text($adoptCount);
 														$etcTd = $("<td id='etc'>");
 															$replyDate = $("<p id='replyDate'>").text(data[i].simpleReplyDate);
-															$reportBtn = $("<a href='#' id='reportBtn'>").text(" 신고");
+															$reportBtn = $("<a href='#' target = '_blank' id='reportBtn' onclick='reportBtn();'>").text(" 신고");
 															$updateWindow = $("<a href='#' id='updateWindow' onclick='updateWindow(this, " + data[i].simpleReplyNo +")'>").text(" 수정");
 															$updateBtn = $("<button id='updateBtn' style='display:none;' onclick='updateBtn(this, " + data[i].simpleReplyNo +");'>").text("등록");
 															$updateResetBtn = $("<button id='updateResetBtn' style='display:none;' onclick='getSimpleResList()'>").text("취소");
@@ -256,12 +260,13 @@
 	  	function adoptBtn(obj, simpleReplyNo) {
 	  		
 	  		var sReqNo = ${sReq.simpleNo };
+	  		var simpleTitle = $("#simpleTitle").val();
 	  		var simpleReplyWriter = $("#responseWriter").val();
 	  		var result = window.confirm("답변을 채택하시겠습니까?")
 	  		if (result) {
 		  		$.ajax ({
 		  			url : "adoptReply.tc",
-		  			data : {simpleReplyNo : simpleReplyNo, sReqNo : sReqNo, simpleReplyWriter : simpleReplyWriter},
+		  			data : {simpleReplyNo : simpleReplyNo, sReqNo : sReqNo, simpleReplyWriter : simpleReplyWriter, simpleTitle:simpleTitle},
 		  			type : "post",
 		  			success : function (data) {
 		  				alter("답변을 채택하였습니다.");
@@ -275,6 +280,17 @@
 	  		
 	  		location.reload(true);
 	  		
+	  	}
+	  	
+	  	function reportBtn() {
+	  		
+	  		window.name = "rinsert.tc";
+	  		
+	  		var url = "reportForm.tc";
+	  		var name ="SharePot - 신고하기";
+	  		var option = "width = 500, height = 500, top = 100, left = 200, location = no, toolbars = no"
+	  	
+	  		window.open(url, name, option);
 	  	}
 	  	
 		

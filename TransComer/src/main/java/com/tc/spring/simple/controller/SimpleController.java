@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.tc.spring.alarm.domain.Alarm;
+import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.controller.MemberController;
 import com.tc.spring.member.domain.Member;
@@ -39,10 +41,10 @@ public class SimpleController {
 	private SimpleService simpleService;
 
 	@Autowired
-	private MemberController mController;
-
-	@Autowired
 	private MemberService mService;
+	
+	@Autowired
+	private AlarmService alarmService;
 
 	// -------------------- 단순의뢰 질문 --------------------
 
@@ -246,7 +248,7 @@ public class SimpleController {
 
 	@RequestMapping("adoptReply.tc")
 	@ResponseBody
-	public String replyAdopt(int simpleReplyNo, int sReqNo, String simpleReplyWriter) {
+	public String replyAdopt(int simpleReplyNo, int sReqNo, String simpleReplyWriter, String simpleTitle) {
 
 		/* 포인트 변동 내역 추가 및 업데이트를 위한 코드 */
 		PointChange pointChange = new PointChange();
@@ -258,14 +260,22 @@ public class SimpleController {
 		Member member = mService.selectMemberOne(simpleReplyWriter);
 		member.setPoint(member.getPoint() + 500);
 
+		Alarm alarm = new Alarm();
+		alarm.setAlarmContent("단순의뢰 답변이 채택되었습니다. \n 100포인트를 지급하였습니다.");
+		alarm.setMemberId(simpleReplyWriter);
+		alarm.setEtc(simpleTitle);
+		alarm.setBoardNo(sReqNo);
+		
 		int adoptReply = simpleService.adoptReply(simpleReplyNo);
 		int adoptRequest = simpleService.adoptRequest(sReqNo);
 		int memberAdoptCount = simpleService.memberAdoptCount(simpleReplyWriter);
-		int insertPointChange = mController.pointChangeInsert(pointChange);
-		int updateMemberPhoint = mController.updateMemberPoint(member);
+		int insertPointChange = mService.insertPointChange(pointChange);
+		int updateMemberPhoint = mService.updateMemberPoint(member);
+		int adoptAlarm = alarmService.insertAlarm(alarm);
+		
 
 		if (adoptReply > 0 && adoptRequest > 0 && memberAdoptCount > 0 && insertPointChange > 0
-				&& updateMemberPhoint > 0) {
+				&& updateMemberPhoint > 0 && adoptAlarm > 0) {
 			return "success";
 
 		} else {

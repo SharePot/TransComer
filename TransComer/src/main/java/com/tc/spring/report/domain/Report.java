@@ -66,7 +66,5 @@ public class Report {
 		return "Report [reportNo=" + reportNo + ", reporterMemberId=" + reporterMemberId + ", targetMemberId="
 				+ targetMemberId + ", reportContent=" + reportContent + ", reportDate=" + reportDate + "]";
 	}
-	
-	
-	
+
 }

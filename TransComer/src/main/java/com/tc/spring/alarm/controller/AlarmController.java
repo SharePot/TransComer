@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,21 +47,20 @@ public class AlarmController {
 		
 	}
 	
-	/*
-	 * public ModelAndView selectAlarmList(ModelAndView
-	 * mv, @RequestParam(value="page", required=false)Integer page) {
-	 * 
-	 * int arCurrentPage = (page != null) ? page : 1; int arListCount =
-	 * alarmService.getArListCount(); AlarmPageInfo aPi =
-	 * Pagination.getAlarmPageInfo(arCurrentPage, arListCount); ArrayList<Alarm>
-	 * arList = alarmService.selectAlarmList(aPi);
-	 * 
-	 * if (!arList.isEmpty()) { mv.addObject("aPi", aPi); mv.addObject("arList",
-	 * arList); mv.setViewName("alarm/alarmList"); } else {
-	 * mv.setViewName("common/errorPage"); }
-	 * 
-	 * return mv; }
-	 */
+	@RequestMapping("alarmCount.tc")
+	@ResponseBody
+	public ModelAndView getArListCount(ModelAndView mv) {
+		
+		int alarm = alarmService.getArListCount();
+		if (alarm > 0) {
+			mv.addObject("alarm", alarm);
+			mv.setViewName("common/menuBar");
+		} else {
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
 	
 	@RequestMapping("alarmView.tc")
 	public String alarmView() {

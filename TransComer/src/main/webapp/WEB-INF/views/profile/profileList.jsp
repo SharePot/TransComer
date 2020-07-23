@@ -74,10 +74,10 @@
 						<td colspan="3" align="center">
 								<form action="profileSearch.tc" name="searchForm" method="get">
 									<select id="searchCondition" name="searchCondition">
-										<option value="all" <c:if test="${simpleSearch.searchCondition == 'all' }">selected</c:if>>전체</option>
-										<option value="writer" <c:if test="${simpleSearch.searchCondition == 'writer' }">selected</c:if>>작성자</option>
-										<option value="title" <c:if test="${simpleSearch.searchCondition == 'title' }">selected</c:if>>제목</option>
-										<option value="content" <c:if test="${simpleSearch.searchCondition == 'content' }">selected</c:if>>내용</option>
+										<option value="all" <c:if test="${search.searchCondition == 'all' }">selected</c:if>>전체</option>
+										<option value="id" <c:if test="${search.searchCondition == 'id' }">selected</c:if>>회원</option>
+										<option value="no" <c:if test="${search.searchCondition == 'no' }">selected</c:if>>번호</option>
+										<option value="status" <c:if test="${simpleSearch.searchCondition == 'status' }">selected</c:if>>공개여부</option>
 									</select>
 									<input type="search" name="searchValue" value="" id="searchValue">
 									<button>검색</button><br>

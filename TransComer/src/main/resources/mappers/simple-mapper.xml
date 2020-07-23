@@ -69,7 +69,7 @@
 	
 	<!-- 단순의뢰 질문 삭제 -->
 	<update id="deleteSReq" parameterType="SimpleRequest">
-		UPDATE SIMPLE_REQUEST SET SIMPLE_D_STATUS = 'Y'
+		UPDATE SIMPLE_REQUEST SET SIMPLE_D_STATUS = 'Y' WHERE SIMPLE_NO = #{simpleNo}
 	</update>
 	
 	<!-- 단순의뢰 질문 개수 조회 -->
@@ -174,5 +174,10 @@
 		<update id="memberAdoptCount" parameterType="SimpleResponse">
 			UPDATE MEMBER SET ADOPT_COUNT = ADOPT_COUNT + 1 WHERE MEMBER_ID = #{simpleReplyWriter}
 		</update>
-	
+		
+	<!-- 알림처리 -->
+		<!-- 채택 알림 -->
+		<insert id="adoptAlarm" parameterType="SimpleResponse">
+			INSERT INTO ALARM VALUES (ALARM_NO_SEQ.NEXTVAL, '답변이 채택되었습니다', to_CHAR(sysdate,'yyyy/mm/dd hh24:mi'), #{simpleReplyWriter}, DEFAULT); 
+		</insert>		
 </mapper>

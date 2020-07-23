@@ -8,15 +8,15 @@ import com.tc.spring.alarm.domain.AlarmPageInfo;
 public interface AlarmStore {
 
 	/* public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi); */
-	
+
 	public ArrayList<Alarm> getAlarmList(String memberId);
-	
-	public int readAlarm (int alarmNo);
+
+	public int readAlarm(int alarmNo);
 
 	public int insertAlarm(Alarm alarm);
-	
+
 	public int deleteAlarm(int alarmNo);
-	
+
 	public int getArListCount();
-	
+
 }

@@ -34,7 +34,7 @@
 							<a href="adminPage.tc">관리자페이지</a>
 						</c:if>
 					</li>
-					<li><a href="${alarm }">알림</a></li>
+					<li><a href="${alarm }" id="alarmUrl">알림</a></li>
 				</c:if>
 			</ul>
         </div>
@@ -50,17 +50,14 @@
                 <ul>
                     <li class="current"><a href="#">Home</a></li>
                     <li>
-                    <c:url var="sList" value="sReqListView.tc" />
-					<c:url var="pList" value="plist.tc" />
-					<c:url var="study" value="studyList.tc" />
                         <a href="#">번역 의뢰</a>
                         <ul>
-                            <li><a href="${sList }">단순의뢰</a></li>
-                            <li><a href="${pList }">1:1 의뢰</a></li>
+                            <li><a href="sReqListView.tc">단순의뢰</a></li>
+                            <li><a href="plist.tc">1:1 의뢰</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">번역 공유</a></li>
-                    <li><a href="${study }">스터디</a></li>
+                    <li><a href="slist.tc">번역 공유</a></li>
+                    <li><a href="studyList.tc">스터디</a></li>
                     <li><a href="qlist.tc">Q&amp;A</a></li>
                 </ul>
             </nav>
@@ -83,5 +80,6 @@
     <script src="resources/js/main.js"></script>
     <!--템플릿 css-->
     <link rel="stylesheet" href="resources/css/main.css" />
+    
 
 </body></html>

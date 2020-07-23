@@ -133,11 +133,4 @@ public class SimpleStoreLogic implements SimpleStore {
 		return sqlSession.update("simpleMapper.memberAdoptCount", simpleReplyWriter);
 	}
 
-
-
-
-
-
-
-
 }

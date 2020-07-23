@@ -37,32 +37,9 @@
 		    }
 		</style>
 	</head>
+	<c:import url="../common/menuBar.jsp" />
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
-
-			<!-- Header -->
-				<section id="header">
-
-					<!-- Logo -->
-						<h1><a href="index.html">SharePot</a></h1>
-
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li class="current"><a href="#">Home</a></li>
-								<li>
-                                    <a href="#">번역 의뢰</a>
-                                    <ul>
-										<li><a href="#">단순 의뢰</a></li>
-										<li><a href="#">1:1 의뢰</a></li>
-                                    </ul>
-                                </li>
-								<li><a href="#">번역 공유</a></li>
-								<li><a href="#">스터디</a></li>
-                                <li><a href="#">Q&amp;A</a></li>
-							</ul>
-						</nav>
-            </section>
 
 			<!-- Main -->
 				<section id="main">

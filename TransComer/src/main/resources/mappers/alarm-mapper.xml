@@ -4,11 +4,12 @@
 
 	<resultMap type="Alarm" id="alarmResultSet">
 		<id property="alarmNo" column="ALARM_NO" />
-		<result property="memberNo" column="MEMBER_NO" />
 		<result property="alarmContent" column="ALARM_CONTENT" />
 		<result property="sendTime" column="SEND_TIME" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="checkYN" column="CHECK_YN" />
+		<result property="etc" column="ETC" />
+		<result property="boardNo" column="BAORD_NO" />
 	</resultMap>
 	
 	<!-- 알람 조회 -->
@@ -18,7 +19,7 @@
 	
 	<!-- 알람 개수 -->
 	<select id="getArListCount" resultType="_int">
-		SELECT COUNT(*) FROM ALARM WHERE CHECK_YN = 'N'
+		SELECT COUNT(*) FROM ALARM WHERE CHECK_YN = 'N' AND MEMBER_ID = #{memberId};
 	</select>
 	
 	<!-- 알람 읽음 처리 -->
@@ -30,5 +31,10 @@
 	<delete id="deleteAlarm" parameterType="_int">
 		DELETE FROM ALARM WHERE ALARM_NO = #{alarmNo}
 	</delete>
-
+	
+	<!-- 알람 등록하기 -->
+	<insert id="insertAlarm" parameterType="Alarm">
+		INSERT INTO ALARM VALUES (ALARM_NO_SEQ.NEXTVAL, #{alarmContent}, to_CHAR(sysdate,'yyyy/mm/dd hh24:mi'), #{memberId}, DEFAULT, #{etc}, #{boardNo} )
+	</insert>
+	
 </mapper>

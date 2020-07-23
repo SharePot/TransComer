@@ -53,19 +53,25 @@
 								$deleteBtn = $("<a id='deleteBtn' onclick='deleteBtn(this, " + data[i].alarmNo + ")'>").text("삭제");
 						$secondTr = $("<tr>");
 							$contentTd = $("<td colspan='3'>").text(decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
-						
+							$simpleContentTd = $("<td colspan='3'>").html(" ' <a href='sReqDetail.tc?simpleNo=" + data[i].boardNo + "'>" + data[i].etc + " </a> ' " + "게시물의 " + decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
+							console.log(data[i].boardNo);
 						$divSection.append($table);
 							$table.append($firstTr);
 								$firstTr.append($sendTimeTd);
 									$sendTimeTd.after($btnTd);
 										$btnTd.append($deleteBtn);
 								$firstTr.after($secondTr);
-									$secondTr.append($contentTd);
 									
 						if (data[i].checkYN == 'N') {
 							$deleteBtn.before($readBtn);
 							$table.css("color", "black");
-						}			
+						}
+						
+					if (data[i].etc != null) {
+						$secondTr.append($simpleContentTd);
+					} else {
+						$secondTr.append($contentTd);
+					}
 						
 					}
 				} else {

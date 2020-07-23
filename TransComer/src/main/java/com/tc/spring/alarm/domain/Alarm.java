@@ -1,34 +1,27 @@
 package com.tc.spring.alarm.domain;
 
-import java.sql.Date;
-
 public class Alarm {
 
-	private int memberNo;
 	private int alarmNo;
 	private String alarmContent;
 	private String sendTime;
 	private String memberId;
 	private String checkYN;
+	private String etc;
+	private int boardNo;
 	
 	public Alarm() {}
 
-	public Alarm(int memberNo, int alarmNo, String alarmContent, String sendTime, String memberId, String checkYN) {
+	public Alarm(int alarmNo, String alarmContent, String sendTime, String memberId, String checkYN, String etc,
+			int boardNo) {
 		super();
-		this.memberNo = memberNo;
 		this.alarmNo = alarmNo;
 		this.alarmContent = alarmContent;
 		this.sendTime = sendTime;
 		this.memberId = memberId;
 		this.checkYN = checkYN;
-	}
-
-	public int getMemberNo() {
-		return memberNo;
-	}
-
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
+		this.etc = etc;
+		this.boardNo = boardNo;
 	}
 
 	public int getAlarmNo() {
@@ -71,10 +64,26 @@ public class Alarm {
 		this.checkYN = checkYN;
 	}
 
+	public String getEtc() {
+		return etc;
+	}
+
+	public void setEtc(String etc) {
+		this.etc = etc;
+	}
+
+	public int getBoardNo() {
+		return boardNo;
+	}
+
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
+	}
+
 	@Override
 	public String toString() {
-		return "Alarm [memberNo=" + memberNo + ", alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime="
-				+ sendTime + ", memberId=" + memberId + ", checkYN=" + checkYN + "]";
+		return "Alarm [alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime=" + sendTime + ", memberId="
+				+ memberId + ", checkYN=" + checkYN + ", etc=" + etc + ", boardNo=" + boardNo + "]";
 	}
-	
+
 }

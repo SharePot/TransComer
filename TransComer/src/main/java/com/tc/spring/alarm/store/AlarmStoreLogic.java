@@ -22,15 +22,6 @@ public class AlarmStoreLogic implements AlarmStore{
 		return sqlSession.selectOne("alarmMapper.getArListCount");
 	}
 	
-	// 알람 전체 조회
-	/*
-	 * @Override public ArrayList<Alarm> selectAlarmList(AlarmPageInfo aPi) { int
-	 * offset = (aPi.getArCurrentPage() - 1) * aPi.getArBoardLimit(); RowBounds
-	 * rowBounds = new RowBounds(offset, aPi.getArBoardLimit()); return
-	 * (ArrayList)sqlSession.selectList("alarmMapper.selectAlarmList", null,
-	 * rowBounds); }
-	 */
-	
 	@Override
 	public int readAlarm(int alarmNo) {
 		return sqlSession.update("alarmMapper.readAlarm", alarmNo);
@@ -38,8 +29,7 @@ public class AlarmStoreLogic implements AlarmStore{
 	
 	@Override
 	public int insertAlarm(Alarm alarm) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("alarmMapper.insertAlarm", alarm);
 	}
 
 	@Override
@@ -51,6 +41,5 @@ public class AlarmStoreLogic implements AlarmStore{
 	public ArrayList<Alarm> getAlarmList(String memberId) {
 		return (ArrayList)sqlSession.selectList("alarmMapper.selectAlarmList", memberId);
 	}
-
 
 }

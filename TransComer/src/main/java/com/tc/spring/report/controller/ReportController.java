@@ -119,13 +119,17 @@ public class ReportController {
 		return mv;
 	}
 	
+	@RequestMapping("reportForm.tc")
+	public String reportForm() {
+		return "member/reportForm";
+	}
+	
 	// 신고 넣기
 	@RequestMapping(value="rinsert.tc", method=RequestMethod.POST)
 	public String insertReport(Report report, Model model,  HttpServletRequest request) {
-		int result = 0;
 		String path = null;
 		
-		result = reportService.insertReport(report, request);
+		int result = reportService.insertReport(report, request);
 		
 		if (result > 0) {
 			// 나중에 바꿔줘야 할 값
@@ -142,30 +146,27 @@ public class ReportController {
 	빼먹었으니 요청데이터가 없었던것 같다.
 	그럼 @RequestBody  와 @ResponseBody 에 대해서 알아보자.
 	@RequestBody 와 @ResponseBody 어노테이션은 각각 HTTP 요청 몸체를 자바 객체로 변환하고 자바 객체를 HTTP 응답 몸체로 변환해주는데 사용된다.
-*/
+	 */
 
 	// ajax로 처리했기 때문에 return으로 redirect:rANDblist.tc를 사용할 곳이 없게 된다.
 	// 신고 승인 후 해당 아이디 목록 어떻게 처리할지 생각
 	@ResponseBody
 	@RequestMapping("rupdate.tc")
 	public void updateReport(Report report, HttpServletRequest request) {
-		int result = 0;
-		String path = null;
 		
-		result = reportService.updateReport(report, request);
+		int result = reportService.updateReport(report, request);
 	}
 	
 	// 블랙리스트 해제 (ajax 처리)
 	@ResponseBody
 	@RequestMapping("bupdate.tc")
 	public void updateBlack(Member member, HttpServletRequest request) {
-		int result = 0;
 		
-		result = reportService.updateBlack(member, request);
+		int result = reportService.updateBlack(member, request);
 	
 	}
 	
-	// 신고 반려 및 경고(ajax 처리)
+	// 신고 반려 (ajax 처리)
 	@ResponseBody
 	@RequestMapping("rdelete.tc")
 	public void deleteReport(int reportNo, HttpServletRequest request) {
