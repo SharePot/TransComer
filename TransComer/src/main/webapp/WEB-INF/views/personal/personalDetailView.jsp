@@ -163,9 +163,9 @@
                                 <hr>
                                 <!-- 리뷰 목록 -->
                                 <div id="reviewDiv">
-									<table class="table table-borderless" id="rTable">
+								<!-- 	<table class="table table-borderless" id="rTable">
 										
-									</table>
+									</table> -->
 								</div>
                                 
                                 <!-- <div id="reviewDiv">
@@ -187,9 +187,14 @@
 								
 								
 								<hr>
+								<p>${personalReqRep.pRepTranslator }</p>
 								<!-- 리뷰 등록  -->
                                 <div class="col-sm-12 col-md-12">
-                               		<c:if test="${ !empty loginUser }">
+								<input type="hidden" name="pRepTranslator" value="${personal.memberId}">
+								<input type="hidden" name="memberId" value="${personal.memberId}">
+                                	<c:if test="${ !empty loginUser }">
+                                	<%-- <c:if test="${ loginUser.memberId eq personalReqRep.memberId }"> --%>
+                               		<%-- <c:if test="${ personalReqRep.pReqCheckBuy != null  }"> --%>
 	                                    <form>
 	                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
 	                                        <input type="hidden" name="personalNo" value="${personal.personalNo }" />
@@ -213,27 +218,24 @@
                         <section class="box" style=" border: 0px;">
                             <center>
                                 <div class="imgbox" style="background: ">
-                                    <img class="profile" src="/imges/girl.png">
+                                    <img class="profile" src="/resources/uploadFiles/${profile.profileFilePath}">
                                 </div>
                             </center>
                             <br>
                             <header>
                                 <h3 style="text-align:center">${personal.memberId }</h3>
+                                <%-- <b>${profile.memberId}</b> --%>
                             </header>
                             <hr>
-                            <p> 숙명여대 법학부&국제통상학과 졸업
-                                <br>대표이사 비서& 무역회사 근무 3년
-                                <br>국제통번역협회 자격증 1급
-                                <br>Business English Translator Lev 1
-                                <br>TOEIC 910 JLPT 2급
-                                <br>사용가능 개발언어: JAVA</p>
-                            <footer>
+                            <p>${profile.introduce }</p>
+                            <!-- 쪽지보내기 버튼-->
+                            <!-- <footer>
                                 <ul class="actions">
                                     <li>
                                         <a href="#" class="button alt">쪽지 보내기</a>
                                     </li>
                                 </ul>
-                            </footer>
+                            </footer> -->
                         </section>
                     </div>
                 </div>
@@ -334,38 +336,45 @@
     			data : {personalNo:personalNo},
     			dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
     			success:function(data){	//controller에서 json으로 받아오는 코드 만들어줌
-    				$tableBody = $("#reviewDiv");
-    				$tableBody.html("");
+    				$reviewDiv = $("#reviewDiv");
+    				$reviewDiv.html("");
     				
-    				var $tr;
+    				/* var $table;
     				var $memberId;
     				var $revContent;
-    				var $revWriteDate;
+    				var $revWriteDate; */
     				
     				if( data.length > 0 ) { 
     					for( var i in data) {
     						//var reviewContentRead = decodeURIComponent(data[i].revContent);
-    						$tr = $("<tr>");
-    						$memberId = $("<td>").text(data[i].memberId);
-    						//내용(복호화)
+    						$table = $("<table>");
+    						$tr1 = $("<tr>");
+    						$tr2 = $("<tr>");
+    						$memberId = $("<td style='color:black'>").text(data[i].memberId);
+    						$report = $("<td style='text-align:right;'><button type='submit'>신고</button>");
     						$revWriteDate = $("<td style='text-align:right;'>").text(data[i].revWriteDate);
-    						$tr = $("<tr>");
-    						$revContent = $("<td colspan='2'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
+    						$revContent = $("<td colspan='3'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
     						
-    						 $tr.append($memberId);
-    						 $tr.append($revContent);
-    						 $tr.append($revWriteDate);
-    						 $tableBody.append($tr);
+    						 $reviewDiv.append($table);
+    						 $table.append($tr1);
+    						 $tr1.append($memberId);
+    						 $tr1.append($revWriteDate);
+    						 $tr1.append($report);
+    						 $table.append($tr2);
+    						 $tr2.append($revContent);
+    						 
     						 
     						 console.log("댓글 내용 : " + decodeURIComponent(data[i].revContent));
     						 console.log("댓글 내용 : " + data[i].revContent);
     					}
     				}else{	// 데이터가 없을 때
+    					$table = $("<table>");
     					$tr =  $("<tr>");
-    					$revContent = $("<td colspan='2'>").text("등록된 댓글이 없습니다.");
+    					$revContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
     					
+    					$reviewDiv.append($table);
+    					$table.append($tr);
     					$tr.append($revContent);
-    					$tableBody.append($tr);
     				}
     			}
     		});

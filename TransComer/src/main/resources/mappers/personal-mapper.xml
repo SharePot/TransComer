@@ -20,8 +20,8 @@
 	
 	
 	<resultMap type="PersonalReqRep" id="personalReqRepResultSet">
-		<id property="pReqNo" column="P_REQ_NO "/>
-		<result property="pReqContent" column="P_REQ_CONTENT "/>
+		<id property="pReqNo" column="P_REQ_NO"/>
+		<result property="pReqContent" column="P_REQ_CONTENT"/>
 		<result property="pReqPLang" column="REQ_P_LANG"/> 
 		<result property="pReqTLang" column="REQ_T_LANG"/> 
 		<result property="pReqDetail" column="P_REQ_DETAIL"/>
@@ -121,7 +121,10 @@
 	
 	<!-- 1:1 의뢰 게시글 상세조회 -->
 	<select id="selectPersonalOne" parameterType="_int" resultMap="personalResultSet">
-		SELECT * FROM PERSONAL WHERE PERSONAL_NO = #{personalNo}
+		SELECT * FROM PERSONAL
+		WHERE PERSONAL_NO = #{personalNo}
+		
+		<!-- SELECT * FROM PERSONAL WHERE PERSONAL_NO = #{personalNo} -->
 	</select>
 	
 	

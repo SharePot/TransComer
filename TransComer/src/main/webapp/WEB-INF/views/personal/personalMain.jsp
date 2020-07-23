@@ -12,16 +12,17 @@
     	}
     
         .imgbox {
-            width: 150px;
-            height: 150px;
-            border-radius: 70%;
+            width: 100%;
+            min-height: 150px;
             overflow: hidden;
+            background: white;
+            /*border-radius: 70%;*/
             /*justify-content: center;*/
         }
 
         .profile {
             width: 100%;
-            height: 100%;
+            height: width;
             object-fit: cover;
         }
         
@@ -82,8 +83,8 @@
                                 <div class="col-4 col-6-medium col-12-small">
                                     <section class="box">
                                         <center>
-                                            <div class="imgbox" style="background: #BDBDBD;">
-                                                <img class="profile" src="">
+                                            <div class="imgbox">
+                                                <img class="profile" src="/resources/pUploadFiles/${p.personalFilePath}">
                                             </div>
                                         </center>
                                         <br>
@@ -97,7 +98,7 @@
                                         <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
-                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}" class="button alt" style="background-color:lightblue;">자세히 보기</a></li>
+                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}&memberId=${p.memberId}" class="button alt" style="background-color:lightblue;">자세히 보기</a></li>
                                             </ul>
                                         </footer>
                                     </section>
