@@ -29,7 +29,6 @@ public class PersonalServiceImpl implements PersonalService {
 
 	@Override
 	public Personal selectOne(int personalNo) {
-
 		return personalStore.selectOne(personalNo);
 	}
 

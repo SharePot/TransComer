@@ -24,6 +24,8 @@ import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.Profile;
+import com.tc.spring.member.service.MemberService;
 import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalReqRep;
@@ -36,6 +38,9 @@ public class PersonalController {
 
 	@Autowired
 	private PersonalService personalService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Autowired
 	private FileController fController;
@@ -111,13 +116,17 @@ public class PersonalController {
 	
 	// 1:1게시판 상세 조회
 	@RequestMapping("pDetail.tc")
-	public ModelAndView personalDetail(ModelAndView mv, int personalNo,
+	public ModelAndView personalDetail(ModelAndView mv, int personalNo, String memberId,
 			@RequestParam(name = "page", required = false) Integer page) {
 
 		int currentPage = (page != null) ? page : 1;
 		personalService.addReadCount(personalNo); // 조회수 증가
-
+		
 		Personal personal = personalService.selectOne(personalNo); // 상세조회
+		Member mem = memberService.selectMemberOne(memberId);
+		Profile profile = memberService.selectProfileOne(mem.getMemberNo());
+		/*PersonalReqRep reqrep = personalService.select*/
+
 		String pLangFull = personal.getPersonalPLang(); // pLang 원본 데이터
 		String[] pLangList = pLangFull.split(","); // pLang 원본을 ','를 기준으로 자른다
 
@@ -145,7 +154,7 @@ public class PersonalController {
 		}
 	
 		if (personal != null) {
-			mv.addObject("personal", personal).addObject("currentPage", currentPage)
+			mv.addObject("personal", personal).addObject("currentPage", currentPage).addObject("profile", profile)
 					.setViewName("personal/personalDetailView");
 		} else {
 			mv.addObject("msg", "게시글 전체조회 실패");
@@ -256,8 +265,11 @@ public class PersonalController {
 		int result = personalService.updatePersonal(personal);
 
 		System.out.println("---컨트롤러 result : " + result);
+		System.out.println("---컨트롤러 personalNo : " + personal.getPersonalNo());
+		
+		
 		if (result > 0) {
-			return "redirect:pDetail.tc?personalNo=" + personal.getPersonalNo();
+			return "redirect:pDetail.tc?personalNo=" + personal.getPersonalNo()+"&memberId="+personal.getMemberId();
 		} else {
 			model.addAttribute("msg", "등록실패");
 			return "common/errorPage";
@@ -335,37 +347,6 @@ public class PersonalController {
 		return path;
 		
 	}
-	
-	
-	
-	
-	
-	
-	/*@RequestMapping(value = "pReqInsert.tc", method=RequestMethod.POST)
-	public String requestInsert(PersonalReqRep personalReqRep, Files files, Model model, @RequestParam(name="uploadFile", required=false)MultipartFile[] uploadFile, MultipartHttpServletRequest request,  HttpServletRequest requestH, String memberId) {
-		
-		int result = 0;
-		int resultFile = 0;
-		String path = null;
-		result = personalService.insertRequest(personalReqRep, requestH);
-		
-		if (result > 0) {
-			int personalLastNo = personalService.selectPersonalLastNo(memberId);
-			files.setPersonalNo(personalLastNo);
-			
-			for (int i = 0; i < uploadFile.length; i++) {
-				if (!uploadFile[i].getOriginalFilename().equals("")) {
-					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
-				}
-			}
-			path =  "redirect:plist.tc";
-		} else {
-			model.addAttribute("msg", "등록실패");
-			path = "common/errorPage";
-		}
-		return path;
-		
-	}*/
 	
 	
 	
