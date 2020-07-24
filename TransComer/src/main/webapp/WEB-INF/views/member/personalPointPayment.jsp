@@ -15,7 +15,9 @@
 	
 	input {
 		-webkit-appearance : active !important;
+			appearance: active !important;
 	}
+	
 </style>
 </head>
 <body>
@@ -26,8 +28,8 @@
 <hr>
 <center>1:1 의뢰 결제 세부 사항</center>
 <br><br>
-<form action="memberUpdatePreminum.tc" method="post">
-<input type="hidden" name="memberId" value="${loginUser.memberId }">
+<form action="personalPayUpdate.tc" method="post">
+<input type="hidden" name="personalReqRep" value="${personalReqRep}">
 <table border="1">
 	<tr>
 		<th>번역가</th>
@@ -38,11 +40,11 @@
 			
 	</tr>
 	<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>${personalReqRep.pRepTranslator }</td>
+			<td>${personalReqRep.pReqTLang }</td>
+			<td>${personalReqRep.pReqPLang }</td>
+			<td>${personalReqRep.pReqDetail }</td>
+			<td>${personalReqRep.pReqPrice }</td>
 	</tr>
 </table>
 
@@ -53,7 +55,7 @@
 	</tr>
 	<tr>
 		<td>결제 예정 포인트</td>
-		<td><input type="text" value="" readonly ></td>
+		<td><input type="text" value="${personalReqRep.pReqPrice }" name="pReqPrice" readonly ></td>
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
@@ -66,6 +68,8 @@
 		<td colspan="2" align="center"><input type="submit" onclick="return check()" value="결제"> &nbsp;<input type="reset" value="취소"></td>
 	</tr>
 	</table>
+	<input type="hidden" name="memberId" value="${personalReqRep.memberId }">
+	<input type="hidden" name="pReqNo" value="${personalReqRep.pReqNo }">
 	</form>
 	</div>
 	</section>

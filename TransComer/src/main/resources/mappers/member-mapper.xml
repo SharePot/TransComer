@@ -237,28 +237,7 @@
 	SELECT COUNT(*) FROM POINT_RETURN
 	</select>
 	
-	<!-- 1:1의뢰 결제 관련 -->	
-	<resultMap type="PersonalReqRep" id="personalReqRepResultSet">
-		<id property="pReqNo" column="P_REQ_NO "/>
-		<result property="pReqContent" column="P_REQ_CONTENT "/>
-		<result property="pReqPLang" column="REQ_P_LANG"/> 
-		<result property="pReqTLang" column="REQ_T_LANG"/> 
-		<result property="pReqDetail" column="P_REQ_DETAIL"/>
-		<result property="pReqDate" column="P_REQ_DATE"/>
-		<result property="pReqPredict" column="P_REQ_PREDICT"/>
-		<result property="pRepTranslator" column="P_REP_TRANSLATOR"/>
-		<result property="pRepResult" column="P_REP_RESULT"/>
-		<result property="pReqPrice" column="P_REQ_PRICE"/>
-		<result property="pReqAccept" column="P_REQ_ACCEPT"/>
-		<result property="pReqCheckBuy" column="P_REQ_CHECK_BUY"/>
-		<result property="personalNo" column="PERSONAL_NO"/>
-		<result property="memberId" column="MEMBER_ID"/>
-	</resultMap>
 	
-	 <!-- 프리미엄 가입 (업데이트) -->
-   	<update id="memberUpdatePreminum" parameterType="Member">
-   	UPDATE MEMBER SET MEMBER_STATUS=#{status} WHERE MEMBER_ID=#{memberId}
-   	</update>
 	
    <!-- 프로필 관련 쿼리 -->
    <resultMap type="Profile" id="profileResultSet">

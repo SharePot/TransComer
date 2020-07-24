@@ -10,6 +10,7 @@ import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
+import com.tc.spring.member.domain.ProfileSearch;
 
 public interface MemberStore {
 	
@@ -80,7 +81,7 @@ public interface MemberStore {
 	
 	//프로필====================================================
 
-	public ArrayList<Profile> selectProfileList();
+	public ArrayList<Profile> selectProfileList(MemberPageInfo pi);
 	
 	public Profile countProfile(int memberNo);
 	
@@ -95,4 +96,12 @@ public interface MemberStore {
 	public int updateStatusY(int memberNo);
 	
 	public int updateStatusN(int memberNo);
+	
+	public int getPfListCount();	
+
+	public int getPfSearchListCount(ProfileSearch pfSearch);
+	
+	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi);
+
+
 }

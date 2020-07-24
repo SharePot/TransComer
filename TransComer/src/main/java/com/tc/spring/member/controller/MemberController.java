@@ -24,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.tc.spring.alarm.domain.Alarm;
+import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.member.domain.MemberPageInfo;
@@ -31,7 +33,10 @@ import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
+import com.tc.spring.member.domain.ProfileSearch;
 import com.tc.spring.member.service.MemberService;
+import com.tc.spring.personal.domain.PersonalReqRep;
+import com.tc.spring.personal.service.PersonalService;
 import com.tc.spring.study.domain.Study;
 import com.tc.spring.study.domain.StudyPageInfo;
 import com.tc.spring.study.domain.StudySearch;
@@ -45,6 +50,10 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private AlarmService alarmService;
+	@Autowired
+	private PersonalService pesonalService;
 
 	// 회원리스트
 	@RequestMapping("memberList.tc")
@@ -217,25 +226,33 @@ public class MemberController {
 		return "member/enroll";
 	}
 
+
 	// 회원가입
-	@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
-	public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
-			String bankName, String accountNumber, String accountName) {
-		member.setAddress(post + "," + address1 + "," + address2);
-		member.setAccount(bankName + "," + accountNumber + "," + accountName);
-		// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
-		int result = memberService.insertMember(member);
-		System.out.println("result 값은 ? : " + result);
-		if (result > 0) {
-			mv.setViewName("home");
-			// model과 mv의 차이점: https://hongku.tistory.com/116
-		} else {
-			mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
-			mv.setViewName("common/errorPage");
-			// model 비즈니스로직 수행하는 곳
+		@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
+		public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
+				String bankName, String accountNumber, String accountName) {
+			member.setAddress(post + "," + address1 + "," + address2);
+			member.setAccount(bankName + "," + accountNumber + "," + accountName);
+			// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
+			
+			Alarm alarm = new Alarm(); // 수정
+			alarm.setAlarmContent("SharePot 회원가입을 축하드립니다."); // 수정
+			alarm.setMemberId(member.getMemberId()); // 수정
+			
+			int adoptAlarm = alarmService.insertAlarm(alarm); // 수정
+			int result = memberService.insertMember(member);
+			System.out.println("result 값은 ? : " + result);
+			if (result > 0 && adoptAlarm > 0 ) { // 수정
+				mv.setViewName("home");
+				// model과 mv의 차이점: https://hongku.tistory.com/116
+			} else {
+				mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
+				mv.setViewName("common/errorPage");
+				// model 비즈니스로직 수행하는 곳
+			}
+			return mv;
 		}
-		return mv;
-	}
+
 
 	// 회원정보 수정
 	@RequestMapping(value = "mupdate.tc", method = RequestMethod.POST)
@@ -410,6 +427,38 @@ public class MemberController {
 		model.addAttribute("pi", pi);
 		return "member/memberPointChangeList";
 	}
+	
+	
+	
+	// 1:1 의뢰 승인 및 포인트 업데이트 
+	@RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
+	public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
+		System.out.println("member"+personalReqRep);
+		PointChange pointChange= new PointChange();
+		pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
+		pointChange.setPointAmount(personalReqRep.getpReqPrice());
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(personalReqRep.getMemberId());
+		
+		Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
+		member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
+		
+		
+		personalReqRep.setpReqAccept("C");
+		int insertPointChange=memberService.insertPointChange(pointChange);
+		int updateMemberPhoint=memberService.updateMemberPoint(member);
+		int result = pesonalService.updateReqRepAccept(personalReqRep);
+		
+		if (result > 0 && insertPointChange>0&& updateMemberPhoint>0) {
+			return "member/myPage";
+		} else {
+			model.addAttribute("msg", "프리미엄 가입 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	
+	
 
 	
 	// 포인트 환급=============================================================================
@@ -489,20 +538,26 @@ public class MemberController {
 
 	// =============================================================================
 
+
 	// 프로필 등록 회원 전체 리스트
-	@RequestMapping("profileList.tc")
-	public ModelAndView profileList(ModelAndView mv) {
-		ArrayList<Profile> pfList = memberService.selectProfileList();
-		if (!pfList.isEmpty()) {
-			mv.addObject("pfList", pfList);
-			mv.setViewName("profile/profileList");
-		} else {
-			mv.setViewName("common/errorPage");
+		@RequestMapping("profileList.tc")
+		public ModelAndView profileList(ModelAndView mv, @RequestParam(value = "page", required = false)Integer page) {
+			
+			int currentPage = (page != null) ? page : 1;
+			int listCount = memberService.getPfListCount();
+			MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
+			ArrayList<Profile> pfList = memberService.selectProfileList(pi);
+			if (!pfList.isEmpty()) {
+				mv.addObject("pi", pi);
+				mv.addObject("pfList", pfList);
+				mv.setViewName("profile/profileList");
+			} else {
+				mv.setViewName("common/errorPage");
+			}
+
+			return mv;
+
 		}
-
-		return mv;
-
-	}
 
 	// 프로필 상세보기
 	@RequestMapping("profileDetail.tc")
@@ -551,7 +606,6 @@ public class MemberController {
 
 		return path;
 	}
-
 	// 파일 저장
 	public String saveFile(MultipartFile file, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -646,5 +700,24 @@ public class MemberController {
 
 		return "common/errorPage";
 	}
+	
+	// 프로필 등록 회원 검색
+
+		@RequestMapping("profileSearch.tc")
+		public String profileSearch(ProfileSearch pfSearch, Model model, @RequestParam(value="page", required=false)Integer page) {
+			
+			int currentPage = (page != null) ? page : 1;
+			int listCount = memberService.getPfSearchListCount(pfSearch);
+			MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
+			ArrayList<Profile> pfSearchList = memberService.searchProfile(pfSearch, pi);
+			
+			model.addAttribute("list", pfSearchList);
+			model.addAttribute("search", pfSearch);
+			model.addAttribute("pi", pi);
+			
+			return "profile/profileList";
+			
+		}
+
 
 }
