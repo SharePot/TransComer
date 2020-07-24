@@ -14,22 +14,15 @@ html {
 }
 
 #contents {
-	min-height: 400px;
-	width: 80%;
-	float: left;
-}
-
-#contents {
 	width: auto;
 	float: none;
-	min-height: 200px;
-	margin-bottom: 10px;
+	height: auto !important;
+	line-height : 35px;
 }
 
 .p {
 	padding-left: 10px;
 	text-align: center;
-	/*text-indent: 400px;*/
 }
 
 #p {
@@ -43,16 +36,16 @@ html {
 #passwordRe{
 	border: 1px solid gray;
 	border-radius: 15px;
-		/*border: none;
-		border-top: 0px;
-		border-right: 0px;
-		border-left: 0px;*/
-		/*border-bottom: 0px;*/
 	width: 50%;
 }
 #selectBox{
 	border-radius: 15px;
 }
+
+#deleteBtn, #resetBtn {
+	background: skyblue !important;
+}
+
 </style>
 </head>
 <c:import url="../common/menuBar.jsp" />
@@ -60,22 +53,24 @@ html {
 	<div id="page-wrapper">
 		<!-- Main -->
 		<section id="main">
+			<br>
+			<br>
 			<div>
 				<input type="hidden" id="memberPw" value="${loginUser.memberPw }">
 				<p id="p1" style="font-size: 30px; text-align: center; font-weight: 900">회원 탈퇴 안내</p>
 			</div>
 			<div id="contents">
 
-				<p class="p">회원 탈퇴 시 가입 당시 기록되었던 모든 개인정보는 삭제됩니다.</p>
-				<p class="p" style="margin-right: 35px;">또한 가지고 계신 포인트는 재사용 및 복구가 불가능합니다.</p>
-				<p class="p" style="margin-right: 25px;">모두 숙지 부탁드리고 신중한 탈퇴를 진행해주시기 바랍니다.</p>
-				<p class="p" style="margin-right: 9px;">탈퇴를 원하시면 비밀번호를 입력 한 후에 탈퇴를 진행해주세요.</p>
+				<p class="p">회원 탈퇴 시 가입 당시 기록되었던 모든 개인정보는 삭제됩니다. <br>
+				또한 가지고 계신 포인트는 재사용 및 복구가 불가능합니다.<br>
+				모두 숙지 부탁드리고 신중한 탈퇴를 진행해주시기 바랍니다.<br>
+				탈퇴를 원하시면 비밀번호를 입력 한 후에 탈퇴를 진행해주세요.</p>
 			</div>
 
 				<input type="hidden" id="memberId" value="${loginUser.memberId }">
 				<div style="text-align: center;">
-					<label style="margin-right: 2%;">비밀번호</label>
-						<input type="password" id="passwordRe" placeholder="비밀번호를 입력해주세요." style="width: 20%;">
+					<label>비밀번호</label>&nbsp;&nbsp;
+						<input type="password" id="passwordRe" placeholder="   비밀번호를 입력해주세요." style="width: 20%;">
 					<br><br>
 					<p id="pwError"></p>
 				</div>
@@ -85,7 +80,7 @@ html {
 					<c:url var="delete" value="memberDelete.tc">
 						<c:param name="memberId" value="${loginUser.memberId }"/>
 					</c:url>
-					<a type="button" name="submitBtn" id="deleteBtn" href="${delete }">탈퇴</a>
+					<button name="submitBtn" id="deleteBtn" href="${delete }">탈퇴</button>
 				</div>
 		</section>
 

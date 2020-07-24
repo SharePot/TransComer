@@ -12,7 +12,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
 	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
 	crossorigin="anonymous">
-<title>SharePot - 단순의뢰 게시글 조회</title>
+<title>SharePot - 단순의뢰 게시판</title>
 </head>
 <body class="homepage is-preload">
     <c:import url="../common/menuBar.jsp" />
@@ -55,13 +55,12 @@
 					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
 					<input type="hidden" id="adoptCount" value="${loginUser.adoptCount }">
                     <table id="replyTb">
-
+					
 	                        <tr>
 	                            <td id="rContentWrapper">
 	                            	<textarea rows="4" id="simpleReplyContent"></textarea>
 	                            	<button class="btn btn-primary" id="rSubmit">등록</button>
 	                            </td>
-	                            <!-- <td id="rSubmitWrapper"><button class="btn btn-primary" id="rSubmit">등록</button></td> -->
 	                        </tr>
 
                     </table>

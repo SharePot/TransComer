@@ -15,10 +15,7 @@
 		<br>
 			<div id="boardWrapper">
 				<h1>단순의뢰</h1><br>
-				<c:if test="${!empty loginUser }">
-					<c:url var="simpleWrite" value="sReqInsertView.tc" />
-					<a  href="${simpleWrite }" >글쓰기</a>
-				</c:if>
+				
 				<table border="1" class="table table-hover">
 					<tr>
 						<th scope="col" id="no">번호</th>
@@ -68,7 +65,7 @@
 							<c:url var="before" value="sReqListView.tc">
 								<c:param name="spPage" value="${spi.spCurrentPage - 1 }" />
 							</c:url>
-							<li>
+							<li class="page-item">
 								<a href="${before}" class="page-link" aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -111,6 +108,14 @@
 						</c:if>
 					</ul>
 					
+					<!-- 글쓰기 -->
+					<div id="write" align="right">
+						<c:if test="${ !empty loginUser }">
+							<c:url var="simpleWrite" value="sReqInsertView.tc" />
+							<button align="right" id="writeBtn" onclick="location.href='${simpleWrite}'">글쓰기</button>
+						</c:if>
+					</div>
+					
 					<div style="height: 50px;" id="searchBox">
 						<form action="sReqSearch.tc" name="searchForm" method="get" align="center">
 							<select id="searchCondition" name="searchCondition" class="selectpicker">
@@ -123,7 +128,6 @@
 							<button id="searchBtn">검색</button><br>
 						</form>
 					</div>
-				
 			</div>
 		</section>
 	</div>

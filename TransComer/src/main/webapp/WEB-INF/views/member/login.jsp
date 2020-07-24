@@ -440,7 +440,7 @@ a:hover {text-decoration: underline; color: black;}
 	                   },
 	                success : function(data) {
 	                   if(data == "success"){
-	                	   window.location.href = "/indexBN.jsp";
+	                	   window.location.href = "home.tc";
 	                   }else{
 	                	   $("#idChcekArea").text("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
 	                	   
