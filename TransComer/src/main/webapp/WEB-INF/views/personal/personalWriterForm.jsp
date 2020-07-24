@@ -85,10 +85,10 @@
                         <hr>
                         <div class="card" id="introduce">
                             <div class="imgBox">
-                                <img src="" id="profileImage" alt="" />
+                             	<img class="profile" src="/resources/uploadFiles/${profile.profileFilePath}">
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">자기소개</h5>
+                                <h5 class="card-title">${profile.introduce }</h5>
                                 <hr>
                                 <p class="card-text"> </p>
                             </div>

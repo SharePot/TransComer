@@ -16,7 +16,7 @@
 	<insert id="insertReview" parameterType="Review">
 		INSERT INTO REVIEW 
 		VALUES(REV_NO_SEQ.NEXTVAL, #{revTargetMemberId}, 
-		#{revContent}, '0', SYSDATE, #{personalNo}, #{memberId})
+		#{revContent}, #{starRage}, SYSDATE, #{personalNo}, #{memberId})
 	</insert>
 
 	<select id="selectReviewList" resultMap="ReviewResultSet" parameterType="_int">

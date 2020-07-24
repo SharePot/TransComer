@@ -154,12 +154,65 @@
 		#{pRepTranslator}, '', #{pReqPrice}, 'N', 'N', #{personalNo}, #{memberId})
 	</insert>
 	
-	
 	<!-- 1:1 의뢰 최신글 번호 조회 -->
 	<select id="selectPersonalLastNo" parameterType="string" resultType="_int">
 		SELECT P_REQ_NO FROM (SELECT * FROM PERSONAL_REQ_REP ORDER BY P_REQ_NO DESC) 
 		WHERE ROWNUM = 1
 	</select>
+	
+	<!-- ============== 0723~ 현꾸 작성부분 ============= -->
+	<!-- 회원이 의뢰신청 목록 보기 -->
+	<select id="selectDoReqRepList" parameterType="string" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE MEMBER_ID = #{memberId}
+		ORDER BY P_REQ_NO DESC
+	</select>
+	
+	<!-- 회원이 의뢰신청한 글 갯수 -->
+	<select id="doReqRepListCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL_REQ_REP
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 회원이 의뢰받은 목록 보기 -->
+	<select id="selectGetReqRepList" parameterType="string" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE P_REP_TRANSLATOR = #{memberId}
+		ORDER BY P_REQ_NO DESC
+	</select>
+	
+	<!-- 회원이 의뢰받은 글 갯수 -->
+	<select id="getReqRepListCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL_REQ_REP
+		WHERE P_REP_TRANSLATOR = #{memberId}
+	</select>
+	
+	<!-- 의뢰 신청 데이터 한 개 상세조회 -->
+	<select id="selectReqRepOne" parameterType="_int" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE P_REQ_NO = #{pReqNo}
+	</select>
+	
+	<!-- 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',) -->
+	<update id="updateReqRepAccept" parameterType="PersonalReqRep">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REQ_ACCEPT = #{pReqAccept}
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
+	
+	<!-- 의뢰 결과 글 작성/답변하기 (번역결과 내용 업데이트, Accept : 'F') -->
+	<update id="updateReqRepResult" parameterType="PersonalReqRep">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REP_RESULT = #{pRepResult}, P_REQ_ACCEPT = 'F'
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
+	
+	<!-- 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y') -->
+	<update id="updateReqRepCheckBuyY" parameterType="_int">
+		UPDATE PERSONAL_REQ_REP
+		SET P_REQ_CHECK_BUY = 'Y'
+		WHERE P_REQ_NO = #{pReqNo}
+	</update>
 	
 	
 </mapper>

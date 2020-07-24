@@ -34,6 +34,12 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        #content {
+            border-radius: 5px;
+    		border: solid 1px #dddddd;
+    		width: 100%;
+        }
 
         #buy {
             width: 80%;
@@ -61,6 +67,21 @@
             font-size: 20px;
             color: black;
         }
+        
+        .starR {
+  			background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+ 			 background-size: auto 100%;
+ 			 width: 30px;
+ 			 height: 30px;
+ 			 display: inline-block;
+ 			 text-indent: -9999px;
+ 			 cursor: pointer;
+		}
+		
+		.starR.on {
+			background-position:0 0;
+		}
+        
     </style>
 </head>
 
@@ -168,44 +189,34 @@
 									</table> -->
 								</div>
                                 
-                                <!-- <div id="reviewDiv">
-									<table class="table table-borderless" id="rTable">
-										<tr>
-											<td rowspan="2" style="width: 50px">
-												<div class="imgbox2">
-													<img class="profile" src="">
-												</div>
-											</td>
-											<td style="font-style: bold; color: darkblue">작성자 아이디</td>
-											<td style="text-align:right;">작성 날짜</td>
-										</tr>
-										<tr>
-											<td colspan="2">리뷰 내용</td>
-										</tr>
-									</table>
-								</div> -->
-								
 								
 								<hr>
 								<p>${personalReqRep.pRepTranslator }</p>
 								<!-- 리뷰 등록  -->
                                 <div class="col-sm-12 col-md-12">
 								<input type="hidden" name="pRepTranslator" value="${personal.memberId}">
-								<input type="hidden" name="memberId" value="${personal.memberId}">
+								<input type="hidden" name="memberId" value="${personal.memberId}"> 
                                 	<c:if test="${ !empty loginUser }">
                                 	<%-- <c:if test="${ loginUser.memberId eq personalReqRep.memberId }"> --%>
                                		<%-- <c:if test="${ personalReqRep.pReqCheckBuy != null  }"> --%>
-	                                    <form>
+										<div class="starRev">
+											<span class="starR">1</span>
+											<span class="starR">2</span>
+											<span class="starR">3</span>
+											<span class="starR">4</span>
+											<span class="starR">5</span>
+										</div>
+										<b id="starScore"></b><b>점</b>
+										<br><br>
 	                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
-	                                        <input type="hidden" name="personalNo" value="${personal.personalNo }" />
-	                                        <textarea id="content" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea>
+	                                        <input type="hidden" id="revPersonalNo" name="personalNo" value="${personal.personalNo }" />
+	                                        <textarea id="content" rows="4" cols="60" placeholder="후기를 입력해주세요." maxlength="100"></textarea>
 	                                        <!-- <textarea id="Q_Contents" class="DOC_TEXT" name="revContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea> -->
-	                                        <br>
-	                                        <span style="color:#aaa;" id="counter">(0 / 최대 50자)</span>
-	
-	                                        <input type="submit" id="submit" class="btn btn-success" value="등록">
+	                                        <span style="color:#aaa; float:right;" id="counter">(0 / 최대 100자)</span>
+	                            
+											<br><br>
+											<input type="submit" id="submit" class="btn" style="background:blue;" value="등록">
 	                                        <input type="reset" class="btn" value="취소">
-	                                    </form>
                                     </c:if>
                                 </div>
                             </div>
@@ -228,20 +239,10 @@
                             </header>
                             <hr>
                             <p>${profile.introduce }</p>
-                            <!-- 쪽지보내기 버튼-->
-                            <!-- <footer>
-                                <ul class="actions">
-                                    <li>
-                                        <a href="#" class="button alt">쪽지 보내기</a>
-                                    </li>
-                                </ul>
-                            </footer> -->
                         </section>
                     </div>
                 </div>
-
                 <br><br>
-
 
             </div>
 
@@ -299,24 +300,28 @@
          // 댓글 등록 Ajax
          $("#submit").on("click", function() {
 			
+        	 var starRage = $("#starScore").html(); // 별점
         	 var revContent = $("#content").val(); // 댓글의 내용
-        	 var rPersonalNo = "${personal.personalNo}"; // 어느 게시글의 댓글인지 알려줌
-        	 var revTargetMemberId = "${personal.memberId}";
+        	 var revTargetMemberId = $("#revTargetMemberId").val();
+        	 var rPersonalNo = ${personal.personalNo}; // 어느 게시글의 댓글인지 알려줌
+        	 //var revTargetMemberId = ${personal.memberId};
         	 
-        	 alert("revContent"+revContent);
-        	 alert("rPersonalNo"+rPersonalNo);
-        	 alert("revTargetMemberId"+revTargetMemberId);
+        	 alert("starRage : "+starRage);
+        	 alert("revContent : "+revContent);
+        	 alert("rPersonalNo : "+rPersonalNo);
+        	 alert("revTargetMemberId : "+revTargetMemberId);
         	 
         	 
         	 $.ajax({
         		 url : "pReview.tc",
         		 data : {
+        			 starRage:starRage,
         			 revContent:revContent,
         			 personalNo:rPersonalNo,
         			 revTargetMemberId:revTargetMemberId
         		},
         		/*  data : {revContent:revContent, personalNo:rPersonalNo, memberId:revTargetMemberId}, */
-        		 type : "get",
+        		 type : "post",
         		 success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
                      if(data == "success") { //결과값이 success이면
                     	 getReviewList(); //목록을 가져오도록
@@ -346,22 +351,38 @@
     				
     				if( data.length > 0 ) { 
     					for( var i in data) {
-    						//var reviewContentRead = decodeURIComponent(data[i].revContent);
-    						$table = $("<table>");
+    						/* $table = $("<table style='border: solid 1px #dddddd; border-radius: 10px;'>"); */
+    						
+    						/* $table = $("<table>");
     						$tr1 = $("<tr>");
     						$tr2 = $("<tr>");
     						$memberId = $("<td style='color:black'>").text(data[i].memberId);
-    						$report = $("<td style='text-align:right;'><button type='submit'>신고</button>");
+    						$report = $("<button class='btn-sm'>신고</button>");
     						$revWriteDate = $("<td style='text-align:right;'>").text(data[i].revWriteDate);
     						$revContent = $("<td colspan='3'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
     						
     						 $reviewDiv.append($table);
     						 $table.append($tr1);
     						 $tr1.append($memberId);
-    						 $tr1.append($revWriteDate);
-    						 $tr1.append($report);
+    						 $tr1.append($revWriteDate).append($report);
+    						 //$tr1.append($report);
     						 $table.append($tr2);
-    						 $tr2.append($revContent);
+    						 $tr2.append($revContent); */
+    						 
+    						 $table = $("<table>");
+     						$tr1 = $("<tr>");
+     						$tr2 = $("<tr>");
+     						$memberId = $("<td style='color:black'>").text(data[i].memberId);
+     						$revWriteDate = $("<td style='text-align:right;'>"+data[i].revWriteDate+"&nbsp;&nbsp;&nbsp;<button class='btn-sm'>신고</button>");
+     						$revContent = $("<td colspan='3'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
+     						
+     						 $reviewDiv.append($table);
+     						 $table.append($tr1);
+     						 $tr1.append($memberId);
+     						 $tr1.append($revWriteDate);
+     						 //$tr1.append($report);
+     						 $table.append($tr2);
+     						 $tr2.append($revContent);
     						 
     						 
     						 console.log("댓글 내용 : " + decodeURIComponent(data[i].revContent));
@@ -370,7 +391,7 @@
     				}else{	// 데이터가 없을 때
     					$table = $("<table>");
     					$tr =  $("<tr>");
-    					$revContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
+    					$revContent = $("<td colspan='2'>").text("등록된 댓글이 없습니다.");
     					
     					$reviewDiv.append($table);
     					$table.append($tr);
@@ -380,7 +401,25 @@
     		});
 		}
     	
+    	// 리뷰 글자 수 세기
+    	 $(function() {
+             $('#content').keyup(function(e) {
+                 var pReqContent = $(this).val();
+                 $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
+                 $('#counter').html(pReqContent.length + '&nbsp/ 최대 100자');
+             });
+             $('#pReqContent').keyup();
+         });
     	
+    	 
+    	 // 별점주기
+    	    $('.starRev span').click(function(e) {
+    	    	$(this).parent().children('span').removeClass('on');
+    	        $(this).addClass('on').prevAll('span').addClass('on');
+    	        
+    	        var lastStar = $(this).html();
+    	        $('#starScore').html(lastStar);
+    	    });   
          
     </script>
     

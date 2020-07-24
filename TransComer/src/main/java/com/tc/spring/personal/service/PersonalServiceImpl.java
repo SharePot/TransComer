@@ -13,7 +13,6 @@ import com.tc.spring.personal.domain.PersonalPageInfo;
 import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.domain.PersonalSearch;
 import com.tc.spring.personal.store.PersonalStore;
-import com.tc.spring.review.domain.Review;
 
 @Service("personalService")
 public class PersonalServiceImpl implements PersonalService {
@@ -65,7 +64,7 @@ public class PersonalServiceImpl implements PersonalService {
 	/* 검색 */
 	@Override
 	public ArrayList<Personal> searchPersonalList(PersonalSearch search, PersonalPageInfo pi) {
-		ArrayList<Personal> searchP = personalStore.searchPersonalList(search, pi);
+		// ArrayList<Personal> searchP = personalStore.searchPersonalList(search, pi);
 		return personalStore.searchPersonalList(search, pi);
 	}
 
@@ -75,19 +74,67 @@ public class PersonalServiceImpl implements PersonalService {
 		// personalStore.getSearchListCount(search));
 		return personalStore.getSearchListCount(search);
 	}
-	
+
 	@Override
 	public int insertRequest(PersonalReqRep personalReqRep, HttpServletRequest request) {
 		// textarea의 갱행문자를 <br>로 변경
 		personalReqRep.setpReqContent(personalReqRep.getpReqContent().replace("\n", "<br>"));
 		personalReqRep.setpReqDetail(personalReqRep.getpReqDetail().replace("\n", "<br>"));
-		
+
 		return personalStore.insertRequest(personalReqRep);
 	}
-	
+
 	@Override
 	public int selectPersonalLastNo(String memberId) {
 		return personalStore.selectPersonalLastNo(memberId);
 	}
-	
+
+	// ================ 0723 ~ 현꾸 작성 ==============
+	// 의뢰 신청한 목록
+	@Override
+	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId, PersonalPageInfo pi) {
+		return personalStore.selectDoReqRepList(memberId, pi);
+	}
+
+	// 의뢰 신청글 갯수
+	@Override
+	public int doReqRepListCnt(String memberId) {
+		return personalStore.doReqRepListCnt(memberId);
+	}
+
+	// 의뢰 받은 목록
+	@Override
+	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId, PersonalPageInfo pi) {
+		return personalStore.selectGetReqRepList(memberId, pi);
+	}
+
+	// 의뢰 받은글 갯수
+	@Override
+	public int getReqRepListCnt(String memberId) {
+		return personalStore.getReqRepListCnt(memberId);
+	}
+
+	// 의뢰 신청 데이터 한개 상세 조회
+	@Override
+	public PersonalReqRep selectReqRepOne(int pReqNo) {
+		return personalStore.selectReqRepOne(pReqNo);
+	}
+
+	// 의뢰 결과 글 작성 - 번역 결과 내용 업데이트
+	@Override
+	public int updateReqRepResult(PersonalReqRep personalReqRep) {
+		return personalStore.updateReqRepResult(personalReqRep);
+	}
+
+	// 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',)
+	@Override
+	public int updateReqRepAccept(PersonalReqRep personalReqRep) {
+		return personalStore.updateReqRepAccept(personalReqRep);
+	}
+
+	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
+	@Override
+	public int updateReqRepCheckBuyY(int pReqNo) {
+		return personalStore.updateReqRepCheckBuyY(pReqNo);
+	}
 }

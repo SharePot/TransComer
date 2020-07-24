@@ -1,0 +1,17 @@
+#personalForm {
+   margin-left: 15%;
+   margin-right: 15%;
+}
+
+#personalForm input {
+   width: 50%;
+   display: inline-block;
+   margin-left: 20%;
+}
+
+#personalForm label {
+   float: left;
+   width: 30%;
+   margin-top: 10px;
+   color: gray;
+}
