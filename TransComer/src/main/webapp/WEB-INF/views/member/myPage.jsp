@@ -46,7 +46,7 @@
 					
 				<li>
 					<img src="/resources/css/images/paper.png" class="itemImg">
-					<a href="">1:1 의뢰 문의 내역</a>
+					<a href="myReqRepList.tc">1:1 의뢰 문의 내역</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/paper.png" class="itemImg">

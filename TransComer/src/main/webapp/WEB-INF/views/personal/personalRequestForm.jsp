@@ -144,7 +144,7 @@
                 $('#counter').html(pReqContent.length + '&nbsp자');
             });
             $('#pReqContent').keyup();
-        });
+        });$
 
         
 	   /*  $(function() {
