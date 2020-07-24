@@ -125,20 +125,17 @@ public class ReportController {
 	}
 	
 	// 신고 넣기
-	@RequestMapping(value="rinsert.tc", method=RequestMethod.POST)
-	public String insertReport(Report report, Model model,  HttpServletRequest request) {
-		String path = null;
+	@RequestMapping("rinsert.tc")
+	@ResponseBody
+	public String insertReport(Report report) {
 		
-		int result = reportService.insertReport(report, request);
+		int result = reportService.insertReport(report);
 		
 		if (result > 0) {
-			// 나중에 바꿔줘야 할 값
-			path = "redirect:qlist.tc";
+			return "success";
 		} else {
-			model.addAttribute("msg", "신고 실패");
-			path = "common/errorPage";
+			return "fail";
 		}
-		return path;
 	}
 	
 	/*ajax 에서 success로 넘어가는 조건은 http 요청에 성공했을 경우이다.

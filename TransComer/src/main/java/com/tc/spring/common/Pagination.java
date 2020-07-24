@@ -67,7 +67,7 @@ public class Pagination {
 		int spMaxPage;
 		int spStartPage;
 		int spEndPage;
-		int spBoardLimit = 5;
+		int spBoardLimit = 10;
 
 		spMaxPage = (int) ((double) spListCount / spBoardLimit + 0.9);
 		spStartPage = (((int) ((double) spCurrentPage / spPageLimit + 0.9)) - 1) * spPageLimit + 1;
@@ -92,7 +92,7 @@ public class Pagination {
 		int arMaxPage;
 		int arStartPage;
 		int arEndPage;
-		int arBoardLimit = 5;
+		int arBoardLimit = 10;
 
 		arMaxPage = (int) ((double) arListCount / arBoardLimit + 0.9);
 		arStartPage = (((int) ((double) arCurrentPage / arPageLimit + 0.9)) - 1) * arPageLimit + 1;
@@ -118,7 +118,7 @@ public class Pagination {
 		int startPage;
 		int endPage;
 
-		int boardLimit = 5;
+		int boardLimit = 10;
 
 		maxPage = (int) ((double) listCount / boardLimit + 0.9);
 
@@ -223,7 +223,7 @@ public class Pagination {
 		int startPage;
 		int endPage;
 
-		int boardLimit = 5;
+		int boardLimit = 10;
 
 		maxPage = (int) ((double) listCount / boardLimit + 0.9);
 

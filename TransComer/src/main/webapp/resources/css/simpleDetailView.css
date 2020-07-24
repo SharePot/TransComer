@@ -106,34 +106,33 @@
 }
 
 #rContentWrapper {
-    width: 85%;
+    width: 100%;
 }
 
 #simpleReplyContent {
-    width: 100%;
+    width: 83.9%;
     border: 1px solid lightgray;
     height: 100px;
-}
-
-#rSubmitWrapper {
-    width: 10%;
+    display:inline;
 }
 
 #rSubmit {
-    width: 90%;
+    width: 15%;
     height: 100px;
     margin-bottom: 5px;
     margin-left: 6px;
+    display:inline;
+    margin-top: -87px;
 }
 
-#reportBtn, #adoptBtn {
+#reportBtn, #adoptBtn, #updateBtn, #updateResetBtn {
     display: inline;
     color: orangred;
     font-size: 15px !important;
 	text-decoration-line: none !important;
 }
 
-textarea, #updateBtn, #updateResetBtn {
+textarea {
     display: inline;
 }
 

@@ -33,7 +33,7 @@
                                 <input type="text" id="personalTLang" name="personalTLang" placeholder="전화번호" readonly value="${loginUser.phone }">
                                 <br><br>
                                 <label>프로필 사진</label>
-                                <input type="file" name="reloadFile" id="profile_pt" onchange="previewImage(this,'View_area')" value="">
+                                <input type="file" name="reloadFile" id="profile_pt" onchange="previewImage(this,'View_area')">
 								<c:if test="${!empty profile.profileFilePath }">
 									<a href="${contextPath }/resources/nuploadFiles/${profile.profileFilePath }">${profile.profileFilePath }</a>
 								</c:if>

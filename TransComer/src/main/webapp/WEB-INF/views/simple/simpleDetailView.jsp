@@ -57,8 +57,11 @@
                     <table id="replyTb">
 
 	                        <tr>
-	                            <td id="rContentWrapper"><textarea cols="75" rows="4" type="text" id="simpleReplyContent"></textarea></td>
-	                            <td id="rSubmitWrapper"><button class="btn btn-primary" id="rSubmit">등록</button></td>
+	                            <td id="rContentWrapper">
+	                            	<textarea rows="4" id="simpleReplyContent"></textarea>
+	                            	<button class="btn btn-primary" id="rSubmit">등록</button>
+	                            </td>
+	                            <!-- <td id="rSubmitWrapper"><button class="btn btn-primary" id="rSubmit">등록</button></td> -->
 	                        </tr>
 
                     </table>
@@ -104,7 +107,7 @@
 			
 			$.ajax({
 						url : "sResList.tc",
-						data : {simpleNo : sReqNo/* , page : page */},
+						data : {simpleNo : sReqNo},
 						dataType : "json",
 						success : function(data) {
 
@@ -133,16 +136,16 @@
 															$adoptCountTwo = $("<p class='adoptCount'>").text($adoptCount);
 														$etcTd = $("<td id='etc'>");
 															$replyDate = $("<p id='replyDate'>").text(data[i].simpleReplyDate);
-															$reportBtn = $("<a href='#' target = '_blank' id='reportBtn' onclick='reportBtn();'>").text(" 신고");
+															$reportBtn = $("<a href='#' id='reportBtn'>").text(" 신고");
 															$updateWindow = $("<a href='#' id='updateWindow' onclick='updateWindow(this, " + data[i].simpleReplyNo +")'>").text(" 수정");
-															$updateBtn = $("<button id='updateBtn' style='display:none;' onclick='updateBtn(this, " + data[i].simpleReplyNo +");'>").text("등록");
-															$updateResetBtn = $("<button id='updateResetBtn' style='display:none;' onclick='getSimpleResList()'>").text("취소");
-															$deleteBtn = $("<a href='#' id='deleteBtn' onclick='deleteBtn()'>").text(" 삭제");
+															$updateBtn = $("<a id='updateBtn' style='display:none;' onclick='updateBtn(this, " + data[i].simpleReplyNo +");'>").text("등록");
+															$updateResetBtn = $("<a id='updateResetBtn' style='display:none;' onclick='getSimpleResList()'>").text("취소");
+															$deleteBtn = $("<a href='#' id='deleteBtn' onclick='deleteBtn(this, " + data[i].simpleReplyNo +")'>").text(" 삭제");
 															$adoptBtn = $("<a href='#' id='adoptBtn' onclick='adoptBtn(this," + data[i].simpleReplyNo +");'>").text(" 채택하기");
 													$trThree = $("<tr>");
 														$tdTwo = $("<td colspan='2' >");
 															$replyContent = $("<p id='replyContent'>").text(decodeURIComponent(data[i].simpleReplyContent.replace(/\+/g, " ")));
-														$tdThree = $("<td colspan='2' style='display:none;'><textarea>" + decodeURIComponent(data[i].simpleReplyContent.replace(/\+/g, " ")) + "</textarea>");
+														$tdThree = $("<td colspan='2' style='display:none;'><textarea id='updateText' style='width: 100%;'>" + decodeURIComponent(data[i].simpleReplyContent.replace(/\+/g, " ")) + "</textarea>");
 															
 															
 										$divSection.append($replyWrapperDiv);
@@ -208,24 +211,24 @@
 		}
  		
  		// 댓글 삭제
-		function deleteBtn() {
+		function deleteBtn(obj, simpleReplyNo) {
 			
 			var result = window.confirm("답변을 삭제하시겠습니까?");
-	  		var simpleReplyNo = $("#simpleReplyNo").val();
-	  			if (result) {
+	  		if (result) {
 	  				
-			  		$.ajax({
-						url : "deleteRes.tc",
-						data : {simpleReplyNo : simpleReplyNo},
-						type : "post",
-						success : function(data) {
+			  	$.ajax({
+					url : "deleteRes.tc",
+					data : {simpleReplyNo : simpleReplyNo},
+					type : "post",
+					success : function(data) {
 							
-								getSimpleResList();
-								alert("삭제가 완료되었습니다.")
-						}
-					});
+							getSimpleResList();
+							alert("삭제가 완료되었습니다.")
+					}
+				});
 			  		
-	  			}
+	  		}
+	  		
 	  	};
 	  	
 	  	// 댓글 수정 창
@@ -269,7 +272,7 @@
 		  			data : {simpleReplyNo : simpleReplyNo, sReqNo : sReqNo, simpleReplyWriter : simpleReplyWriter, simpleTitle:simpleTitle},
 		  			type : "post",
 		  			success : function (data) {
-		  				alter("답변을 채택하였습니다.");
+		  				alert("답변을 채택하였습니다.");
 		  				getSimpleResList();
 		  				$("#adoptBtn").hide();
 		  			}
@@ -282,16 +285,13 @@
 	  		
 	  	}
 	  	
-	  	function reportBtn() {
-	  		
-	  		window.name = "rinsert.tc";
-	  		
+	  	$(document).on('click', '#reportBtn', function() {
 	  		var url = "reportForm.tc";
 	  		var name ="SharePot - 신고하기";
-	  		var option = "width = 500, height = 500, top = 100, left = 200, location = no, toolbars = no"
-	  	
+	  		var option = "width = 600, height = 415, top = 100, left = 200, location = no, toolbars = no";
 	  		window.open(url, name, option);
-	  	}
+	  	});
+	  	
 	  	
 		
 	</script>

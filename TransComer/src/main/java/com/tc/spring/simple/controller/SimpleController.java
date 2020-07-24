@@ -63,7 +63,7 @@ public class SimpleController {
 			mv.addObject("sReqList", sReqList);
 			mv.setViewName("simple/simpleListView");
 		} else {
-			mv.setViewName("common/errorPage");
+			mv.setViewName("simple/simpleListView");
 		}
 
 		return mv;

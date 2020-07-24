@@ -14,5 +14,58 @@
 
 #searchValue {
 	height: 62px !important;
-	width: 400px !important ;
+	width: 400px !important;
+	display: inline !important;
 }
+
+#searchBtn {
+	height: 62px !important;
+	background: skyblue !important;
+	line-height: 0px !important;
+}
+
+a {
+	text-decoration-line: none !important;
+}
+
+#simpleTitle {
+	color : #4374D9 !important;
+}
+#simpleTitle:hover {
+	color : #B2CCFF !important;
+}
+
+
+#id {
+	width: 10% !important;
+}
+
+#lang {
+	width: 20% !important;
+}
+
+#title {
+	width: 35% !important;
+}
+
+#adopt {
+	width: 10% !important;
+}
+
+#writer {
+	width: 15% !important;
+}
+
+#count {
+	width: 10% !important;
+}
+
+.page-item {
+	padding-left: 0px !important;
+}
+
+.pagination {
+	margin-bottom : 0px !important;
+}
+
+

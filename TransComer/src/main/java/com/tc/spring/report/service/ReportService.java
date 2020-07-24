@@ -30,7 +30,7 @@ public interface ReportService {
 	
 	public ArrayList<Member> searchBlackList(BlackSearch blackSearch, BlackPageInfo bPi);
 
-	public int insertReport(Report report, HttpServletRequest request);
+	public int insertReport(Report report);
 	
 	public int updateReport(Report report, HttpServletRequest request);
 	

@@ -64,7 +64,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public int insertReport(Report report, HttpServletRequest request) {
+	public int insertReport(Report report) {
 		return reportStore.insertReport(report);
 	}
 
