@@ -36,11 +36,12 @@
 		    }
 		</style>
 	</head>
+	<c:import url="../common/menuBar.jsp" />
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
 
 			<!-- Header -->
-			<section id="header">
+			<%-- <section id="header">
 
 				<!-- Logo -->
 				<h1><a href="index.html">SharePot</a></h1>
@@ -61,7 +62,7 @@
 						<li><a href="qlist.tc">Q&amp;A</a></li>
 					</ul>
 				</nav>
-            </section>
+            </section> --%>
 
 			<!-- Main -->
 				<section id="main">
