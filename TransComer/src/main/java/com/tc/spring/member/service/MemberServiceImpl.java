@@ -15,6 +15,7 @@ import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
+import com.tc.spring.member.domain.ProfileSearch;
 import com.tc.spring.member.store.MemberStore;
 
 @Service("memberService")
@@ -188,8 +189,8 @@ public class MemberServiceImpl implements MemberService {
 
 //=======================================프로필
 	@Override
-	public ArrayList<Profile> selectProfileList() {
-		return memberStore.selectProfileList();
+	public ArrayList<Profile> selectProfileList(MemberPageInfo pi) {
+		return memberStore.selectProfileList(pi);
 	}
 
 	@Override
@@ -227,6 +228,20 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updateStatusN(int memberNo) {
 		return memberStore.updateStatusN(memberNo);
+	}
+	@Override
+	public int getPfListCount() {
+		return memberStore.getPfListCount();
+	}
+
+	@Override
+	public int getPfSearchListCount(ProfileSearch pfSearch) {
+		return memberStore.getPfSearchListCount(pfSearch);
+	}
+
+	@Override
+	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi) {
+		return memberStore.searchProfile(pfSearch, pi);
 	}
 
 

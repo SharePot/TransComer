@@ -14,6 +14,7 @@ import com.tc.spring.member.domain.MemberSearch;
 import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
+import com.tc.spring.member.domain.ProfileSearch;
 
 @Repository("memberStore")
 public class MemberStoreLogic implements MemberStore {
@@ -118,7 +119,7 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int memberUpdatePreminum(Member member) {
-		return sqlSession.update("memberMapper.memberUpdatePreminum",member);
+		return sqlSession.update("memberMapper.memberUpdatePremium",member);
 	}
 
 
@@ -204,8 +205,8 @@ public class MemberStoreLogic implements MemberStore {
 	}
 //프로필===============================================================
 	@Override
-	public ArrayList<Profile> selectProfileList() {
-		return (ArrayList)sqlSession.selectList("memberMapper.selectProfileList");
+	public ArrayList<Profile> selectProfileList(MemberPageInfo pi) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectProfileList",pi);
 	}
 
 	@Override
@@ -244,6 +245,23 @@ public class MemberStoreLogic implements MemberStore {
 	}
 
 	
-	
+	@Override
+	public int getPfListCount() {
+		return sqlSession.selectOne("memberMapper.getPfListCount");
+	}
+
+	@Override
+	public int getPfSearchListCount(ProfileSearch pfSearch) {
+		return sqlSession.selectOne("memberMapper.getPfSearchListCount", pfSearch);
+	}
+
+	@Override
+	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("memberMapper.searchProfile", pfSearch, rowBounds);
+	}
+
+
 	
 }
