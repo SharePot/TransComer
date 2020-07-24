@@ -13,34 +13,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
-<!--템플릿 css-->
-<link rel="stylesheet" href="assets/css/main.css" />
-
-<style>
-    #personalForm {
-        margin-left: 15%;
-        margin-right: 15%;
-    }
-
-    #personalForm input {
-        width: 50%;
-        display: inline-block;
-        margin-left: 20%;
-    }
-
-    #personalForm label {
-        float: left;
-        width: 30%;
-        margin-top: 10px;
-        color: gray;
-    }
-</style>
+<!-- 페이지 용 제작 -->
+<link rel="stylesheet" href="resources/css/personalReqRep.css" />
 </head>
 <body class="homepage is-preload">
     <div id="page-wrapper">
@@ -68,29 +42,29 @@
                             <h3>* 번역가 정보</h3>
                             <br>
                             <label>번역가</label>
-                            <input type="text" id="personalWriter" name="personalWriter" readonly value="">
+                            <input type="text" id="personalWriter" name="personalWriter" readonly value="${personal.memberId }">
                             <br><br>
                             <label>개발언어</label>
-                            <input type="password" id="personalPLang" name="personalPLang" readonly value="">
+                            <input type="text" id="personalPLang" name="personalPLang" readonly value="${personal.personalPLang }">
                             <br><br>
                             <label>사용언어</label>
-                            <input type="password" id="personalTLang" name="personalTLang" readonly value="">
+                            <input type="text" id="personalTLang" name="personalTLang" readonly value="${personal.personalTLang }">
                             <br><br>
                             <label>번역 작업 소요 시간</label>
-                            <input type="text" id="personalSchedule" name="personalSchedule" readonly value="">
+                            <input type="text" id="personalSchedule" name="personalSchedule" readonly value="승인일로부터 ${personal.personalSchedule } 일 후">
                             <br><br>
                             <label>번역 가격(100자 당)</label>
-                            <input type="text" id="personalPrice" name="personalPrice" readonly value="">
+                            <input type="text" id="personalPrice" name="personalPrice" readonly value="${personal.personalPrice }">
                             <br><br>
 
                             <hr>
                             <h3>* 번역신청 내용 작성</h3>
                             <br>
                             <label>신청 개발언어</label>
-                            <input type="text" id="pReqPLang" name="pReqPLang">
+                            <input type="text" id="pReqPLang" name="pReqPLang" readonly value="${pReqRep.pReqPLang }">
                             <br><br>
                             <label>신청 번역언어</label>
-                            <input type="text" id="pReqTLang" name="pReqTLang">
+                            <input type="text" id="pReqTLang" name="pReqTLang" readonly value="${pReqRep.pReqTLang }">
                             <br><br>
 
                             <hr>
@@ -104,26 +78,26 @@
                             <h4>번역 의뢰 내용</h4>
                             <br>
                             <div class="wrap">
-                                <textarea id="pReqContent" style="height:300px; margin-bottom:10px;">아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유 아야어여 오요우유</textarea>
-                                글자수 :&nbsp;<span id="counter">###</span>
+                                <textarea id="pReqContent" style="height:300px; margin-bottom:10px;" readonly>${pReqRep.pReqContent }</textarea>
+                                글자수 :&nbsp;<span id="counter"></span>
                             </div>
                             <br>
-                            <h2 id="price" class="float-right">가격 : </h2>
+                            <h2 id="price" class="float-right">가격 : ${pReqRep.pReqPrice }</h2>
                             <br><br>
                             <!--style="float:right;"-->
-                            <p class="float-right">(100자 당 가격 : 원)</p>
+                            <p class="float-right">(100자 당 가격 : ${personal.personalPrice } 원)</p>
                             <br>
                             <hr>
                             <h4>세부요청 사항</h4>
                             <div class="card">
                                 <div class="card-body">
-                                    세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다. 세부요청 사항입니다.
+                                    ${pReqRep.pReqDetail }
                                 </div>
                             </div>
                             <br><br>
                             <div class="d-flex justify-content-center">
                                 <!--번역가, 의뢰자는 상세페이지에서 목록으로 돌아가기를 누른다-->
-                                <a href="#" class="btn btn-primary" style="text-decoration: none;">목록으로</a>
+                                <a href="myReqRepList.tc" class="btn btn-primary" style="text-decoration: none;">목록으로</a>
                             </div>
                         </form>
                     </div>
@@ -156,11 +130,6 @@
             var pReqContent = $("#pReqContent").val();
             $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
             $('#counter').html(pReqContent.length + '&nbsp자');
-
-            // 글자수에 따른 총 가격을 세어 출력
-            var basePrimce = 1000; // jstl로 가격을 가져와서 대입
-            $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
-            $('#price').html('가격 : ' + parseInt((pReqContent.length / 100) + 1) * basePrimce + '원');
         });
     </script>
 </body>

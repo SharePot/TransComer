@@ -49,35 +49,8 @@ public class PersonalController {
 		PersonalPageInfo pi = Pagination.getPersonalPageInfo(currentPage, listCount);
 		ArrayList<Personal> list = personalService.selectPersonalList(pi);
 
-		for (Personal personal : list) {
-			String pLangFull = personal.getPersonalPLang(); // pLang 원본 데이터
-			String[] pLangList = pLangFull.split(","); // pLang 원본을 ','를 기준으로 자른다
-
-			if (pLangList[2].equals("없음")) {
-				if (pLangList[1].equals("없음")) {
-					personal.setPersonalPLang(pLangList[0]);
-				} else {
-					personal.setPersonalPLang(pLangList[0] + ",&nbsp" + pLangList[1]);
-				}
-			} else {
-				personal.setPersonalPLang(pLangList[0] + ",&nbsp" + pLangList[1] + ",&nbsp" + pLangList[2]);
-			}
-
-			String tLangFull = personal.getPersonalTLang(); // tLang 원본 데이터
-			String[] tLangList = tLangFull.split(","); // tLang 원본을 ','를 기준으로 자른다
-
-			if (tLangList[2].equals("없음")) {
-				if (tLangList[1].equals("없음")) {
-					personal.setPersonalTLang(tLangList[0]);
-				} else {
-					personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1]);
-				}
-			} else {
-				personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1] + ",&nbsp" + tLangList[2]);
-			}
-		}
-
 		if (!list.isEmpty()) {
+			this.cutUselessStringList(list); // 없음 텍스트 제거
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("personal/personalMain");
@@ -100,6 +73,8 @@ public class PersonalController {
 		PersonalPageInfo pi = Pagination.getPersonalPageInfo(currentPage, listCount);
 		ArrayList<Personal> searchList = personalService.searchPersonalList(search, pi);
 
+		this.cutUselessStringList(searchList); // 없음 텍스트 제거
+
 		model.addAttribute("list", searchList);
 		model.addAttribute("search", search); // 검색 후에도 검색결과가 남아있게 하기 위해
 		model.addAttribute("pi", pi);
@@ -113,37 +88,12 @@ public class PersonalController {
 
 		int currentPage = (page != null) ? page : 1;
 		personalService.addReadCount(personalNo); // 조회수 증가
-
 		Personal personal = personalService.selectOne(personalNo); // 상세조회
-		String pLangFull = personal.getPersonalPLang(); // pLang 원본 데이터
-		String[] pLangList = pLangFull.split(","); // pLang 원본을 ','를 기준으로 자른다
-
-		if (pLangList[2].equals("없음")) {
-			if (pLangList[1].equals("없음")) {
-				personal.setPersonalPLang(pLangList[0]);
-			} else {
-				personal.setPersonalPLang(pLangList[0] + ",&nbsp" + pLangList[1]);
-			}
-		} else {
-			personal.setPersonalPLang(pLangList[0] + ",&nbsp" + pLangList[1] + ",&nbsp" + pLangList[2]);
-		}
-
-		String tLangFull = personal.getPersonalTLang(); // tLang 원본 데이터
-		String[] tLangList = tLangFull.split(","); // tLang 원본을 ','를 기준으로 자른다
-
-		if (tLangList[2].equals("없음")) {
-			if (tLangList[1].equals("없음")) {
-				personal.setPersonalTLang(tLangList[0]);
-			} else {
-				personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1]);
-			}
-		} else {
-			personal.setPersonalTLang(tLangList[0] + ",&nbsp" + tLangList[1] + ",&nbsp" + tLangList[2]);
-		}
 
 		if (personal != null) {
-			mv.addObject("personal", personal).addObject("currentPage", currentPage)
-					.setViewName("personal/personalDetailView");
+			this.cutUselessStringOne(personal); // 없음 텍스트 제거
+			mv.addObject("personal", personal).addObject("currentPage", currentPage);
+			mv.setViewName("personal/personalDetailView");
 		} else {
 			mv.addObject("msg", "게시글 전체조회 실패");
 			mv.setViewName("common/errorPage");
@@ -291,7 +241,11 @@ public class PersonalController {
 	// 1:1 의뢰 신청폼으로 이동하기
 	@RequestMapping("pRequestView.tc")
 	public String pRequestView(int personalNo, Model model) {
-		model.addAttribute("personal", personalService.selectOne(personalNo));
+		Personal personal = personalService.selectOne(personalNo);
+		if (personal != null) {
+			this.cutUselessStringOne(personal);
+		}
+		model.addAttribute("personal", personal);
 		return "personal/personalRequestForm";
 	}
 
@@ -321,10 +275,9 @@ public class PersonalController {
 			path = "common/errorPage";
 		}
 		return path;
-
 	}
 
-	// ================ 0723 ~ 현꾸 작성 ==============
+	// ================ 0723 ~ 현꾸 작성 ======================
 	// 의뢰 신청 목록 조회 (의뢰신청한거, 신청받은거 둘다)
 	@RequestMapping(value = "myReqRepList.tc", method = RequestMethod.GET)
 	public ModelAndView doGetReqRepList(ModelAndView mv,
@@ -379,10 +332,13 @@ public class PersonalController {
 
 	// 의뢰 신청글 한개 상세 조회
 	@RequestMapping(value = "pReqRepDetail.tc", method = RequestMethod.GET)
-	public String reqRepDetail(@RequestParam int pReqNo, Model model) {
+	public String reqRepDetail(int pReqNo, int personalNo, Model model) {
 		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
-		if (pReqRep != null) {
+		Personal personal = personalService.selectOne(personalNo);
+		if (pReqRep != null && personal != null) {
+			this.cutUselessStringOne(personal); // 없음 텍스트 제거
 			model.addAttribute("pReqRep", pReqRep);
+			model.addAttribute("personal", personal);
 			return "personal/personalRequestDetail";
 		} else {
 			model.addAttribute("msg", "의뢰 신청글 상세조회 실패");
@@ -392,10 +348,11 @@ public class PersonalController {
 
 	// 의뢰 결과 글 작성 페이지로 이동하기
 	@RequestMapping(value = "pReqRepResultWrite.tc", method = RequestMethod.GET)
-	public String reqResultWriteView(@RequestParam int pReqNo, @RequestParam int personalNo, Model model) {
+	public String reqResultWriteView(int pReqNo, int personalNo, Model model) {
 		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
 		Personal personal = personalService.selectOne(personalNo);
-		if (pReqRep != null) {
+		if (pReqRep != null && personal != null) {
+			this.cutUselessStringOne(personal); // 없음 텍스트 제거
 			model.addAttribute("pReqRep", pReqRep);
 			model.addAttribute("personal", personal);
 			return "personal/personalResultWrite";
@@ -418,11 +375,13 @@ public class PersonalController {
 
 	// 의뢰 결과 완료 글 확인하기 (번역결과 내용 확인 상세보기)
 	@RequestMapping(value = "pReqRepResultDetail.tc", method = RequestMethod.GET)
-	public String reqResultDetail(@RequestParam int pReqNo, Model model) {
+	public String reqResultDetail(int pReqNo, int personalNo, Model model) {
 		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
-		if (pReqRep != null) {
+		Personal personal = personalService.selectOne(personalNo);
+		if (pReqRep != null && personal != null) {
 			model.addAttribute("pReqRep", pReqRep);
-			return "personal/"; // 결과 상세조회 페이지
+			model.addAttribute("personal", personal);
+			return "personal/personalResultDetail"; // 결과 상세조회 페이지
 		} else {
 			model.addAttribute("msg", "의뢰 신청글 상세조회 실패");
 			return "common/errorPage";
@@ -431,8 +390,9 @@ public class PersonalController {
 
 	// 의뢰 신청 글 승인하기(Accept : 'Y')
 	@RequestMapping(value = "pReqRepAcceptY.tc", method = RequestMethod.GET)
-	public String reqAcceptYUpdate(@RequestParam int pReqNo) {
-		int result = personalService.updateReqRepAcceptY(pReqNo);
+	public String reqAcceptYUpdate(PersonalReqRep personalReqRep) {
+		personalReqRep.setpReqAccept("Y");
+		int result = personalService.updateReqRepAccept(personalReqRep);
 		if (result > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
@@ -442,8 +402,9 @@ public class PersonalController {
 
 	// 의뢰 신청 글 반려하기(Accept : 'R')
 	@RequestMapping(value = "pReqRepAcceptR.tc", method = RequestMethod.GET)
-	public String reqAccectRUpdate(@RequestParam int pReqNo) {
-		int result = personalService.updateReqRepAcceptR(pReqNo);
+	public String reqAccectRUpdate(PersonalReqRep personalReqRep) {
+		personalReqRep.setpReqAccept("R");
+		int result = personalService.updateReqRepAccept(personalReqRep);
 		if (result > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
@@ -453,13 +414,76 @@ public class PersonalController {
 
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
 	@RequestMapping(value = "pReqRepCheckBuyY.tc", method = RequestMethod.GET)
-	public String reqCheckBuyYUpdate(@RequestParam int pReqNo) {
+	public String reqCheckBuyYUpdate(int pReqNo) {
 		int result = personalService.updateReqRepCheckBuyY(pReqNo);
 		if (result > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
 		}
+	}
+
+	// ----------------없음 텍스트를 제거하는 공통함수 (리스트)
+	public ArrayList<Personal> cutUselessStringList(ArrayList<Personal> list) {
+		for (Personal personal : list) {
+			String pLangFull = personal.getPersonalPLang(); // pLang 원본 데이터
+			String[] pLangList = pLangFull.split(","); // pLang 원본을 ','를 기준으로 자른다
+
+			if (pLangList[2].equals("없음")) {
+				if (pLangList[1].equals("없음")) {
+					personal.setPersonalPLang(pLangList[0]);
+				} else {
+					personal.setPersonalPLang(pLangList[0] + ",&nbsp;" + pLangList[1]);
+				}
+			} else {
+				personal.setPersonalPLang(pLangList[0] + ",&nbsp;" + pLangList[1] + ",&nbsp;" + pLangList[2]);
+			}
+
+			String tLangFull = personal.getPersonalTLang(); // tLang 원본 데이터
+			String[] tLangList = tLangFull.split(","); // tLang 원본을 ','를 기준으로 자른다
+
+			if (tLangList[2].equals("없음")) {
+				if (tLangList[1].equals("없음")) {
+					personal.setPersonalTLang(tLangList[0]);
+				} else {
+					personal.setPersonalTLang(tLangList[0] + ",&nbsp;" + tLangList[1]);
+				}
+			} else {
+				personal.setPersonalTLang(tLangList[0] + ",&nbsp;" + tLangList[1] + ",&nbsp;" + tLangList[2]);
+			}
+		}
+		return list;
+	}
+
+	// --------------- 없음 텍스트를 제거하는 공통함수 (객체 하나)
+	public Personal cutUselessStringOne(Personal personal) {
+		// 필요없는 데이터 자르기
+		String pLangFull = personal.getPersonalPLang(); // pLang 원본 데이터
+		String[] pLangList = pLangFull.split(","); // pLang 원본을 ','를 기준으로 자른다
+
+		if (pLangList[2].equals("없음")) {
+			if (pLangList[1].equals("없음")) {
+				personal.setPersonalPLang(pLangList[0]);
+			} else {
+				personal.setPersonalPLang(pLangList[0] + ",&nbsp;" + pLangList[1]);
+			}
+		} else {
+			personal.setPersonalPLang(pLangList[0] + ",&nbsp" + pLangList[1] + ",&nbsp;" + pLangList[2]);
+		}
+
+		String tLangFull = personal.getPersonalTLang(); // tLang 원본 데이터
+		String[] tLangList = tLangFull.split(","); // tLang 원본을 ','를 기준으로 자른다
+
+		if (tLangList[2].equals("없음")) {
+			if (tLangList[1].equals("없음")) {
+				personal.setPersonalTLang(tLangList[0]);
+			} else {
+				personal.setPersonalTLang(tLangList[0] + ",&nbsp;" + tLangList[1]);
+			}
+		} else {
+			personal.setPersonalTLang(tLangList[0] + ",&nbsp;" + tLangList[1] + ",&nbsp;" + tLangList[2]);
+		}
+		return personal;
 	}
 
 	// =============== 현꾸 작성 끝 =====================

@@ -13,15 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 
 <body class="homepage is-preload">
@@ -95,31 +86,53 @@
 	                                                <td>${doReqRep.pReqDate }</td>
 	                                                <td>${doReqRep.pRepTranslator }</td>
 	                                                <td>
-	                                                    <a href="" style="text-decoration: none;color: black;">${doReqRep.pReqContent }</a>
+	                                                	<c:url var="pReqRepDetail" value="pReqRepDetail.tc">
+		                                                	<c:param name="pReqNo" value="${doReqRep.pReqNo }"></c:param>
+		                                                	<c:param name="personalNo" value="${doReqRep.personalNo }"></c:param>
+		                                                </c:url>
+	                                                    <a href="${pReqRepDetail }" style="text-decoration: none;color: black;">${doReqRep.pReqContent }</a>
 	                                                </td>
 	                                                <td>${doReqRep.pReqPrice } P</td>
 	                                                <td>
-	                                                   <!--if문으로 결과가 있으면 결과보기-->
-	                                                   <c:if test="${not empty doReqRep.pRepResult }">
-	                                                   		<a class="btn btn-success" style="color: white">결과보기</a>
-	                                                   </c:if>
-	                                                    <!--if 결과가 없으면 대기중 표시-->
-	                                                    <c:if test="${empty doReqRep.pRepResult }">
-	                                                    	답변대기중
+	                                                    <!--if : 승인 대기중인 상태-->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'C' }">
+	                                                    	<button class="btn btn-primary" disabled>승인 대기</button>
 	                                                    </c:if>
-	                                                    <!--if 의뢰자가 반려했으면 반려표시-->
+	                                                    <!--if : 의뢰자가 반려했으면 반려표시-->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'R' }">
 	                                                    	<button class="btn btn-secondary" disabled>반려 됨</button>
 	                                                    </c:if>
+	                                                    <!--if : 승인 했지만 답변미완료 상태 -->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'Y' }">
+	                                                    	<button class="btn btn-info" disabled>승인후 답변 대기중</button>
+	                                                    </c:if>
+	                                                   <!--if : 승인 & 답변완료 상태이면-->
+	                                                   <c:if test="${doReqRep.pReqAccept eq 'F' }">
+	                                                   		<!-- 답변 결과 보는 url -->
+	                                                   		<c:url var="pReqRepResultDetail" value="pReqRepResultDetail.tc">
+	                                                   			<c:param name="pReqNo" value="${doReqRep.pReqNo }"></c:param>
+	                                                   			<c:param name="personalNo" value="${doReqRep.personalNo }"></c:param>
+	                                                   		</c:url>
+	                                                   		<a href="${pReqRepResultDetail }" class="btn btn-success" style="text-decoration: none;">결과보기</a>
+	                                                   </c:if>
 	                                                </td>
 	                                                <td>
-	                                                    <!--if 확정하지 않으면 확정하기 버튼-->
-	                                                    <c:if test="${not empty doReqRep.pRepResult && doReqRep.pReqCheckBuy eq 'N'}">
-	                                                    	<button class="btn btn-primary">확정하기</button>
+	                                                	<!-- if 답변 대기중일 경우  -->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'C' }">
+	                                                    	승인 대기중
 	                                                    </c:if>
+	                                                    
 	                                                    <!-- if 답변 대기중일 경우  -->
-	                                                    <c:if test="${empty doReqRep.pRepResult && doReqRep.pReqAccept eq 'N'}">
-	                                                    	답변대기중
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'Y' }">
+	                                                    	답변 대기중
+	                                                    </c:if>
+	                                                    <!--if : 답변완료 && 확정하지 않으면 확정하기 버튼-->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'F'  && doReqRep.pReqCheckBuy eq 'N'}">
+	                                                    	<!-- 확정 처리하는 url -->
+	                                                   		<c:url var="pReqRepCheckBuyY" value="pReqRepCheckBuyY.tc">
+	                                                   			<c:param name="pReqNo" value="${doReqRep.pReqNo }"></c:param>
+	                                                   		</c:url>
+	                                                    	<a href="${pReqRepCheckBuyY }" class="btn btn-primary" style="text-decoration: none;">확정하기</a>
 	                                                    </c:if>
 	                                                    <!--if 확정했으면 확정완료 표시-->
 	                                                    <c:if test="${doReqRep.pReqCheckBuy eq 'Y' }">
@@ -127,8 +140,8 @@
 	                                                    </c:if>
 	                                                    	<!--if 의뢰자가 반려했으면 구매확정 불가-->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'R' }">
-		                                                    확정불가
-		                                                    <!--<button class="btn btn-warning">포인트 환급</button>-->
+		                                                    반려 의뢰
+		                                                    <!--<a class="btn btn-warning">포인트 환급</a>-->
 	                                                    </c:if>
 	                                                </td>
 	                                            </tr>
@@ -220,25 +233,64 @@
 	                                                <td>${getReqRep.pReqDate }</td>
 	                                                <td>${getReqRep.memberId }</td>
 	                                                <td>
-	                                                	<a href="#" style="text-decoration: none;color: black;">${getReqRep.pReqContent }</a>
+	                                                	<c:url var="pReqRepDetail" value="pReqRepDetail.tc">
+		                                                	<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+		                                                	<c:param name="personalNo" value="${getReqRep.personalNo }"></c:param>
+		                                                </c:url>
+	                                                	<a href="${pReqRepDetail }" style="text-decoration: none;color: black;">${getReqRep.pReqContent }</a>
 	                                                </td>
 	                                                <td>${getReqRep.pReqPrice } P</td>
 	                                                <td>
-	                                                <c:url var="pReqResultWrite" value="pReqRepResultWrite.tc">
-	                                                	<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
-	                                                	<c:param name="personalNo" value="${getReqRep.personalNo }"></c:param>
-	                                                </c:url>
-	                                                    <a href="${pReqResultWrite }" class="btn btn-primary" style="text-decoration: none;color: black;">답변하기</a>
-	                                                    <button type="button" class="btn btn-warning">반려하기</button>
+	                                                	<!-- if : 승인/반려 아무것도 하지 않았을때 -->
+	                                                	<c:if test="${getReqRep.pReqAccept eq 'C' }">
+	                                                		<!-- 승인하기 url -->
+	                                                		<c:url var="pReqRepAcceptY" value="pReqRepAcceptY.tc">
+	                                                			<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+	                                                		</c:url>
+		                                                    	<a href="${pReqRepAcceptY }" class="btn btn-primary" style="text-decoration: none;">승인하기</a>
+		                                                    <!-- 반려하기 url -->
+		                                                    <c:url var="pReqRepAcceptR" value="pReqRepAcceptR.tc">
+	                                                			<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+	                                                		</c:url>
+		                                                    	<a href="${pReqRepAcceptR }" class="btn btn-warning" style="text-decoration: none;">반려하기</a>
+	                                                	</c:if>
+	                                                	
+	                                                	<!-- if : 반려 하였을 때 -->
+	                                                	<c:if test="${getReqRep.pReqAccept eq 'R' }">
+	                                                		<button class="btn btn-secondary" disabled>반려한 의뢰</button>
+	                                                	</c:if>
+	                                                	
+	                                                	<!-- if : 승인 하였음 && 답변을 작성하지 않았을 때 -->
+	                                                	<c:if test="${getReqRep.pReqAccept eq 'Y' }">
+			                                                <c:url var="pReqResultWrite" value="pReqRepResultWrite.tc">
+			                                                	<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+			                                                	<c:param name="personalNo" value="${getReqRep.personalNo }"></c:param>
+			                                                </c:url>
+		                                                    <a href="${pReqResultWrite }" class="btn btn-primary" style="text-decoration: none;">답변하기</a>
+	                                                	</c:if>
+	                                                	
+	                                                	<!-- if : 승인 하였음 && 답변까지 완료 하였을 때 -->
+	                                                	<c:if test="${getReqRep.pReqAccept eq 'F' }">
+	                                                		답변완료
+	                                                	</c:if>
+	                                                	
 	                                                </td>
 	                                                <td>
-	                                                    <!--if 확정완료 처리되면-->
-	                                                    <c:if test="${getReqRep.pReqAccept eq 'Y' }">
-	                                                    	확정완료
+	                                                	<!--if : 반려한 의뢰 일때 -->
+	                                                    <c:if test="${getReqRep.pReqAccept eq 'R'}">
+	                                                    	반려한 의뢰
 	                                                    </c:if>
-	                                                    <!--if 확정완료 처리 안되있으면-->
-	                                                    <c:if test="${getReqRep.pReqAccept eq 'N'}">
-	                                                    	미확정
+	                                                    <!--if : 답변완료 안함 && 확정완료 처리 안되있으면-->
+	                                                    <c:if test="${getReqRep.pReqAccept eq 'Y' && getReqRep.pReqCheckBuy eq 'N'}">
+	                                                    	답변 미작성
+	                                                    </c:if>
+	                                                    <!--if : 답변완료 && 확정완료 처리 안되있으면-->
+	                                                    <c:if test="${getReqRep.pReqAccept eq 'F' && getReqRep.pReqCheckBuy eq 'N'}">
+	                                                    	구매확정 대기
+	                                                    </c:if>
+	                                                    <!--if : 확정완료 처리되면-->
+	                                                    <c:if test="${getReqRep.pReqCheckBuy eq 'Y' }">
+	                                                    	확정완료
 	                                                    </c:if>
 	                                                </td>
 	                                            </tr>

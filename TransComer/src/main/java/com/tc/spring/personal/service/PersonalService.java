@@ -144,28 +144,20 @@ public interface PersonalService {
 	public PersonalReqRep selectReqRepOne(int pReqNo);
 
 	/**
-	 * 의뢰 결과 글 작성 - 번역 결과 내용 업데이트
+	 * 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',)
+	 * 
+	 * @param pReqNo
+	 * @return
+	 */
+	public int updateReqRepAccept(PersonalReqRep personalReqRep);
+
+	/**
+	 * 의뢰 결과 글 작성/답변 - 번역 결과 내용 업데이트
 	 * 
 	 * @param personalReqRep
 	 * @return
 	 */
 	public int updateReqRepResult(PersonalReqRep personalReqRep);
-
-	/**
-	 * 의뢰 신청 글 승인하기(Accept : 'Y')
-	 * 
-	 * @param pReqNo
-	 * @return
-	 */
-	public int updateReqRepAcceptY(int pReqNo);
-
-	/**
-	 * 의뢰 신청 글 반려하기(Accept : 'R')
-	 * 
-	 * @param pReqNo
-	 * @return
-	 */
-	public int updateReqRepAcceptR(int pReqNo);
 
 	/**
 	 * 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')

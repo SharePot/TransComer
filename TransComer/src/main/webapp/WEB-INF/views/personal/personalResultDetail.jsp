@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>1:1 번역 결과 작성</title>
+<title>1:1 의뢰 번역 결과</title>
 <!--부트스트랩 4.5.0-->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -18,7 +18,7 @@
 
 </head>
 <body class="homepage is-preload">
-    <div id="page-wrapper">
+	<div id="page-wrapper">
 		<!-- Header -->
         <%-- <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
         <c:import url="../common/menuBar.jsp"/>
@@ -30,16 +30,14 @@
                     <div class="col-12">
                         <div class="d-flex justify-content-center">
                             <h2>
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-text-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M12 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zM5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
                                 </svg>
-                                1:1 의뢰 신청 번역 결과 작성
+                                1:1 의뢰 신청 결과
                             </h2>
                         </div>
                         <hr>
-                        <!-- 번역 정보 -->
-                        <form action="pReqRepResultUpdate.tc" method="post" id="personalForm">
+                        <form action="/" method="post" id="personalForm">
                             <h3>* 번역 신청 정보</h3>
                             <br>
                             <label>번역가</label>
@@ -74,14 +72,14 @@
                             <p class="float-right">(100자 당 가격 : ${personal.personalPrice } 원)</p>
                             <hr>
                             <p class="h5 font-weight-bold">* 번역 결과</p>
-                            <!-- 번역 결과 글 번호 -->
-                            <input type="hidden" name="pReqNo" value="${pReqRep.pReqNo }">
-                            <textarea rows="20" required name="pRepResult" id="pRepResult"></textarea>
+                            <div class="card">
+                                <div class="card-body">
+                                    ${pReqRep.pRepResult }
+                                </div>
+                            </div>
                             <hr>
                             <div class="d-flex justify-content-center">
-                                <button onclick="return check_input();" class="btn btn-primary">결과 등록하기</button>
-                                &nbsp;&nbsp;&nbsp;
-                                <a href="myReqRepList.tc" class="btn btn-secondary" style="text-decoration: none">취소하기</a>
+                                <a href="myReqRepList.tc" class="btn btn-primary" style="text-decoration: none">목록가기</a>
                             </div>
                         </form>
                     </div>
@@ -105,7 +103,7 @@
         </section>
 
     </div>
-
+    
     <!-- Scripts -->
     <script>
         $(document).ready(function() {
@@ -114,27 +112,6 @@
             $(this).height(((pReqContent.split('\n').length + 1) * 1.5) + 'em');
             $('#counter').html(pReqContent.length + '&nbsp자');
         });
-        
-		    // 모든 입력사항을 입력했는지 확인하는 스크립트
-			function check_input(){
-				var result = $("#pRepResult").val();
-				if(result !=""){
-					checkResultWrite();
-				} else{
-					alert("번역 결과 내용을 입력해주세요.");
-					return false;
-				}
-			}
-			// 작성한 결과 내용 글을 등록할 것인지 묻는 함수
-            function checkResultWrite(){
-                var check = window.confirm("번역 결과를 등록하시겠습니까?");
-                if (check) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        
     </script>
 </body>
 </html>

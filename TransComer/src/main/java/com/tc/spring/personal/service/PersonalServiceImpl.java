@@ -128,16 +128,10 @@ public class PersonalServiceImpl implements PersonalService {
 		return personalStore.updateReqRepResult(personalReqRep);
 	}
 
-	// 의뢰 신청 글 승인하기(Accept : 'Y')
+	// 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',)
 	@Override
-	public int updateReqRepAcceptY(int pReqNo) {
-		return personalStore.updateReqRepAcceptY(pReqNo);
-	}
-
-	// 의뢰 신청 글 반려하기(Accept : 'R')
-	@Override
-	public int updateReqRepAcceptR(int pReqNo) {
-		return personalStore.updateReqRepAcceptR(pReqNo);
+	public int updateReqRepAccept(PersonalReqRep personalReqRep) {
+		return personalStore.updateReqRepAccept(personalReqRep);
 	}
 
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')

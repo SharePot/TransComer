@@ -115,22 +115,16 @@ public class PersonalStoreLogic implements PersonalStore {
 		return sqlSession.selectOne("personalMapper.selectReqRepOne", pReqNo);
 	}
 
+	// 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',)
+	@Override
+	public int updateReqRepAccept(PersonalReqRep personalReqRep) {
+		return sqlSession.update("personalMapper.updateReqRepAccept", personalReqRep);
+	}
+
 	// 의뢰 결과 글 작성 - 번역 결과 내용 업데이트
 	@Override
 	public int updateReqRepResult(PersonalReqRep personalReqRep) {
 		return sqlSession.update("personalMapper.updateReqRepResult", personalReqRep);
-	}
-
-	// 의뢰 신청 글 승인하기(Accept : 'Y')
-	@Override
-	public int updateReqRepAcceptY(int pReqNo) {
-		return sqlSession.update("personalMapper.updateReqRepAcceptY", pReqNo);
-	}
-
-	// 의뢰 신청 글 반려하기(Accept : 'R')
-	@Override
-	public int updateReqRepAcceptR(int pReqNo) {
-		return sqlSession.update("personalMapper.updateReqRepAcceptR", pReqNo);
 	}
 
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
