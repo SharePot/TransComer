@@ -1,0 +1,9 @@
+#topbar{
+    position: fixed;
+    padding-right: 2%;
+    z-index: 5;
+}
+
+#bottom{
+    z-index: 1;
+}

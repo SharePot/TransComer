@@ -52,27 +52,39 @@
                         <section>
                             <!-- 검색 -->
                             <br>
-							<div class="input-group mb-3" id="searchBox">
+							<div class="d-flex justify-content-center">
 								<form action="pSearch.tc" method="get">
-									<select class="custom-select" id="searchCondition" name="searchCondition">
-									<!-- 	<option selected>Choose</option> -->
-										<option value="title" <c:if test="${search.searchCondition == 'title' }">selected</c:if>> 제목</option>
-										<option value="writer" <c:if test="${search.searchCondition == 'writer' }">selected</c:if>>번역가</option>
-										<option value="tLang" <c:if test="${search.searchCondition == 'tLang' }">selected</c:if>>사용 언어</option>
-										<option value="pLang" <c:if test="${search.searchCondition == 'pLang' }">selected</c:if>>개발 언어</option>
-									</select>
-									<input type="search" name="searchValue" class="form-control" placeholder="검색어 입력" value="${search.searchValue }">
-									<div class="input-group-append">
-										<button class="btn btn-outline-secondary" type="submit" id="button-addon" style="background: black;">search</button>
+									<div class="form-row">
+										<div class="form-group col-4">
+											<select class="custom-select" id="searchCondition" name="searchCondition">
+												<!-- <option value="all" selected>전체</option> -->
+												<option value="title" <c:if test="${search.searchCondition == 'title' }">selected</c:if>> 제목</option>
+												<option value="writer" <c:if test="${search.searchCondition == 'writer' }">selected</c:if>>번역가</option>
+												<option value="tLang" <c:if test="${search.searchCondition == 'tLang' }">selected</c:if>>사용 언어</option>
+												<option value="pLang" <c:if test="${search.searchCondition == 'pLang' }">selected</c:if>>개발 언어</option>
+											</select>
+										</div>
+										<div class="form-group col-6">
+											<input type="search" name="searchValue" class="form-control" placeholder="검색어 입력" value="${search.searchValue }">
+										</div>
+										<div class="form-group col-2">
+											<div class="input-group-append">
+												<button class="btn btn-outline-secondary" type="submit" id="button-addon" style="background: black;">search</button>
+											</div>
+										</div>
 									</div>
 								</form>
 							</div>
 
-
-							<!--  로그인한 사람만 글쓰기 가능 -->
-                            <c:if test="${ !empty loginUser }">
-								<button onclick="location.href='pWriterView.tc';">글쓰기</button>
-							</c:if>
+							<div class="d-flex justify-content-end">
+								<!--  로그인한 사람만 글쓰기 가능 -->
+	                            <c:if test="${ !empty loginUser }">
+	                            	<c:url var="pWriterView" value="pWriterView.tc">
+	                                	<c:param name="memberId" value="${loginUser.memberId }"></c:param>
+	                                </c:url>
+	                               	<a href="${pWriterView }" class="btn btn-danger btn-lg" style="text-decoration: none;">글쓰기</a>
+								</c:if>
+							</div>
 
 
                             <header class="major">
@@ -82,11 +94,11 @@
                             	<c:forEach var="p" items="${list }">
                                 <div class="col-4 col-6-medium col-12-small">
                                     <section class="box">
-                                        <center>
+                                        <div class="d-flex justify-content-center">
                                             <div class="imgbox">
                                                 <img class="profile" src="/resources/pUploadFiles/${p.personalFilePath}">
                                             </div>
-                                        </center>
+                                        </div>
                                         <br>
                                         <header>
                                             <h4>${p.personalTitle }</h4>
@@ -98,7 +110,13 @@
                                         <br>사용가능 개발언어: ${p.personalPLang}</p>
                                         <footer>
                                             <ul class="actions">
-                                                <li><a href="pDetail.tc?personalNo=${p.personalNo}&memberId=${p.memberId}" class="button alt" style="background-color:lightblue;">자세히 보기</a></li>
+                                                <li>
+		                                        	<c:url var="pDetail" value="pDetail.tc">
+		                                            	<c:param name="personalNo" value="${p.personalNo}"></c:param>
+		                                            	<c:param name="memberId" value="${p.memberId}"></c:param>
+		                                            </c:url>
+                                                	<a href="${pDetail }" class="button alt" style="background-color:lightblue;">자세히 보기</a>
+                                                </li>
                                             </ul>
                                         </footer>
                                     </section>
@@ -150,7 +168,6 @@
 				            	</ul>
 				            </div>
 				            
-
                         </section>
                     </div>
 
@@ -159,24 +176,9 @@
         </section>
 
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <c:import url="../common/footer.jsp"/>
 
     </div>
-
-    <!-- Scripts -->
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="resources/css/main.css" />
 
 </body>
 </html>

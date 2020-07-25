@@ -91,18 +91,7 @@
 
 
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <c:import url="../common/footer.jsp"/>
 
     </div>
 

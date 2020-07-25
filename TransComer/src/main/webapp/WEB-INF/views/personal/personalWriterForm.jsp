@@ -47,7 +47,7 @@
             padding: 10% 0;
         }
         
-        #profileImage {
+        .profile {
             width: 80%;
             height: auto;
             object-fit: cover;
@@ -79,18 +79,46 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <center>
+                        <div class="d-flex justify-content-center">
                             <h2>' ${loginUser.memberId } ' 님의 번역가 등록</h2>
-                        </center>
+                        </div>
                         <hr>
                         <div class="card" id="introduce">
                             <div class="imgBox">
-                             	<img class="profile" src="/resources/uploadFiles/${profile.profileFilePath}">
+                            	<!-- if : 프로필 사진이 등록되어 있으면 -->
+                                <c:if test="${not empty profile.profileFilePath }">
+                                    <img class="profile" src="resources/uploadFiles/${profile.profileFilePath}">
+                                </c:if>
+                                <!-- if : 프로필 사진이 등록되어 있지 않으면 -->
+                                <c:if test="${empty profile.profileFilePath }">
+                                	<img class="profile" src="resources/image/defaultProfileImg.png">
+                                </c:if>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">${profile.introduce }</h5>
+                                <h5 class="card-title">${loginUser.memberId } 님의 프로필 등록 정보</h5>
                                 <hr>
-                                <p class="card-text"> </p>
+                                <!-- if : 프로필 등록되어 있으면 -->
+                                <c:if test="${not empty profile.introduce }">
+	                                <p class="card-text">${profile.introduce }</p>
+                                </c:if>
+                                <!-- if : 프로필 등록되어 있지 않으면 -->
+                                <c:if test="${empty profile.introduce }">
+	                                <p class="card-text">
+	                                	<span class="h6 font-weight-bold">※ 등록된 프로필 정보가 없습니다.</span>
+	                                	<br>
+	                                	☆ 프로필을 등록하시면, 본인에 대해서 더 자세히 알려줄 수 있어요!
+	                                	<br><br>
+	                                	<span class="h6 font-weight-bold">* 프로필 등록 방법 *</span>
+	                                	<br> 
+	                                	1. 마이페이지 클릭
+	                                	<br> 
+	                                	2. 프로필 등록하기 클릭
+	                                	<br>
+	                                	3. 프로필 작성
+	                                	<br>
+	                                	4. 프로필 등록 완료 !
+	                                </p>
+                                </c:if>
                             </div>
                         </div>
                         <form action="pWriterInsert.tc" method="post" id="WriterForm" enctype="Multipart/form-data">
@@ -110,7 +138,7 @@
                                     (이미지 크기는 300*200px을 권장합니다.)
                                 </p>
                                 <label>작업 일정</label>
-                                <input type="text" name="personalSchedule" style="width:120px" placeholder="최대 소요 기간" value="">&nbsp;일
+                                <input type="text" name="personalSchedule" style="width:200px" placeholder="최대 소요 기간" value="">&nbsp;일
                                 <br><br>
                                 <label>개발 언어</label>
                                     <select name='pLang1' class="pLang_first" style="margin-left: 20%; width:20%;">
@@ -182,10 +210,10 @@
 
                             <br><br>
                             <input type="hidden" value=${loginUser.memberId } name="memberId">
-                            <center>
+                            <div class="d-flex justify-content-center">
                                 <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 등록 </button>
                                 <button class="btn btn-secondary" type="reset" style="margin:0 20px; width:100px;"> 취소 </button>
-                            </center>
+                            </div>
                         </form>
 
                     </div>

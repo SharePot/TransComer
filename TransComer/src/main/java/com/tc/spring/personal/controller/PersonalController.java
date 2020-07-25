@@ -98,7 +98,6 @@ public class PersonalController {
 		Personal personal = personalService.selectOne(personalNo); // 상세조회
 		Member mem = memberService.selectMemberOne(memberId);
 		Profile profile = memberService.selectProfileOne(mem.getMemberNo());
-		/* PersonalReqRep reqrep = personalService.select */
 
 		if (personal != null) {
 			this.cutUselessStringOne(personal); // 없음 텍스트 제거
@@ -115,7 +114,10 @@ public class PersonalController {
 
 	// 1:1게시판 등록페이지 이동
 	@RequestMapping("pWriterView.tc")
-	public String pWriterView() {
+	public String pWriterView(String memberId, Model model) {
+		Member mem = memberService.selectMemberOne(memberId); // 해당 유저 정보가져옴
+		Profile profile = memberService.selectProfileOne(mem.getMemberNo()); // 유저 프로필 정보
+		model.addAttribute("profile", profile);
 		return "personal/personalWriterForm";
 	}
 
@@ -263,6 +265,17 @@ public class PersonalController {
 		return "personal/personalRequestForm";
 	}
 
+	// 빛나님 작성
+	// 1:1 의뢰 결제 페이지로 이동
+	@RequestMapping(value = "personalPayView.tc", method = RequestMethod.GET)
+	public String personalPayView(Model model, String memberId) {
+		int pReqLastNo = personalService.selectPersonalLastNo(memberId);
+		PersonalReqRep personalReqRep = personalService.selectReqRepOne(pReqLastNo);
+		System.out.println(personalReqRep);
+		model.addAttribute("personalReqRep", personalReqRep);
+		return "member/personalPointPayment";
+	}
+
 	// 1:1 의뢰 신청 등록하기
 	@RequestMapping(value = "pReqInsert.tc", method = RequestMethod.POST)
 	public String requestInsert(PersonalReqRep personalReqRep, Files files, Model model,
@@ -283,9 +296,15 @@ public class PersonalController {
 					resultFile = fController.insertFile(files, model, uploadFile[i], requestH, memberId);
 				}
 			}
-			path = "redirect:plist.tc";
+			if (resultFile > 0) {
+				model.addAttribute("personalReqRep", personalReqRep);
+				path = "redirect:personalPayView.tc?memberId=" + memberId;
+			} else {
+				model.addAttribute("msg", "파일 등록실패");
+				path = "common/errorPage";
+			}
 		} else {
-			model.addAttribute("msg", "등록실패");
+			model.addAttribute("msg", "신청 글 등록실패");
 			path = "common/errorPage";
 		}
 		return path;
@@ -295,20 +314,14 @@ public class PersonalController {
 	// ================ 0723 ~ 현꾸 작성 ======================
 	// 의뢰 신청 목록 조회 (의뢰신청한거, 신청받은거 둘다)
 	@RequestMapping(value = "myReqRepList.tc", method = RequestMethod.GET)
-	public ModelAndView doGetReqRepList(ModelAndView mv,
-			@RequestParam(value = "pageDo", required = false) Integer pageDo,
-			@RequestParam(value = "pageGet", required = false) Integer pageGet, HttpSession session) {
+	public ModelAndView doGetReqRepList(ModelAndView mv, HttpSession session) {
 		// 현재 로그인 유저 아이디 가져오기, 현재 로그인유저와 관련된 정보 조회
 		String memberId = ((Member) session.getAttribute("loginUser")).getMemberId();
 		// 표에 출력할 내용을 몇글자만 잘라서 출력할 것인지
 		int showContent = 25; // 해당 길이만큼 잘라서 출력
 
 		// 신청글 목록 페이징, 객체 ------------------------
-		int doCurrentPage = (pageDo != null) ? pageDo : 1;
-		int doListCount = personalService.doReqRepListCnt(memberId); // 신청글 전체의 개수
-
-		PersonalPageInfo doPi = Pagination.getPersonalPageInfo(doCurrentPage, doListCount);
-		ArrayList<PersonalReqRep> doList = personalService.selectDoReqRepList(memberId, doPi);
+		ArrayList<PersonalReqRep> doList = personalService.selectDoReqRepList(memberId);
 		for (PersonalReqRep reqRep : doList) {
 			// System.out.println("reqRep : " + reqRep);
 			// System.out.println("reqContent :" + reqRep.getpReqContent());
@@ -318,42 +331,38 @@ public class PersonalController {
 		}
 
 		// 신청받은 목록 페이징, 객체 ---------------------
-		int getCurrentPage = (pageGet != null) ? pageGet : 1;
-		int getListCount = personalService.getReqRepListCnt(memberId); // 번역가의 아이디
-
-		PersonalPageInfo getPi = Pagination.getPersonalPageInfo(getCurrentPage, getListCount);
-		ArrayList<PersonalReqRep> getList = personalService.selectGetReqRepList(memberId, getPi);
+		ArrayList<PersonalReqRep> getList = personalService.selectGetReqRepList(memberId);
 		for (PersonalReqRep reqRep : getList) {
 			if (reqRep.getpReqContent().length() > showContent) {
 				reqRep.setpReqContent(reqRep.getpReqContent().substring(0, showContent).concat("..."));
 			}
 		}
-		if (!doList.isEmpty() && !getList.isEmpty()) {
-			// 신청한 목록 객체
-			mv.addObject("doList", doList);
-			mv.addObject("doPi", doPi);
+		// 신청한 목록 객체
+		mv.addObject("doList", doList);
 
-			// 신청받은 목록 객체
-			mv.addObject("getList", getList);
-			mv.addObject("getPi", getPi);
+		// 신청받은 목록 객체
+		mv.addObject("getList", getList);
+		mv.setViewName("member/myPersonalRequestList");
 
-			mv.setViewName("member/myPersonalRequestList");
-		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
-		}
 		return mv;
 	}
 
 	// 의뢰 신청글 한개 상세 조회
 	@RequestMapping(value = "pReqRepDetail.tc", method = RequestMethod.GET)
 	public String reqRepDetail(int pReqNo, int personalNo, Model model) {
-		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
-		Personal personal = personalService.selectOne(personalNo);
+		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo); // 신청 요청 글
+		Personal personal = personalService.selectOne(personalNo); // 1:1 게시글
+
+		// 상세 조회 값이 비어있지 않으면
 		if (pReqRep != null && personal != null) {
 			this.cutUselessStringOne(personal); // 없음 텍스트 제거
-			model.addAttribute("pReqRep", pReqRep);
-			model.addAttribute("personal", personal);
+			model.addAttribute("pReqRep", pReqRep); // 신청 요청 글 정보
+			model.addAttribute("personal", personal); // 1:1 게시글 정보
+
+			// 해당 글에 등록된 파일 불러오기, flist 변수에 set
+			model.addAttribute("flist", this.pReqRepFileLoad(pReqNo));
+
+			// 상세 조회 페이지 리턴
 			return "personal/personalRequestDetail";
 		} else {
 			model.addAttribute("msg", "의뢰 신청글 상세조회 실패");
@@ -364,8 +373,8 @@ public class PersonalController {
 	// 의뢰 결과 글 작성 페이지로 이동하기
 	@RequestMapping(value = "pReqRepResultWrite.tc", method = RequestMethod.GET)
 	public String reqResultWriteView(int pReqNo, int personalNo, Model model) {
-		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
-		Personal personal = personalService.selectOne(personalNo);
+		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);// 신청 요청 글
+		Personal personal = personalService.selectOne(personalNo);// 1:1 게시글
 		if (pReqRep != null && personal != null) {
 			this.cutUselessStringOne(personal); // 없음 텍스트 제거
 			model.addAttribute("pReqRep", pReqRep);
@@ -391,16 +400,28 @@ public class PersonalController {
 	// 의뢰 결과 완료 글 확인하기 (번역결과 내용 확인 상세보기)
 	@RequestMapping(value = "pReqRepResultDetail.tc", method = RequestMethod.GET)
 	public String reqResultDetail(int pReqNo, int personalNo, Model model) {
-		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
-		Personal personal = personalService.selectOne(personalNo);
+		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo); // 신청 요청 글
+		Personal personal = personalService.selectOne(personalNo); // 1:1 게시글
 		if (pReqRep != null && personal != null) {
-			model.addAttribute("pReqRep", pReqRep);
-			model.addAttribute("personal", personal);
+			model.addAttribute("pReqRep", pReqRep); // 신청 요청 글 정보
+			model.addAttribute("personal", personal); // 1:1 게시글 정보
+
+			// 해당 글에 등록된 파일 불러오기, flist 변수에 set
+			model.addAttribute("flist", this.pReqRepFileLoad(pReqNo));
+
 			return "personal/personalResultDetail"; // 결과 상세조회 페이지
 		} else {
 			model.addAttribute("msg", "의뢰 신청글 상세조회 실패");
 			return "common/errorPage";
 		}
+	}
+
+	// pReqRep 파일 리스트 불러오기
+	public ArrayList<Files> pReqRepFileLoad(int pReqNo) {
+		Files files = new Files(); // 파일 도메인 객체 생성
+		files.setpReqNo(pReqNo); // 요청신청글 번호 세팅
+		ArrayList<Files> flist = fController.selectFileList(files); // 파일 리스트
+		return flist;
 	}
 
 	// 의뢰 신청 글 승인하기(Accept : 'Y')
@@ -430,11 +451,38 @@ public class PersonalController {
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
 	@RequestMapping(value = "pReqRepCheckBuyY.tc", method = RequestMethod.GET)
 	public String reqCheckBuyYUpdate(int pReqNo) {
+
+		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);
+
+		PointChange pointChange = new PointChange();
+		pointChange.setPointContent("번역 결과 확정");
+		pointChange.setPointAmount(pReqRep.getpReqPrice());
+		pointChange.setPointStatus("ADD");
+		pointChange.setMemberId(pReqRep.getpRepTranslator());
+
+		Member member = memberService.selectMemberOne(pReqRep.getpRepTranslator());
+		member.setPoint(member.getPoint() + pReqRep.getpReqPrice());
+
+		int insertPointChange = memberService.insertPointChange(pointChange);
+		int updateMemberPhoint = memberService.updateMemberPoint(member);
+
 		int result = personalService.updateReqRepCheckBuyY(pReqNo);
-		if (result > 0) {
+		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
+		}
+	}
+
+	// 과거 구매기록이 있는지 확인 - ajax
+	@RequestMapping(value = "checkBuyHistory.tc", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkBuyYHistory(PersonalReqRep personalReqRep) {
+		int checkBuyYResult = personalService.checkBuyYHistory(personalReqRep);
+		if (checkBuyYResult > 0) {
+			return "Y";
+		} else {
+			return "N";
 		}
 	}
 
@@ -500,6 +548,8 @@ public class PersonalController {
 		}
 		return personal;
 	}
+
+	// 파일 리스트 불러오기
 
 	// =============== 현꾸 작성 끝 =====================
 

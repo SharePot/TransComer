@@ -214,5 +214,12 @@
 		WHERE P_REQ_NO = #{pReqNo}
 	</update>
 	
+	<!-- 해당 유저의 해당 글 과거 구매완료 기록이 있는지 확인 -->
+	<select id="checkBuyYHistory" parameterType="PersonalReqRep" resultType="_int">
+		SELECT COUNT(*) FROM PERSONAL_REQ_REP
+		WHERE MEMBER_ID = #{memberId}
+		AND PERSONAL_NO = #{personalNo}
+		and P_REQ_CHECK_BUY = 'Y'
+	</select>
 	
 </mapper>

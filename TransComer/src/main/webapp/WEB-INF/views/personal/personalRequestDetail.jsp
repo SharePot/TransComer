@@ -51,7 +51,7 @@
                             <input type="text" id="personalTLang" name="personalTLang" readonly value="${personal.personalTLang }">
                             <br><br>
                             <label>번역 작업 소요 시간</label>
-                            <input type="text" id="personalSchedule" name="personalSchedule" readonly value="승인일로부터 ${personal.personalSchedule } 일 후">
+                            <input type="text" id="personalSchedule" name="personalSchedule" readonly value="승인일로부터 [ ${personal.personalSchedule } ] 일 후">
                             <br><br>
                             <label>번역 가격(100자 당)</label>
                             <input type="text" id="personalPrice" name="personalPrice" readonly value="${personal.personalPrice }">
@@ -71,8 +71,10 @@
                             <h4>첨부파일</h4>
                             <br>
                             <!--첨부파일 갯수만큼 for 반복-->
-                            <img src="https://img.wkorea.com/w/2020/06/style_5edf522a85fed-700x467.jpg" style="width: 100%;">
-                            <br><br>
+                            <c:forEach var="file" items="${flist }">
+                            	<img src="resources/${file.memberId }/uploadFiles/${file.fileName }" style="width: 100%;">
+                            	<br>
+                            </c:forEach>
 
                             <hr>
                             <h4>번역 의뢰 내용</h4>
@@ -107,18 +109,7 @@
 
 
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <c:import url="../common/footer.jsp"/>
 
     </div>
 

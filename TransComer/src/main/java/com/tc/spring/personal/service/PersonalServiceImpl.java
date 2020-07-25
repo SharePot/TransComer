@@ -22,7 +22,6 @@ public class PersonalServiceImpl implements PersonalService {
 
 	@Override
 	public ArrayList<Personal> selectPersonalList(PersonalPageInfo pi) {
-		System.out.println("Service 도착");
 		return personalStore.selectPersonalList(pi);
 	}
 
@@ -92,8 +91,8 @@ public class PersonalServiceImpl implements PersonalService {
 	// ================ 0723 ~ 현꾸 작성 ==============
 	// 의뢰 신청한 목록
 	@Override
-	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId, PersonalPageInfo pi) {
-		return personalStore.selectDoReqRepList(memberId, pi);
+	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId) {
+		return personalStore.selectDoReqRepList(memberId);
 	}
 
 	// 의뢰 신청글 갯수
@@ -104,8 +103,8 @@ public class PersonalServiceImpl implements PersonalService {
 
 	// 의뢰 받은 목록
 	@Override
-	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId, PersonalPageInfo pi) {
-		return personalStore.selectGetReqRepList(memberId, pi);
+	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId) {
+		return personalStore.selectGetReqRepList(memberId);
 	}
 
 	// 의뢰 받은글 갯수
@@ -136,5 +135,12 @@ public class PersonalServiceImpl implements PersonalService {
 	@Override
 	public int updateReqRepCheckBuyY(int pReqNo) {
 		return personalStore.updateReqRepCheckBuyY(pReqNo);
+	}
+
+	// 해당 유저의 해당 글 과거 구매완료 기록이 있는지 확인
+	@Override
+	public int checkBuyYHistory(PersonalReqRep personalReqRep) {
+		// TODO Auto-generated method stub
+		return personalStore.checkBuyYHistory(personalReqRep);
 	}
 }

@@ -51,9 +51,13 @@
 
                             <hr>
                             <h4>* 첨부파일</h4>
+                            <br>
                             <!--첨부파일 갯수만큼 for 반복-->
-                            <img src="https://img.wkorea.com/w/2020/06/style_5edf522a85fed-700x467.jpg" style="width: 100%;">
-
+                            <c:forEach var="file" items="${flist }">
+                            	<img src="resources/${file.memberId }/uploadFiles/${file.fileName }" style="width: 100%;">
+                            	<br>
+                            </c:forEach>
+                            
                             <hr>
                             <h4>* 세부요청 사항</h4>
                             <div class="card">
@@ -87,20 +91,8 @@
             </div>
         </section>
 
-
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <c:import url="../common/footer.jsp"/>
 
     </div>
     

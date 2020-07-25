@@ -107,7 +107,7 @@ public interface PersonalService {
 	 * @param memberId
 	 * @return
 	 */
-	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId, PersonalPageInfo pi);
+	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId);
 
 	/**
 	 * 의뢰 신청글 갯수
@@ -123,7 +123,7 @@ public interface PersonalService {
 	 * @param memberId
 	 * @return
 	 */
-	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId, PersonalPageInfo pi);
+	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId);
 
 	/**
 	 * 의뢰 받은글 갯수
@@ -164,4 +164,12 @@ public interface PersonalService {
 	 * @return
 	 */
 	public int updateReqRepCheckBuyY(int pReqNo);
+
+	/**
+	 * 해당 유저의 해당 글 과거 구매완료 기록이 있는지 확인
+	 * 
+	 * @param personalReqRep
+	 * @return
+	 */
+	public int checkBuyYHistory(PersonalReqRep personalReqRep);
 }

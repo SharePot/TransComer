@@ -5,9 +5,11 @@
 <html lang="ko">
 
 <head>
-    <title>SharePot</title>
+    <title>1:1 상세보기</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!--폰트어썸-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .imgbox {
             width: 150px;
@@ -92,9 +94,11 @@
         <!-- Main -->
         <section id="main">
             <div class="container">
-                <center>
-                    <h2>상세보기</h2>
-                </center>
+                <div class="d-flex justify-content-center">
+                    <h2>
+                        상세보기
+                    </h2>
+                </div>
                 <hr>
                 <div class="row">
                     <div class="col-8 col-6-medium col-12-small">
@@ -151,7 +155,7 @@
                                 <a class="nav-link active" data-toggle="tab" href="#move1" style="text-decoration:none">상세정보</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#move2" style="text-decoration:none">후기</a>
+                                <a class="nav-link" data-toggle="tab" href="#move2" style="text-decoration:none" id="reviewTab">후기</a>
                             </li>
                         </ul>
 
@@ -159,7 +163,9 @@
                          <!-- 서비스 소개 탭 -->
                             <div id="move1" class="container tab-pane active" align="center"><br>
                                 <div id="moveInfo1" class="container tab-pane active">
-                                    <center><h3>서비스 소개</h3></center>
+                                    <div class="d-flex justify-content-center">
+                                    	<h3>서비스 소개</h3>
+                                    </div>
                                 </div>
                                 <hr>
                                 <div id="moveExplain1" class="container tab-pane active">
@@ -170,14 +176,16 @@
 							<!-- 리뷰/후기 탭 -->
                             <div id="move2" class="container tab-pane fade" align="center"><br>
                                 <div id="moveInfo2" class="tab-pane active">
-                                    <center>
-                                        <h3>서비스 후기</h3>
-                                    </center>
+                                    <div class="d-flex justify-content-center">
+			                            <h3>
+			                                서비스 후기
+			                            </h3>
+			                        </div>
                                     <br>
                                     <!-- 별점 -->
                                     <div style="background: white; height:100px; padding:20px 0; border:0.3px solid lightgray">
-                                        <h2>4.0</h2>
-                                        <h3 style="color:orange">★★★★☆</h3>
+                                        <h2 id="starRateNum">4.0</h2>
+                                        <h3 id="starRateColor" style="color:orange">★★★★☆</h3>
                                     </div>
                                 </div>
                                 
@@ -188,50 +196,57 @@
 										
 									</table> -->
 								</div>
-                                
 								
 								<hr>
 								<p>${personalReqRep.pRepTranslator }</p>
 								<!-- 리뷰 등록  -->
                                 <div class="col-sm-12 col-md-12">
-								<input type="hidden" name="pRepTranslator" value="${personal.memberId}">
-								<input type="hidden" name="memberId" value="${personal.memberId}"> 
-                                	<c:if test="${ !empty loginUser }">
-                                	<%-- <c:if test="${ loginUser.memberId eq personalReqRep.memberId }"> --%>
-                               		<%-- <c:if test="${ personalReqRep.pReqCheckBuy != null  }"> --%>
-										<div class="starRev">
-											<span class="starR">1</span>
-											<span class="starR">2</span>
-											<span class="starR">3</span>
-											<span class="starR">4</span>
-											<span class="starR">5</span>
-										</div>
-										<b id="starScore"></b><b>점</b>
-										<br><br>
-	                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
-	                                        <input type="hidden" id="revPersonalNo" name="personalNo" value="${personal.personalNo }" />
-	                                        <textarea id="content" rows="4" cols="60" placeholder="후기를 입력해주세요." maxlength="100"></textarea>
-	                                        <!-- <textarea id="Q_Contents" class="DOC_TEXT" name="revContent" rows="4" cols="60" placeholder="구매하신 상품의 후기를 입력해주세요 최대 50자"></textarea> -->
-	                                        <span style="color:#aaa; float:right;" id="counter">(0 / 최대 100자)</span>
-	                            
+                                	<!-- 구매 기록이 있으면 작성칸 보임 / 구매기록 없으면 작성칸 안보임 -->
+                                	<div id="reviewWrite">
+										<input type="hidden" name="pRepTranslator" value="${personal.memberId}">
+										<input type="hidden" name="memberId" value="${personal.memberId}"> 
+	                                	<c:if test="${ !empty loginUser }">
+	                                	<%-- <c:if test="${ loginUser.memberId eq personalReqRep.memberId }"> --%>
+	                               		<%-- <c:if test="${ personalReqRep.pReqCheckBuy != null  }"> --%>
+											<div class="starRev">
+												<span class="starR">1</span>
+												<span class="starR">2</span>
+												<span class="starR">3</span>
+												<span class="starR">4</span>
+												<span class="starR">5</span>
+											</div>
+											<b id="starScore"></b><b>점</b>
 											<br><br>
-											<input type="submit" id="submit" class="btn" style="background:blue;" value="등록">
-	                                        <input type="reset" class="btn" value="취소">
-                                    </c:if>
+		                                    	<input type="hidden" id="revTargetMemberId" name="revTargetMemberId" value="${personal.memberId }">
+		                                        <input type="hidden" id="revPersonalNo" name="personalNo" value="${personal.personalNo }" />
+		                                        <textarea id="content" rows="4" cols="60" placeholder="후기를 입력해주세요." maxlength="100"></textarea>
+		                                        <span style="color:#aaa; float:right;" id="counter">(0 / 최대 100자)</span>
+		                            
+												<br><br>
+												<input type="submit" id="submit" class="btn" style="background:blue;" value="등록">
+		                                        <input type="reset" class="btn" value="취소">
+	                                    </c:if>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
 					<!-- 프로필 -->
                     <div class="col-4 col-6-medium col-12-small">
                         <section class="box" style=" border: 0px;">
-                            <center>
+                            <div class="d-flex justify-content-center">
                                 <div class="imgbox" style="background: ">
-                                    <img class="profile" src="/resources/uploadFiles/${profile.profileFilePath}">
+                                	<!-- if : 프로필 사진이 등록되어 있으면 -->
+	                                <c:if test="${not empty profile.profileFilePath }">
+	                                    <img class="profile" src="resources/uploadFiles/${profile.profileFilePath}">
+	                                </c:if>
+	                                <!-- if : 프로필 사진이 등록되어 있지 않으면 -->
+	                                <c:if test="${empty profile.profileFilePath }">
+	                                	<img class="profile" src="resources/image/defaultProfileImg.png">
+	                                </c:if>
                                 </div>
-                            </center>
+                            </div>
                             <br>
                             <header>
                                 <h3 style="text-align:center">${personal.memberId }</h3>
@@ -249,26 +264,52 @@
         </section>
 
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <c:import url="../common/footer.jsp"/>
 
     </div>
 
-    <!-- Scripts -->
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="resources/css/main.css" />
-    
     <script>
+    	// 꽉찬 별
+    	// <i class="fas fa-star"></i>
+
+    	// 빈별
+    	//<i class="far fa-star"></i>
+    	
+    	// 반별
+    	//<i class="fas fa-star-half-alt"></i>
+    	
+    
+    	// 현꾸 작성 ------------------------------------------
+    	// 리뷰 탭을 눌렀을때, 해당 글에 대한 구매 내역이 있는지 확인
+    	// 구매내역이 있음 : 리뷰 작성칸 .css("display","block")
+    	// 구매내역이 없음 : 리뷰 작성칸 .css("display","none");
+    	$("#reviewTab").click(function(){
+    		//alert("버튼 클릭");
+    		var memberId = "${loginUser.memberId}";
+    		var personalNo = "${personal.personalNo}";
+    		$.ajax({
+    			url : "checkBuyHistory.tc",
+    			type : "post",
+    			data : {
+    				memberId : memberId,
+    				personalNo : personalNo
+    			},
+    			success : function(data) {
+    				if(data == "Y"){
+    					console.log("구매기록 있음");
+    					$("#reviewWrite").css("display","block");
+    				} else{
+    					console.log("구매기록 없음");
+    					$("#reviewWrite").css("display","none");
+    				}
+    			},
+    			error : function(data) {
+    				console.log("구매기록을 불러오는데 실패하였습니다.");
+    			}
+    		});
+    	});
+    	
+    	// 글 삭제를 여부를 묻는 함수
     	function deletePersonal() {
     		if (confirm("정말 삭제하시겠습니까??") == true){  
     				self.location.href = "pWriterDelete.tc?personalNo=${personal.personalNo }";
@@ -306,11 +347,10 @@
         	 var rPersonalNo = ${personal.personalNo}; // 어느 게시글의 댓글인지 알려줌
         	 //var revTargetMemberId = ${personal.memberId};
         	 
-        	 alert("starRage : "+starRage);
-        	 alert("revContent : "+revContent);
-        	 alert("rPersonalNo : "+rPersonalNo);
-        	 alert("revTargetMemberId : "+revTargetMemberId);
-        	 
+        	 //alert("starRage : "+starRage);
+        	 //alert("revContent : "+revContent);
+        	 //alert("rPersonalNo : "+rPersonalNo);
+        	 //alert("revTargetMemberId : "+revTargetMemberId);
         	 
         	 $.ajax({
         		 url : "pReview.tc",

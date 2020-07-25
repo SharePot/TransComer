@@ -20,7 +20,6 @@ public class PersonalStoreLogic implements PersonalStore {
 
 	@Override
 	public ArrayList<Personal> selectPersonalList(PersonalPageInfo pi) {
-		System.out.println("Store 도착");
 		int offset = (pi.getCurrentPage() - 1) * pi.getPersonalLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getPersonalLimit());
 		return (ArrayList) sqlSession.selectList("personalMapper.selectList", null, rowBounds);
@@ -82,10 +81,8 @@ public class PersonalStoreLogic implements PersonalStore {
 	// ================ 0723 ~ 현꾸 작성 ==============
 	// 의뢰 신청한 목록
 	@Override
-	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId, PersonalPageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getPersonalLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPersonalLimit());
-		return (ArrayList) sqlSession.selectList("personalMapper.selectDoReqRepList", memberId, rowBounds);
+	public ArrayList<PersonalReqRep> selectDoReqRepList(String memberId) {
+		return (ArrayList) sqlSession.selectList("personalMapper.selectDoReqRepList", memberId);
 	}
 
 	// 의뢰 신청글 갯수
@@ -96,10 +93,8 @@ public class PersonalStoreLogic implements PersonalStore {
 
 	// 의뢰 받은 목록
 	@Override
-	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId, PersonalPageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getPersonalLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPersonalLimit());
-		return (ArrayList) sqlSession.selectList("personalMapper.selectGetReqRepList", memberId, rowBounds);
+	public ArrayList<PersonalReqRep> selectGetReqRepList(String memberId) {
+		return (ArrayList) sqlSession.selectList("personalMapper.selectGetReqRepList", memberId);
 	}
 
 	// 의뢰 받은글 갯수
@@ -130,6 +125,12 @@ public class PersonalStoreLogic implements PersonalStore {
 	@Override
 	public int updateReqRepCheckBuyY(int pReqNo) {
 		return sqlSession.update("personalMapper.updateReqRepCheckBuyY", pReqNo);
+	}
+
+	// 해당 유저의 해당 글 과거 구매완료 기록이 있는지 확인
+	@Override
+	public int checkBuyYHistory(PersonalReqRep personalReqRep) {
+		return sqlSession.selectOne("personalMapper.checkBuyYHistory", personalReqRep);
 	}
 
 }
