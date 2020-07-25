@@ -7,15 +7,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 스터디 글 작성</title>
 </head>
+<style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
+#title{
+font-size:30px !important;
+}
+a{
+text-decoration:none !important;
+}
+</style>
+
 <body>
 
 	<c:import url="../common/menuBar.jsp" />
 	 <div id="page-wrapper">
 	   <!-- Main -->
         <section id="main">
-	
-	<br style="clear:both">
-	<h1 align="center">스터디 글쓰기</h1>
+	   <div id="contentSection">
+	<h1 id="title" align="center">스터디 글쓰기</h1>
 	
 	<br><br>
 	<form action="studyInsert.tc" method="post" enctype="multipart/form-data">
@@ -51,8 +63,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<input type="submit" value="등록">&nbsp; &nbsp;
-					<input type="reset" value="취소">
+					<input type="submit" class="btn btn-primary" value="등록">&nbsp; &nbsp;
+					<input type="reset" class="btn btn-primary" value="취소">
 				</td>
 			</tr>
 		</table>
@@ -60,12 +72,13 @@
 	
 	<p align="center">
 		<c:url var="home" value="home.tc"/>
-		<a href="${ home }">시작페이지로 이동</a>&nbsp;
+		<a href="${ home }">시작페이지로 이동</a>&nbsp;&nbsp;
 		<c:url var="list" value="studyList.tc"/>
-		<a href="${list }">목록 전체보기</a>
+		<a href="${list }">목록으로 이동</a>
 	</p>
 
 	<br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
 	</section>
 		</div>
 	<script>

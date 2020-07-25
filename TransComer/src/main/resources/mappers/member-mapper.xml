@@ -82,7 +82,7 @@
    </select>
    
    	<!-- 프리미엄 가입 (업데이트) -->
-   	<update id="memberUpdatePreminum" parameterType="Member">
+   	<update id="memberUpdatePremium" parameterType="Member">
    	UPDATE MEMBER SET MEMBER_STATUS=#{status} WHERE MEMBER_ID=#{memberId}
    	</update>
    	
@@ -148,6 +148,13 @@
 	<select id="userRefrash" parameterType="String" resultMap="memberResultSet">
 	 SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId}
 	  </select>
+	
+	<!-- 번역공유 게시판 열람 횟수 차감 -->
+	<update id="updateContentCount" parameterType="String">
+		UPDATE MEMBER
+		SET CONTENTS_COUNT = CONTENTS_COUNT-1
+		WHERE MEMBER_ID = #{memberId}
+	</update>
 	
 
 <!-- 포인트 변동 관련 -->
@@ -274,6 +281,80 @@
    		#{pLangGrade2}, #{pLang3}, #{pLangGrade3}, #{tLang1}, #{tLangGrade1}, #{tLang2}, 
    		#{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, DEFAULT)
    </insert>
+   
+         <!-- 프로필 수정하기 -->
+   <update id="updateProfile" parameterType="Profile">
+   		UPDATE PROFILE SET P_LANGUAGE1 = #{pLang1}, P_LANG_GRADE1 = #{pLangGrade1}, P_LANGUAGE2 = #{pLang2}, 
+   		P_LANG_GRADE2 =#{pLangGrade2}, P_LANGUAGE3 = #{pLang3}, P_LANG_GRADE3 = #{pLangGrade3}, T_LANGUAGE1 = #{tLang1}, 
+   		T_LANG_GRADE1 = #{tLangGrade1}, T_LANGUAGE2 = #{tLang2}, T_LANG_GRADE2 = #{tLangGrade2}, T_LANGUAGE3 = #{tLang3},
+   		T_LANG_GRADE3 =  #{tLangGrade3}, MEM_INTRODUCE = #{introduce}, PROFILE_FILE_PATH = #{profileFilePath},
+   		PROFILE_DATE = SYSDATE, PROFILE_STATUS = #{profileStatus} WHERE MEMBER_NO = #{memberNo}
+   </update>
+   
+   <!-- 프로필 삭제하기 -->
+   <delete id="deleteProfile" parameterType = "_int">
+   		DELETE FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+   </delete>
+   
+   <!-- 프로필 등록상태 Y 수정 -->
+   <update id="updateStatusY" parameterType="Member">
+   		UPDATE MEMBER SET PROFILE_STATUS = 'Y' WHERE MEMBER_NO = #{memberNo}
+   </update>
+   
+   <!-- 프로필 등록상태 N 수정 -->
+   <update id="updateStatusN" parameterType="Member">
+   		UPDATE MEMBER SET PROFILE_STATUS = 'N' WHERE MEMBER_NO = #{memberNo}
+   </update>
+   
+   <select id="getPfListCount" resultType="_int">
+   		SELECT COUNT(*) FROM PROFILE
+   </select>
+   
+   <select id="getPfSearchListCount" parameterType="Profile" resultType="_int">
+	SELECT COUNT(*) FROM PROFILE
+	<where>
+		<choose>
+			<when test="searchCondition =='id'">
+			MEMBER_ID LIKE '%' || #{searchValue} || '%'
+			</when>
+			<when test="searchCondition =='no'">
+			AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
+			</when>
+			<when test="searchCondition=='status'">
+			AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'  			
+			</when>
+			<otherwise>
+			 AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
+				OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
+				OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
+			</otherwise>
+		</choose>
+	</where>
+	</select>
+	
+	<!-- 프로필 검색 쿼리 -->
+	<select id="searchProfile" parameterType="Profile" resultMap="profileResultSet">
+	SELECT * FROM PROFILE
+	<where>
+		<choose>
+			<when test="searchCondition =='id'">
+			MEMBER_ID LIKE '%' || #{searchValue} || '%'
+			</when>
+			<when test="searchCondition =='no'">
+			AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
+			</when>
+			<when test="searchCondition=='status'">
+			AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'  			
+			</when>
+			<otherwise>
+			 AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
+				OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
+				OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
+			</otherwise>
+		</choose>
+	</where>	
+	ORDER BY PROFILE_NO DESC	
+	</select>
    
    
    </mapper>

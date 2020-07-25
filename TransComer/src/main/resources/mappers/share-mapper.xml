@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="shareMapper">
-
 	<resultMap type="Share" id="ShareResultSet">
 		<id property="shareNo" column="SHARE_NO" />
 		<result property="shareTitle" column="SHARE_TITLE" />
@@ -18,7 +17,7 @@
 	<select id="selectList" parameterType="Share" resultMap="ShareResultSet">
 		SELECT * 
 		FROM MATERIAL_SHARE
-		WHERE SHARE_YN = 'Y'
+		WHERE SHARE_YN = 'N'
 		ORDER BY SHARE_NO DESC
 	</select>	
 	
@@ -40,12 +39,7 @@
  		VALUES (MATERIAL_SHARE_NO_SEQ.NEXTVAL, #{shareTitle}, #{pLanguage}, #{tLanguage}, #{shareContent}, SYSDATE, DEFAULT, DEFAULT, #{memberId})
  	</insert>
  	
- 	<!-- 파일 등록 -->
- 	<insert id="fileInsert" parameterType="Files">
- 		INSERT INTO FILES
- 		VALUES (FILES_NO_SEQ.NEXTVAL, #{memberId}, #{fileName}, #{filePath}, MATERIAL_SHARE_NO_SEQ.CURRVAL)
- 	</insert>
- 	
+
  	<!-- 검색조건 -->
  	<select id="getSearchListCount" parameterType="ShareSearch" resultType="_int">
 		SELECT COUNT(*) FROM MATERIAL_SHARE
@@ -82,7 +76,7 @@
 	</select>
 	
 	<select id="selectShareLatestNo" parameterType="string" resultType="_int">
-		SELECT SHARE_NO FROM (SELECT * FROM SHARE ORDER BY SHARE_NO DESC) 
+		SELECT SHARE_NO FROM (SELECT * FROM MATERIAL_SHARE ORDER BY SHARE_NO DESC) 
 		WHERE ROWNUM = 1 AND MEMBER_ID = #{memberId}
 	</select>
 	

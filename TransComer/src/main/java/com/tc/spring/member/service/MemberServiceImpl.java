@@ -119,7 +119,14 @@ public class MemberServiceImpl implements MemberService {
 		return memberStore.memberUpdatePrimary(member);
 	}
 
-	
+
+	@Override
+	public int updateContentCount(String memberId) {
+		return memberStore.updateContentCount(memberId);
+	}
+
+
+
 
 //포인트 환급=====================================================================================
 	@Override
@@ -243,7 +250,5 @@ public class MemberServiceImpl implements MemberService {
 	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi) {
 		return memberStore.searchProfile(pfSearch, pi);
 	}
-
-
 
 }

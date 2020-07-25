@@ -6,6 +6,26 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항 상세</title>
+
+<style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
+#title{
+font-size:30px !important;
+}
+a{
+text-decoration:none !important;
+}
+
+.cPaging{
+color:black !important;
+}
+th{
+font-weight:bold;
+}
+</style>
 </head>
 <body>
 	<div class="page-wrapper">
@@ -13,7 +33,8 @@
  <c:import url="../common/menuBar.jsp" />   
   <%--  <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
    <br style="clear: both">
-   <h1 align="center">${study.studyNo }번 글 상세보기</h1>
+    <div id="contentSection">
+   <h1 id="title" align="center">${study.studyNo }번 글 상세보기</h1>
    <input type="hidden" id="loginId" value="${loginUser.memberId }">
    <input type="hidden" id="writerId" value="${study.memberId }">
    <br>
@@ -37,23 +58,23 @@
          </tr>
       </c:if>
       <tr>
-         <td width="10%">번호</td>
+         <th width="10%">번호</th>
          <td>${study.studyNo }</td>
       </tr>
       <tr>
-         <td>제목</td>
+         <th>제목</th>
          <td>${study.studyTitle }</td>
       </tr>
       <tr>
-         <td>작성자</td>
+         <th>작성자</th>
          <td>${study.memberId }</td>
       </tr>
       <tr>
-         <td>작성일</td>
+         <th>작성일</th>
          <td>${study.studyWriteDate }</td>
       </tr>
       <tr>
-         <td>카테고리</td>
+         <th>카테고리</th>
          <td>
          <c:set var="category" value="${study.studyCategory}" />
          <c:if test="${category eq 'PROJECT'}">
@@ -70,8 +91,8 @@
          </c:if>
          </td>
       </tr>
-      <tr height="300">
-         <td>내용</td>
+      <tr height="200">
+         <th>내용</th>
          <td>${study.studyContent }</td>
       </tr>
    </table>
@@ -82,7 +103,7 @@
         <!-- 댓글 등록  -->
    <table align="center" width="50%" border="1" cellspacing="0" id="commentTable">
       <tr>
-      <td>
+      <td><br><br>
       	<!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
           <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
           <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
@@ -91,11 +112,11 @@
             <option value="N" >비공개</option>
           </select>
           </td>
-         <td><textarea cols="70" rows="3" id="content"></textarea>
+         <td><br><textarea cols="70" rows="5" id="content"></textarea>
         <input type="hidden" id="commentCondition" name="commentCondition" value="study"></td>
          
-         <td>
-            <button id="submit">등록하기</button>
+         <td><br><br>
+            <button class='btn btn-info btn-lg' id="submit">댓글 등록</button>
          </td>
       </tr>
    </table>
@@ -110,9 +131,9 @@
             <input type="hidden" id="commentCondition" name="commentCondition" value="study">
          </tr>
          <tr>
-         <th>댓글 번호</th>
+         <th width="12%" >댓글 번호</th>
          <th>작성자</th>
-         <th width="40%">내용</th>
+         <th width="30%">내용</th>
          <th>작성 날짜</th>
          <th>수정</th>
          <th>삭제</th>
@@ -122,17 +143,20 @@
       <tbody>
 	
       </tbody>
+      <tfoot>
+	  </tfoot>
    </table>
-   <br><br><br>
     <hr>
    <p align="center">
 
       <c:url var="home" value="home.tc" />
-      <a href="${home }">시작페이지로 이동</a>
+      <a href="${home }">시작페이지로</a> &nbsp;&nbsp;
       <c:url var="studylist" value="studyList.tc" />
-      <a href="${studylist }">목록 전체보기</a>
+      <a href="${studylist }">목록으로</a>
   
-   
+   </p>
+
+	</div>	
    </section>
    </div>
        <script>
@@ -142,7 +166,7 @@
     		   $(function(){
        // 초기 페이지 로딩 시 댓글 불러오기
          getCommentList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
-        
+         var cPage;
      /*     setInterval(function() {
         	 getCommentList();
           }, 10000); //10초 마다 불러옴 */
@@ -233,7 +257,7 @@
     	 	  
    	 	  
       // 댓글 리스트 불러오는 ajax 함수
-      function getCommentList(){
+      function getCommentList(cPage){
          var studyNo = ${study.studyNo};
          var shareNo=0;
          var qnaNo=0;
@@ -257,10 +281,32 @@
                var $deleteButton;
                var $modifyButton;
           
+               var currentPage;
+               var startPage;
+               var endPage;
+               var maxPage;
+               
+               var pageLimit=5;
+               
+               if ( cPage == null ) {
+             	  cPage = 1;
+               } 
+            	
+           	  currentPage = cPage;
+           	  
                
                $("#count").text("댓글 (" + data.length+")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
                if( data.length > 0 ) {
-                  for ( var i in data ) {
+            	   maxPage = parseInt((data.length / 5) + 0.8);
+             	  startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+    				  endPage = startPage + pageLimit - 1;
+             	  
+                   for (var i = (currentPage*5)-5; i < currentPage*5; i++) {
+                 	  
+                      if (data.length == i) {
+                 		 break;
+                 	 }
+             /*      for ( var i in data ) { */
                      $tr = $("<tr class='trClass'>");
                      var commentNoRead=data[i].commentNo;
                      var commentContentRead=decodeURIComponent(data[i].commentContent);
@@ -268,16 +314,15 @@
                      $memberId = $("<td width='100'>").text(data[i].memberId);
                      //내용(복호화)
                      $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
-                     $commentNewContent=$("<td style='display:none;'><textarea>"+commentContentRead+"</textarea>");
+                     $commentNewContent=$("<td style='display:none;'><textarea cols='7' rows='1'>"+commentContentRead+"</textarea>");
                      //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
                      $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
                      $loginId=$("#loginId").val();
                      $writerId=$("writerId").val();
-                 	 $modifyButton=$("<td>").html("<button class='button' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
-                 	 $modifyConformButton=$("<td style='display:none;'>").html("<button class='button' id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
-                 	 $deleteButton=$("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
-                 	 $cancelButton=$("<td style='display:none;'>").html("<button class='button' id='cancelComment' onclick='getCommentList()'>취소</button>");
-                 	
+                 	 $modifyButton=$("<td>").html("<button class='btn btn-secondary' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
+                 	 $modifyConformButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'  id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
+                 	 $deleteButton=$("<td>").html("<button class='btn btn-secondary'  id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
+                 	 $cancelButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'   id='cancelComment' onclick='getCommentList()'>취소</button>");
                  	 
                  	 if($loginId==data[i].memberId || $loginId== $writerId){
                  	 $tr.append($commentNo);
@@ -301,6 +346,43 @@
                      $tableBody.append($tr); //(위에 코드 써있는) 파란색 댓글목록의 tablebody부분에 넣어줌
                   }
                   }
+                  $tableFoot = $("#studyTable tfoot");
+                  $tableFoot.html("");
+                  $tr2 = $("<tr align='center' height='20'>");
+                  $td2 = $("<td colspan='6'>");
+                  var before="< &nbsp;";
+                  var after="&nbsp; >";
+                  
+                  if(currentPage <= 1) {
+                	 $td2.append(before);
+                  } else if (currentPage > 1) {
+                	  $before = $("<a class='cPaging' href='javascript:getCommentList(" + (currentPage-1) + ")'> < </a> &nbsp;");
+                	  $td2.append($before);
+                  }
+                   
+                  
+                    for (var i = startPage; i <= maxPage; i++) {
+                    	if (i == currentPage) {
+                    		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; &nbsp; ");
+                    		$td2.append($link);
+                    	} else if ( i != currentPage ) {
+                    		$link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
+                    		$td2.append($link);
+                    	}
+                    }
+                  
+                      
+                    if (currentPage >= maxPage) {
+                    	$td2.append(after);
+                    } else if (currentPage < maxPage) {
+                    	$after = $("<a class='cPaging'  href='javascript:getCommentList(" + (currentPage+1) + ")'> &nbsp; ></a>");
+                    	$td2.append($after);
+                    }
+					
+					$tr2.append($td2);
+					
+					$tableFoot.append($tr2);
+                  
                }else{ //데이터가 없을때
                   $tr = $("<tr>");
                   $rContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
@@ -318,7 +400,6 @@
       
    </script>
 
-   </p>
    <br>
    <br>
    <br>

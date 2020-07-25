@@ -127,6 +127,11 @@ public class MemberStoreLogic implements MemberStore {
 	public int memberUpdatePrimary(Member member) {
 		return sqlSession.update("memberMapper.memberUpdatePrimary",member);
 	}
+	
+	@Override
+	public int updateContentCount(String memberId) {
+		return sqlSession.update("memberMapper.updateContentCount",memberId);
+	}
 
 	
 
@@ -261,6 +266,7 @@ public class MemberStoreLogic implements MemberStore {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("memberMapper.searchProfile", pfSearch, rowBounds);
 	}
+
 
 
 	

@@ -524,17 +524,23 @@ public class MemberController {
 	}
 
 	// 포인트 환급 확정 및 반려
-	@RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
-	public String pointRefundUpdate(PointRefund pointRefund, Model model) {
-		int result = memberService.updatePointRefund(pointRefund);
-		
-		if (result > 0) {
-			return "member/pointRefundList";
-		} else {
-			model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
-			return "common/errorPage";
-		}
-	}
+	   @RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
+	   public String pointRefundUpdate(PointRefund pointRefund, Model model) {
+	      int result = memberService.updatePointRefund(pointRefund);
+	      
+	      Alarm alarm = new Alarm();
+	      alarm.setAlarmContent(pointRefund.getRefundRequestDate() + "에 신청한 " + pointRefund.getRefundPoint() + " 포인트 환급이 완료되었습니다.");
+	      alarm.setMemberId(pointRefund.getMemberId());
+	      
+	      int refundAlarm = alarmService.insertAlarm(alarm);
+	      
+	      if (result > 0 && refundAlarm > 0) {
+	         return "member/pointRefundList";
+	      } else {
+	         model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
+	         return "common/errorPage";
+	      }
+	   }
 
 	// =============================================================================
 

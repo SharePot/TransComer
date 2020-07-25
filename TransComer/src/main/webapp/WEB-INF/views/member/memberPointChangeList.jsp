@@ -7,6 +7,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 포인트 변동 목록</title>
+<style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
+#title{
+font-size:30px !important;
+}
+th{
+font-weight:bold;
+}
+#userPoint{
+font-weight:bold;
+font-size:20px;
+}
+</style>
 </head>
 <body>
 <input type="hidden" value="${loginUser.memberId}" name="memberId">
@@ -14,9 +30,9 @@
 <c:import url="../common/menuBar.jsp" />
 	<section id="main">
 		<div id="mainWrapper">
-<center><h1>포인트 내역</h1></center>
+		  <div id="contentSection">
+<center><h1 id="title">포인트 내역</h1></center>
 <hr>
-
 <table>
 	<tr>
 		<th>No</th>
@@ -36,6 +52,7 @@
 
  </tr>
  </c:forEach>
+ <tr><td colspan="6" align="center" id="userPoint">잔여 포인트 : ${loginUser.point } 포인트</td></tr>
     <!-- 페이징 처리 -->
 		      <tr height="20">
 		         <td align="center" colspan="9">
@@ -83,6 +100,7 @@
          </td>
       </tr>
 </table>
+</div>
 </div>
 </section>
 

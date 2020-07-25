@@ -15,7 +15,7 @@
 		<section id="main">
 		<br>
 			<div id="boardWrapper">
-				<h1>스터디 게시판</h1><br>
+				<center><h1>스터디 게시판</h1></center><br><br><br>
 				<table border="1" class="table table-hover">
 					<tr>
 						<th scope="col" id="no">번호</th>
@@ -127,9 +127,9 @@
 								<c:if test="${search.studySearchCondition == 'title' }">selected</c:if>>제목</option>
 							<option value="content"
 								<c:if test="${search.studySearchCondition == 'content' }">selected</c:if>>내용</option>
-						</select>
+						</select>&nbsp;&nbsp;
 						<input class="form-control" type="search" id="searchValue" name="studySearchValue" value="">
-						<button id="searchBtn">검색</button>
+						&nbsp;&nbsp;<button id="searchBtn">검색</button>
 					</form>
 				</div>
 			</div>
