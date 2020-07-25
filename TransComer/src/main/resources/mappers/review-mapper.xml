@@ -29,4 +29,11 @@
 <!-- JOIN PERSONAL P ON (R.MEMBER_ID = P.MEMBER_ID)
 WHERE R.MEMBER_ID = #{memberId} -->
 
+	<!-- 현꾸 작성 0725 ~ -->
+	
+	<!-- 해당 글의 평균 별점 수를 구한다 -->
+	<select id="selectStarRageAvg" parameterType="_int" resultType="_double">
+		SELECT ROUND(AVG(STAR_RAGE),1) FROM REVIEW
+		WHERE PERSONAL_NO = #{personalNo}
+	</select>
 </mapper>

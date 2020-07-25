@@ -37,22 +37,20 @@ public class ReviewController {
 	public void reviewList(HttpServletResponse response, int personalNo) throws JsonIOException, IOException {
 		ArrayList<Review> rList = reviewService.selectList(personalNo);
 
-		for(Review review : rList) {
+		for (Review review : rList) {
 			review.setRevContent(URLEncoder.encode(review.getRevContent(), "utf-8"));
 		}
 
-		//System.out.println("댓글 보기 : " + rList.toString());
+		// System.out.println("댓글 보기 : " + rList.toString());
 
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		gson.toJson(rList, response.getWriter());
 	}
 
-	
 	public String reviewDetail(int reviewNo, Model model) {
 		return null;
 	}
 
-	
 	// 리뷰 작성
 	@RequestMapping("pReview.tc")
 	@ResponseBody
@@ -72,4 +70,12 @@ public class ReviewController {
 		}
 	}
 
+	// 현꾸 작성 ============================
+	@RequestMapping(".tc")
+	@ResponseBody
+	public double selectStarRageAvg(int personalNo) {
+		return reviewService.selectStarRageAvg(personalNo);
+	}
+	
+	
 }

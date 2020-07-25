@@ -7,14 +7,15 @@ public class Review {
 	private int reviewNo;
 	private String revTargetMemberId;
 	private String revContent;
-	private int starRage;
+	private double starRage;
 	private Date revWriteDate;
 	private int personalNo;
 	private String memberId;
-	
-	public Review() {}
 
-	public Review(int reviewNo, String revTargetMemberId, String revContent, int starRage, Date revWriteDate,
+	public Review() {
+	}
+
+	public Review(int reviewNo, String revTargetMemberId, String revContent, double starRage, Date revWriteDate,
 			int personalNo, String memberId) {
 		super();
 		this.reviewNo = reviewNo;
@@ -50,11 +51,11 @@ public class Review {
 		this.revContent = revContent;
 	}
 
-	public int getStarRage() {
+	public double getStarRage() {
 		return starRage;
 	}
 
-	public void setStarRage(int starRage) {
+	public void setStarRage(double starRage) {
 		this.starRage = starRage;
 	}
 
@@ -89,6 +90,4 @@ public class Review {
 				+ personalNo + ", memberId=" + memberId + "]";
 	}
 
-	
-	
 }
