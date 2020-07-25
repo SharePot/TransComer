@@ -74,7 +74,7 @@
                                                 <th scope="col" class="text-center">번역가</th>
                                                 <th scope="col" class="text-center">의뢰내용</th>
                                                 <th scope="col" class="text-center">금액</th>
-                                                <th scope="col" class="text-center">답변 상태</th>
+                                                <th scope="col" class="text-center">의뢰 상태</th>
                                                 <th scope="col" class="text-center">구매확정</th>
                                             </tr>
                                         </thead>
@@ -94,6 +94,14 @@
 	                                                </td>
 	                                                <td>${doReqRep.pReqPrice } P</td>
 	                                                <td>
+	                                                	<!--if : 결제가 미완된 의뢰-->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'N' }">
+	                                                    	<%-- <c:url var="pReqRepResultDetail" value="pReqRepResultDetail.tc">
+	                                                   			<c:param name="pReqNo" value="${doReqRep.pReqNo }"></c:param>
+	                                                   			<c:param name="personalNo" value="${doReqRep.personalNo }"></c:param>
+	                                                   		</c:url> --%>
+	                                                   		<a href="#" class="btn btn-warning" style="text-decoration: none;">결제하기</a>
+	                                                    </c:if>
 	                                                    <!--if : 승인 대기중인 상태-->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'C' }">
 	                                                    	<button class="btn btn-primary" disabled>승인 대기</button>
@@ -117,11 +125,14 @@
 	                                                   </c:if>
 	                                                </td>
 	                                                <td>
+	                                                	<!-- if : 결제가 미완된 의뢰  -->
+	                                                    <c:if test="${doReqRep.pReqAccept eq 'N' }">
+	                                                    	※ 결제 미완료
+	                                                    </c:if>
 	                                                	<!-- if 답변 대기중일 경우  -->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'C' }">
 	                                                    	승인 대기중
 	                                                    </c:if>
-	                                                    
 	                                                    <!-- if 답변 대기중일 경우  -->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'Y' }">
 	                                                    	답변 대기중
@@ -136,7 +147,14 @@
 	                                                    </c:if>
 	                                                    <!--if 확정했으면 확정완료 표시-->
 	                                                    <c:if test="${doReqRep.pReqCheckBuy eq 'Y' }">
-	                                                    	확정완료
+	                                                    	
+	                                                    	<!-- 후기를 쓰러가는 url -->
+	                                                   		<c:url var="pDetail" value="pDetail.tc">
+	                                                   			<c:param name="personalNo" value="${doReqRep.personalNo }"></c:param>
+	                                                   			<c:param name="memberId" value="${doReqRep.pRepTranslator }"></c:param>
+	                                                   		</c:url>
+	                                                   		<button class="btn btn-dark" disabled>확정 완료</button>
+	                                                    	<a href="${pDetail }" class="btn btn-danger" style="text-decoration: none;">리뷰쓰기</a>
 	                                                    </c:if>
 	                                                    	<!--if 의뢰자가 반려했으면 구매확정 불가-->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'R' }">
@@ -149,62 +167,10 @@
                                         </tbody>
                                     </table>
                                     <br><br>
-					                <!--의뢰 신청 페이징, doList -->
-					                <div class="justify-content-center" style="text-align: center;">
-					                    <ul class="pagination justify-content-center" style="clear:both;">
-			                                <!-- [이전] -->
-			                                <c:if test="${doPi.currentPage <= 1 }">
-			                                	<li class="page-item">
-			                                		<a class="page-link" href="${before }" style="text-decoration: none;color: black;">&laquo;</a>
-			                                	</li>
-			                                </c:if>
-			                                <c:if test="${doPi.currentPage > 1 }">
-			                                	<c:url var="before" value="myReqRepList.tc">
-			                                		<c:param name="pageDo" value="${doPi.currentPage - 1 }" />
-							              		</c:url>
-							               		<li class="page-item">
-							               			<a class="page-link" href="${before }" style="text-decoration: none;color: black;">&laquo;</a>
-							               		</li>
-							            	</c:if>
-							            	
-							            	<!-- 페이지 -->
-							         		<c:forEach var="p" begin="${doPi.startPage }" end="${doPi.endPage }">
-							            		<c:if test="${p eq currentPage }">
-							            			<li class="page-item">
-							            				<a class="page-link" href="${pagination }" style="text-decoration: none;color: black;">${p }</a>
-							            			</li>
-							           			</c:if>
-							           			<c:if test="${p ne currentPage }">
-							               			<c:url var="pagination" value="myReqRepList.tc">
-							                  			<c:param name="pageDo" value="${p }" />
-							               			</c:url>
-							               			<li class="page-item">
-							               				<a class="page-link" href="${pagination }" style="text-decoration: none;color: black;">${p }</a>
-							               			</li>
-							            		</c:if>
-							         		</c:forEach>
-							         		
-							         		<!-- [다음] -->
-							      			<c:if test="${doPi.currentPage >= doPi.maxPage }">
-							         			<li class="page-item">
-							         				<a class="page-link" href="${after }" style="text-decoration: none;color: black;">&raquo;</a>
-							         			</li>
-							      			</c:if>
-							      			<c:if test="${doPi.currentPage < doPi.maxPage }">
-							         			<c:url var="after" value="myReqRepList.tc">
-							            			<c:param name="pageDo" value="${doPi.currentPage + 1 }" />
-							         			</c:url>
-							         				<li class="page-item">
-							         					<a class="page-link" href="${after }" style="text-decoration: none;color: black;">&raquo;</a>
-							         				</li>
-							      			</c:if>
-							            </ul>
-					                </div>
-                                    
                                 </div>
                                 <!-- 의뢰 신청 내역 탭 끝 -->
 
-                                <!--의뢰 받은 내역 탭-->
+                                <!--의뢰 받은 내역 탭 -------------------------------------------------->
                                 <div id="move2" class="tab-pane fade" align="center"><br>
                                     <div id="moveInfo1" class="container tab-pane active">
                                         <div class="d-flex justify-content-center">
@@ -241,6 +207,10 @@
 	                                                </td>
 	                                                <td>${getReqRep.pReqPrice } P</td>
 	                                                <td>
+	                                                	<!-- if : 의뢰자가 결제를 완료하지 않았을때 -->
+	                                                	<c:if test="${getReqRep.pReqAccept eq 'N' }">
+	                                                		의뢰자 결제 미완료
+	                                                	</c:if>
 	                                                	<!-- if : 승인/반려 아무것도 하지 않았을때 -->
 	                                                	<c:if test="${getReqRep.pReqAccept eq 'C' }">
 	                                                		<!-- 승인하기 url -->
@@ -298,57 +268,6 @@
                                         </tbody>
                                     </table>
 					                <br><br>
-					                <!-- 의뢰 받은 페이징, getList -->
-					                <div class="justify-content-center" style="text-align: center;">
-					                    <ul class="pagination justify-content-center" style="clear:both;">
-			                                <!-- [이전] -->
-			                                <c:if test="${getPi.currentPage <= 1 }">
-			                                	<li class="page-item">
-			                                		<a class="page-link" href="${before }" style="text-decoration: none;color: black;">&laquo;</a>
-			                                	</li>
-			                                </c:if>
-			                                <c:if test="${getPi.currentPage > 1 }">
-			                                	<c:url var="before" value="myReqRepList.tc">
-			                                		<c:param name="pageGet" value="${getPi.currentPage - 1 }" />
-							              		</c:url>
-							               		<li class="page-item">
-							               			<a class="page-link" href="${before }" style="text-decoration: none;color: black;">&laquo;</a>
-							               		</li>
-							            	</c:if>
-							            	
-							            	<!-- 페이지 -->
-							         		<c:forEach var="p" begin="${getPi.startPage }" end="${getPi.endPage }">
-							            		<c:if test="${p eq currentPage }">
-							            			<li class="page-item">
-							            				<a class="page-link" href="${pagination }" style="text-decoration: none;color: black;">${p }</a>
-							            			</li>
-							           			</c:if>
-							           			<c:if test="${p ne currentPage }">
-							               			<c:url var="pagination" value="myReqRepList.tc">
-							                  			<c:param name="pageGet" value="${p }" />
-							               			</c:url>
-							               			<li class="page-item">
-							               				<a class="page-link" href="${pagination }" style="text-decoration: none;color: black;">${p }</a>
-							               			</li>
-							            		</c:if>
-							         		</c:forEach>
-							         		
-							         		<!-- [다음] -->
-							      			<c:if test="${getPi.currentPage >= getPi.maxPage }">
-							         			<li class="page-item">
-							         				<a class="page-link" href="${after }" style="text-decoration: none;color: black;">&raquo;</a>
-							         			</li>
-							      			</c:if>
-							      			<c:if test="${getPi.currentPage < getPi.maxPage }">
-							         			<c:url var="after" value="myReqRepList.tc">
-							            			<c:param name="pageGet" value="${getPi.currentPage + 1 }" />
-							         			</c:url>
-							         				<li class="page-item">
-							         					<a class="page-link" href="${after }" style="text-decoration: none;color: black;">&raquo;</a>
-							         				</li>
-							      			</c:if>
-						            	</ul>
-					                </div>
                                 </div>
                                 <!-- 의뢰 받은내역 탭 끝 -->
                             </div>
@@ -359,22 +278,8 @@
         </section>
 
         <!-- Footer -->
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                    </div>
-                    <div class="col-4 col-12-medium">
-                    </div>
-                    <div class="col-12">
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <c:import url="../common/footer.jsp"/>
     </div>
-
-    
 
 </body>
 
