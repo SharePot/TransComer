@@ -7,7 +7,8 @@
 	<title>Home</title>
 	<meta charset="UTF-8">
 </head>
-<c:import url="../views/common/menuBar.jsp" />
+	<c:import url="common/menuBar.jsp" />
+	<c:import url="common/footer.jsp" />
 <body>
 </body>
 </html>

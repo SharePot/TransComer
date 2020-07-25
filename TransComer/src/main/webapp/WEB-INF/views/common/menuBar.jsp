@@ -8,6 +8,17 @@
     <title>SharePot</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    
+    <!--부트스트랩 4.5.0 - css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- 부트스트랩 js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+    <!--템플릿 css-->
+    <link rel="stylesheet" href="resources/css/main.css" />
 </head>
 
 <body class="homepage is-preload">
@@ -25,6 +36,7 @@
 				<c:url var="alarm" value="alarmView.tc" />
 				
 				<c:if test="${!empty sessionScope.loginUser }">
+					<li>${loginUser.memberName } 님</li>
 					<li><a href="${logout }">로그아웃</a></li>
 					<li>
 						<c:if test="${loginUser.status ne 'ADMIN' }">
@@ -58,19 +70,12 @@
                     </li>
                     <li><a href="slist.tc">번역 공유</a></li>
                     <li><a href="studyList.tc">스터디</a></li>
-                    <li><a href="qlist.tc">Q&amp;A</a></li>
+                    <li><a href="qlist.tc">Q&nbsp;&amp;&nbsp;A</a></li>
+					<li><a href="homepageinfo.jsp">About</a></li>
                 </ul>
             </nav>
         </section>
     </div>
-
-    <!-- Scripts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
 
     <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/jquery.dropotron.min.js"></script>
@@ -78,8 +83,5 @@
     <script src="resources/js/breakpoints.min.js"></script>
     <script src="resources/js/util.js"></script>
     <script src="resources/js/main.js"></script>
-    <!--템플릿 css-->
-    <link rel="stylesheet" href="resources/css/main.css" />
-    
 
 </body></html>
