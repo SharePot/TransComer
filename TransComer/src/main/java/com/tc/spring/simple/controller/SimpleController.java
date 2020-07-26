@@ -26,8 +26,13 @@ import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.controller.MemberController;
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
+import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.service.MemberService;
+import com.tc.spring.personal.domain.Personal;
+import com.tc.spring.personal.domain.PersonalPageInfo;
+import com.tc.spring.personal.service.PersonalService;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
@@ -42,9 +47,12 @@ public class SimpleController {
 
 	@Autowired
 	private MemberService mService;
-	
+
 	@Autowired
 	private AlarmService alarmService;
+
+	@Autowired
+	private PersonalService personalService;
 
 	// -------------------- 단순의뢰 질문 --------------------
 
@@ -182,6 +190,23 @@ public class SimpleController {
 		return "simple/simpleListView";
 
 	}
+	
+	// 내 단순의뢰 질문 검색
+	@RequestMapping("mySReqSearch.tc")
+	public String mySReqSearch(SimpleSearch simpleSearch, HttpSession session, Model model,
+			@RequestParam(value = "spPage", required = false) Integer spPage) {
+		
+		int spCurrentPage = (spPage != null) ? spPage : 1;
+		int spListCount = simpleService.getMySearchsReListCount(simpleSearch);
+		SimplePageInfo spi = Pagination.getSimplePageInfo(spCurrentPage, spListCount);
+		ArrayList<SimpleRequest> sReqList = simpleService.mySReqSearchList(simpleSearch, spi);
+		
+		model.addAttribute("sReqList", sReqList);
+		model.addAttribute("simpleSearch", simpleSearch);
+		model.addAttribute("spi", spi);
+		return "simple/mySimpleList";
+		
+	}
 
 	// -------------------- 단순의뢰 답변 --------------------
 
@@ -265,14 +290,13 @@ public class SimpleController {
 		alarm.setMemberId(simpleReplyWriter);
 		alarm.setEtc(simpleTitle);
 		alarm.setBoardNo(sReqNo);
-		
+
 		int adoptReply = simpleService.adoptReply(simpleReplyNo);
 		int adoptRequest = simpleService.adoptRequest(sReqNo);
 		int memberAdoptCount = simpleService.memberAdoptCount(simpleReplyWriter);
 		int insertPointChange = mService.insertPointChange(pointChange);
 		int updateMemberPhoint = mService.updateMemberPoint(member);
 		int adoptAlarm = alarmService.insertAlarm(alarm);
-		
 
 		if (adoptReply > 0 && adoptRequest > 0 && memberAdoptCount > 0 && insertPointChange > 0
 				&& updateMemberPhoint > 0 && adoptAlarm > 0) {

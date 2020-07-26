@@ -37,7 +37,7 @@
                         </c:url>
                         <c:if test="${ loginUser.memberId eq sReq.simpleWriter && sReq.simpleAStatus eq 'N'}">
                             <a href="${sReqUpdate }">수정</a> &nbsp;
-                            <a href="${sReqDelete }">삭제</a> &nbsp;
+                            <a href="${sReqDelete }" id="deleteSReq">삭제</a> &nbsp;
                         </c:if>
                         <a href="${sList }">목록</a>
                 </p>
@@ -48,6 +48,7 @@
 	                <div id="replySection"> 
 	                
 	                </div>
+	                <div id="replyPage"></div>
 					<input type="hidden" id="loginId" value="${loginUser.memberId }">
 					<input type="hidden" id="simpleWriter" value="${sReq.simpleWriter }">
 					<input type="hidden" id="simpleAStatus" value="${sReq.simpleAStatus }">
@@ -73,6 +74,18 @@
     </div>
 
 	<script>
+	
+	$("#deleteSReq").click(function() {
+		
+		var result = window.confirm("게시글을 삭제하시겠습니까?")
+		if (result) {
+			alert("삭제가 완료되었습니다.")
+			return true;
+		} else {
+			return false;
+		}
+		
+	});
 	
 	$(function(){
   	  // 초기 페이지 로딩 시 댓글 불러오기
@@ -101,7 +114,7 @@
     });
 
  		// 답변 조회
-		function getSimpleResList() {
+		function getSimpleResList(cPage) {
 			var sReqNo = ${sReq.simpleNo };
 			
 			$.ajax({
@@ -113,8 +126,31 @@
 							$divSection = $("#replySection");
 							$divSection.html("");
 							
+							var currentPage;
+		                    var startPage;
+		                    var endPage;
+		                    var maxPage;
+		                      
+		                    var pageLimit=5;
+		                      
+		                    if ( cPage == null ) {
+		                    	cPage = 1;
+		                    } 
+		                    
+		                    currentPage = cPage;
+							
+		                    // $("#count").text("댓글 (" + data.length + ")");
 							if (data.length > 0) {
-								for ( var i in data) {
+								maxPage = parseInt((data.length / 5) + 0.8);
+								startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+								endPage = startPage + pageLimit - 1;
+								
+								for ( var i = (currentPage * 5) - 5 ; i < currentPage * 5 ; i++) {
+									
+									if (data.length == i) {
+										break;
+									}
+									
 										$responseWriter = $("<input type='hidden' id='responseWriter' value=" + data[i].simpleReplyWriter + ">");
 										$simpleReplyNo = $("<input type='hidden' id='simpleReplyNo' value=" + data[i].simpleReplyNo + ">");
 										$loginId = $("#loginId").val();
@@ -191,7 +227,47 @@
 										
 										$replyWrapperDiv.after($simpleReplyNo);
 										$simpleReplyNo.after($responseWriter);
-
+										
+										
+										/* 댓글 페이징 부분 */
+										$replyPage = $("#replyPage");
+										$replyPage.html("");
+										$rTable = $("<table>");
+										$replyTr = $("<tr align='center'>")
+										$replyTd = $("<td>");
+										var before="< &nbsp;";
+				                        var after=">";
+				                        
+				                        if (currentPage <= 1) { // 현재페이지가 1과 같거나 작다면
+				                        	$replyTd.append(before);
+				                        } else if (currentPage > 1) { // 현재페이지가 1보다 크다면
+				                        	$before = $("<a href='javascript:getSimpleResList(" + (currentPage - 1) + ")'><</a> &nbsp;");
+				                        	$replyTd.append($before);
+				                        }
+				                        
+				                        // i를 시작페이지부터 최대페이지보다 작거나 같을때까지 증감
+				                        for (var i = startPage; i <= maxPage; i++) {
+				                        	if (i == currentPage) { // 현재페이지가 i와 같을 때
+				                        		$link = $("<font color = 'red' size = '4'><b>[" + i + "]</b></font> &nbsp;");
+				                        		$replyTd.append($link);
+				                        	} else if (i != currentPage) { // 같지 않다면
+				                        		$link = $("<a href='javascript:getSimpleResList(" + i + ")'>" + i + "</a> &nbsp;");
+				                        		$replyTd.append($link);
+				                        	}
+				                        }
+				                        
+				                        // 현재페이지가 최대페이지보다 크거나 같다면
+				                        if (currentPage >= maxPage) {
+				                        	$replyTd.append(after);
+				                        } else if (currentPage < maxPage) { // 작다면
+				                        	$after = $("<a href='javascript:getSimpleResList(" + (currentPage + 1) + ")'>></a>");
+				                        	$replyTd.append($after);
+				                        } 
+				                        
+				                        $replyPage.append($rTable);
+										$rTable.append($replyTr);
+										$replyTr.append($replyTd);
+										
 								}
 
 							} else {

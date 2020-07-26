@@ -1,0 +1,41 @@
+#rankSection {
+    width: 60%;
+    margin: 0 auto;
+    height: 0 auto;
+    min-height: 100px;
+}
+
+#rankTitle {
+    font-size: 40px;
+    color: cadetblue;
+    text-align: center;
+}
+
+#rankWrapper {
+    border-collapse: inherit !important;
+    border-spacing: 13px !important;
+}
+
+.testTd {
+    width: 25%;
+    text-align: center;
+    padding: 20px;
+    background: #EFF1EF;
+    box-shadow: 2px 2px 4px #EAEAEA;
+}
+
+.imgBox {
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+}
+
+
+

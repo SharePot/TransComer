@@ -75,12 +75,12 @@ html {
 					<p id="pwError"></p>
 				</div>
 				<div style="text-align: center;">
+					<form action="memberDelete.tc" method="post">
 					<button type="reset" id="resetBtn">취소</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-					<c:url var="delete" value="memberDelete.tc">
-						<c:param name="memberId" value="${loginUser.memberId }"/>
-					</c:url>
-					<button name="submitBtn" id="deleteBtn" href="${delete }">탈퇴</button>
+					<input type="hidden" value="${loginUser.memberId }" name="memberId" id="memberId">
+					<button name="submitBtn" id="deleteBtn" type="submit" >탈퇴</button>
+					</form>
 				</div>
 		</section>
 

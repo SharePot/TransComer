@@ -80,6 +80,20 @@
 						</td>
 					</tr>
 				</table>
+				
+				<%-- <div style="height: 50px;" id="searchBox">
+						<form action="mySReqSearch.tc" name="searchForm" method="get" align="center">
+							<select id="searchCondition" name="searchCondition" class="selectpicker">
+								<option value="all" <c:if test="${simpleSearch.searchCondition == 'all' }">selected</c:if>>전체</option>
+								<option value="writer" <c:if test="${simpleSearch.searchCondition == 'writer' }">selected</c:if>>작성자</option>
+								<option value="title" <c:if test="${simpleSearch.searchCondition == 'title' }">selected</c:if>>제목</option>
+								<option value="content" <c:if test="${simpleSearch.searchCondition == 'content' }">selected</c:if>>내용</option>
+							</select>
+							<input class="form-control" type="search" name="searchValue" value="" id="searchValue">
+							<input type="hidden" name="simpleWriter">
+							<button id="searchBtn" type="submit">검색</button><br>
+						</form>
+					</div> --%>
 			</div>
 		</section>
 	</div>

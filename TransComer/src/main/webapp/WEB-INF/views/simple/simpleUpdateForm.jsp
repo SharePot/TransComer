@@ -75,7 +75,7 @@
                         </tr>
 
                     </table>
-
+                    
                 </form>
             </div>
 
@@ -85,11 +85,33 @@
         </section>
 
         <script>
+        
+      
+        
+        
         var pLang = $("#pLang").val();
         var tLang = $("#tLang").val();
         
-        $("select[name=simplePLang]").val(pLang1).prop("selected", true);
-        $("select[name=simpleTLang]").val(pLang1).prop("selected", true);
+  		function submitBtn () {
+        	
+  			var t = $("input[name=simpleTitle]").val()
+  			var c = $("textarea[name=simpleContent]").val()
+  			var p = $("select[name=simplePLang]").val()
+  			var tl = $("select[name=simpleTLang]").val()
+  			var n = $("#simpleNo").val()
+  			
+        	console.log(pLang);
+        	console.log(tLang);
+        	console.log(t);
+        	console.log(c);
+        	console.log(p);
+        	console.log(tl);
+        	console.log(n);
+        	
+        }
+        
+        $("select[name=simplePLang]").val(pLang).prop("selected", true);
+        $("select[name=simpleTLang]").val(tLang).prop("selected", true);
         
             function fnChkByte(obj) {
                 var maxByte = 1000; //최대 입력 바이트 수
@@ -121,7 +143,7 @@
                     obj.value = str2;
                     fnChkByte(obj, maxByte);
                 } else {
-                    document.getElementById('byteInfo').innerText = rbyte;
+                    document.getElementById('noti').innerText = rbyte;
                 }
             }
 

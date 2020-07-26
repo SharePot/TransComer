@@ -90,6 +90,10 @@ public interface SimpleService {
 	 * @return
 	 */
 	public ArrayList<SimpleRequest> sReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi);
+	
+	
+	public ArrayList<SimpleRequest> mySReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi);
+	public int getMySearchsReListCount(SimpleSearch simpleSearch);
 
 	// -------------------- 단순의뢰 답변 --------------------
 
