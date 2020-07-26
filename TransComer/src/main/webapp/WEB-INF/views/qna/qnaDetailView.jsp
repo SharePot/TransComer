@@ -127,7 +127,7 @@
 				    <div class="container d-flex justify-content-center">
 				        <table align="center" border="1" cellspacing="0" id="commentTable" style="width:800px;">
 				            <tr>
-				                <td style="width:180px; padding:0;" >
+				                <td style="width:200px; padding:0;" >
 				                    <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
 				                    <select id="commentYN" name="commentYN">
 				                        <option value="Y">공개</option>

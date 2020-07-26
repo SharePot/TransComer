@@ -40,18 +40,19 @@
 	<select id="searchQnaList" parameterType="QnaSearch" resultMap="qnaResultSet">
   		SELECT * FROM QNA
   		<where>
-  		(QNA_CATEGORY = 'ALL' OR QNA_CATEGORY = 'NOTICE')
+  		((QNA_CATEGORY = 'ALL' OR QNA_CATEGORY = 'NOTICE')
   			<choose>
 	  			<when test="searchCondition == 'title'">
-	  				AND QNA_TITLE LIKE '%' || #{searchValue} || '%'  		
+	  				AND QNA_TITLE LIKE '%' || #{searchValue} || '%') 		
 		  		</when>
 		  		<when test="searchCondition == 'writer'">
-		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%'
+		  			AND MEMBER_ID LIKE '%' || #{searchValue} || '%')
 		  		</when>
 		  		<when test="searchCondition == 'content'">
-		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%'
+		  			AND QNA_CONTENT LIKE '%' || #{searchValue} || '%')
 		  		</when>
   			</choose>
+  			OR QNA_CATEGORY = 'NOTICE'
   		</where>	
   		ORDER BY QNA_NO DESC
   	</select>
