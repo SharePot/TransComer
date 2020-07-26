@@ -15,7 +15,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private ReviewStore reviewStore;
 
-	//해당 글번호의 리뷰 리스트 불러오기
+	// 해당 글번호의 리뷰 리스트 불러오기
 	@Override
 	public ArrayList<Review> selectList(int personalNo) {
 		return reviewStore.selectList(personalNo);
@@ -32,10 +32,22 @@ public class ReviewServiceImpl implements ReviewService {
 	public Review selectReview(int reviewNo) {
 		return null;
 	}
-	
+
 	// 해당 글번호의 별점 평균을 불러오기 (소수점 첫째자리까지)
 	@Override
 	public double selectStarRageAvg(int personalNo) {
 		return reviewStore.selectStarRageAvg(personalNo);
+	}
+
+	// 해당 유저가 별점 리뷰를 받았는지 확인
+	@Override
+	public int checkHasReview(String memberId) {
+		return reviewStore.checkHasReview(memberId);
+	}
+
+	// 해당 유저의 평균 평점을 가져온다
+	@Override
+	public double selectMemberStarRageAvg(String memberId) {
+		return reviewStore.selectMemberStarRageAvg(memberId);
 	}
 }

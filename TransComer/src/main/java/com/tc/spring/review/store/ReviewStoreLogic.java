@@ -38,4 +38,16 @@ public class ReviewStoreLogic implements ReviewStore {
 	public double selectStarRageAvg(int personalNo) {
 		return sqlSession.selectOne("reviewMapper.selectStarRageAvg", personalNo);
 	}
+
+	// 해당 유저가 별점 리뷰를 받았는지 확인
+	@Override
+	public int checkHasReview(String memberId) {
+		return 0;
+	}
+
+	// 해당 유저의 평균 평점을 가져온다
+	@Override
+	public double selectMemberStarRageAvg(String memberId) {
+		return 0;
+	}
 }
