@@ -40,6 +40,8 @@
                         <hr>
                         <!-- 번역 정보 -->
                         <form action="pReqRepResultUpdate.tc" method="post" id="personalForm">
+                        	<input type="hidden" id="personalWriter" name="memberId" readonly value="${pReqRep.memberId }">
+                        	<input type="hidden" id="personalNo" name="personalNo" readonly value="${pReqRep.personalNo }">
                             <h3>* 번역 신청 정보</h3>
                             <br>
                             <label>번역가</label>
@@ -54,7 +56,10 @@
                             <hr>
                             <h4>* 첨부파일</h4>
                             <!--첨부파일 갯수만큼 for 반복-->
-                            <img src="https://img.wkorea.com/w/2020/06/style_5edf522a85fed-700x467.jpg" style="width: 100%;">
+                            <c:forEach var="file" items="${flist }">
+                               <img src="resources/${file.memberId }/uploadFiles/${file.fileName }" style="width: 100%;">
+                               <br>
+                            </c:forEach>
 
                             <hr>
                             <h4>* 세부요청 사항</h4>

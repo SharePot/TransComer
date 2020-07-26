@@ -93,7 +93,6 @@ public class SimpleStoreLogic implements SimpleStore {
 	// 단순의뢰 답변 한 개
 	@Override
 	public ArrayList<SimpleResponse> sResOne(int simpleNo) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("simpleMapper.sResOne", simpleNo);
 	}
 	

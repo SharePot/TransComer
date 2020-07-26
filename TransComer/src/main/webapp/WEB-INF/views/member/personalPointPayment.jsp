@@ -70,6 +70,7 @@
 	</table>
 	<input type="hidden" name="memberId" value="${personalReqRep.memberId }">
 	<input type="hidden" name="pReqNo" value="${personalReqRep.pReqNo }">
+	<input type="hidden" name="personalNo" value="${personalReqRep.personalNo }">
 	</form>
 	</div>
 	</section>

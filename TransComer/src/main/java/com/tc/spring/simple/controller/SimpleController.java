@@ -288,8 +288,8 @@ public class SimpleController {
 		Alarm alarm = new Alarm();
 		alarm.setAlarmContent("단순의뢰 답변이 채택되었습니다. \n 100포인트를 지급하였습니다.");
 		alarm.setMemberId(simpleReplyWriter);
-		alarm.setEtc(simpleTitle);
-		alarm.setBoardNo(sReqNo);
+		alarm.setBoardTitle(simpleTitle);
+		alarm.setBoardAddress("sReqDetail.tc?simpleNo=" + sReqNo);
 
 		int adoptReply = simpleService.adoptReply(simpleReplyNo);
 		int adoptRequest = simpleService.adoptRequest(sReqNo);
