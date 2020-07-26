@@ -83,7 +83,7 @@
 				                        	
 				                            <c:forEach items="${qlist }" var="q" varStatus="i">
 				                                <tr>
-				                                	<c:if test="${q.qnaCategory eq 'ALL' }"></c:if>
+				                                	<c:if test="${q.qnaCategory eq 'ALL' }">
 				                                    <td style="text-align:center;">${q.qnaNo }</td>
 				                                    <td style="text-align:center;">
 				                                        <c:if test="${ !empty loginUser }">
@@ -101,6 +101,7 @@
 				                                    <td style="text-align:center;">${q.qnaWriteDate }</td>
 				                                    <td style="text-align:center;">${q.qnaCount }</td>
 				                                    <td style="text-align:center;">${q.commentCount }</td>
+				                                    </c:if>
 				                                </tr>
 				                            </c:forEach>
 				                         </c:if>
