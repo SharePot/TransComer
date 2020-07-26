@@ -47,7 +47,8 @@ width:100 !important;
 	</tr>
 	<tr>
 		<th>환급 신청 포인트<br><p style="font-size:1px;">100,000 포인트 이상부터 환급 가능(단위 10,000)</p></th>
-		<td id="rPoint"><input id="rPoint" type="number" min="100000" step="10000" name="refundPoint" id="refundPoint" value="100000"></td>
+		<td id="rPoint"><input  type="number" min="100000" step="10000" name="refundPoint" id="refundPoint"></td>
+		
 	</tr>
 
 	<c:if test="${loginUser.account ne null}">
@@ -104,11 +105,12 @@ width:100 !important;
 </section>
 </div>
 <script>
-
+var rPoint=$("#refundPoint").val();
+console.log(rPoint);
 
 function check(){
 	var havepoint=$("#havePoint").val();
-	var rPoint=$("#rPoint").html();
+	var rPoint=$("#refundPoint").val();
 	var bank=$("#bank").val();
 	var accountOwner=$("#accountOwner").val();
 	var account=$("#account").val();
@@ -116,7 +118,7 @@ function check(){
 	var accountOwner2=$("#accountOwner2").val();
 	var account2=$("#account2").val();
 	console.log(rPoint);
-	if(havepoint < $("#rPoint").text() ){
+	if(havepoint < rPoint){
 		$("#message").html("보유 포인트보다 환급 요청한 포인트가 더 높습니다.");
 		return false;
 		}else if((bank==null || accountOwner ==null || account==null )&&(bank2==null || accountOwner2 ==null || account2==null)){

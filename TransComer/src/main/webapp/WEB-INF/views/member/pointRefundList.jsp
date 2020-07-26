@@ -15,8 +15,8 @@
 		<section id="main">
 		<div id="boardWrapper">
  <h2 align="center">포인트 환급 신청 목록</h2>
-   <br><br><br>
-   
+   <br>
+   <hr>
    <h3 align="center">  총 포인트 환급 신청 건수 : ${pi.listCount }</h3>
    <br><br>
    
@@ -60,7 +60,7 @@
 	         <c:if test="${pointRefund.refundYn eq 'Y' }">
 	         	확정
 	         </c:if>
-	         <c:if test="${pointRefund.refundYn eq 'W' }">
+	         <c:if test="${pointRefund.refundYn eq 'A' }">
 	         		<c:url var="pointRefundCheck" value="pointRefundCheckView.tc">
 					<c:param name="refundNo" value="${pointRefund.refundNo }" />
 				</c:url>					
@@ -77,55 +77,68 @@
          ${pointRefund.refundCompleteDate }</td>
       </tr>
       </c:forEach>
+        </table>
       
-      
-      <!-- 페이징 처리 -->
-		      <tr height="20">
-		         <td align="center" colspan="9">
-				   <!-- [이전] -->
-				<c:if test="${pi.currentPage <= 1 }">
-					[이전] &nbsp;
-				</c:if>
-				<c:if test="${pi. currentPage > 1 }">
-					<c:url var="before" value="pointRefundList.tc">
-						<c:param name="page" value="${pi.currentPage - 1 }" />
-					</c:url>
-					<a href="${before }">[이전]</a> &nbsp;
-				</c:if>
-				
-				
-			<!-- 페이지 -->
-			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-				<c:if test="${p eq currentPage }">
-					<font color="red" size="4"><b>[${p }]</b></font>
-				</c:if>
-				<c:if test="${p ne currentPage }">
-					<c:url var="pagination" value="pointRefundList.tc">
-						<c:param name="page" value="${p }" />
-					</c:url>
-					<a href="${pagination }">${p }</a> &nbsp;
-				</c:if>
-			</c:forEach>
+     <!-- 페이징 처리 -->
+				<ul class="pagination justify-content-center">
+					<!-- [이전] -->
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if>
+						
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="before" value="pointRefundList.tc">
+							<c:param name="page" value="${pi.currentPage - 1 }" />
+								<c:param name="memberId" value="${loginUser.memberId }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${before}" class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if> 
+					<!-- 페이지 --> 
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq currentPage }">
+							<li class="page-item active" aria-current="page">
+								<a class="page-link">${p } <span class="sr-only">(current)</span></a>
+							</li>
+						</c:if>
+							
+						<c:if test="${p ne currentPage }">
+							<c:url var="pagination" value="pointRefundList.tc">
+								<c:param name="page" value="${p }" />
+								<c:param name="memberId" value="${loginUser.memberId }" />
+							</c:url>
+							<li class="page-item">
+								<a href="${pagination }" class="page-link">${p }</a>
+							</li>
+						</c:if>
+					</c:forEach>
+						
+					<!-- [다음] -->
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="after" value="List.tc">
+							<c:param name="page" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${after}" class="page-link" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>&nbsp;
+						</li>
+					</c:if>
+				</ul> 
 
-					
-				
-				
-				
-		       <!-- [다음] -->
-		<c:if test="${pi.currentPage >= pi.maxPage }">
-			[다음] &nbsp;
-		</c:if>
-		<c:if test="${pi. currentPage < pi.maxPage }">
-			<c:url var="after" value="pointRefundList.tc">
-				<c:param name="page" value="${pi.currentPage + 1 }" />
-			</c:url>
-			<a href="${after }">[다음]</a> &nbsp;
-		</c:if>
-
-         		 
-         </td>
-      </tr>
-   </table>
+ 
    </div>
    </section>
    </div>

@@ -118,55 +118,67 @@ a {
 				        </td> --%>
 		      	</tr>
 		      </c:forEach>
-		      
-		      
-		      <!-- 페이징 처리 -->
-				      <tr align="center"  height="20">
-				         <td  align="center"colspan="9">
-						   <!-- [이전] -->
-						<c:if test="${pi.currentPage <= 1 }">
-							[이전] &nbsp;
-						</c:if>
-						<c:if test="${pi. currentPage > 1 }">
-							<c:url var="before" value="blist.kh">
-								<c:param name="page" value="${pi.currentPage - 1 }" />
-							</c:url>
-							<a href="${before }">[이전]</a> &nbsp;
-						</c:if>
+		        </table>
+		       <!-- 페이징 처리 -->
+				<ul class="pagination justify-content-center">
+					<!-- [이전] -->
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if>
 						
-						
-					<!-- 페이지 -->
-					<c:forEach var="p" begin="${pi.currentPage }" end="${pi.endPage }">
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="before" value="memberList.tc">
+							<c:param name="page" value="${pi.currentPage - 1 }" />
+								<c:param name="memberId" value="${loginUser.memberId }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${before}" class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if> 
+					<!-- 페이지 --> 
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
 						<c:if test="${p eq currentPage }">
-							<font color="red" size="4"><b>[${p }]</b></font>
+							<li class="page-item active" aria-current="page">
+								<a class="page-link">${p } <span class="sr-only">(current)</span></a>
+							</li>
 						</c:if>
+							
 						<c:if test="${p ne currentPage }">
-							<c:url var="pagination" value="blist.kh">
+							<c:url var="pagination" value="memberList.tc">
 								<c:param name="page" value="${p }" />
+								<c:param name="memberId" value="${loginUser.memberId }" />
 							</c:url>
-							<a href="${pagination }">${p }</a> &nbsp;
+							<li class="page-item">
+								<a href="${pagination }" class="page-link">${p }</a>
+							</li>
 						</c:if>
 					</c:forEach>
-		
-							
 						
-						
-						
-				       <!-- [다음] -->
-				<c:if test="${pi.currentPage >= pi.maxPage }">
-					[다음] &nbsp;
-				</c:if>
-				<c:if test="${pi. currentPage < pi.maxPage }">
-					<c:url var="after" value="blist.kh">
-						<c:param name="page" value="${pi.currentPage + 1 }" />
-					</c:url>
-					<a href="${after }">[다음]</a> &nbsp;
-				</c:if>
-		
-		         		 
-		         </td>
-		      </tr>
-		   </table>
+					<!-- [다음] -->
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="after" value="List.tc">
+							<c:param name="page" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${after}" class="page-link" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>&nbsp;
+						</li>
+					</c:if>
+				</ul> 
+		      
+		 
 		         <div style="height: 50px;" id="searchBox">
       <form id="searchForm"action="memberSearch.tc" name="searchForm" method="get" align="center">
          <select id="memberSearchCondition" name="memberSearchCondition" class="searchCondition">

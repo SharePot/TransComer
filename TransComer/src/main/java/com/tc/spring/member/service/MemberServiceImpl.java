@@ -116,8 +116,8 @@ public class MemberServiceImpl implements MemberService {
 
 
 	@Override
-	public int memberUpdatePrimary(Member member) {
-		return memberStore.memberUpdatePrimary(member);
+	public int memberUpdatePrimary() {
+		return memberStore.memberUpdatePrimary();
 	}
 
 
@@ -127,7 +127,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
-
+	@Override
+	   public int memberInsertPremium(Member member) {
+	      return memberStore.memberInsertPremium(member);
+	   }
 
 //포인트 환급=====================================================================================
 	@Override

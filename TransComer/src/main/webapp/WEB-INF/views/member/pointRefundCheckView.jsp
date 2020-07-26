@@ -84,8 +84,8 @@ text-decoration:none !important;
                <c:param name="refundNo" value="N"/>
                <c:param name="refundNo" value="${pointRefund.refundNo }"/>
             </c:url>
-            <a href="${conform}">승인</a> &nbsp;
-            <a href="${reject}">반려</a> &nbsp;
+            <a  onclick="return check()" href="${conform}">승인</a> &nbsp;
+            <a onclick="return check()" href="${reject}">반려</a> &nbsp;
             <a href="pointRefundList.tc">취소</a> &nbsp;
 		
 		
@@ -96,6 +96,18 @@ text-decoration:none !important;
 </div>
 </section>
 </div>
+<script>
+function check(){
+	  history.go(-6);
+}
+
+
+
+</script>
+
 
 </body>
+
+
+
 </html>

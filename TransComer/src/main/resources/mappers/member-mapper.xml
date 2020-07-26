@@ -86,11 +86,16 @@
    	UPDATE MEMBER SET MEMBER_STATUS=#{status} WHERE MEMBER_ID=#{memberId}
    	</update>
    	
+   	<insert id="memberInsertPremiumInfo" parameterType="Member">
+      INSERT INTO PREMIUMINFO VALUES(#{memberId}, SYSDATE)
+      </insert>
+      
    	 	<!-- 프리미엄  해제(업데이트) -->
-   	<update id="memberUpdatePrimary" parameterType="Member">
-   	UPDATE MEMBER SET MEMBER_STATUS = 'PRIMARY'
-	WHERE CEIL(SYSDATE - MEMBER_ENROLL_DATE) = 30 AND MEMBER_STATUS = 'PREMIUM';
-   	</update>
+   	<update id="memberUpdatePrimary">
+      UPDATE MEMBER 
+      SET MEMBER_STATUS = 'PRIMARY'
+   WHERE CEIL(SYSDATE - (SELECT PREMIUM_ENROLL_DATE FROM PREMIUMINFO)) = 30 AND MEMBER_STATUS = 'PREMIUM';
+      </update>
    
    <!-- 회원 한명 선택 -->
    <select id="selectMemberOne" parameterType="Member" resultMap="memberResultSet">
@@ -170,7 +175,7 @@
    
       
       <!-- 포인트 변동 리스트 회원별-->
-   <select id="selectMemberPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   <select id="selectMemberPointChangeList" parameterType="string" resultMap="pointChangeResultSet">
    SELECT * FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId} ORDER BY POINT_NO DESC
    </select>
    
@@ -192,12 +197,12 @@
    </select>
    
       <!-- 포인트 변동내역 회원 별 전체 개수  -->
-   <select id="getPointChangeListCount" resultType="_int">
-   	SELECT COUNT(*) FROM POINT_HISTORIES  WHERE MEMBER_ID=#{memberId}
+   <select id="getPointChangeListCount" parameterType="String" resultType="_int">
+   	SELECT COUNT(*) FROM POINT_HISTORIES WHERE MEMBER_ID=#{memberId}
    </select>
    
    <!-- 포인트 변동 리스트 전체-->
-   <select id="selecPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
+   <select id="selectPointChangeList" parameterType="PointChange" resultMap="pointChangeResultSet">
    SELECT * FROM POINT_HISTORIES 
    </select>
    
@@ -216,7 +221,7 @@
    
    <!-- 포인트 환급 전체리스트 -->
    <select id="selectPointRefundList" parameterType="PointRefund" resultMap="pointRefundResultSet">
-   SELECT * FROM POINT_RETURN
+   SELECT * FROM POINT_RETURN ORDER BY REFUND_YN ASC, REFUND_NO ASC
    </select>
    
    <!-- 포인트 환급 내역 한개 확인 -->
@@ -245,117 +250,93 @@
 	</select>
 	
 	
-	
-   <!-- 프로필 관련 쿼리 -->
+	<!-- 프로필 관련 쿼리 -->
    <resultMap type="Profile" id="profileResultSet">
-   		<id property="profileNo" column="PROFILE_NO" />
-   		<result property="memberNo" column="MEMBER_NO" />
-   		<result property="pLang1" column="P_LANGUAGE1" />
-   		<result property="pLang2" column="P_LANGUAGE2" />
-   		<result property="pLang3" column="P_LANGUAGE3" />
-   		<result property="pLangGrade1" column="P_LANG_GRADE1" />
-   		<result property="pLangGrade2" column="P_LANG_GRADE2" />
-   		<result property="pLangGrade3" column="P_LANG_GRADE3" />
-   		<result property="tLang1" column="T_LANGUAGE1" />
-   		<result property="tLang2" column="T_LANGUAGE2" />
-   		<result property="tLang3" column="T_LANGUAGE3" />
-   		<result property="tLangGrade1" column="T_LANG_GRADE1" />
-   		<result property="tLangGrade2" column="T_LANG_GRADE2" />
-   		<result property="tLangGrade3" column="T_LANG_GRADE3" />
-   		<result property="introduce" column="MEM_INTRODUCE" />
-   		<result property="profileFilePath" column="PROFILE_FILE_PATH" />
-   		<result property="profileDate" column="PROFILE_DATE" />
-   		<result property="profileStatus" column="PROFILE_STATUS" />
+         <id property="profileNo" column="PROFILE_NO" />
+         <result property="memberNo" column="MEMBER_NO" />
+         <result property="memberId" column="MEMBER_ID" />
+         <result property="memberNo" column="MEMBER_NO" />
+         <result property="pLang1" column="P_LANGUAGE1" />
+         <result property="pLang2" column="P_LANGUAGE2" />
+         <result property="pLang3" column="P_LANGUAGE3" />
+         <result property="pLangGrade1" column="P_LANG_GRADE1" />
+         <result property="pLangGrade2" column="P_LANG_GRADE2" />
+         <result property="pLangGrade3" column="P_LANG_GRADE3" />
+         <result property="tLang1" column="T_LANGUAGE1" />
+         <result property="tLang2" column="T_LANGUAGE2" />
+         <result property="tLang3" column="T_LANGUAGE3" />
+         <result property="tLangGrade1" column="T_LANG_GRADE1" />
+         <result property="tLangGrade2" column="T_LANG_GRADE2" />
+         <result property="tLangGrade3" column="T_LANG_GRADE3" />
+         <result property="introduce" column="MEM_INTRODUCE" />
+         <result property="profileFilePath" column="PROFILE_FILE_PATH" />
+         <result property="profileDate" column="PROFILE_DATE" />
+         <result property="profileStatus" column="PROFILE_STATUS" />
    </resultMap>
    
    <select id="selectProfileList" resultMap="profileResultSet">
-   		SELECT * FROM PROFILE ORDER BY PROFILE_NO DESC
+         SELECT * FROM PROFILE ORDER BY PROFILE_NO DESC
    </select>
    
    <select id="selectProfileOne" parameterType="_int" resultMap="profileResultSet">
-   		SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+         SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
    </select>
    
    <insert id="insertProfile" parameterType="Profile">
-   		INSERT INTO PROFILE VALUES(PRO_NO_SEQ.NEXTVAL, #{memberNo}, #{pLang1}, #{pLangGrade1}, #{pLang2}, 
-   		#{pLangGrade2}, #{pLang3}, #{pLangGrade3}, #{tLang1}, #{tLangGrade1}, #{tLang2}, 
-   		#{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, DEFAULT)
+         INSERT INTO PROFILE VALUES(PRO_NO_SEQ.NEXTVAL, #{memberNo}, #{memberId}, #{pLang1}, #{pLangGrade1}, #{pLang2}, 
+         #{pLangGrade2}, #{pLang3}, #{pLangGrade3}, #{tLang1}, #{tLangGrade1}, #{tLang2}, 
+         #{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, DEFAULT)
    </insert>
    
          <!-- 프로필 수정하기 -->
    <update id="updateProfile" parameterType="Profile">
-   		UPDATE PROFILE SET P_LANGUAGE1 = #{pLang1}, P_LANG_GRADE1 = #{pLangGrade1}, P_LANGUAGE2 = #{pLang2}, 
-   		P_LANG_GRADE2 =#{pLangGrade2}, P_LANGUAGE3 = #{pLang3}, P_LANG_GRADE3 = #{pLangGrade3}, T_LANGUAGE1 = #{tLang1}, 
-   		T_LANG_GRADE1 = #{tLangGrade1}, T_LANGUAGE2 = #{tLang2}, T_LANG_GRADE2 = #{tLangGrade2}, T_LANGUAGE3 = #{tLang3},
-   		T_LANG_GRADE3 =  #{tLangGrade3}, MEM_INTRODUCE = #{introduce}, PROFILE_FILE_PATH = #{profileFilePath},
-   		PROFILE_DATE = SYSDATE, PROFILE_STATUS = #{profileStatus} WHERE MEMBER_NO = #{memberNo}
+         UPDATE PROFILE SET P_LANGUAGE1 = #{pLang1}, P_LANG_GRADE1 = #{pLangGrade1}, P_LANGUAGE2 = #{pLang2}, 
+         P_LANG_GRADE2 =#{pLangGrade2}, P_LANGUAGE3 = #{pLang3}, P_LANG_GRADE3 = #{pLangGrade3}, T_LANGUAGE1 = #{tLang1}, 
+         T_LANG_GRADE1 = #{tLangGrade1}, T_LANGUAGE2 = #{tLang2}, T_LANG_GRADE2 = #{tLangGrade2}, T_LANGUAGE3 = #{tLang3},
+         T_LANG_GRADE3 =  #{tLangGrade3}, MEM_INTRODUCE = #{introduce}, PROFILE_FILE_PATH = #{profileFilePath},
+         PROFILE_DATE = SYSDATE, PROFILE_STATUS = #{profileStatus} WHERE MEMBER_NO = #{memberNo}
    </update>
    
    <!-- 프로필 삭제하기 -->
    <delete id="deleteProfile" parameterType = "_int">
-   		DELETE FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+         DELETE FROM PROFILE WHERE MEMBER_NO = #{memberNo}
    </delete>
    
    <!-- 프로필 등록상태 Y 수정 -->
    <update id="updateStatusY" parameterType="Member">
-   		UPDATE MEMBER SET PROFILE_STATUS = 'Y' WHERE MEMBER_NO = #{memberNo}
+         UPDATE MEMBER SET PROFILE_STATUS = 'Y' WHERE MEMBER_NO = #{memberNo}
    </update>
    
    <!-- 프로필 등록상태 N 수정 -->
    <update id="updateStatusN" parameterType="Member">
-   		UPDATE MEMBER SET PROFILE_STATUS = 'N' WHERE MEMBER_NO = #{memberNo}
+         UPDATE MEMBER SET PROFILE_STATUS = 'N' WHERE MEMBER_NO = #{memberNo}
    </update>
    
    <select id="getPfListCount" resultType="_int">
-   		SELECT COUNT(*) FROM PROFILE
+         SELECT COUNT(*) FROM PROFILE
    </select>
    
    <select id="getPfSearchListCount" parameterType="Profile" resultType="_int">
-	SELECT COUNT(*) FROM PROFILE
-	<where>
-		<choose>
-			<when test="searchCondition =='id'">
-			MEMBER_ID LIKE '%' || #{searchValue} || '%'
-			</when>
-			<when test="searchCondition =='no'">
-			AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
-			</when>
-			<when test="searchCondition=='status'">
-			AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'  			
-			</when>
-			<otherwise>
-			 AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
-				OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
-				OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
-			</otherwise>
-		</choose>
-	</where>
-	</select>
-	
-	<!-- 프로필 검색 쿼리 -->
-	<select id="searchProfile" parameterType="Profile" resultMap="profileResultSet">
-	SELECT * FROM PROFILE
-	<where>
-		<choose>
-			<when test="searchCondition =='id'">
-			MEMBER_ID LIKE '%' || #{searchValue} || '%'
-			</when>
-			<when test="searchCondition =='no'">
-			AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
-			</when>
-			<when test="searchCondition=='status'">
-			AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'  			
-			</when>
-			<otherwise>
-			 AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
-				OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
-				OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
-			</otherwise>
-		</choose>
-	</where>	
-	ORDER BY PROFILE_NO DESC	
-	</select>
-   
+   SELECT COUNT(*) FROM PROFILE
+   <where>
+      <choose>
+         <when test="searchCondition =='id'">
+         MEMBER_ID LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test="searchCondition =='no'">
+         AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test="searchCondition=='status'">
+         AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'           
+         </when>
+         <otherwise>
+          AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
+            OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
+            OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
+         </otherwise>
+      </choose>
+   </where>
+   </select>
     <!-- 0725 추가 -->
 
    <resultMap type="Personal" id="personalResultSet">

@@ -52,10 +52,11 @@ public interface MemberService {
 	
 	public int memberUpdatePreminum(Member member);
 	
-	public int memberUpdatePrimary(Member member);
+	public int memberUpdatePrimary();
 	
 	public int updateContentCount(String memberId);
 
+	public int memberInsertPremium(Member member);
 	// =======================================================포인트 환급
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
 

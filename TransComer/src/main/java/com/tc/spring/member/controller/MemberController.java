@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.domain.ProfileSearch;
 import com.tc.spring.member.domain.Rank;
 import com.tc.spring.member.service.MemberService;
+import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.service.PersonalService;
 import com.tc.spring.study.domain.Study;
@@ -367,6 +369,7 @@ public class MemberController {
 		int result = memberService.memberUpdatePreminum(member);
 		
 		if (result > 0 && insertPointChange>0&& updateMemberPhoint>0) {
+			/*int resultPremium = memberService.memberInsertPremium(member);*/
 			return "member/myPage";
 		} else {
 			model.addAttribute("msg", "프리미엄 가입 실패");
@@ -374,16 +377,12 @@ public class MemberController {
 		}
 	}
 	//프리미엄 해지 메소드
-		public String memberUpdatePrimary(Member member, Model model) {
-			int result = memberService.memberUpdatePrimary(member);
-			
-			if (result > 0) {
-				return "member/adminPage";
-			} else {
-				model.addAttribute("msg", "프리미엄 해지 실패");
-				return "common/errorPage";
-			}
-		}
+	@Scheduled(cron = "0 0 0 * * *")
+    public String memberUpdatePrimary() {
+       int result = memberService.memberUpdatePrimary();
+       
+       return null;
+    }
 
 	
 	// 포인트변동=============================================================================
@@ -392,7 +391,7 @@ public class MemberController {
 	@RequestMapping("pointChangeList.tc")
 	public ModelAndView pointChageList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = (page != null) ? page : 1;
-		int pointChangeListCount = memberService.getPointRefundListCount();
+		int pointChangeListCount = memberService.getPointChangeCount();
 
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
 		ArrayList<PointChange> list = memberService.selectPointChangeList(pi);
@@ -407,10 +406,10 @@ public class MemberController {
 
 	// 회원 마이페이지에서 포인트 변동리스트 전체
 	@RequestMapping("pointChangeMemberList.tc")
-	public String pointChageMemberList(String memberId, Model model,
-			@RequestParam(value = "page", required = false) Integer page) {
+	public String pointChageMemberList(String memberId, Model model,@RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = (page != null) ? page : 1;
 		int pointChangeMemberListCount = memberService.getPointChangeMemberCount(memberId);
+		
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeMemberListCount);
 		ArrayList<PointChange> list = memberService.selectPointChangeMemberList(pi, memberId);
 
@@ -423,32 +422,47 @@ public class MemberController {
 	
 	
 	// 1:1 의뢰 승인 및 포인트 업데이트 
-	@RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
-	public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
-		System.out.println("member"+personalReqRep);
-		PointChange pointChange= new PointChange();
-		pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
-		pointChange.setPointAmount(personalReqRep.getpReqPrice());
-		pointChange.setPointStatus("LESS");
-		pointChange.setMemberId(personalReqRep.getMemberId());
-		
-		Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
-		member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
-		
-		
-		personalReqRep.setpReqAccept("C");
-		int insertPointChange=memberService.insertPointChange(pointChange);
-		int updateMemberPhoint=memberService.updateMemberPoint(member);
-		int result = pesonalService.updateReqRepAccept(personalReqRep);
-		
-		if (result > 0 && insertPointChange>0&& updateMemberPhoint>0) {
-			return "member/myPage";
-		} else {
-			model.addAttribute("msg", "프리미엄 가입 실패");
-			return "common/errorPage";
-		}
-	}
-	
+	// 1:1 의뢰 포인트 업데이트
+	   @RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
+	   public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
+	      System.out.println("member"+personalReqRep);
+	      PointChange pointChange= new PointChange();
+	      pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
+	      pointChange.setPointAmount(personalReqRep.getpReqPrice());
+	      pointChange.setPointStatus("LESS");
+	      pointChange.setMemberId(personalReqRep.getMemberId());
+	      
+	      Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
+	      member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
+	      
+	      Personal personal = pesonalService.selectOne(personalReqRep.getPersonalNo());
+	      
+	      Alarm alarm = new Alarm(); // 0726-2 수정
+	      alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+	      alarm.setAlarmContent("1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
+	      alarm.setBoardTitle(personal.getPersonalTitle()); // 0726-2 수정
+	      alarm.setBoardAddress("pDetail.tc?personalNo=" + personalReqRep.getPersonalNo() + "&memberId=" + personal.getMemberId() ); // 0726-2 수정
+	      int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+	      
+	      Alarm bwAlarm = new Alarm(); // 0726-2 수정
+	      bwAlarm.setMemberId(personal.getMemberId()); // 0726-2 수정
+	      bwAlarm.setAlarmContent("1:1 의뢰가 들어왔습니다. 승인여부를 선택해주세요!"); // 0726-2 수정
+	      bwAlarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
+	      bwAlarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
+	      int bwAlarmA = alarmService.insertAlarm(bwAlarm); // 0726-2 수정
+	      
+	      personalReqRep.setpReqAccept("C");
+	      int insertPointChange=memberService.insertPointChange(pointChange);
+	      int updateMemberPhoint=memberService.updateMemberPoint(member);
+	      int result = pesonalService.updateReqRepAccept(personalReqRep);
+	      
+	      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && personalAlarm>0 && bwAlarmA > 0) { // 0726-2 수정
+	         return "member/myPage";
+	      } else {
+	         model.addAttribute("msg", "프리미엄 가입 실패");
+	         return "common/errorPage";
+	      }
+	   }
 	
 	
 
@@ -513,7 +527,7 @@ public class MemberController {
 
 	// 포인트 환급 확정 및 반려
 	   @RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
-	   public String pointRefundUpdate(PointRefund pointRefund, Model model) {
+	   public String pointRefundUpdate(PointRefund pointRefund, Model model,HttpServletRequest request) {
 	      int result = memberService.updatePointRefund(pointRefund);
 	      
 	      Alarm alarm = new Alarm();
@@ -522,8 +536,13 @@ public class MemberController {
 	      
 	      int refundAlarm = alarmService.insertAlarm(alarm);
 	      
+	      String referer = (String)request.getHeader("REFERER");
+
+				
+	      
+	      
 	      if (result > 0 && refundAlarm > 0) {
-	         return "member/pointRefundList";
+	    	  return "redirect:"+referer;
 	      } else {
 	         model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
 	         return "common/errorPage";
@@ -710,21 +729,18 @@ public class MemberController {
 	   }
 		   // -------------- 0725추가 -------------- 랭킹관련테스트중
 
-		   @RequestMapping("rank.tc")
-		   public ModelAndView ranking(ModelAndView mv) {
+	   @RequestMapping("rank.tc")
+	   public ModelAndView ranking(ModelAndView mv) {
 
-		      ArrayList<Rank> rAcList = memberService.rankAdoptC();
-		      ArrayList<Rank> sList = memberService.starA();
+	      ArrayList<Rank> rAcList = memberService.rankAdoptC();
+	      ArrayList<Rank> sList = memberService.starA();
 
-		     
-		         mv.addObject("rAc", rAcList);
-		         mv.addObject("star", sList);
-		         mv.setViewName("simple/test");
-		      
+	      mv.addObject("rAc", rAcList);
+	      mv.addObject("star", sList);
+	      mv.setViewName("common/main");
 
-		      return mv;
-		   }
-		   
+	      return mv;
+	   }
 
 
 }

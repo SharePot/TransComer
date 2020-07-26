@@ -125,8 +125,8 @@ public class MemberStoreLogic implements MemberStore {
 
 
 	@Override
-	public int memberUpdatePrimary(Member member) {
-		return sqlSession.update("memberMapper.memberUpdatePrimary",member);
+	public int memberUpdatePrimary() {
+		return sqlSession.update("memberMapper.memberUpdatePrimary");
 	}
 	
 	@Override
@@ -134,7 +134,10 @@ public class MemberStoreLogic implements MemberStore {
 		return sqlSession.update("memberMapper.updateContentCount",memberId);
 	}
 
-	
+	@Override
+	   public int memberInsertPremium(Member member) {
+	      return sqlSession.insert("memberMapper.memberInsertPremiumInfo",member);
+	   }
 
 	//포인트 환급=====================================================================================
 	@Override
@@ -175,7 +178,7 @@ public class MemberStoreLogic implements MemberStore {
 	public ArrayList<PointChange> selectPointChangeList(MemberPageInfo pi) {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowbounds=new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("memberMapper.selecPointChangeList",null,rowbounds);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectPointChangeList",null,rowbounds);
 	}
 	
 
@@ -189,13 +192,12 @@ public class MemberStoreLogic implements MemberStore {
 
 	@Override
 	public int getPointChangeCount() {
-		return sqlSession.selectOne("memberMapper.getPointChangeListCount");
+		return sqlSession.selectOne("memberMapper.getPointChangeMemberListCount");
 	}
 
 	@Override
 	public int getPointChangeMemberCount(String memberId) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("memberMapper.getPointChangeMemberListCount",memberId);
+		return sqlSession.selectOne("memberMapper.getPointChangeListCount",memberId);
 	}
 
 
