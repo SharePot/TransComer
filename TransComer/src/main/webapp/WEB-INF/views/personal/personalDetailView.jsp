@@ -184,8 +184,8 @@
                                     <br>
                                     <!-- 별점 -->
                                     <div style="background: white; height:100px; padding:20px 0; border:0.3px solid lightgray">
-                                        <h2 id="starRateNum">4.0</h2>
-                                        <h3 id="starRateColor" style="color:orange">★★★★☆</h3>
+                                        <h2 id="starRateNum"></h2>
+                                        <h3 id="starRateColor" style="color:orange"></h3>
                                     </div>
                                 </div>
                                 
@@ -269,16 +269,6 @@
     </div>
 
     <script>
-    	// 꽉찬 별
-    	// <i class="fas fa-star"></i>
-
-    	// 빈별
-    	//<i class="far fa-star"></i>
-    	
-    	// 반별
-    	//<i class="fas fa-star-half-alt"></i>
-    	
-    
     	// 현꾸 작성 ------------------------------------------
     	// 리뷰 탭을 눌렀을때, 해당 글에 대한 구매 내역이 있는지 확인
     	// 구매내역이 있음 : 리뷰 작성칸 .css("display","block")
@@ -309,6 +299,61 @@
     		});
     	});
     	
+    	// 평균 별점을 가져오는 함수
+    	function loadStarRageAvg(){
+    		var personalNo = "${personal.personalNo}";
+    		$.ajax({
+    			url : "loadStarRageAvg.tc",
+    			type : "get",
+    			data : {
+    				personalNo : personalNo
+    			},
+    			dataType : "json",
+    			success : function(data){
+    				console.log(data);
+    				console.log(data.starInt);
+    				console.log(data.starUnderInt);
+    				showStarRageView(data.starInt, data.starUnderInt);
+    			},
+    			error : function(data){
+    				console.log("에러");
+    			}
+    		});
+    	}
+    	
+    	// 평균 별점을 화면에 표현하는 함수
+    	function showStarRageView(starInt, starUnderInt){
+    		console.log("정수색칠값 : " + starInt);
+    		console.log("소수색칠값 : " + starUnderInt);
+    		// 점수 텍스트 표시하기
+    		$("#starRateNum").text(starInt+"."+starUnderInt);
+    		
+    		// 현재 까지 그린/그려야할 별의 갯수 정보 저장
+			var colorStarCnt =  5;    		
+    		// 색칠된 별 화면에 그리기
+    		
+    		// 정수 값 별 칠하기
+    		for(var i = 0 ; i < starInt; i++){
+	    		$("#starRateColor").append("<i class='fas fa-star'></i>");	// 색칠 별
+	    		colorStarCnt--;
+    		}
+    		// 소수점 값 별 칠하기
+    		if(starUnderInt < 5){
+	    		// 소수점 0~4 : 빈 별
+    			$("#starRateColor").append("<i class='far fa-star'></i>");	// 빈 별
+    			colorStarCnt--;
+    		} else{
+    			// 소수점 5~9 : 반쪽 별
+    			$("#starRateColor").append("<i class='fas fa-star-half-alt'></i>");	// 반쪽 별
+    			colorStarCnt--;
+    		}
+    		// 빈 별로 별 5개 갯수 맞춰
+    		for(var i = 1 ; i <=colorStarCnt; i++){
+    			$("#starRateColor").append("<i class='far fa-star'></i>");	// 빈 별
+    		}
+    	}
+    	
+    	
     	// 글 삭제를 여부를 묻는 함수
     	function deletePersonal() {
     		if (confirm("정말 삭제하시겠습니까??") == true){  
@@ -316,8 +361,9 @@
     			}else{   
     			   return false;
     			}
-		}
+		}	
     	
+    	// 로그인확인
     	function requestPersonal() {
     		if (confirm("로그인 후에 이용가능합니다.") == true){  
 				self.location.href = "loginPage.tc";
@@ -330,6 +376,10 @@
     	/* 리뷰 */
     	
     	$(function(){
+    		
+    		// 문서가 시작되었을때 평균 별점 로드 ->화면에 뿌리기
+    		loadStarRageAvg();
+    		
          // 초기 페이지 로딩 시 댓글 불러오기
          getReviewList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
          

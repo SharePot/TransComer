@@ -1,10 +1,10 @@
 package com.tc.spring.review.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -12,17 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
-import com.tc.spring.comment.domain.Comment;
+import com.google.gson.JsonObject;
 import com.tc.spring.member.domain.Member;
-import com.tc.spring.personal.domain.Personal;
 import com.tc.spring.review.domain.Review;
 import com.tc.spring.review.service.ReviewService;
 
@@ -71,11 +67,33 @@ public class ReviewController {
 	}
 
 	// 현꾸 작성 ============================
-	@RequestMapping(".tc")
+
+	// 해당글의 평균 별점 값을 가져온다.
+	@RequestMapping("loadStarRageAvg.tc")
 	@ResponseBody
-	public double selectStarRageAvg(int personalNo) {
-		return reviewService.selectStarRageAvg(personalNo);
+	public void selectStarRageAvg(int personalNo, HttpServletResponse response) {
+		int starRageInt = 0; // 정수부분 저장
+		int starRageUnderInt = 0; // 소수부분저장
+
+		if (!reviewService.selectList(personalNo).isEmpty()) {
+			// 해당 글에 리뷰가 1개 이상이면 평균 별점을 가져온다
+			double starRageFull = reviewService.selectStarRageAvg(personalNo); // 전체 평점
+			starRageInt = ((int) (starRageFull * 10)) / 10; // 정수부분 저장
+			starRageUnderInt = ((int) (starRageFull * 10)) % 10; // 소수부분저장
+		}
+		JsonObject starRage = new JsonObject();
+		// starRage 세팅
+		starRage.addProperty("starInt", starRageInt); // 정수부분 저장
+		starRage.addProperty("starUnderInt", starRageUnderInt); // 소수부분 저장
+		try {
+			PrintWriter out = response.getWriter();
+			out.print(starRage);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
-	
+
 }

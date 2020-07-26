@@ -15,10 +15,10 @@ public class ReviewStoreLogic implements ReviewStore {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
-	//해당 글번호의 리뷰 리스트 불러오기
+	// 해당 글번호의 리뷰 리스트 불러오기
 	@Override
 	public ArrayList<Review> selectList(int personalNo) {
-		return (ArrayList)sqlSession.selectList("reviewMapper.selectReviewList", personalNo);
+		return (ArrayList) sqlSession.selectList("reviewMapper.selectReviewList", personalNo);
 	}
 
 	// 리뷰 등록, 데이터 삽입
