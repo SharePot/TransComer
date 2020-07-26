@@ -105,4 +105,8 @@ public interface MemberService {
 	public int getPfSearchListCount(ProfileSearch pfSearch);
 	
 	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi);
+	
+	public ArrayList<Rank> rankAdoptC();
+	   
+	 public ArrayList<Rank> starA();
 }

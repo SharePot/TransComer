@@ -724,6 +724,24 @@ public class MemberController {
 			return "profile/profileList";
 			
 		}
+		   // -------------- 0725추가 -------------- 랭킹관련테스트중
+
+		   @RequestMapping("rank.tc")
+		   public ModelAndView ranking(ModelAndView mv) {
+
+		      ArrayList<Rank> rAcList = memberService.rankAdoptC();
+		      ArrayList<Rank> sList = memberService.starA();
+
+		      if (!rAcList.isEmpty()) {
+		         mv.addObject("rAc", rAcList);
+		         mv.addObject("star", sList);
+		         mv.setViewName("simple/test");
+		      } else {
+		         mv.setViewName("common/errorPage");
+		      }
+
+		      return mv;
+		   }
 
 
 }

@@ -251,4 +251,13 @@ public class MemberServiceImpl implements MemberService {
 		return memberStore.searchProfile(pfSearch, pi);
 	}
 
+	@Override
+	   public ArrayList<Rank> rankAdoptC() {
+	      return memberStore.rankAdoptC();
+	   }
+
+	   @Override
+	   public ArrayList<Rank> starA() {
+	      return memberStore.starA();
+	   }
 }
