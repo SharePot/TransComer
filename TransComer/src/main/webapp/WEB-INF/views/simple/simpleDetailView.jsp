@@ -55,16 +55,16 @@
 					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
 					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
 					<input type="hidden" id="adoptCount" value="${loginUser.adoptCount }">
-                    <table id="replyTb">
-					
-	                        <tr>
-	                            <td id="rContentWrapper">
-	                            	<textarea rows="4" id="simpleReplyContent"></textarea>
-	                            	<button class="btn btn-primary" id="rSubmit">등록</button>
-	                            </td>
-	                        </tr>
-
-                    </table>
+					<c:if test="${!empty sessionScope.loginUser }">
+	                    <table id="replyTb">
+			            	<tr>
+			                	<td id="rContentWrapper">
+			                    	<textarea rows="4" id="simpleReplyContent"></textarea>
+			                        <button class="btn btn-primary" id="rSubmit">등록</button>
+			                    </td>
+			               	</tr>
+	                    </table>
+					</c:if>
 
 
             </div>
@@ -90,7 +90,7 @@
 	$(function(){
   	  // 초기 페이지 로딩 시 댓글 불러오기
   	  getSimpleResList();
-
+  	  var cPage;
   	// 댓글 등록 ajax
   	  $("#rSubmit").on("click", function() {
   	  	
@@ -131,7 +131,7 @@
 		                    var endPage;
 		                    var maxPage;
 		                      
-		                    var pageLimit=5;
+		                    var pageLimit = 5;
 		                      
 		                    if ( cPage == null ) {
 		                    	cPage = 1;
@@ -141,15 +141,23 @@
 							
 		                    // $("#count").text("댓글 (" + data.length + ")");
 							if (data.length > 0) {
-								maxPage = parseInt((data.length / 5) + 0.8);
-								startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
-								endPage = startPage + pageLimit - 1;
 								
-								for ( var i = (currentPage * 5) - 5 ; i < currentPage * 5 ; i++) {
-									
-									if (data.length == i) {
-										break;
-									}
+								 maxPage = parseInt((data.length / 5) + 0.8);
+		                    	 startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+			       				 endPage = startPage + pageLimit - 1;
+		                    	  
+			       				  
+			       				  console.log(cPage);
+			       				  console.log(maxPage);
+			       				  console.log(startPage);
+			       				  console.log(endPage);
+			       				  console.log(data.length);
+			       				  
+		                          for (var i = (currentPage * 5) - 5; i < currentPage * 5; i++) {
+		                        	  
+		                             if (data.length == i) {
+		                        		 break;
+		                        	 }
 									
 										$responseWriter = $("<input type='hidden' id='responseWriter' value=" + data[i].simpleReplyWriter + ">");
 										$simpleReplyNo = $("<input type='hidden' id='simpleReplyNo' value=" + data[i].simpleReplyNo + ">");
@@ -219,29 +227,30 @@
 											$replyWriter.after($replyInfoA);
 										}
 										
-										
-										$trTwo.after($trThree);
-										$trThree.append($tdTwo);
-										$tdTwo.append($replyContent);
-										$tdTwo.after($tdThree);
-										
-										$replyWrapperDiv.after($simpleReplyNo);
-										$simpleReplyNo.after($responseWriter);
-										
+											$trTwo.after($trThree);
+											$trThree.append($tdTwo);
+											$tdTwo.append($replyContent);
+											$tdTwo.after($tdThree);
+											
+											$replyWrapperDiv.after($simpleReplyNo);
+											$simpleReplyNo.after($responseWriter);
+											
+										} // for 문 
 										
 										/* 댓글 페이징 부분 */
 										$replyPage = $("#replyPage");
 										$replyPage.html("");
 										$rTable = $("<table>");
+										
 										$replyTr = $("<tr align='center'>")
 										$replyTd = $("<td>");
 										var before="< &nbsp;";
-				                        var after=">";
+				                        var after="&nbsp; >";
 				                        
 				                        if (currentPage <= 1) { // 현재페이지가 1과 같거나 작다면
 				                        	$replyTd.append(before);
 				                        } else if (currentPage > 1) { // 현재페이지가 1보다 크다면
-				                        	$before = $("<a href='javascript:getSimpleResList(" + (currentPage - 1) + ")'><</a> &nbsp;");
+				                        	$before = $("<a href='javascript:getSimpleResList(" + (currentPage - 1) + ")'><&nbsp;</a> &nbsp;");
 				                        	$replyTd.append($before);
 				                        }
 				                        
@@ -260,7 +269,7 @@
 				                        if (currentPage >= maxPage) {
 				                        	$replyTd.append(after);
 				                        } else if (currentPage < maxPage) { // 작다면
-				                        	$after = $("<a href='javascript:getSimpleResList(" + (currentPage + 1) + ")'>></a>");
+				                        	$after = $("<a href='javascript:getSimpleResList(" + (currentPage + 1) + ")'>&nbsp;></a>");
 				                        	$replyTd.append($after);
 				                        } 
 				                        
@@ -268,7 +277,6 @@
 										$rTable.append($replyTr);
 										$replyTr.append($replyTd);
 										
-								}
 
 							} else {
 								$tr = $("<tr>");
@@ -281,9 +289,9 @@
 							
 						}
 
-					});
+					}); // ajax 시작
 			
-		}
+		} // function 시작
  		
  		// 댓글 삭제
 		function deleteBtn(obj, simpleReplyNo) {
