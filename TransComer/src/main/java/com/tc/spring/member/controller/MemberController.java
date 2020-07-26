@@ -34,6 +34,7 @@ import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.domain.ProfileSearch;
+import com.tc.spring.member.domain.Rank;
 import com.tc.spring.member.service.MemberService;
 import com.tc.spring.personal.domain.PersonalReqRep;
 import com.tc.spring.personal.service.PersonalService;
@@ -64,14 +65,10 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, memberListCount);
 		ArrayList<Member> list = memberService.selectMemberList(pi);
 
-		if (!list.isEmpty()) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("member/memberList");
-		} else {
-			mv.addObject("msg", "회원리스트 조회 실패");
-			mv.setViewName("common/errorPage");
-		}
+		
 		return mv;
 	}
 
@@ -105,8 +102,8 @@ public class MemberController {
 
 	// 멤버 세부사항
 	@RequestMapping("memberDetail.tc")
-	public String memberSelectOne(Model model, String String) {
-		model.addAttribute("member", memberService.selectMemberOne(String));
+	public String memberSelectOne(Model model, String memberId) {
+		model.addAttribute("member", memberService.selectMemberOne(memberId));
 		return "member/memberDetail";
 	}
 
@@ -311,8 +308,8 @@ public class MemberController {
 
 	// 포인트 충전(결제 api)
 	@RequestMapping("payment.tc")
-	public String payMent(String userId, int amounts, Model model) {
-
+	public String payMent(String userId, int amounts, Model model,HttpServletRequest request) {
+		
 		/*포인트 변동 내역 추가 및 업데이트를 위한 코드*/
 		PointChange pointChange= new PointChange();
 		pointChange.setPointContent("포인트 충전");
@@ -324,15 +321,14 @@ public class MemberController {
 		map.put("userId", userId);
 		map.put("amount", amounts);
 		int result = memberService.payMent(map);
-		int insertPointChange=memberService.insertPointChange
-				
-				(pointChange);
+		int insertPointChange=memberService.insertPointChange(pointChange);
 		
 		Member loginUser = memberService.userRefrash(userId);
 		model.addAttribute("loginUser", loginUser);
+		String referer = (String)request.getHeader("REFERER");
 
 		if (result > 0 && insertPointChange>0) {
-			return "redirect:home.tc";
+			return "redirect:"+referer;
 		} else { // 실패 했을때
 			return "common/errorPage";
 		}
@@ -401,15 +397,11 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
 		ArrayList<PointChange> list = memberService.selectPointChangeList(pi);
 
-		if (!list.isEmpty()) {
+		
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("member/pointChangeList");
-		} else {
-			mv.addObject("msg", "포인트 변동 리스트 조회 실패");
-			mv.setViewName("common/errorPage");
-		}
-
+		
 		return mv;
 	}
 
@@ -472,15 +464,11 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointRefundListCount);
 		ArrayList<PointRefund> list = memberService.selectPointRefundList(pi);
 
-		if (!list.isEmpty()) {
+		
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("member/pointRefundList");
-		} else {
-			mv.addObject("msg", "포인트 환급 리스트 조회 실패");
-			mv.setViewName("common/errorPage");
-		}
-
+		
 		return mv;
 	}
 
@@ -553,30 +541,25 @@ public class MemberController {
 			int listCount = memberService.getPfListCount();
 			MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
 			ArrayList<Profile> pfList = memberService.selectProfileList(pi);
-			if (!pfList.isEmpty()) {
+			
 				mv.addObject("pi", pi);
 				mv.addObject("pfList", pfList);
 				mv.setViewName("profile/profileList");
-			} else {
-				mv.setViewName("common/errorPage");
-			}
-
+			
 			return mv;
 
 		}
-
-	// 프로필 상세보기
-	@RequestMapping("profileDetail.tc")
-	public String profileDetail(int memberNo, Model model) {
-		Profile profile = memberService.selectProfileOne(memberNo);
-		if (profile != null) {
-			model.addAttribute("profile", profile);
-			return "profile/profileList";
-		} else {
-			return "common/errorPage";
-		}
-	}
-
+		// 프로필 상세보기
+		   @RequestMapping("profileDetail.tc")
+		   public String profileDetail(int memberNo, Model model) {
+		      Profile profile = memberService.selectProfileOne(memberNo);
+		      if (profile != null) {
+		         model.addAttribute("profile", profile);
+		         return "profile/profileDetail"; // 0726 수정
+		      } else {
+		         return "common/errorPage";
+		      }
+		   }
 	// 프로필 등록 화면 열기
 	@RequestMapping("profileInsertView.tc")
 	public String profileInsertView() {
@@ -709,21 +692,22 @@ public class MemberController {
 	
 	// 프로필 등록 회원 검색
 
-		@RequestMapping("profileSearch.tc")
-		public String profileSearch(ProfileSearch pfSearch, Model model, @RequestParam(value="page", required=false)Integer page) {
-			
-			int currentPage = (page != null) ? page : 1;
-			int listCount = memberService.getPfSearchListCount(pfSearch);
-			MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
-			ArrayList<Profile> pfSearchList = memberService.searchProfile(pfSearch, pi);
-			
-			model.addAttribute("list", pfSearchList);
-			model.addAttribute("search", pfSearch);
-			model.addAttribute("pi", pi);
-			
-			return "profile/profileList";
-			
-		}
+	   @RequestMapping("profileSearch.tc")
+	   public String profileSearch(ProfileSearch pfSearch, Model model,
+	         @RequestParam(value = "page", required = false) Integer page) {
+
+	      int currentPage = (page != null) ? page : 1;
+	      int listCount = memberService.getPfSearchListCount(pfSearch);
+	      MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
+	      ArrayList<Profile> pfSearchList = memberService.searchProfile(pfSearch, pi);
+
+	      model.addAttribute("pfList", pfSearchList); // 0726 수정
+	      model.addAttribute("search", pfSearch);
+	      model.addAttribute("pi", pi);
+
+	      return "profile/profileList";
+
+	   }
 		   // -------------- 0725추가 -------------- 랭킹관련테스트중
 
 		   @RequestMapping("rank.tc")
@@ -732,16 +716,15 @@ public class MemberController {
 		      ArrayList<Rank> rAcList = memberService.rankAdoptC();
 		      ArrayList<Rank> sList = memberService.starA();
 
-		      if (!rAcList.isEmpty()) {
+		     
 		         mv.addObject("rAc", rAcList);
 		         mv.addObject("star", sList);
 		         mv.setViewName("simple/test");
-		      } else {
-		         mv.setViewName("common/errorPage");
-		      }
+		      
 
 		      return mv;
 		   }
+		   
 
 
 }

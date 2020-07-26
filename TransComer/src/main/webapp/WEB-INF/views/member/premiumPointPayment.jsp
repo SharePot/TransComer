@@ -31,10 +31,16 @@ font-weight:bold;
 a{
 text-decoration:none !important;
 }
-
+#detail{
+font-size:20px !important;
+}
 .textP{
 width:60% !important;
 text-align:left !important;
+}
+
+#table{
+font-size:13px !important;
 }
 </style>
 </head>
@@ -45,11 +51,11 @@ text-align:left !important;
 			  <div id="contentSection">
 <center><h1 id="title">포인트결제</h1></center>
 <hr>
-<center>프리미엄 가입 결제 세부 사항</center>
-<br><br>
+<center><h1 id="detail"><b>프리미엄 가입 결제 세부 사항 </b></h1></center>
+<br>
 <form action="memberUpdatePreminum.tc" method="post">
 <input type="hidden" name="memberId" value="${loginUser.memberId }">
-<table class="table table-bordered">
+<table id="table" class="table table-bordered">
 	<tr>
 		<th>기존 등급</th>
 		<th>변경 등급</th>
@@ -93,7 +99,7 @@ text-align:left !important;
 	<script>
 		 function check(){
 			 if($("#havePoint").val() < 13000 ){
-					$("#message").html("보유 포인트보다 환급 요청한 포인트가 더 높습니다.");
+					$("#message").html("보유 포인트보다 결제 예정 포인트가 더 높습니다.");
 					return false;}
 			 else if($("#agree").is(":checked")){
 				  alert("프리미엄 회원으로 정상 가입이 완료 되었습니다.");

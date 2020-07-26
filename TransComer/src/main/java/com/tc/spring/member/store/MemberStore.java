@@ -11,6 +11,7 @@ import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.PointRefund;
 import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.domain.ProfileSearch;
+import com.tc.spring.member.domain.Rank;
 
 public interface MemberStore {
 	

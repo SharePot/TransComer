@@ -356,5 +356,48 @@
 	ORDER BY PROFILE_NO DESC	
 	</select>
    
+    <!-- 0725 추가 -->
+
+   <resultMap type="Personal" id="personalResultSet">
+      <id property="personalNo" column="PERSONAL_NO" />
+      <result property="personalTitle" column="PERSONAL_TITLE" />
+      <result property="personalContent" column="PERSONAL_CONTENT"/>
+      <result property="personalDate" column="PERSONAL_DATE" />
+      <result property="personalPLang" column="PERSONAL_P_LANG" />
+      <result property="personalTLang" column="PERSONAL_T_LANG" />
+      <result property="personalSchedule" column="PERSONAL_SCHEDULE" />
+      <result property="personalPrice" column="PERSONAL_PRICE" />
+      <result property="personalCount" column="PERSONAL_COUNT" />
+      <result property="personalDStatus" column="PERSONAL_D_STATUS" />
+      <result property="powerYN" column="POWER_YN" />
+      <result property="personalFilePath" column="PERSONAL_FILE_PATH" />
+      <result property="memberId" column="MEMBER_ID" />
+   </resultMap>
+   
+   <resultMap type="Review" id="ReviewResultSet">
+      <id property="reviewNo" column="REV_NO" />
+      <result property="revTargetMemberId" column="REV_TARGET_MEMBER_ID" />
+      <result property="revContent" column="REV_CONTENT" />
+      <result property="starRage" column="STAR_RAGE" />
+      <result property="revWriteDate" column="REV_WRITE_DATE" />
+      <result property="personalNo" column="PERSONAL_NO" />
+      <result property="memberId" column="MEMBER_ID" />
+   </resultMap>
+   
+   <resultMap type="Rank" id="rankResultSet">
+      <collection property="member" resultMap="memberResultSet" />
+      <collection property="profile" resultMap="profileResultSet" />
+      <collection property="personal" resultMap="personalResultSet" />
+      <collection property="review" resultMap="ReviewResultSet" />
+   </resultMap>
+   
+   <select id="rankAdoptC" resultMap="rankResultSet">
+      SELECT * FROM PROFILE P LEFT OUTER JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID ORDER BY M.ADOPT_COUNT DESC
+   </select>
+   
+   <select id="starA" resultMap="rankResultSet">
+      select rev_target_member_id, avg(star_rage) from review group by rev_target_member_id order by avg(star_rage) 
+   </select>
+   
    
    </mapper>

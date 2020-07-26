@@ -32,7 +32,7 @@
 					
 				<li>
 					<img src="/resources/css/images/paper.png" class="itemImg">
-					<a href="">문의 리스트</a>
+					<a href="qAdminlist.tc">문의 리스트</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/wallet.png" class="itemImg">
@@ -42,10 +42,10 @@
 					<img src="/resources/css/images/money.png" class="itemImg">
 					<a href="pointRefundList.tc">포인트 환급 목록</a>
 				</li>
-				<li>
+				<!-- <li>
 					<img src="/resources/css/images/money (1).png" class="itemImg">
 					<a href="">포인트 회수</a>
-				</li>
+				</li> -->
 			</ul>
                        
         </div>

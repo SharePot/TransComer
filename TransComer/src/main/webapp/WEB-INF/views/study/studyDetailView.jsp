@@ -112,7 +112,7 @@ font-weight:bold;
             <option value="N" >비공개</option>
           </select>
           </td>
-         <td><br><textarea cols="70" rows="5" id="content"></textarea>
+         <td><br><textarea cols="50" rows="5" id="content"></textarea>
         <input type="hidden" id="commentCondition" name="commentCondition" value="study"></td>
          
          <td><br><br>
@@ -131,12 +131,12 @@ font-weight:bold;
             <input type="hidden" id="commentCondition" name="commentCondition" value="study">
          </tr>
          <tr>
-         <th width="12%" >댓글 번호</th>
-         <th>작성자</th>
+         <th width="7%">NO</th>
+         <th width="7%">작성자</th>
          <th width="30%">내용</th>
-         <th>작성 날짜</th>
-         <th>수정</th>
-         <th>삭제</th>
+         <th width="15%">작성 날짜</th>
+         <th width="17%">수정</th>
+         <th width="12%">삭제</th>
          
          </tr>
       </thead>
@@ -227,7 +227,7 @@ font-weight:bold;
      	 		 $(obj).parents("tr").children().eq(5).show();
      	 		 $(obj).parents("tr").children().eq(8).show();
      	 		  $(obj).parents("tr").children().eq(2).hide();
-     	 		  $(obj).hide();
+     	 		  $(obj).parent().hide();
      	 		 $(obj).parents("tr").children().eq(7).hide();
      	 	  }
     	 	  
@@ -314,7 +314,7 @@ font-weight:bold;
                      $memberId = $("<td width='100'>").text(data[i].memberId);
                      //내용(복호화)
                      $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
-                     $commentNewContent=$("<td style='display:none;'><textarea cols='7' rows='1'>"+commentContentRead+"</textarea>");
+                     $commentNewContent=$("<td style='display:none;'><textarea cols='15' rows='1'>"+commentContentRead+"</textarea>");
                      //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
                      $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
                      $loginId=$("#loginId").val();
@@ -363,7 +363,7 @@ font-weight:bold;
                   
                     for (var i = startPage; i <= maxPage; i++) {
                     	if (i == currentPage) {
-                    		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; &nbsp; ");
+                    		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; ");
                     		$td2.append($link);
                     	} else if ( i != currentPage ) {
                     		$link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")

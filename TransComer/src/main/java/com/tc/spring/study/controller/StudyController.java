@@ -57,14 +57,11 @@ public class StudyController {
 			list.get(i).setCommentCount(commentCount);
 		}
 		
-		if(!list.isEmpty()) {
+		
 			mv.addObject("list",list);
 			mv.addObject("pi",pi);
 			mv.setViewName("study/studyListView");
-		}else {
-			mv.addObject("msg","스터디 게시판 조회 실패");
-			mv.setViewName("common/errorPage");
-		}
+		
 		return mv;
 	}
 

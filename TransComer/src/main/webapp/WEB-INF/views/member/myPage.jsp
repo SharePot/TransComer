@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -19,7 +20,7 @@
 			<ul id="pageList">
 				<li>
 					<c:url var="detail" value="memberDetail.tc">
-							<c:param name="memberNo" value="${loginUser.memberNo }" />
+							<c:param name="memberId" value="${loginUser.memberId }" />
 						</c:url>
 					<img src="/resources/css/images/user2.png" class="itemImg">
 					<a href="${detail }">내 정보 보기</a>
@@ -53,12 +54,15 @@
 					<a href="mySimpleList.tc">단순 의뢰 문의 내역</a>
 				</li>
 				<li>
+					<c:url var="pointChangeMemberList" value="pointChangeMemberList.tc">
+							<c:param name="memberId" value="${loginUser.memberId }" />
+						</c:url>
 					<img src="/resources/css/images/wallet.png" class="itemImg">
-					<a href="">잔여 포인트 / 포인트 사용내역 확인</a>
+					<a href="${pointChangeMemberList}">잔여 포인트 / 포인트 사용내역 확인</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/money.png" class="itemImg">
-					<a href="">포인트 충전 결제</a>
+					<a href="paymentView.tc">포인트 충전 결제</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/money (1).png" class="itemImg">
@@ -66,7 +70,7 @@
 				</li>
 				<li>
 					<img src="/resources/css/images/premium-quality.png" class="itemImg">
-					<a href="">프리미엄 가입</a>
+					<a href="premiumEnrollView.tc">프리미엄 가입</a>
 				</li>
 				<li>
 					<img src="/resources/css/images/doorway.png" class="itemImg">

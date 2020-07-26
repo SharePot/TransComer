@@ -58,14 +58,11 @@ public class ShareController {
 		SharePageInfo sPi = Pagination.getSharePageInfo(currentPage, listCount);
 		
 		ArrayList<Share> sList = shareService.selectAllList(sPi);
-		if(!sList.isEmpty()) {
+		
 			mv.addObject("slist", sList);
 			mv.addObject("sPi", sPi);
 			mv.setViewName("share/shareBoardListView"); //페이지
-		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
-		}
+		
 		return mv;
 	}
 	
@@ -78,15 +75,12 @@ public class ShareController {
 		
 		ArrayList<Share> sList = shareService.searchShareList(shareSearch, sPi);
 		
-		if(!sList.isEmpty()) {
+		
 			mv.addObject("slist", sList);
 			mv.addObject("sPi", sPi);
 			mv.addObject("sSearch", shareSearch);
 			mv.setViewName("share/shareSharchListView"); //페이지
-		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
-		}
+		
 		return mv;
 	}
 	

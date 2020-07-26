@@ -117,7 +117,8 @@
                         <div class="d-flex justify-content-center">
                             <input type="button" value="결제하기" id="paySubmit" class="btn">
                             &nbsp;&nbsp;
-                            <a href="myPage.tc" class="btn btn-secondary">취소하기</a>
+                            <a href="myPage.tc" class="btn btn-secondary">취소하기</a> &nbsp;&nbsp;
+                            <button class="btn btn-info" onclick="return check()">전 페이지로</button>
                         </div>
                     </div>
                 </div>
@@ -155,6 +156,10 @@
             pays = pay;
          };
       };
+      
+      function check(){
+    	  history.go(-6);
+      }
 
       $("#paySubmit").click(function(){
          if(pays == ""){
