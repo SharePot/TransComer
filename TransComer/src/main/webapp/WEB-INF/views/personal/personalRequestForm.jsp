@@ -75,6 +75,7 @@
 
                             <hr>
                             <h4>첨부파일(최대 5개까지 첨부)</h4>
+                            <p>이미지 파일만 첨부 가능합니다.</p>
                             <br>
                             <!--파일 여러개 넣기-->
                             <!-- <input multiple="multiple" type="file" name="uploadFile[]" style="margin:0;"/> -->
