@@ -20,10 +20,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tc.spring.alarm.domain.Alarm;
+import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
 import com.tc.spring.member.domain.Member;
+import com.tc.spring.member.domain.PointChange;
 import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.service.MemberService;
 import com.tc.spring.personal.domain.Personal;
@@ -44,6 +47,9 @@ public class PersonalController {
 
 	@Autowired
 	private FileController fController;
+	
+	@Autowired
+	private AlarmService alarmService;
 
 	// 1:1게시판 전체 조회
 	@RequestMapping("plist.tc")
@@ -286,7 +292,7 @@ public class PersonalController {
 		int resultFile = 0;
 		String path = null;
 		result = personalService.insertRequest(personalReqRep, requestH);
-
+		
 		if (result > 0) {
 			int pReqLastNo = personalService.selectPersonalLastNo(memberId);
 			files.setpReqNo(pReqLastNo);
@@ -371,26 +377,37 @@ public class PersonalController {
 	}
 
 	// 의뢰 결과 글 작성 페이지로 이동하기
-	@RequestMapping(value = "pReqRepResultWrite.tc", method = RequestMethod.GET)
-	public String reqResultWriteView(int pReqNo, int personalNo, Model model) {
-		PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);// 신청 요청 글
-		Personal personal = personalService.selectOne(personalNo);// 1:1 게시글
-		if (pReqRep != null && personal != null) {
-			this.cutUselessStringOne(personal); // 없음 텍스트 제거
-			model.addAttribute("pReqRep", pReqRep);
-			model.addAttribute("personal", personal);
-			return "personal/personalResultWrite";
-		} else {
-			model.addAttribute("msg", "의뢰 결과 작성페이지 이동 실패");
-			return "common/errorPage";
-		}
-	}
+	   @RequestMapping(value = "pReqRepResultWrite.tc", method = RequestMethod.GET)
+	   public String reqResultWriteView(int pReqNo, int personalNo, Model model) {
+	      PersonalReqRep pReqRep = personalService.selectReqRepOne(pReqNo);// 신청 요청 글
+	      Personal personal = personalService.selectOne(personalNo);// 1:1 게시글
+	      if (pReqRep != null && personal != null) {
+	         this.cutUselessStringOne(personal); // 없음 텍스트 제거
+	         model.addAttribute("pReqRep", pReqRep);
+	         model.addAttribute("personal", personal);
+
+	         // 해당 글에 등록된 파일 불러오기, flist 변수에 set
+	         model.addAttribute("flist", this.pReqRepFileLoad(pReqNo));
+	         return "personal/personalResultWrite";
+	      } else {
+	         model.addAttribute("msg", "의뢰 결과 작성페이지 이동 실패");
+	         return "common/errorPage";
+	      }
+	   }
 
 	// 의뢰 결과 글 작성/답변하기 (번역결과 내용 업데이트)
 	@RequestMapping(value = "pReqRepResultUpdate.tc", method = RequestMethod.POST)
 	public String reqResultUpdate(PersonalReqRep personalReqRep) {
 		int result = personalService.updateReqRepResult(personalReqRep);
-		if (result > 0) {
+		
+		Alarm alarm = new Alarm(); // 0726-2 수정
+		alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+		alarm.setAlarmContent("1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
+		alarm.setBoardTitle("결과보러가기"); // 0726-2 수정
+		alarm.setBoardAddress("pReqRepResultDetail.tc?pReqNo=" + personalReqRep.getpReqNo() + "&personalNo=" + personalReqRep.getPersonalNo() ); // 0726-2 수정
+		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+		
+		if (result > 0 && personalAlarm > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
@@ -424,31 +441,47 @@ public class PersonalController {
 		return flist;
 	}
 
-	// 의뢰 신청 글 승인하기(Accept : 'Y')
+	// 의뢰 신청 글 승인하기(Accept : 'Y') - 알림추가
 	@RequestMapping(value = "pReqRepAcceptY.tc", method = RequestMethod.GET)
 	public String reqAcceptYUpdate(PersonalReqRep personalReqRep) {
+		
+		Alarm alarm = new Alarm(); // 0726-2 수정
+		alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+		alarm.setAlarmContent("번역가가 의뢰 신청을 승인하였습니다."); // 0726-2 수정
+		alarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
+		alarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
+		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+		
 		personalReqRep.setpReqAccept("Y");
 		int result = personalService.updateReqRepAccept(personalReqRep);
-		if (result > 0) {
+		if (result > 0 && personalAlarm > 0) { // 0726-2 수정
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
 		}
 	}
 
-	// 의뢰 신청 글 반려하기(Accept : 'R')
+	// 의뢰 신청 글 반려하기(Accept : 'R') - 알림추가
 	@RequestMapping(value = "pReqRepAcceptR.tc", method = RequestMethod.GET)
 	public String reqAccectRUpdate(PersonalReqRep personalReqRep) {
+		
+		Alarm alarm = new Alarm(); // 0726-2 수정
+		alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+		alarm.setAlarmContent("번역가가 의뢰 신청을 거절하였습니다."); // 0726-2 수정
+		alarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
+		alarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
+		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+		
 		personalReqRep.setpReqAccept("R");
 		int result = personalService.updateReqRepAccept(personalReqRep);
-		if (result > 0) {
+		if (result > 0 && personalAlarm > 0) { // 0726-2 수정
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
 		}
 	}
 
-	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
+	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y') - 알림추가
 	@RequestMapping(value = "pReqRepCheckBuyY.tc", method = RequestMethod.GET)
 	public String reqCheckBuyYUpdate(int pReqNo) {
 
@@ -462,12 +495,19 @@ public class PersonalController {
 
 		Member member = memberService.selectMemberOne(pReqRep.getpRepTranslator());
 		member.setPoint(member.getPoint() + pReqRep.getpReqPrice());
-
+		
+		Alarm alarm = new Alarm(); // 0726-2 수정
+		alarm.setMemberId(pReqRep.getpRepTranslator()); // 0726-2 수정
+		alarm.setAlarmContent("의뢰자가 의뢰를 확정하였습니다."); // 0726-2 수정
+		alarm.setBoardTitle("포인트 확인하러 가기"); // 0726-2 수정
+		alarm.setBoardAddress("pointChangeMemberList.tc?memberId=" + pReqRep.getpRepTranslator()); // 0726-2 수정
+		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+		
 		int insertPointChange = memberService.insertPointChange(pointChange);
 		int updateMemberPhoint = memberService.updateMemberPoint(member);
 
 		int result = personalService.updateReqRepCheckBuyY(pReqNo);
-		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0) {
+		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0 && personalAlarm > 0) {
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";

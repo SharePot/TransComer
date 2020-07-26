@@ -458,12 +458,12 @@
     						 //$tr1.append($report);
     						 $table.append($tr2);
     						 $tr2.append($revContent); */
-    						 
+    						 $responseWriter = $("<input type='hidden' id='responseWriter' value=" + data[i].memberId + ">");
     						 $table = $("<table>");
      						$tr1 = $("<tr>");
      						$tr2 = $("<tr>");
      						$memberId = $("<td style='color:black'>").text(data[i].memberId);
-     						$revWriteDate = $("<td style='text-align:right;'>"+data[i].revWriteDate+"&nbsp;&nbsp;&nbsp;<button class='btn-sm'>신고</button>");
+     						$revWriteDate = $("<td style='text-align:right;'>"+data[i].revWriteDate+"&nbsp;&nbsp;&nbsp;<button class='btn-sm' id='reportBtn'>신고</button>");
      						$revContent = $("<td colspan='3'>").text(decodeURI(decodeURIComponent(data[i].revContent)).replace(/\+/g,' '));
      						
      						 $reviewDiv.append($table);
@@ -473,6 +473,7 @@
      						 //$tr1.append($report);
      						 $table.append($tr2);
      						 $tr2.append($revContent);
+     						 $revContent.after($responseWriter);
     						 
     						 
     						 console.log("댓글 내용 : " + decodeURIComponent(data[i].revContent));
@@ -511,6 +512,14 @@
     	        $('#starScore').html(lastStar);
     	    });   
          
+    	    $(document).on('click', '#reportBtn', function() {
+    	  		var url = "reportForm.tc";
+    	  		var name ="SharePot - 신고하기";
+    	  		var option = "width = 600, height = 415, top = 100, left = 200, location = no, toolbars = no";
+    	  		window.open(url, name, option);
+    	  	});
+    	  	
+    	 
     </script>
     
     

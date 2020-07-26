@@ -202,6 +202,7 @@
 	                                                	<c:url var="pReqRepDetail" value="pReqRepDetail.tc">
 		                                                	<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
 		                                                	<c:param name="personalNo" value="${getReqRep.personalNo }"></c:param>
+		                                                	<c:param name="memberId" value="${getReqRep.memberId }"></c:param>
 		                                                </c:url>
 	                                                	<a href="${pReqRepDetail }" style="text-decoration: none;color: black;">${getReqRep.pReqContent }</a>
 	                                                </td>
@@ -216,11 +217,13 @@
 	                                                		<!-- 승인하기 url -->
 	                                                		<c:url var="pReqRepAcceptY" value="pReqRepAcceptY.tc">
 	                                                			<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+	                                                			<c:param name="memberId" value="${getReqRep.memberId }"></c:param>
 	                                                		</c:url>
 		                                                    	<a href="${pReqRepAcceptY }" class="btn btn-primary" style="text-decoration: none;">승인하기</a>
 		                                                    <!-- 반려하기 url -->
 		                                                    <c:url var="pReqRepAcceptR" value="pReqRepAcceptR.tc">
 	                                                			<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
+	                                                			<c:param name="memberId" value="${getReqRep.memberId }"></c:param>
 	                                                		</c:url>
 		                                                    	<a href="${pReqRepAcceptR }" class="btn btn-warning" style="text-decoration: none;">반려하기</a>
 	                                                	</c:if>
@@ -235,6 +238,7 @@
 			                                                <c:url var="pReqResultWrite" value="pReqRepResultWrite.tc">
 			                                                	<c:param name="pReqNo" value="${getReqRep.pReqNo }"></c:param>
 			                                                	<c:param name="personalNo" value="${getReqRep.personalNo }"></c:param>
+			                                                	<c:param name="memberId" value="${getReqRep.memberId }"></c:param>
 			                                                </c:url>
 		                                                    <a href="${pReqResultWrite }" class="btn btn-primary" style="text-decoration: none;">답변하기</a>
 	                                                	</c:if>
