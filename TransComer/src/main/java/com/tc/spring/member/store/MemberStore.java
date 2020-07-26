@@ -52,6 +52,8 @@ public interface MemberStore {
 	public int memberUpdatePreminum(Member member);
 	
 	public int memberUpdatePrimary(Member member);
+	
+	public int updateContentCount(String memberId);
 	//포인트 환급=======================================================
 	public ArrayList<PointRefund> selectPointRefundList(MemberPageInfo pi);
 	
@@ -103,5 +105,8 @@ public interface MemberStore {
 	
 	public ArrayList<Profile> searchProfile(ProfileSearch pfSearch, MemberPageInfo pi);
 
+	   public ArrayList<Rank> rankAdoptC();
+	   
+	   public ArrayList<Rank> starA();
 
 }

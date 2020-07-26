@@ -7,6 +7,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 스터디 글 수정</title>
+
+<style>
+#contentSection {
+    width: 60%;
+    margin: 0 auto;
+}
+
+#title{
+font-size:30px !important;
+}
+a{
+text-decoration:none !important;
+}
+</style>
 </head>
 
 
@@ -15,7 +29,8 @@
 	 <div id="page-wrapper">
 	   <!-- Main -->
         <section id="main">
-	<h1 align="center">스터디 수정페이지</h1>
+        <div id="contentSection">
+	<h1 id="title" align="center">스터디 수정 페이지</h1>
 	
 	<br><br>
 	
@@ -60,9 +75,9 @@
 	
 	<p align="center">
 		<c:url var="home" value="home.tc"/>
-		<a href="${ home }">시작페이지로 이동</a>&nbsp;
+		<a href="${ home }">시작페이지로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;
 		<c:url var="list" value="studyList.tc"/>
-		<a href="${list }">목록 전체보기</a>
+		<a href="${list }">목록으로 이동</a>
 	</p>
 <%-- 	<p align="center">
 		<c:url var="home" value="home.kh"/>
@@ -75,6 +90,7 @@
 		<a href="${back }">이전</a>
 	</p> --%>
 	<br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
 	</section>
 	</div>
 </body>

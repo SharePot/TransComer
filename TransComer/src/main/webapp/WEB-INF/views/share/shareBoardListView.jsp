@@ -24,6 +24,9 @@ html {
 	background-color: white
 }
 
+a{
+text-decoration:none !important;
+}
 #contents {
 	min-height: 400px;
 	width: 80%;
@@ -73,18 +76,20 @@ pagination{
 }
 	</style>
 </head>
+
 <body class="homepage is-preload">
+<c:import url="../common/menuBar.jsp" />
 	<div id="page-wrapper">
 
 		<!-- Header -->
-		<section id="header">
+<!-- 		<section id="header">
 
-			<!-- Logo -->
+			Logo
 			<h1>
 				<a href="index.html">SharePot</a>
 			</h1>
 
-			<!-- Nav -->
+			Nav
 			<nav id="nav">
 				<ul>
 					<li class="current"><a href="#">Home</a></li>
@@ -98,7 +103,7 @@ pagination{
 					<li><a href="#">Q&amp;A</a></li>
 				</ul>
 			</nav>
-		</section>
+		</section> -->
 
 
 		<!-- Main -->
@@ -110,26 +115,6 @@ pagination{
 			</div>
 			<div id="contents">
 				<div class="container">
-					<!--select박스 memberweb보기-->
-					<select id="clang" class="custom-select custom-select-sm-10 col-md-9"
-								style="height: 8%; width: 13%; margin-right:  10px;">
-						<option selected>언어</option>
-						<option>C/C++</option>
-						<option>Java</option>
-						<option>Python</option>
-						<option>기타</option>		
-					</select>
-					<!--select박스 memberweb보기-->
-					<select id="lang" class="custom-select custom-select-sm-10 col-md-9"
-								style="height: 8%; width: 15%; margin-right:  10px;">
-						<option selected>번역</option>
-						<option>English</option>
-						<option>Korean</option>
-						<option>Chinese</option>
-						<option>Japanese</option>
-					
-					</select>
-					
 					<table>
 						<thead>
 							<tr>
@@ -147,10 +132,14 @@ pagination{
 							<tr>
 								<td>${sl.shareNo}</td>
 								<td>${sl.pLanguage}</td>
-								<c:url value="sdetail.tc" var="detail">
+								<c:if test="${ !empty loginUser &&(loginUser.contentCount > 0 || loginUser.status=='PREMIUM') }">
+								  <c:url var="detail" value="sdetail.tc"> 
 								   <c:param name="shareNo" value="${sl.shareNo}" />
+								   <c:param name="memberId" value="${loginUser.memberId }"/>
 								</c:url>
 								<td><a href='${detail}'>${sl.shareTitle}</a></td>
+								</c:if>
+								<c:if test="${ empty loginUser || loginUser.contentCount==0 }">${sl.shareTitle}</c:if>
 								<td>${sl.tLanguage}</td>
 								<td>${sl.memberId}</td>
 								<td>${sl.sWriteDate}</td>
@@ -159,8 +148,9 @@ pagination{
 						</c:forEach>
 						</tbody>
 					</table>
+					
 					<hr />
-					<div class="container d-flex justify-content-center">
+					<div class="container d-flex justify-content-center" >
 				                    <div class="row searchbox">
 				                        <form action="ssearch.tc" method="get">
 				                            <table>
@@ -192,27 +182,11 @@ pagination{
 				                	</div>
 				                	<div class="d-flex justify-content-end">
 				                		<!--<button type="button" class="btn btn-info" onclick="location.href='qWriterView.tc">글쓰기</button>-->
-										<a class="btn btn-primary" href="shareWriterView.tc" style="font-size: 15px; padding: 10px; float: right;" >작성</a>
+										<a class="btn btn-primary btn-lg" href="shareWriterView.tc" style="font-size: 15px; margin-left: 5px; padding: 10px; float: right; height: 50px;"  >작성</a>
 				                	</div>
 				                </div>
-					<!-- <div style="text-align: center;">
-						 <select id="selectBox"
-								class="custom-select custom-select-sm-10 col-md-9"
-								style="height: 8%; width: 16%; margin-right:  10px;">
-								<option selected>검색</option>
-								<option value="1">링크</option>
-								<option value="2">제목</option>
-								<option value="3">내용</option>
-								<option value="4">작성자</option>
-							</select>
-						<input  type="text" placeholder="검색어를 입력해주세요." style="width: 70%; margin-top: 10px;">
-						<input id="search" type="text" placeholder="검색어를 입력해주세요."  style="padding:6px;">
-					<a class="btn btn-primary" href="shareWriterView.tc" style="font-size: 15px; padding: 10px; float: right;" >신청서 작성</a>
-					</div>
-					<br> -->
 					
-					
-					<div class="d-flex justify-content-center">
+					<!-- div class="d-flex justify-content-center">
 						<ul class="pagination">
 							<li class="page-item"><a class="page-link" href="#"
 								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
@@ -226,7 +200,63 @@ pagination{
 									class="sr-only">Next</span>
 							</a></li>
 						</ul>
-					</div>
+					</div> -->
+						<!-- 페이징 처리 -->
+				<ul class="pagination justify-content-center">
+					<!-- [이전] -->
+					<c:if test="${sPi.currentPage <= 1 }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if>
+						
+					<c:if test="${sPi. currentPage > 1 }">
+						<c:url var="before" value="slist.tc">
+							<c:param name="page" value="${sPi.currentPage - 1 }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${before}" class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:if> 
+					<!-- 페이지 --> 
+					<c:forEach var="p" begin="${sPi.startPage }" end="${sPi.endPage }">
+						<c:if test="${p eq currentPage }">
+							<li class="page-item active" aria-current="page">
+								<a class="page-link">${p } <span class="sr-only">(current)</span></a>
+							</li>
+						</c:if>
+							
+						<c:if test="${p ne currentPage }">
+							<c:url var="pagination" value="slist.tc">
+								<c:param name="page" value="${p }" />
+							</c:url>
+							<li class="page-item">
+								<a href="${pagination }" class="page-link">${p }</a>
+							</li>
+						</c:if>
+					</c:forEach>
+						
+					<!-- [다음] -->
+					<c:if test="${sPi.currentPage >= sPi.maxPage }">
+						<li class="page-item">
+							<a class="page-link" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${sPi.currentPage  < sPi.maxPage }">
+						<c:url var="after" value="slist.tc">
+							<c:param name="page" value="${sPi.currentPage + 1 }" />
+						</c:url>
+						<li class="page-item">
+							<a href="${after}" class="page-link" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>&nbsp;
+						</li>
+					</c:if>
+				</ul>
 					</div>
 				</div>
 			
@@ -242,29 +272,7 @@ pagination{
 		<br>
 	</div>
 	
-	<script>
-
-	$(function(){
-		   $("#lang").change( function(e){
-		      var clang = $("#clang").val(); 
-		      var lang = $("#lang").val();
-		      $.ajax({
-		         url: "selectLang.tc",
-		         data: {clang:clang, lang:lang},
-		         type: "post",
-		         complete: function(){ 
-
-			        
-		            }
-		      })
-		   });
-		  });
-
-
-
-
-
-	</script>
+	
 	<script>
 
 	

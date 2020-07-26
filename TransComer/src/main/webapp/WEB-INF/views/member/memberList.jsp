@@ -11,13 +11,37 @@
 		width: 80%;
 		margin: 0 auto;
 	}
+	#title{
+font-size:30px !important;
+}
+
+#searchBtn {
+	height: 62px !important;
+	background: skyblue !important;
+	line-height: 0px !important;
+}
+
+.searchValue {
+	height: 62px !important;
+	width: 400px !important;
+	display: inline !important;
+}
+
+.searchCondition {
+	width: 150px !important ;
+	display: inline;
+}
+a {
+	text-decoration-line: none !important;
+}
+
 </style>
 </head>
 <body>
 <c:import url="../common/menuBar.jsp" />
 	<section id="main">
 		<div id="mainWrapper">
-		 <h1 align="center">전체 회원 목록</h1><br>
+		 <h1 align="center" id="title">전체 회원 목록</h1><br>
 		   
 		   <h3 align="center">
 		      총 회원 수 : ${pi.listCount }
@@ -26,7 +50,7 @@
 		   <table align="center" border="1" cellspacing="0" width="700" id="tb">
 		      <tr>
 		         <th>NO</th>
-		         <th width="300">아이디</th>
+		         <th>아이디</th>
 		         <th>이름</th>
 		         <th>이메일</th>
 		         <th>은행명</th>
@@ -143,28 +167,28 @@
 		         </td>
 		      </tr>
 		   </table>
-		          <div id="searchArea" align="center">
-      <form action="memberSearch.tc" name="searchForm" method="get">
-         <select id="memberSearchCondition" name="memberSearchCondition">
+		         <div style="height: 50px;" id="searchBox">
+      <form id="searchForm"action="memberSearch.tc" name="searchForm" method="get" align="center">
+         <select id="memberSearchCondition" name="memberSearchCondition" class="searchCondition">
             <option id="status" value="status" <c:if test="${search.memberSearchCondition == 'status' }">selected</c:if>>상태</option>
             <option value="memberId" <c:if test="${search.memberSearchCondition == 'memberId' }">selected</c:if>>아이디</option>
             <option value="name" <c:if test="${search.memberSearchCondition == 'name' }">selected</c:if>>이름</option>
-         </select>
-	         <input type="text" list="browsers" id="textSearch" name="memberSearchValue">
+         </select>&nbsp;&nbsp;
+	         <input type="text" list="browsers" id="textSearch" name="memberSearchValue" class="searchValue">
 	         <datalist id="browsers">
 	         <option value="BLACKLIST" <c:if test="${search.memberSearchValue == 'BLACKLIST' }">selected</c:if>>블랙리스트</option>
 	         <option value="PREMIUM" <c:if test="${search.memberSearchValue == 'PREMIUM' }">selected</c:if>>프리미엄</option>
 	         <option value="ADMIN" <c:if test="${search.memberSearchValue == 'ADMIN' }">selected</c:if>>관리자</option>
 	         <option value="DROP" <c:if test="${search.memberSearchValue == 'DROP' }">selected</c:if>>탈퇴회원</option>
 	         <option value="PRIMARY" <c:if test="${search.memberSearchValue == 'PRIMARY' }">selected</c:if>>일반회원</option>
-	       </datalist>
-         <button>검색</button><br>
+	       </datalist>	&nbsp;&nbsp;
+         <button id="searchBtn">검색</button><br>
       </form>
+      </div>
    </div>
+		  <!--  
+		   <a onclick="test()">test</a> -->
 		   
-		   <a onclick="test()">test</a>
-		   
-		</div>
 	</section>
 	
 	

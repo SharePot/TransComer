@@ -6,30 +6,45 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 포인트 환급</title>
+<style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
+	th{
+font-weight:bold;
+}
+	#title{
+font-size:30px !important;
+}
+
+a{
+text-decoration:none !important;
+}
+</style>
 </head>
 <c:import url="../common/menuBar.jsp" />
 <body>
 
 <div id="page-wrapper">
 		<section id="main">
-		<div id="boardWrapper">
- <h2 align="center">포인트 환급</h2>
-   <br><br><br>
+		<div id="contentSection">
+ <h2 align="center" id="title">포인트 환급</h2>
 <hr>
 <table align="center">
 	<tr>
-		<td>아이디</td>
+		<th>아이디</th>
 		<td>${pointRefund.memberId }</td>
 	</tr>
 	<tr>
-		<td>환급 신청 포인트</td>
+		<th>환급 신청 포인트</th>
 		<td>${pointRefund.refundPoint }</td>
 	</tr>
 	<tr>
 	 <c:forTokens var="accountInfo" items="${pointRefund.accountInfo }" delims="," varStatus="status">
 					<c:if test="${status.index eq 0 }">
 							<tr>
-							<td>은행명</td>
+							<th>은행명</th>
 							<td>
 								<input type="hidden" name="bank"  value="${accountInfo }" readonly size="6">
 							${accountInfo }
@@ -38,7 +53,7 @@
 					</c:if>
 					<c:if test="${status.index eq 1 }">
 						<tr>
-							<td>예금주</td>
+							<th>예금주</th>
 							<td><input type="hidden" name="accountOwner" readonly value="${accountInfo }">
 							${accountInfo }
 							</td>
@@ -46,7 +61,7 @@
 					</c:if>
 					<c:if test="${status.index eq 2}">
 						<tr>
-							<td>계좌번호</td>
+							<th>계좌번호</th>
 							<td><input type="hidden" name="account" readonly  value="${accountInfo }">
 							${accountInfo }
 							</td>
@@ -55,7 +70,7 @@
 				</c:forTokens>
 	
 	<tr>
-		<td align="center" colspan="2"><h2>-최종 환급 포인트</h2>(수수료 10% 차감)	<h1>=${pointRefund.refundPoint *0.9 } </h1></td>
+		<th align="center" colspan="2"><center><h2>-최종 환급 포인트</h2>(수수료 10% 차감)	<h1>=${pointRefund.refundPoint *0.9 } </h1></center></th>
 	</tr>
 	<tr>
 		<td align="center" colspan="2">

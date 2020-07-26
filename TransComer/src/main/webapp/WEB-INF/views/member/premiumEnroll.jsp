@@ -7,6 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 프리미엄 가입</title>
 <style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
 	#mainWrapper {
 		width: 80%;
 		margin: 0 auto;
@@ -14,19 +18,30 @@
 	
 	input {
 		-webkit-appearance : active !important;
+		appearance: active !important;
 	}
+	#title{
+font-size:30px !important;
+}
+#detail{
+font-size:15px !important;
+}
+#rule{
+font-size:25px !important;
+font-weight:bold;
+}
 </style>
 </head>
 <body>
 <c:import url="../common/menuBar.jsp" />
 	<section id="main">
 		<div id="mainWrapper">
-		 <h1 align="center">프리미엄 회원 가입</h1><br>
+		  <div id="contentSection">
+		 <h1 align="center" id="title">프리미엄 회원 가입</h1><br>
 		 <hr>
-		 
-		 <center><p style="font-size:1px;">프리미엄 회원으로 가입하시면,  한달 간 자료 공유 게시판 글을 무제한으로 조회 가능 합니다.</p></center>
+		 <center><p id="detail">프리미엄 회원으로 가입하시면,  한달 간 자료 공유 게시판 글을 무제한으로 조회 가능 합니다.</p></center>
 		 <div color="gray" width="500px" height="500px">
-		 <center><h1><b>규정</b></h1></center>
+		 <center><h1 id="rule"><b>규정</b></h1></center>
 		 <table>
 		 <tr><td colspan="2" align="right">확인 및 동의 여부</td></tr>
 		 <tr>
@@ -42,7 +57,7 @@
 		 	<td><input type="checkbox" name="ch"></td>
 		 </tr>
 		 
-		 <tr><td colspan="2" align="center">전체 동의 &nbsp;<input type="checkbox" name="all" id="all"></td></tr>
+		 <tr><td colspan="2" align="center"><b>전체 동의 </b>&nbsp;<input type="checkbox" name="all" id="all"></td></tr>
 		 <tr><td colspan="2" align="center">위 사항을 모두 동의해야 프리미엄 회원 가입이 가능 합니다.</td></tr>
 		 </table>
 		 </div>
@@ -51,6 +66,7 @@
 		 <input type="submit"  onclick="return check()" value="가입" >&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="취소">
 		 </form>
 		 </div>
+		   </div>
 		   </div>
 		   </section>
 		   

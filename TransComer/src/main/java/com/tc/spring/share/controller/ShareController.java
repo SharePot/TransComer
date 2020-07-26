@@ -47,6 +47,7 @@ public class ShareController {
 	@Autowired
 	private MemberService mService;
 	
+	
 	// 공유 글 전체 목록 보기
 	@RequestMapping("slist.tc")
 	public ModelAndView selectShareList(ModelAndView mv, @RequestParam(value="page", required=false)Integer page) {
@@ -90,9 +91,16 @@ public class ShareController {
 	}
 	
 	// 글 상세보기
-	@RequestMapping("sdetail.tc")
-	public ModelAndView shareDetail(ModelAndView mv, int shareNo){
+	@RequestMapping(value="sdetail.tc", method=RequestMethod.GET)
+	public ModelAndView shareDetail(ModelAndView mv, int shareNo,String memberId){
 		int result = shareService.addReadCount(shareNo); // 조회수 증가
+		
+		/*Member member=new Member();
+		member.setMemberId(memberId);
+		int count=mService.updateContentCount(member);//번역공유 열람횟수 차감
+*/		
+		int count=mService.updateContentCount(memberId);//번역공유 열람횟수 차감
+		System.out.println("count : "+count);
 		System.out.println("result :" + result);
 		Share share = shareService.selectShare(shareNo);
 		

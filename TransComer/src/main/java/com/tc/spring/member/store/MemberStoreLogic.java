@@ -127,6 +127,11 @@ public class MemberStoreLogic implements MemberStore {
 	public int memberUpdatePrimary(Member member) {
 		return sqlSession.update("memberMapper.memberUpdatePrimary",member);
 	}
+	
+	@Override
+	public int updateContentCount(String memberId) {
+		return sqlSession.update("memberMapper.updateContentCount",memberId);
+	}
 
 	
 
@@ -262,6 +267,14 @@ public class MemberStoreLogic implements MemberStore {
 		return (ArrayList)sqlSession.selectList("memberMapper.searchProfile", pfSearch, rowBounds);
 	}
 
+	   @Override
+	   public ArrayList<Rank> rankAdoptC() {
+	      return (ArrayList)sqlSession.selectList("memberMapper.rankAdoptC");
+	   }
 
+	   @Override
+	   public ArrayList<Rank> starA() {
+	      return (ArrayList)sqlSession.selectList("memberMapper.starA");
+	   }
 	
 }

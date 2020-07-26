@@ -9,6 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SharePot - 프리미엄 가입</title>
 <style>
+#contentSection {
+    width: 60% ;
+    margin: 0 auto;
+}
 	#mainWrapper {
 		width: 80%;
 		margin: 0 auto;
@@ -16,20 +20,36 @@
 	
 	input {
 		-webkit-appearance : active !important;
+		appearance: active !important;
 	}
+	#title{
+font-size:30px !important;
+}
+.p{
+font-weight:bold;
+}
+a{
+text-decoration:none !important;
+}
+
+.textP{
+width:60% !important;
+text-align:left !important;
+}
 </style>
 </head>
 <body>
 <c:import url="../common/menuBar.jsp" />
 	<section id="main">
 		<div id="mainWrapper">
-<center><h1>포인트결제</h1></center>
+			  <div id="contentSection">
+<center><h1 id="title">포인트결제</h1></center>
 <hr>
 <center>프리미엄 가입 결제 세부 사항</center>
 <br><br>
 <form action="memberUpdatePreminum.tc" method="post">
 <input type="hidden" name="memberId" value="${loginUser.memberId }">
-<table border="1">
+<table class="table table-bordered">
 	<tr>
 		<th>기존 등급</th>
 		<th>변경 등급</th>
@@ -44,15 +64,15 @@
 			<td><%= cal.get(Calendar.YEAR) %>년 <%= cal.get(Calendar.MONTH)+2 %>월 <%= cal.get(Calendar.DATE) %>일</td>
 	</tr>
 </table>
-
+<br><br>
 	<table>
 	<tr>
-		<td>보유 포인트</td>
-		<td><input type="text" value="${loginUser.point}" name="point"  readonly></td>
+		<td class="p" >보유 포인트 : </td>
+		<td class="textP" ><b><input type="hidden" id="havePoint"  value="${loginUser.point}" name="point" readonly>${loginUser.point} Point</b></td>
 	</tr>
 	<tr>
-		<td>결제 예정 포인트</td>
-		<td><input type="text" value="13000" readonly ></td>
+		<td  class="p">결제 예정 포인트 : </td>
+		<td class="textP" >13000 Point</td>
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
@@ -64,13 +84,18 @@
 	<tr>
 		<td colspan="2" align="center"><input type="submit" onclick="return check()" value="결제"> &nbsp;<input type="reset" value="취소"></td>
 	</tr>
+		<tr><th colspan="2" align="center"><center><span id="message" style="color:blue;"></span></center></th></tr>
 	</table>
 	</form>
+	</div>
 	</div>
 	</section>
 	<script>
 		 function check(){
-			  if($("#agree").is(":checked")){
+			 if($("#havePoint").val() < 13000 ){
+					$("#message").html("보유 포인트보다 환급 요청한 포인트가 더 높습니다.");
+					return false;}
+			 else if($("#agree").is(":checked")){
 				  alert("프리미엄 회원으로 정상 가입이 완료 되었습니다.");
 				  return true;
 			  }else{

@@ -15,7 +15,7 @@
     
        <style>
         a {
-            text-decoration: none;
+            text-decoration: none !important;
         }
     </style>
 </head>
@@ -124,7 +124,7 @@
                 <!--row 끝-->
             </div>
             <!--container 끝-->
-          	<input type="text" value="${loginUser.memberId }" id="userId">
+          	<input type="hidden" value="${loginUser.memberId }" id="userId">
 
 		</section>
 		<script>
