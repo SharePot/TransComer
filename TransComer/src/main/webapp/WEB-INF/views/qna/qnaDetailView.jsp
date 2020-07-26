@@ -19,58 +19,23 @@
       	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" ></script>
-        
             
-		<style type="text/css">
-			/* #contentTr{
-				height:450px;
-			}
-			
-			#subject{
-				width:100%;
-			}
-			
-			#content{
-				height:450px;
-				width:100%;
-			}
-			
-			textArea{
-				height:100%;
-				width:100%;
-			}
-			tr {
-				width:150px;
-			} */
-		</style>
+        <style>
+        	a{
+				text-decoration:none !important;
+				}
+				
+				.cPaging{
+				color:black !important;
+				}
+        </style>
+        
 	</head>
 	<c:import url="../common/menuBar.jsp" />
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
 
 			<!-- Header -->
-				<%-- <section id="header">
-
-				    <!-- Logo -->
-				    <h1><a href="index.html">SharePot</a></h1>
-
-				    <!-- Nav -->
-				    <nav id="nav">
-						<ul>
-							<li class="current"><a href="#">Home</a></li>
-							<li><c:url var="sList" value="sReqListView.tc" /> <c:url
-									var="pList" value="plist.tc" /> <c:url var="study"
-									value="studyList.tc" /> <a href="#">번역 의뢰</a>
-								<ul>
-									<li><a href="${sList }">단순의뢰</a></li>
-									<li><a href="${pList }">1:1 의뢰</a></li>
-								</ul></li>
-							<li><a href="#">번역 공유</a></li>
-							<li><a href="${study }">스터디</a></li>
-							<li><a href="qlist.tc">Q&amp;A</a></li>
-						</ul>
-					</nav>
-				</section> --%>
 
 				<!-- Main -->
 				<section id="main">
@@ -105,7 +70,14 @@
 
 				                <br>
 				                <div class="card">
-				                    <img class="card-img-top" src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE" alt="Card image">
+				                	<c:if test="${ empty flist }">
+					                    	<img class="card-img-top" src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE" alt="Card image">
+					                </c:if>
+					                <c:if test="${ !empty flist }">
+					                	<c:forEach items="${flist }" var="f" >
+						                    <img src="${f.filePath }" class="card-img-top" />
+					                    </c:forEach>
+				                    </c:if>
 				                    <div class="card-body">
 				                        <h5>${qna.qnaContent }</h5>
 				                    </div>
@@ -152,19 +124,17 @@
 				    <!-- 댓글 부분 -->
 				    <input type="hidden" id="loginId" value="${loginUser.memberId }">
 				    <input type="hidden" id="writerId" value="${qna.memberId }">
-				    <!-- <div class="container d-flex justify-content-center">
+				    <div class="container d-flex justify-content-center">
 				        <table align="center" border="1" cellspacing="0" id="commentTable" style="width:800px;">
 				            <tr>
-				                <td style="width:150px; padding:0;" >
-				                     공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
-                                        <input type="radio" class="commentYN" name="commentYN" value="N">비공개
+				                <td style="width:180px; padding:0;" >
 				                    <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
 				                    <select id="commentYN" name="commentYN">
 				                        <option value="Y">공개</option>
 				                        <option value="N">비공개</option>
 				                    </select>
 				                </td>
-				                <td style="width:520px;">
+				                <td style="width:490px;">
 				                	<input type="text" id="content" class="form-control" placeholder="댓글 내용을 입력해 주세요">
 				                    <input type="hidden" id="commentCondition" name="commentCondition" value="qna">
 				                    </td>
@@ -173,28 +143,8 @@
 				                </td>
 				            </tr>
 				        </table>
-					</div> -->
-					
-					<div class="container">
-				        <table align="center" border="1" cellspacing="0" id="commentTable" style="margin:10px;">
-				            <tr>
-				                <td>
-				                    <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
-				                    <select id="commentYN" name="commentYN">
-				                        <option value="Y">공개</option>
-				                        <option value="N">비공개</option>
-				                    </select>
-				                </td>
-				                <td>
-				                	<input type="text" id="content" class="form-control" placeholder="댓글 내용을 입력해 주세요">
-				                    <input type="hidden" id="commentCondition" name="commentCondition" value="qna">
-				                    </td>
-				                <td>
-				                    <button type="button" class="btn btn-primary" id="submitQnaComment">등록하기</button>
-				                </td>
-				            </tr>
-				        </table>
 					</div>
+					
 					
 					<div class="container">
 				        <table id="qnaTable" align="center" width="500" border="1" cellspacing="0" heigh="1000">
@@ -233,7 +183,6 @@
 				        </div>
 				    </div>
 				</section>
-
 		</div>
 
 		<!-- Scripts -->
@@ -439,37 +388,37 @@
 	                          $tr2 = $("<tr align='center' height='20'>");
 	                          $td2 = $("<td colspan='6'>");
 	                          var before="< &nbsp;";
-	                          var after=">";
+	                          var after="&nbsp; >";
 	                          
 	                          if(currentPage <= 1) {
 	                        	 $td2.append(before);
 	                          } else if (currentPage > 1) {
-	                        	  $before = $("<a href='javascript:getCommentList(" + (currentPage-1) + ")'><</a> &nbsp;");
+	                        	  $before = $("<a class='cPaging' href='javascript:getCommentList(" + (currentPage-1) + ")'> < </a> &nbsp;");
 	                        	  $td2.append($before);
 	                          }
 	                           
 	                          
-		                        for (var i = startPage; i <= maxPage; i++) {
-		                        	if (i == currentPage) {
-		                        		$link = $("<font color='red' size='4'><b>[" + i + "]</b></font> &nbsp;");
-		                        		$td2.append($link);
-		                        	} else if ( i != currentPage ) {
-		                        		$link = $("<a href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
-		                        		$td2.append($link);
-		                        	}
-		                        }
+	                            for (var i = startPage; i <= maxPage; i++) {
+	                            	if (i == currentPage) {
+	                            		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; &nbsp; ");
+	                            		$td2.append($link);
+	                            	} else if ( i != currentPage ) {
+	                            		$link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
+	                            		$td2.append($link);
+	                            	}
+	                            }
 	                          
 	                              
-		                        if (currentPage >= maxPage) {
-		                        	$td2.append(after);
-		                        } else if (currentPage < maxPage) {
-		                        	$after = $("<a href='javascript:getCommentList(" + (currentPage+1) + ")'>></a>");
-		                        	$td2.append($after);
-		                        }
-								
-								$tr2.append($td2);
-								
-								$tableFoot.append($tr2);
+	                            if (currentPage >= maxPage) {
+	                            	$td2.append(after);
+	                            } else if (currentPage < maxPage) {
+	                            	$after = $("<a class='cPaging'  href='javascript:getCommentList(" + (currentPage+1) + ")'> &nbsp; ></a>");
+	                            	$td2.append($after);
+	                            }
+	        					
+	        					$tr2.append($td2);
+	        					
+	        					$tableFoot.append($tr2);
 	                            
 	                          } else { //데이터가 없을때
 	                          $tr = $("<tr>");

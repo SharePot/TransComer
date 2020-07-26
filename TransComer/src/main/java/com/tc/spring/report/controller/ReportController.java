@@ -52,8 +52,7 @@ public class ReportController {
 			mv.addObject("bPi", bPi);
 			mv.setViewName("admin/adminReportView");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("admin/adminReportView");
 		}
 		return mv;
 	}
@@ -83,8 +82,7 @@ public class ReportController {
 			mv.addObject("bPi", bPi);
 			mv.setViewName("admin/adminReportSearch");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("admin/adminReportSearch");
 		}
 		return mv;
 	}
@@ -113,8 +111,7 @@ public class ReportController {
 			mv.addObject("bPi", bPi);
 			mv.setViewName("admin/adminBlackSearch");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("admin/adminBlackSearch");
 		}
 		return mv;
 	}

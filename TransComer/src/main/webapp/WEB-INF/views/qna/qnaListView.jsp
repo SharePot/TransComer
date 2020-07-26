@@ -6,27 +6,16 @@
 <html lang="ko">
 	<head>
 		<title>QnA 게시판</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<script type="text/javascript" 
-			src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<link rel="stylesheet" href="/resources/css/main.css" type="text/css"/>
-		<link rel="stylesheet"
-         href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
-      		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
-      		crossorigin="anonymous">
-      	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" ></script>
 		<style>
 		    a:link {
 		        text-decoration: none;
 		        /* color:black; */
 		    }
 		    a {
-		        color: black;
-
+		        color: black !important;
+		    }
+		    #notice {
+		    	color:red !important;;
 		    }
 		    ul>li {
 		        font-color: black;
@@ -38,37 +27,13 @@
 		<div id="page-wrapper">
 
 		<!-- Header -->
-		<%-- <section id="header">
-
-			<!-- Logo -->
-			<h1>
-				<a href="index.html">SharePot</a>
-			</h1>
-
-			<!-- Nav -->
-			<nav id="nav">
-				<ul>
-					<li class="current"><a href="#">Home</a></li>
-					<li><c:url var="sList" value="sReqListView.tc" /> <c:url
-							var="pList" value="plist.tc" /> <c:url var="study"
-							value="studyList.tc" /> <a href="#">번역 의뢰</a>
-						<ul>
-							<li><a href="${sList }">단순의뢰</a></li>
-							<li><a href="${pList }">1:1 의뢰</a></li>
-						</ul></li>
-					<li><a href="#">번역 공유</a></li>
-					<li><a href="${study }">스터디</a></li>
-					<li><a href="qlist.tc">Q&amp;A</a></li>
-				</ul>
-			</nav>
-		</section> --%>
 
 		<!-- Main -->
 			<section id="main">
 			    <div class="container">
 			        <div class="row">
 			            <div class="col-12">
-			                <h1 align="center">QnA 게시판</h1>
+			                <h1 align="center" style="font-size:2.5em;">QnA 게시판</h1>
 			                <br> 
 			                <hr>
 			                <div align="right">
@@ -89,28 +54,51 @@
 			                        </thead>
 
 			                        <tbody>
-			                            <c:forEach items="${qlist }" var="q" varStatus="i">
+			                        <c:if test="${qlist ne null }">
+			                        	<c:forEach items="${qlist }" var="q" varStatus="i">
 			                                <tr>
-			                                    <td style="text-align:center;">${q.qnaNo }</td>
-			                                    <td style="text-align:center;">
-			                                        <%-- <c:if test="${ !empty loginUser }"> --%>
+			                                	<c:if test="${q.qnaCategory eq 'NOTICE' }">
+				                                    <td style="color:red; text-align:center;">공지</td>
+				                                    <td style="text-align:center;">
 			                                            <c:url var="qdetail" value="qdetail.tc">
 			                                                <c:param name="qnaNo" value="${q.qnaNo }" />
 			                                                <c:param name="page" value="${qPi.currentPage }" />
-			                                                <c:param name="memberId" value="${loginUser.memberId }" />
 			                                            </c:url>
-			                                            <a href="${qdetail }">${q.qnaTitle }</a>
-			                                        <%-- </c:if>
-			                                        <c:if test="${ empty loginUser }">
-			                                            ${q.qnaTitle }
-			                                        </c:if> --%>
-			                                    </td>
-			                                    <td style="text-align:center;">${q.memberId }</td>
-			                                    <td style="text-align:center;">${q.qnaWriteDate }</td>
-			                                    <td style="text-align:center;">${q.qnaCount }</td>
-			                                    <td style="text-align:center;">${q.commentCount }</td>
+			                                            <a id="notice" href="${qdetail }">${q.qnaTitle }</a>
+				                                    </td>
+				                                    <td style="text-align:center;">${q.memberId }</td>
+				                                    <td style="text-align:center;">${q.qnaWriteDate }</td>
+				                                    <td style="text-align:center;">${q.qnaCount }</td>
+				                                    <td style="text-align:center;">${q.commentCount }</td>
+			                                    </c:if>
 			                                </tr>
 			                            </c:forEach>
+			                        	
+			                        	 <c:forEach items="${qlist }" var="q" varStatus="i">
+			                                <tr>
+				                                <c:if test="${q.qnaCategory eq 'ALL' }">
+				                                    <td style="text-align:center;">${q.qnaNo }</td>
+				                                    <td style="text-align:center;">
+				                                        <c:if test="${ !empty loginUser }">
+				                                            <c:url var="qdetail" value="qdetail.tc">
+				                                                <c:param name="qnaNo" value="${q.qnaNo }" />
+				                                                <c:param name="page" value="${qPi.currentPage }" />
+				                                                <c:param name="memberId" value="${loginUser.memberId }" />
+				                                            </c:url>
+				                                            <a href="${qdetail }">${q.qnaTitle }</a>
+				                                        </c:if>
+				                                        <c:if test="${ empty loginUser }">
+				                                            ${q.qnaTitle }
+				                                        </c:if>
+				                                    </td>
+				                                    <td style="text-align:center;">${q.memberId }</td>
+				                                    <td style="text-align:center;">${q.qnaWriteDate }</td>
+				                                    <td style="text-align:center;">${q.qnaCount }</td>
+				                                    <td style="text-align:center;">${q.commentCount }</td>
+			                                    </c:if>
+			                                </tr>
+			                            </c:forEach>
+			                        </c:if>
 			                        </tbody>
 			                    </table>
 			                </div>

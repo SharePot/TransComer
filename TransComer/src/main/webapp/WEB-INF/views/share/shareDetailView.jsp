@@ -82,7 +82,7 @@
 								</p>
 								<c:forEach var="file" items="${flist }" varStatus="i">
 									<c:if test="${i.index eq 1 }">
-										<span><p style="text-align: right;">압축파일.zip</p></span>
+										<span><a href="filedown.tc?shareNo=${share.shareNo }"><p style="text-align: right;">${file.fileName }</p></a></span>
 									</c:if>
 								</c:forEach>
 								<!--미리보기 이미지-->

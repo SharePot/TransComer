@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,7 +35,7 @@ public class FileController {
 			if(filePath != null) {
 				files.setMemberId(memberId);
 				files.setFileName(uploadFile.getOriginalFilename());
-				files.setFilePath(filePath);
+				files.setFilePath("/resources/" + memberId + "/uploadFiles/" + uploadFile.getOriginalFilename());
 			}
 		}
 		
@@ -95,7 +96,7 @@ public class FileController {
 			if( savePath != null ) {
 				files.setMemberId(memberId);
 				files.setFileName(reloadFile.getOriginalFilename());
-				files.setFilePath(savePath);
+				files.setFilePath("/resources/" + memberId + "/uploadFiles/" + reloadFile.getOriginalFilename());
 			}
 			result = fileService.updateFile(files);
 		}
@@ -133,14 +134,15 @@ public class FileController {
 	}
 	
 	// 파일 다운로드
-	public void fileDownLoad(int studyNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping("filedown.tc")
+	public void fileDownLoad(int shareNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 한글 인코딩 처리
 		request.setCharacterEncoding("utf-8");
 		
 		Files fCategory = new Files();
 		fCategory.setQnaNo(0);
-		fCategory.setShareNo(0);
-		fCategory.setStudyNo(studyNo);
+		fCategory.setShareNo(shareNo);
+		fCategory.setStudyNo(0);
 		fCategory.setpReqNo(0);
 		
 		ArrayList<Files> fileList = selectFileList(fCategory);
@@ -148,7 +150,7 @@ public class FileController {
 		String filePath = fileList.get(1).getFilePath();
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		// 비즈니스 로직
-		File file = new File(filePath);
+		File file = new File(root+ "/../" +filePath);
 		// 페이지를 Byte타입으로 설정하여 다운로드 페이지임을 명시
 		String fileName = new String(file.getName().getBytes(),"ISO-8859-1"); // 파일이름을 바이트(규약에맞는)로 바꿈
 		response.setContentType("application/octet=stream");

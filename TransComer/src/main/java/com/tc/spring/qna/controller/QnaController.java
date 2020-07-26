@@ -61,8 +61,7 @@ public class QnaController {
 			mv.addObject("qPi", qPi);
 			mv.setViewName("qna/qnaListView");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("qna/qnaListView");
 		}
 		return mv;
 	}
@@ -82,8 +81,7 @@ public class QnaController {
 			mv.addObject("qSearch", qnaSearch);
 			mv.setViewName("qna/qnaSearchListView");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("qna/qnaSearchListView");
 		}
 		return mv;
 	}
@@ -102,8 +100,7 @@ public class QnaController {
 			mv.addObject("qPi", qPi);
 			mv.setViewName("admin/adminQnaList");
 		} else {
-			mv.addObject("msg", "관리자 문의글 조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("admin/adminQnaList");
 		}
 		return mv;
 	}
@@ -132,6 +129,7 @@ public class QnaController {
 		if ( qna != null ) {
 			// 메소드 체이닝 방식
 			mv.addObject("qna", qna)
+			.addObject("flist", fileList)
 			.setViewName("qna/qnaDetailView");
 		} else {
 			mv.addObject("msg", "게시글 상세조회 실패!").setViewName("common/errorPage");
