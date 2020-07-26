@@ -4,14 +4,9 @@ public class SimpleSearch {
 	
 	private String searchCondition;
 	private String searchValue;
+	private String simpleWriter;
 	
 	public SimpleSearch() {}
-
-	public SimpleSearch(String searchCondition, String searchValue) {
-		super();
-		this.searchCondition = searchCondition;
-		this.searchValue = searchValue;
-	}
 
 	public String getSearchCondition() {
 		return searchCondition;
@@ -29,9 +24,20 @@ public class SimpleSearch {
 		this.searchValue = searchValue;
 	}
 
+	public String getSimpleWriter() {
+		return simpleWriter;
+	}
+
+	public void setSimpleWriter(String simpleWriter) {
+		this.simpleWriter = simpleWriter;
+	}
+
 	@Override
 	public String toString() {
-		return "SimpleSearch [searchCondition=" + searchCondition + ", searchValue=" + searchValue + "]";
+		return "SimpleSearch [searchCondition=" + searchCondition + ", searchValue=" + searchValue + ", simpleWriter="
+				+ simpleWriter + "]";
 	}
+
+	
 	
 }

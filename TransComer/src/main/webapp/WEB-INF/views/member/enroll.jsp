@@ -76,8 +76,7 @@
 						<tr> <!-- 버튼 -->
 							<td colspan="3" id="btn">
 								<button type="reset">돌아가기</button>
-								<button name="submitBtn" type="submit">가입하기</button>
-								<a onclick="enroll();">test</a>
+								<button name="submitBtn" type="submit" onclick="enroll();">가입하기</button>
 							</td>
 						</tr>
 					</table>
@@ -138,7 +137,7 @@
 
 		var memberId = $("#inputId").val();
 		$.ajax({
-			url : "IdCheck.tc",
+			url : "enrollIdCheck.tc",
 			data : {memberId : memberId},
 			success : function(result) {
 				if (result == "true" && memberId != 0) {

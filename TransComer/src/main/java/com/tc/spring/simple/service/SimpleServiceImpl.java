@@ -127,4 +127,16 @@ public class SimpleServiceImpl implements SimpleService {
 		return simpleStore.memberAdoptCount(simpleReplyWriter);
 	}
 
+	@Override
+	public ArrayList<SimpleRequest> mySReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi) {
+		// TODO Auto-generated method stub
+		return simpleStore.mySReqSearchList(simpleSearch, spi);
+	}
+
+	@Override
+	public int getMySearchsReListCount(SimpleSearch simpleSearch) {
+		// TODO Auto-generated method stub
+		return simpleStore.getMySearchsReListCount(simpleSearch);
+	}
+
 }

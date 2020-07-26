@@ -133,4 +133,17 @@ public class SimpleStoreLogic implements SimpleStore {
 		return sqlSession.update("simpleMapper.memberAdoptCount", simpleReplyWriter);
 	}
 
+	@Override
+	public ArrayList<SimpleRequest> mySReqSearchList(SimpleSearch simpleSearch, SimplePageInfo spi) {
+		int offset = (spi.getSpCurrentPage() - 1)* spi.getSpBoardLimit();
+		RowBounds rowbounds = new RowBounds(offset, spi.getSpBoardLimit());
+		return (ArrayList)sqlSession.selectList("simpleMapper.mySReqSearchList", simpleSearch, rowbounds);
+	}
+
+	@Override
+	public int getMySearchsReListCount(SimpleSearch simpleSearch) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("simpleMapper.getMySearchsReListCount", simpleSearch);
+	}
+
 }
