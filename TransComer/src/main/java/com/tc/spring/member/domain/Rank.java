@@ -9,6 +9,7 @@ public class Rank {
 	private Profile profile;
 	private Personal personal;
 	private Review review;
+	private double rageAvg;
 	
 	public Rank() {}
 
@@ -44,10 +45,18 @@ public class Rank {
 		this.review = review;
 	}
 
+	public double getRageAvg() {
+		return rageAvg;
+	}
+
+	public void setRageAvg(double rageAvg) {
+		this.rageAvg = rageAvg;
+	}
+
 	@Override
 	public String toString() {
 		return "Rank [member=" + member + ", profile=" + profile + ", personal=" + personal + ", review=" + review
-				+ "]";
+				+ ", rageAvg=" + rageAvg + "]";
 	}
 
 }

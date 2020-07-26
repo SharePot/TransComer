@@ -39,4 +39,17 @@ public interface ReviewService {
 	 */
 	public double selectStarRageAvg(int personalNo);
 
+	/**
+	 * 해당 유저가 별점 리뷰를 받았는지 확인
+	 * @param memberId
+	 * @return
+	 */
+	public int checkHasReview(String memberId);
+	
+	/**
+	 * 해당 유저의 평균 평점을 가져온다
+	 * @param memberId
+	 * @return
+	 */
+	public double selectMemberStarRageAvg(String memberId);
 }
