@@ -5,21 +5,6 @@
 <!DOCTYPE HTML>
 <html lang="ko">
 	<head>
-		<title>관리자 문의글 목록</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<script type="text/javascript" 
-			src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<link rel="stylesheet" href="/resources/css/main.css" type="text/css"/>
-		<link rel="stylesheet"
-         href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
-      		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
-      		crossorigin="anonymous">
-      	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" ></script>
-		
 		<style>
 		    a:link {
 		        text-decoration: none;
@@ -37,32 +22,11 @@
 		    }
 		</style>
 	</head>
+	<c:import url="../common/menuBar.jsp" />
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
 
 			<!-- Header -->
-				<section id="header">
-
-					<!-- Logo -->
-						<h1><a href="index.html">SharePot</a></h1>
-
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li class="current"><a href="#">Home</a></li>
-								<li>
-                                    <a href="#">번역 의뢰</a>
-                                    <ul>
-										<li><a href="#">단순 의뢰</a></li>
-										<li><a href="#">1:1 의뢰</a></li>
-                                    </ul>
-                                </li>
-								<li><a href="#">번역 공유</a></li>
-								<li><a href="#">스터디</a></li>
-                                <li><a href="#">Q&amp;A</a></li>
-							</ul>
-						</nav>
-            </section>
 
 			<!-- Main -->
 				<section id="main">
