@@ -323,6 +323,8 @@
     	
     	// 평균 별점을 화면에 표현하는 함수
     	function showStarRageView(starInt, starUnderInt){
+    		// 별점 뿌리는 영역을 reset/clean 해준다
+    		$("#starRateColor").html('');
     		console.log("정수색칠값 : " + starInt);
     		console.log("소수색칠값 : " + starUnderInt);
     		// 점수 텍스트 표시하기
@@ -415,6 +417,7 @@
         		 success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
                      if(data == "success") { //결과값이 success이면
                     	 getReviewList(); //목록을 가져오도록
+                    	 loadStarRageAvg();	// 별점 값 가져오기
                     	 $("#content").val(""); 
                     	}
         		 	}
