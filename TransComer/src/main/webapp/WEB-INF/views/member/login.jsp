@@ -375,7 +375,7 @@ a:hover {text-decoration: underline; color: black;}
                 <!-- Login Form -->
                 <form data-brackets-id='2678' action="login.tc" method="post" id="loginForm">
 	                <br data-brackets-id='2679'><br data-brackets-id='2680'>
-	                  <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="memberId" placeholder="이메일을 입력해주세요">
+	                  <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="memberId" placeholder="아이디를 입력해주세요">
 	                  <br data-brackets-id='2682'><br data-brackets-id='2683'>
 	                  <input data-brackets-id='2684' type="password" id="password" class="fadeIn third" name="memberPw" placeholder="비밀번호를 입력해주세요">
 	                 <br data-brackets-id='2685'><br data-brackets-id='2686'><a data-brackets-id='2687' style="color: red"><label data-brackets-id='2688' id="idChcekArea"></label></a><!-- 중복체크 -->
@@ -386,7 +386,7 @@ a:hover {text-decoration: underline; color: black;}
                 </form>
                 <ul data-brackets-id='2691'>
                     <li data-brackets-id='2692' id="findId" data-tabtar="lgm-2" class="current">
-                        <a data-brackets-id='2693' id="findIds" class="fadeIn fourth" href="#">아이디 찾기</a>
+                        <a data-brackets-id='2693' id="findIds" class="fadeIn fourth" href="findIdPg.tc">아이디 찾기</a>
                     </li>
                     
                     <!--class="fadeIn fourth"-->
@@ -395,7 +395,7 @@ a:hover {text-decoration: underline; color: black;}
                     </li>
 
                      <li data-brackets-id='2696' id="findPw" data-tabtar="lgm-2" class="fadeIn fourth">
-                        <a data-brackets-id='2697' id="findPws" href="#">비밀번호 찾기</a>
+                        <a data-brackets-id='2697' id="findPws" href="findPwPg.tc">비밀번호 찾기</a>
                     </li>
 
                     <li data-brackets-id='2698' id="|" data-tabtar="lgm-2" class="fadeIn fourth">
@@ -403,7 +403,7 @@ a:hover {text-decoration: underline; color: black;}
                     </li>
 
                      <li data-brackets-id='2700' id="enroll" data-tabtar="lgm-2" class="fadeIn fourth">
-                        <a data-brackets-id='2701' id="enrolls" href="#">회원가입</a>
+                        <a data-brackets-id='2701' id="enrolls" href="erollView.tc">회원가입</a>
                     </li>
                 </ul>
                 <br data-brackets-id='2702'><br data-brackets-id='2703'>

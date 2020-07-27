@@ -34,6 +34,14 @@
 						<a href="${insert }">프로필 등록하기</a>
 					</li>
 				</c:if>
+				
+				<!-- 추가 -->
+				<c:if test="${loginUser.profileStatus eq 'N' }">
+					<li>
+						<img src="/resources/css/images/login.png" class="itemImg">
+						<a href="InfoSearchMy.tc">회원정보 수정</a>
+					</li>
+				</c:if>
 					
 				<c:if test="${loginUser.profileStatus ne 'N' }">
 					<li>

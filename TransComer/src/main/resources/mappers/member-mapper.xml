@@ -43,6 +43,10 @@
 		WHERE MEMBER_ID = #{memberId }
 	</update>
 	
+	<!-- 탈퇴 -->
+   <update id="deleteMember" parameterType="Member">
+      UPDATE MEMBER SET MEMBER_STATUS = 'DROP' WHERE MEMBER_ID = #{memberId}
+   </update>
    
    <!-- 회원 검색별 전체 인원수  -->
    <select id="getMemberSearchListCount" parameterType="MemberSearch" resultType="_int">
@@ -375,9 +379,13 @@
    <select id="rankAdoptC" resultMap="rankResultSet">
       SELECT * FROM PROFILE P LEFT OUTER JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID ORDER BY M.ADOPT_COUNT DESC
    </select>
-   
+<!-- 0726 현꾸 수정 -->
+   <!-- 평균 별점 랭킹 /별점 높은 순서대로 회원 리스트(메인) -->
    <select id="starA" resultMap="rankResultSet">
-      select rev_target_member_id, avg(star_rage) from review group by rev_target_member_id order by avg(star_rage) 
+      select rev_target_member_id, avg(star_rage) 
+      from review 
+      group by rev_target_member_id 
+      order by avg(star_rage) desc 
    </select>
    
    

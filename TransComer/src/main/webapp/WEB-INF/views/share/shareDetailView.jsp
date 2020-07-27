@@ -73,7 +73,7 @@
 								<span class="float-right"><span id="Plang">${share.pLanguage}</span>
 								</span>
 								<p style="font-size: 25px; font-weight: 900;" class="">
-									<span id="userTitle">${share.shareTitle }</span>
+									<span id="userTitle" align="center">${share.shareTitle }</span>
 								</p>
 								<hr>
 								<span class="float-right">작성일 : <span id="rRegDate">${share.sWriteDate }</span></span>
@@ -104,24 +104,28 @@
 								<br>
 								<!--번역 내용 글-->
 								<p class="h4 font-weight-bold text-center">번역 자료 내용</p>
-								<textarea
+								<textarea readonly
 									style="resize: none; padding: 25px; margin: 0 10%; width: 80%; height: 300px; border-color: gainsboro;">${share.shareContent}</textarea>
-								<div class="d-flex justify-content-center">
+<%-- 								<div class="d-flex justify-content-center">
+									<c:if test="${loginUser.memberId eq share.memberId  }">
 									<button class="btn-warning">삭제요청</button>
+									</c:if>
+								
 								</div>
-								<br> <br>
+ --%>								<br> <br>
 							</div>
 							<!--승인, 반려 버튼 영역-->
 							<div class="d-flex justify-content-center">
 								<hr>
 				
 							</div>
+							  <hr>
 		<!-- 댓글 등록  -->
 		 <input type="hidden" id="loginId" value="${loginUser.memberId }">
 		 <input type="hidden" id="writerId" value="${share.memberId }">
    <table align="center" width="50%" border="1" cellspacing="0" id="commentTable">
       <tr>
-      <td>
+      <td><br><br>
       	<!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
           <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
           <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
@@ -130,15 +134,14 @@
             <option value="N" >비공개</option>
           </select>
           </td>
-         <td><textarea cols="70" rows="3" id="content"></textarea>
+        <td><br><textarea cols="50" rows="5" id="content"></textarea>
         <input type="hidden" id="commentCondition" name="commentCondition" value="share"></td>
          
-         <td>
-            <button id="submit">등록하기</button>
+         <td><br><br>
+            <button class='btn btn-info btn-lg' id="submit">댓글 등록</button>
          </td>
       </tr>
    </table>
-   
    
 
    <!-- 댓글 목록  -->
@@ -149,12 +152,12 @@
             <input type="hidden" id="commentCondition" name="commentCondition" value="share">
          </tr>
          <tr>
-         <th>댓글 번호</th>
-         <th>작성자</th>
-         <th width="40%">내용</th>
-         <th>작성 날짜</th>
-         <th>수정</th>
-         <th>삭제</th>
+   		<th width="7%">NO</th>
+         <th width="7%">작성자</th>
+         <th width="30%">내용</th>
+         <th width="15%">작성 날짜</th>
+         <th width="17%">수정</th>
+         <th width="12%">삭제</th>
          </tr>
       </thead>
       <tbody>
@@ -261,7 +264,7 @@
      	 		 $(obj).parents("tr").children().eq(5).show();
      	 		 $(obj).parents("tr").children().eq(8).show();
      	 		  $(obj).parents("tr").children().eq(2).hide();
-     	 		  $(obj).hide();
+     	 		  $(obj).parent().hide();
      	 		 $(obj).parents("tr").children().eq(7).hide();
      	 	  }
     	 	  
@@ -353,10 +356,10 @@
                      $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
                      $loginId=$("#loginId").val();
                      $writerId=$("writerId").val();
-                 	 $modifyButton=$("<td>").html("<button class='button' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
-                 	 $modifyConformButton=$("<td style='display:none;'>").html("<button class='button' id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
-                 	 $deleteButton=$("<td>").html("<button class='button' id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
-                 	 $cancelButton=$("<td style='display:none;'>").html("<button class='button' id='cancelComment' onclick='getCommentList()'>취소</button>");
+                 	 $modifyButton=$("<td>").html("<button class='btn btn-secondary' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
+                 	 $modifyConformButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary' id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
+                 	 $deleteButton=$("<td>").html("<button class='btn btn-secondary' id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
+                 	 $cancelButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary' id='cancelComment' onclick='getCommentList()'>취소</button>");
                  	
                  	 
                  	 if($loginId==data[i].memberId || $loginId== $writerId){
@@ -386,22 +389,22 @@
                   $tr2 = $("<tr align='center' height='20'>");
                   $td2 = $("<td colspan='6'>");
                   var before="< &nbsp;";
-                  var after=">";
+                  var after="&nbsp; >";
                   
                   if(currentPage <= 1) {
                 	 $td2.append(before);
                   } else if (currentPage > 1) {
-                	  $before = $("<a href='javascript:getCommentList(" + (currentPage-1) + ")'><</a> &nbsp;");
+                	  $before = $("<a class='cPaging' href='javascript:getCommentList(" + (currentPage-1) + ")'> < </a> &nbsp;");
                 	  $td2.append($before);
                   }
                    
                   
                     for (var i = startPage; i <= maxPage; i++) {
                     	if (i == currentPage) {
-                    		$link = $("<font color='red' size='4'><b>[" + i + "]</b></font> &nbsp;");
+                    		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; ");
                     		$td2.append($link);
                     	} else if ( i != currentPage ) {
-                    		$link = $("<a href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
+                    		$link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
                     		$td2.append($link);
                     	}
                     }
@@ -410,7 +413,7 @@
                     if (currentPage >= maxPage) {
                     	$td2.append(after);
                     } else if (currentPage < maxPage) {
-                    	$after = $("<a href='javascript:getCommentList(" + (currentPage+1) + ")'>></a>");
+                    	$after = $("<a class='cPaging'  href='javascript:getCommentList(" + (currentPage+1) + ")'> &nbsp; ></a>");
                     	$td2.append($after);
                     }
 					

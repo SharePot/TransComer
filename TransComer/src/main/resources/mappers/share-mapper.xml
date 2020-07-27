@@ -13,13 +13,14 @@
 		<result property="memberId" column="MEMBER_ID" />
 	</resultMap>
 
-	<!-- 목록조회 쿼리 -->
-	<select id="selectList" parameterType="Share" resultMap="ShareResultSet">
+<!-- 목록조회 쿼리 (수정 완)-->
+	<select id="selectList" resultMap="ShareResultSet">
 		SELECT * 
 		FROM MATERIAL_SHARE
 		WHERE SHARE_YN = 'N'
 		ORDER BY SHARE_NO DESC
 	</select>	
+	
 	
 	<!-- 게시글 상세조회 -->
 	<select id="selectShare" resultMap="ShareResultSet">

@@ -161,9 +161,11 @@ public class MemberController {
 
 		int result = memberService.updatePwd(set);
 
-		return ""; // 페이지 입력
+		return "redirect:home.tc"; // 페이지 입력(추가)
 	}
 
+	
+	
 	// 비밀번호 찾기
 	@PostMapping(value = "findPwd.tc")
 	public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -199,6 +201,12 @@ public class MemberController {
 
 	}
 
+	//비밀번호 찾기 화면(추가)
+	@RequestMapping("findPwPg.tc")
+	public String findPwPg() {
+		return "member/findPw";
+	}
+	
 	// 아이디 찾기
 	@RequestMapping(value = "findID.tc", method = RequestMethod.GET)
 	public void findId(String memberEmail, HttpServletResponse res) throws JsonIOException, IOException {
@@ -218,6 +226,13 @@ public class MemberController {
 		gson.toJson(map, res.getWriter());
 
 	}
+	
+	//아이디 찾기 화면(추가)
+		@RequestMapping("findIdPg.tc")
+		public String findIdPg() {
+			return "member/findId";
+		}
+		
 
 	// 회원가입 페이지
 	@RequestMapping("erollView.tc")
@@ -226,7 +241,7 @@ public class MemberController {
 	}
 
 
-	// 회원가입
+	// 회원가입(계좌 정보 null값으로 넣어주기 추가-알람mapper에서 오류)
 		@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
 		public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
 				String bankName, String accountNumber, String accountName) {
@@ -238,7 +253,13 @@ public class MemberController {
 			alarm.setAlarmContent("SharePot 회원가입을 축하드립니다."); // 수정
 			alarm.setMemberId(member.getMemberId()); // 수정
 			
+			
 			int adoptAlarm = alarmService.insertAlarm(alarm); // 수정
+			
+			if(member.getAccount() == null) {
+				member.setAccount("계좌정보 없음,0,0");
+			}
+			
 			int result = memberService.insertMember(member);
 			System.out.println("result 값은 ? : " + result);
 			if (result > 0 && adoptAlarm > 0 ) { // 수정
@@ -252,6 +273,12 @@ public class MemberController {
 			return mv;
 		}
 
+		//회원정보 수정(추가)
+		@RequestMapping("InfoSearchMy.tc")
+		public String myInfos() {
+			System.out.println("ddd");
+			return "member/updateMember";
+		}
 
 	// 회원정보 수정
 	@RequestMapping(value = "mupdate.tc", method = RequestMethod.POST)
@@ -329,7 +356,13 @@ public class MemberController {
 		model.addAttribute("loginUser", loginUser);
 		String referer = (String)request.getHeader("REFERER");
 
-		if (result > 0 && insertPointChange>0) {
+		
+		Alarm alarm = new Alarm();
+		alarm.setMemberId(userId);
+		alarm.setAlarmContent(amounts + "포인트가 결제되었습니다.");
+		int payAlarm = alarmService.insertAlarm(alarm);
+
+		if (result > 0 && insertPointChange>0 && payAlarm > 0) {
 			return "redirect:"+referer;
 		} else { // 실패 했을때
 			return "common/errorPage";
@@ -350,32 +383,40 @@ public class MemberController {
 			return "member/premiumPointPayment";
 		}
 		
-	//프리미엄 가입 메소드
-	@RequestMapping(value = "memberUpdatePreminum.tc", method = RequestMethod.POST)
-	public String memberUpdatePreminum(Member member, Model model) {
-		member.setStatus("PREMIUM");
-		
-		PointChange pointChange= new PointChange();
-		pointChange.setPointContent("프리미엄 가입");
-		pointChange.setPointAmount(13000);
-		pointChange.setPointStatus("LESS");
-		pointChange.setMemberId(member.getMemberId());
-		
-		Member member2 = memberService.selectMemberOne(member.getMemberId());
-		member2.setPoint(member2.getPoint()-13000);
-		
-		int insertPointChange=memberService.insertPointChange(pointChange);
-		int updateMemberPhoint=memberService.updateMemberPoint(member2);
-		int result = memberService.memberUpdatePreminum(member);
-		
-		if (result > 0 && insertPointChange>0&& updateMemberPhoint>0) {
-			/*int resultPremium = memberService.memberInsertPremium(member);*/
-			return "member/myPage";
-		} else {
-			model.addAttribute("msg", "프리미엄 가입 실패");
-			return "common/errorPage";
-		}
-	}
+		   //프리미엄 가입 메소드
+		   @RequestMapping(value = "memberUpdatePreminum.tc", method = RequestMethod.POST)
+		   public String memberUpdatePreminum(Member member, Model model) {
+		      member.setStatus("PREMIUM");
+		      
+		      PointChange pointChange= new PointChange();
+		      pointChange.setPointContent("프리미엄 가입");
+		      pointChange.setPointAmount(13000);
+		      pointChange.setPointStatus("LESS");
+		      pointChange.setMemberId(member.getMemberId());
+		      
+		      Member member2 = memberService.selectMemberOne(member.getMemberId());
+		      member2.setPoint(member2.getPoint()-13000);
+		      
+		      int insertPointChange=memberService.insertPointChange(pointChange);
+		      int updateMemberPhoint=memberService.updateMemberPoint(member2);
+		      int result = memberService.memberUpdatePreminum(member);
+		      
+		      Alarm alarm = new Alarm();
+				alarm.setMemberId(member.getMemberId());
+				alarm.setAlarmContent("회원 등급이 프리미엄 회원으로 변경되었습니다.");
+				int preminumAlarm = alarmService.insertAlarm(alarm);
+		   
+		      
+		      
+		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && preminumAlarm > 0){
+		         model.addAttribute("loginUser", member2);
+		         /*int resultPremium = memberService.memberInsertPremium(member);*/
+		         return "member/myPage";
+		      } else {
+		         model.addAttribute("msg", "프리미엄 가입 실패");
+		         return "common/errorPage";
+		      }
+		   }
 	//프리미엄 해지 메소드
 	@Scheduled(cron = "0 0 0 * * *")
     public String memberUpdatePrimary() {
@@ -422,48 +463,48 @@ public class MemberController {
 	
 	
 	// 1:1 의뢰 승인 및 포인트 업데이트 
-	// 1:1 의뢰 포인트 업데이트
-	   @RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
-	   public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
-	      System.out.println("member"+personalReqRep);
-	      PointChange pointChange= new PointChange();
-	      pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
-	      pointChange.setPointAmount(personalReqRep.getpReqPrice());
-	      pointChange.setPointStatus("LESS");
-	      pointChange.setMemberId(personalReqRep.getMemberId());
-	      
-	      Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
-	      member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
-	      
-	      Personal personal = pesonalService.selectOne(personalReqRep.getPersonalNo());
-	      
-	      Alarm alarm = new Alarm(); // 0726-2 수정
-	      alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
-	      alarm.setAlarmContent("1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
-	      alarm.setBoardTitle(personal.getPersonalTitle()); // 0726-2 수정
-	      alarm.setBoardAddress("pDetail.tc?personalNo=" + personalReqRep.getPersonalNo() + "&memberId=" + personal.getMemberId() ); // 0726-2 수정
-	      int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
-	      
-	      Alarm bwAlarm = new Alarm(); // 0726-2 수정
-	      bwAlarm.setMemberId(personal.getMemberId()); // 0726-2 수정
-	      bwAlarm.setAlarmContent("1:1 의뢰가 들어왔습니다. 승인여부를 선택해주세요!"); // 0726-2 수정
-	      bwAlarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
-	      bwAlarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
-	      int bwAlarmA = alarmService.insertAlarm(bwAlarm); // 0726-2 수정
-	      
-	      personalReqRep.setpReqAccept("C");
-	      int insertPointChange=memberService.insertPointChange(pointChange);
-	      int updateMemberPhoint=memberService.updateMemberPoint(member);
-	      int result = pesonalService.updateReqRepAccept(personalReqRep);
-	      
-	      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && personalAlarm>0 && bwAlarmA > 0) { // 0726-2 수정
-	         return "member/myPage";
-	      } else {
-	         model.addAttribute("msg", "프리미엄 가입 실패");
-	         return "common/errorPage";
-	      }
-	   }
-	
+	// 1:1 의뢰 승인 및 포인트 업데이트 
+		// 1:1 의뢰 포인트 업데이트
+		   @RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
+		   public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
+		      System.out.println("member"+personalReqRep);
+		      PointChange pointChange= new PointChange();
+		      pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
+		      pointChange.setPointAmount(personalReqRep.getpReqPrice());
+		      pointChange.setPointStatus("LESS");
+		      pointChange.setMemberId(personalReqRep.getMemberId());
+		      
+		      Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
+		      member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
+		      
+		      Personal personal = pesonalService.selectOne(personalReqRep.getPersonalNo());
+		      
+		      Alarm alarm = new Alarm(); // 0726-2 수정
+		      alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+		      alarm.setAlarmContent(" 게시물의 1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
+		      alarm.setBoardTitle(personal.getPersonalTitle()); // 0726-2 수정
+		      alarm.setBoardAddress("pDetail.tc?personalNo=" + personalReqRep.getPersonalNo() + "&memberId=" + personal.getMemberId() ); // 0726-2 수정
+		      int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+		      
+		      Alarm bwAlarm = new Alarm(); // 0726-2 수정
+		      bwAlarm.setMemberId(personal.getMemberId()); // 0726-2 수정
+		      bwAlarm.setAlarmContent(" 게시물의 1:1 의뢰가 들어왔습니다. 승인여부를 선택해주세요!"); // 0726-2 수정
+		      bwAlarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
+		      bwAlarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
+		      int bwAlarmA = alarmService.insertAlarm(bwAlarm); // 0726-2 수정
+		      
+		      personalReqRep.setpReqAccept("C");
+		      int insertPointChange=memberService.insertPointChange(pointChange);
+		      int updateMemberPhoint=memberService.updateMemberPoint(member);
+		      int result = pesonalService.updateReqRepAccept(personalReqRep);
+		      
+		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && personalAlarm>0 && bwAlarmA > 0) { // 0726-2 수정
+		         return "member/myPage";
+		      } else {
+		         model.addAttribute("msg", "프리미엄 가입 실패");
+		         return "common/errorPage";
+		      }
+		   }
 	
 
 	

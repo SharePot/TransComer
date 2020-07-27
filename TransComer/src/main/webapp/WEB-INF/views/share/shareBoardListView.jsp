@@ -119,14 +119,11 @@ pagination{
 							<tr>
 								<td>${sl.shareNo}</td>
 								<td>${sl.pLanguage}</td>
-								<c:if test="${ !empty loginUser &&(loginUser.contentCount > 0 || loginUser.status=='PREMIUM') }">
-								  <c:url var="detail" value="sdetail.tc"> 
+								 <c:url var="detail" value="sdetail.tc"> 
 								   <c:param name="shareNo" value="${sl.shareNo}" />
 								   <c:param name="memberId" value="${loginUser.memberId }"/>
 								</c:url>
 								<td><a href='${detail}'>${sl.shareTitle}</a></td>
-								</c:if>
-								<c:if test="${ empty loginUser || loginUser.contentCount==0 }">${sl.shareTitle}</c:if>
 								<td>${sl.tLanguage}</td>
 								<td>${sl.memberId}</td>
 								<td>${sl.sWriteDate}</td>
