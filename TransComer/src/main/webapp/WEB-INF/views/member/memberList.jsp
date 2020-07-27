@@ -71,12 +71,12 @@ a {
 			        </td>
 			        <td >${member.memberName }</td>
 			        <td >${member.email }</td>
-			        <c:if test="${member.account eq null }">
+			     	   <c:if test="${member.account eq ',,' || member.account eq null}">
 				        <td></td>
 				        <td></td>
 				        <td></td>
 			        </c:if>
-			        <c:if test="${member.account ne null }">
+			        <c:if test="${member.account ne ',,' }">
 			        	<c:forTokens var="accountInfo" items="${member.account }" delims="," varStatus="status">
 							<c:if test="${status.index eq 0 }">
 								<td>${accountInfo }
@@ -90,6 +90,7 @@ a {
 								<td>${accountInfo }
 								<input type="hidden" name="account" value="${accountInfo }"></td>
 							</c:if>
+						
 						</c:forTokens>
 					</c:if>
 			        <td >
