@@ -54,7 +54,7 @@
 					<input type="hidden" id="simpleAStatus" value="${sReq.simpleAStatus }">
 					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
 					<input type="hidden" id="simpleTitle" value="${sReq.simpleTitle }">
-					<input type="hidden" id="adoptCount" value="${loginUser.adoptCount }">
+					<input type="hidden" id="adoptCount">
 					<c:if test="${!empty sessionScope.loginUser }">
 	                    <table id="replyTb">
 			            	<tr>
@@ -112,6 +112,23 @@
   	  });
 
     });
+	
+	// 채택된 답변수 가져오기
+	function getAdoptCount(memberId) {
+		var memId = memberId;
+		var count = "";
+		
+		$.ajax({
+			url : "sCount.tc",
+			async: false,
+			data:{memberId : memId},
+			success : function(data) {
+				count = data;
+			}
+		})
+		return count;
+		
+	}
 
  		// 답변 조회
 		function getSimpleResList(cPage) {
@@ -176,7 +193,7 @@
 													$trTwo = $("<tr>");
 														$adoptTd = $("<td id='adopt'>");
 															$adoptCountOne = $("<p class='adoptCount'>").text("책택된 답변수 : ");
-															$adoptCountTwo = $("<p class='adoptCount'>").text($adoptCount);
+															$adoptCountTwo = $("<p class='adoptCount'>").text(getAdoptCount(data[i].simpleReplyWriter));
 														$etcTd = $("<td id='etc'>");
 															$replyDate = $("<p id='replyDate'>").text(data[i].simpleReplyDate);
 															$reportBtn = $("<a href='#' id='reportBtn' onclick='reportBtn(this)'>").text(" 신고");

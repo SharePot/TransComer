@@ -101,6 +101,12 @@ public class SimpleStoreLogic implements SimpleStore {
 	public int simpleResInsert(SimpleResponse simpleRes) {
 		return sqlSession.insert("simpleMapper.insertReply", simpleRes);
 	}
+	
+	// 답변채택수 가져오기
+	@Override
+	public int selectAdoptionCount(String memberId) {
+		return sqlSession.selectOne("simpleMapper.selectAdoptionCount", memberId);
+	}
 
 	// 단순의뢰 답변 수정
 	@Override
@@ -144,5 +150,7 @@ public class SimpleStoreLogic implements SimpleStore {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("simpleMapper.getMySearchsReListCount", simpleSearch);
 	}
+
+	
 
 }

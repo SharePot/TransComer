@@ -65,7 +65,7 @@
 							<p class="h4 font-weight-bold text-center">미리 보기 이미지</p>
 							<div class="text-center">
 								<img
-									src="https://file3.instiz.net/data/cached_img/upload/2019/09/10/20/e73c2203e6fe3f8165e6ce1477738872.jpg"
+									src="${flist[0].filePath }"
 									width="80%" class="rounded">
 							</div>
 							<br>
@@ -103,25 +103,10 @@
 		</section>
 
 		<!-- Footer -->
-		<section id="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-8 col-12-medium"></div>
-				<div class="col-4 col-12-medium"></div>
-				<div class="col-12"></div>
-			</div>
-		</div>
-		</section>
-
+   	  <c:import url="../common/footer.jsp"/>
 	</div>
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+	
 
 </body>
 </html>

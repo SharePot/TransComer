@@ -34,6 +34,8 @@ public interface ReportService {
 	
 	public int updateReport(Report report, HttpServletRequest request);
 	
+	public int deleteReportList(Report report);
+	
 	public int updateBlack(Member member, HttpServletRequest request);
 	
 	public int deleteReport(int reportNo);

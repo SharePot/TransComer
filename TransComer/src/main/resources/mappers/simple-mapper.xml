@@ -102,6 +102,11 @@
 		INSERT INTO SIMPLE_REPLY VALUES (SIMPLE_REPLY_NO_SEQ.NEXTVAL, #{simpleReplyContent}, SYSDATE, #{simpleReplyWriter}, DEFAULT, DEFAULT, #{sReqNo})
 	</insert>
 	
+	<!-- 답변 채택수 가져오기 -->
+	<select id="selectAdoptionCount" parameterType="string" resultType="_int">
+		SELECT ADOPT_COUNT FROM MEMBER WHERE MEMBER_ID = #{memberId}
+	</select>
+	
 	<!-- 단순의뢰 답변 수정 -->
 	<update id="updateReply" parameterType="SimpleResponse">
 		UPDATE SIMPLE_REPLY SET SIMPLE_REPLY_CONTENT = #{simpleReplyContent} WHERE SIMPLE_REPLY_NO = #{simpleReplyNo}

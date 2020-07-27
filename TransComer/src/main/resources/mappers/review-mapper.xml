@@ -32,10 +32,10 @@ WHERE R.MEMBER_ID = #{memberId} -->
 	<!-- 현꾸 작성 0725 ~ -->
 	
 	<!-- 해당 글의 평균 별점 수를 구한다 -->
-	<!-- <select id="selectStarRageAvg" parameterType="_int" resultType="_double">
+	<select id="selectStarRageAvg" parameterType="_int" resultType="_double">
 		SELECT ROUND(AVG(STAR_RAGE),1) FROM REVIEW
 		WHERE PERSONAL_NO = #{personalNo}
-	</select> -->
+	</select>
 	
 	<!-- 해당 유저의 평균 별점 값을 구한다 -->
 	<select id="selectMemberStarRageAvg" parameterType="string" resultType="_double">

@@ -32,6 +32,8 @@ public interface ReportStore {
 	
 	public int updateReport(Report report);
 	
+	public int deleteReportList(Report report);
+	
 	public int updateBlack(Member member);
 	
 	public int deleteReport(int reportNo);

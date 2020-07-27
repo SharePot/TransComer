@@ -163,6 +163,7 @@ public class ReportController {
 		int warningAlarm = alarmService.insertAlarm(alarm);
 		
 		if (result > 0 && warningAlarm > 0 ) {
+			int resultDel = reportService.deleteReportList(report);
 			return "success";
 		} else {
 			return "fail";

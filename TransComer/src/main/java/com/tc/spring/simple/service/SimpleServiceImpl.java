@@ -96,6 +96,11 @@ public class SimpleServiceImpl implements SimpleService {
 	public int simpleResInsert(SimpleResponse simpleRes) {
 		return simpleStore.simpleResInsert(simpleRes);
 	}
+	
+	@Override
+	public int selectAdoptionCount(String memberId) {
+		return simpleStore.selectAdoptionCount(memberId);
+	}
 
 	// 단순의뢰 답변 수정
 	@Override
@@ -138,5 +143,6 @@ public class SimpleServiceImpl implements SimpleService {
 		// TODO Auto-generated method stub
 		return simpleStore.getMySearchsReListCount(simpleSearch);
 	}
+
 
 }

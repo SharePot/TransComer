@@ -114,6 +114,11 @@
 		WHERE MEMBER_ID = #{targetMemberId}
 	</update>
 	
+	<delete id="deleteReportList" parameterType="Report">
+		DELETE FROM BLACKLIST
+		WHERE TARGET_MEMBER_ID = #{targetMemberId}
+	</delete>
+	
 	<update id="updateBlack" parameterType="Member">
 		UPDATE MEMBER
 		SET MEMBER_STATUS = 'PRIMARY'

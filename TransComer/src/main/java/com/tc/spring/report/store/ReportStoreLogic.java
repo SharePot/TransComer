@@ -91,13 +91,19 @@ public class ReportStoreLogic implements ReportStore {
 	}
 	
 	@Override
+	public int deleteReportList(Report report) {
+		return sqlSession.delete("reportMapper.deleteReportList", report);
+	}
+	
+	@Override
 	public int updateBlack(Member member) {
 		return sqlSession.update("reportMapper.updateBlack", member);
 	}
-
+	
 	@Override
 	public int deleteReport(int reportNo) {
 		return sqlSession.delete("reportMapper.deleteReport", reportNo);
 	}
+	
 
 }

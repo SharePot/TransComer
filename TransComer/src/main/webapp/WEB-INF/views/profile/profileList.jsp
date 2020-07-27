@@ -25,10 +25,10 @@
 		        			<td>${pf.profileNo }</td>
 		        			<td><a href="profileDetail.tc?memberNo=${pf.memberNo }">${pf.memberId }</a></td>
 		        			<td>
-		        				<c:if test="${pf.profileStatus == 'OPEN'}">
+		        				<c:if test="${pf.profileStatus == 'open'}">
 		        					공개
 		        				</c:if>
-		        				<c:if test="${pf.profileStatus == 'PRIVATE'}">
+		        				<c:if test="${pf.profileStatus == 'private'}">
 		        					미공개
 		        				</c:if>
 		        			</td>

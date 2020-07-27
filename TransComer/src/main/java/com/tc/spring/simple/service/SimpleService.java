@@ -58,6 +58,14 @@ public interface SimpleService {
 	 * @return
 	 */
 	public int simpleReqInsert(SimpleRequest simpleReq);
+	
+	/**
+	 * 답변 채택수 가져오기
+	 * 
+	 * @param memberId
+	 * @return
+	 */
+	public int selectAdoptionCount(String memberId);
 
 	/**
 	 * 단순의뢰 질문 수정

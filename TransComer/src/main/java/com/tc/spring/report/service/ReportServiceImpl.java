@@ -74,6 +74,11 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
+	public int deleteReportList(Report report) {
+		return reportStore.deleteReportList(report);
+	}
+	
+	@Override
 	public int updateBlack(Member member, HttpServletRequest request) {
 		return reportStore.updateBlack(member);
 	}

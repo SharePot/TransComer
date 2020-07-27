@@ -97,8 +97,8 @@
    	 	<!-- 프리미엄  해제(업데이트) -->
    	<update id="memberUpdatePrimary">
       UPDATE MEMBER 
-      SET MEMBER_STATUS = 'PRIMARY'
-   WHERE CEIL(SYSDATE - (SELECT PREMIUM_ENROLL_DATE FROM PREMIUMINFO)) = 30 AND MEMBER_STATUS = 'PREMIUM';
+      SET MEMBER_STATUS = 'PRIMARY', CONTENTS_COUNT = 100
+  		WHERE CEIL(SYSDATE - (SELECT PREMIUM_ENROLL_DATE FROM PREMIUMINFO)) = 30 AND MEMBER_STATUS = 'PREMIUM';
       </update>
    
    <!-- 회원 한명 선택 -->
@@ -289,7 +289,7 @@
    <insert id="insertProfile" parameterType="Profile">
          INSERT INTO PROFILE VALUES(PRO_NO_SEQ.NEXTVAL, #{memberNo}, #{memberId}, #{pLang1}, #{pLangGrade1}, #{pLang2}, 
          #{pLangGrade2}, #{pLang3}, #{pLangGrade3}, #{tLang1}, #{tLangGrade1}, #{tLang2}, 
-         #{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, DEFAULT)
+         #{tLangGrade2}, #{tLang3}, #{tLangGrade3}, #{introduce}, #{profileFilePath}, SYSDATE, #{profileStatus})
    </insert>
    
          <!-- 프로필 수정하기 -->

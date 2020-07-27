@@ -79,22 +79,25 @@ a {
 			        <c:if test="${member.account ne null }">
 			        	<c:forTokens var="accountInfo" items="${member.account }" delims="," varStatus="status">
 							<c:if test="${status.index eq 0 }">
-								<td><input type="text" name="bank"  value="${accountInfo }" readonly size="6"></td>
+								<td>${accountInfo }
+								<input type="hidden" name="bank"  value="${accountInfo }"size="6"></td>
 							</c:if>
 							<c:if test="${status.index eq 1 }">
-								<td><input type="text" name="accountOwner" readonly value="${accountInfo }"></td>
+								<td>${accountInfo }
+								<input type="hidden" name="accountOwner" value="${accountInfo }"></td>
 							</c:if>
 							<c:if test="${status.index eq 2}">
-								<td><input type="text" name="account" readonly  value="${accountInfo }"></td>
+								<td>${accountInfo }
+								<input type="hidden" name="account" value="${accountInfo }"></td>
 							</c:if>
 						</c:forTokens>
 					</c:if>
 			        <td >
 			        	<c:if test="${member.status eq 'BLACKLIST' }">
-			         		X
+			         		O
 			         	</c:if>
 			         	<c:if test="${member.status ne 'BLACKLIST' }">
-			         		O
+			         		X
 			         	</c:if>
 			        </td>
 			        <td >

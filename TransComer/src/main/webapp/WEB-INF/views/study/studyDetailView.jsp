@@ -28,8 +28,8 @@ font-weight:bold;
 </style>
 </head>
 <body>
-	<div class="page-wrapper">
-	<section id="main">
+   <div class="page-wrapper">
+   <section id="main">
  <c:import url="../common/menuBar.jsp" />   
   <%--  <jsp:include page="../common/menuBar.jsp"></jsp:include> --%>
    <br style="clear: both">
@@ -44,14 +44,14 @@ font-weight:bold;
      <c:if test="${loginUser.memberId eq study.memberId }">
          <tr>
             <td colspan="2" align="right">
-            	<c:url var="studyUpdate" value="studyUploadView.tc">
-            	<c:param name="studyNo" value="${study.studyNo }"></c:param> <!-- ?뒤에 보내는 값을 넣어줘야함 -->
-            	<!-- 쿼리스트링을 보내주어야 컨트롤러 메소드의 매개변수(파라미터)가 받아서 처리 가능 -->
-            	</c:url>
-            	<c:url var="studyDelete" value="studyDelete.tc">
-            		<c:param name="studyNo" value="${study.studyNo }"></c:param>
-            		<c:param name="memberId" value="${loginUser.memberId }"></c:param>
-            	</c:url>
+               <c:url var="studyUpdate" value="studyUploadView.tc">
+               <c:param name="studyNo" value="${study.studyNo }"></c:param> <!-- ?뒤에 보내는 값을 넣어줘야함 -->
+               <!-- 쿼리스트링을 보내주어야 컨트롤러 메소드의 매개변수(파라미터)가 받아서 처리 가능 -->
+               </c:url>
+               <c:url var="studyDelete" value="studyDelete.tc">
+                  <c:param name="studyNo" value="${study.studyNo }"></c:param>
+                  <c:param name="memberId" value="${loginUser.memberId }"></c:param>
+               </c:url>
                <a href="${studyUpdate }">수정하기</a> &nbsp;&nbsp;
                <a href="${studyDelete }" onclick="return check()">삭제하기</a>
             </td>
@@ -78,16 +78,16 @@ font-weight:bold;
          <td>
          <c:set var="category" value="${study.studyCategory}" />
          <c:if test="${category eq 'PROJECT'}">
-       		  프로젝트
+               프로젝트
          </c:if>
          <c:if test="${category eq 'GROUP'}">
-       		  그룹
+               그룹
          </c:if>
          <c:if test="${category eq 'PERSONAL'}">
-       		  개인
+               개인
          </c:if>
          <c:if test="${category eq 'ETC'}">
-       		  개인
+               개인
          </c:if>
          </td>
       </tr>
@@ -104,7 +104,7 @@ font-weight:bold;
    <table align="center" width="50%" border="1" cellspacing="0" id="commentTable">
       <tr>
       <td><br><br>
-      	<!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
+         <!--  공개여부 : <input type="radio" name="commentYN" class="commentYN" value="Y" checked="checked">공개
           <input type="radio" class="commentYN" name="commentYN" value="N">비공개 -->
           <label>공개여부&nbsp; : &nbsp;&nbsp;</label>
           <select id="commentYN" name="commentYN">
@@ -141,10 +141,10 @@ font-weight:bold;
          </tr>
       </thead>
       <tbody>
-	
+   
       </tbody>
       <tfoot>
-	  </tfoot>
+     </tfoot>
    </table>
     <hr>
    <p align="center">
@@ -156,21 +156,24 @@ font-weight:bold;
   
    </p>
 
-	</div>	
+   </div>   
    </section>
+   <!-- Footer -->
+   <c:import url="../common/footer.jsp"/>
+   
    </div>
        <script>
        function check(){
-    	   alert("정말 삭제 하시겠습니까?");
+          alert("정말 삭제 하시겠습니까?");
        }
 
 
-    		   $(function(){
+             $(function(){
        // 초기 페이지 로딩 시 댓글 불러오기
          getCommentList(); //이게 실행되면 밑에 댓글들 나옴 (ajax가 실행됨)
          var cPage;
      /*     setInterval(function() {
-        	 getCommentList();
+            getCommentList();
           }, 10000); //10초 마다 불러옴 */
           
          // 댓글 등록 ajax
@@ -182,82 +185,82 @@ font-weight:bold;
             $.ajax({
                url : "insertComment.tc",
                data : {commentContent:content, studyNo:refStudyNo,commentYN:commentYN},
-               			
+                        
                type : "post",
                success : function(data) { //data를 String으로 받아옴, 단순 결과값만 받아오는 거기때문에 String
                   if(data == "success") { //결과값이 success이면
-                	  getCommentList(); //목록을 가져오도록
+                     getCommentList(); //목록을 가져오도록
                      $("#content").val("");
                     
                   }
                }
      
 
-   	    });
+          });
 
        });
          
   
-    		   });
-    		   //댓글 삭제
-    	       function deleteComment(obj,commentNo){
-    	    		var result = window.confirm("정말로 댓글을 삭제 하시겠습니까?");
-    	        	 console.log(commentNo);
-    	        	 if(result){
-    	        	 $.ajax({
-    	                 url:"deleteComment.tc",
-    	                 type:"post",
-    	                 data:{commentNo:commentNo},
-    	                 //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
-    	                 success : function(data) { 
-    	                	 if(data == "success") { 
-    	                		 getCommentList(); 
-    	        	 		console.log("삭제 완료");
-    	                	 }
-    	         		}
-    	 			})}else{
-    	 				console.log("취소");
-    	 			};
-    	 	  };
-    	 	  
-    	 	
-    	 	
-    	 	  //댓글 수정창 
-     	 	  function modifyComment(obj,commentNo){
-     	 		 console.log(obj);
-     	 		 $(obj).parents("tr").children().eq(3).show();
-     	 		 $(obj).parents("tr").children().eq(5).show();
-     	 		 $(obj).parents("tr").children().eq(8).show();
-     	 		  $(obj).parents("tr").children().eq(2).hide();
-     	 		  $(obj).parent().hide();
-     	 		 $(obj).parents("tr").children().eq(7).hide();
-     	 	  }
-    	 	  
-    	 	  
-   		   //댓글 수정 입력
-   	       function modifyConformComment(obj,commentNo){
-   	    	var result = window.confirm("정말로 댓글을 수정 하시겠습니까?");
-   	        	 console.log(commentNo);
-   	        	 var commentContent=decodeURIComponent($(obj).parents("tr").children().eq(3).children("textarea").val());
-   	        	 console.log(commentContent);
-   	        	 $.ajax({
-   	                 url:"updateComment.tc",
-   	                 type:"post",
-   	                 data:{commentNo:commentNo,
-	   	                	commentContent:commentContent},
-   	                 //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
-   	                 success : function(data) { 
-   	                	 if(data == "success") { 
-   	                		 getCommentList(); 
-   	        	 		console.log("수정 완료");
-   	        	 	 alert("댓글이 수정되었습니다.");
-   	                	 }
-   	         		}
-   	 			});
-   	 	  };
-   	 	  	  
-    	 	  
-   	 	  
+             });
+             //댓글 삭제
+              function deleteComment(obj,commentNo){
+                 var result = window.confirm("정말로 댓글을 삭제 하시겠습니까?");
+                   console.log(commentNo);
+                   if(result){
+                   $.ajax({
+                        url:"deleteComment.tc",
+                        type:"post",
+                        data:{commentNo:commentNo},
+                        //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+                        success : function(data) { 
+                           if(data == "success") { 
+                              getCommentList(); 
+                         console.log("삭제 완료");
+                           }
+                      }
+                 })}else{
+                    console.log("취소");
+                 };
+             };
+             
+           
+           
+             //댓글 수정창 
+              function modifyComment(obj,commentNo){
+                console.log(obj);
+                $(obj).parents("tr").children().eq(3).show();
+                $(obj).parents("tr").children().eq(5).show();
+                $(obj).parents("tr").children().eq(8).show();
+                 $(obj).parents("tr").children().eq(2).hide();
+                 $(obj).parent().hide();
+                $(obj).parents("tr").children().eq(7).hide();
+              }
+             
+             
+            //댓글 수정 입력
+             function modifyConformComment(obj,commentNo){
+             var result = window.confirm("정말로 댓글을 수정 하시겠습니까?");
+                  console.log(commentNo);
+                  var commentContent=decodeURIComponent($(obj).parents("tr").children().eq(3).children("textarea").val());
+                  console.log(commentContent);
+                  $.ajax({
+                       url:"updateComment.tc",
+                       type:"post",
+                       data:{commentNo:commentNo,
+                            commentContent:commentContent},
+                       //  dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
+                       success : function(data) { 
+                          if(data == "success") { 
+                             getCommentList(); 
+                        console.log("수정 완료");
+                      alert("댓글이 수정되었습니다.");
+                          }
+                     }
+                });
+            };
+                 
+             
+            
       // 댓글 리스트 불러오는 ajax 함수
       function getCommentList(cPage){
          var studyNo = ${study.studyNo};
@@ -265,11 +268,11 @@ font-weight:bold;
          var qnaNo=0;
          var commentCondition="study";
          $.ajax({
-            url:"commentList.tc",
+            url:"commentList.tc", 
             data:{studyNo:studyNo,
-            	shareNo:shareNo,
-            	qnaNo:qnaNo,
-            	commentCondition:commentCondition},
+               shareNo:shareNo,
+               qnaNo:qnaNo,
+               commentCondition:commentCondition},
             dataType:"json", //응답이 오는 data는(밑에꺼) json형태 이다.
             success:function(data){ //controller에서 json으로 받아오는 코드 만들어줌
                $tableBody = $("#studyTable tbody");
@@ -291,23 +294,23 @@ font-weight:bold;
                var pageLimit=5;
                
                if ( cPage == null ) {
-             	  cPage = 1;
+                  cPage = 1;
                } 
-            	
-           	  currentPage = cPage;
-           	  
+               
+                currentPage = cPage;
+                
                
                $("#count").text("댓글 (" + data.length+")"); //리스트의 길이를 댓글의 갯수로 확인할 수있다.
                if( data.length > 0 ) {
-            	   maxPage = parseInt((data.length / 5) + 0.8);
-             	  startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
-    				  endPage = startPage + pageLimit - 1;
-             	  
+                  maxPage = parseInt((data.length / 5) + 0.8);
+                  startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+                  endPage = startPage + pageLimit - 1;
+                  
                    for (var i = (currentPage*5)-5; i < currentPage*5; i++) {
-                 	  
+                      
                       if (data.length == i) {
-                 		 break;
-                 	 }
+                        break;
+                     }
              /*      for ( var i in data ) { */
                      $tr = $("<tr class='trClass'>");
                      var commentNoRead=data[i].commentNo;
@@ -316,29 +319,29 @@ font-weight:bold;
                      $memberId = $("<td width='100'>").text(data[i].memberId);
                      //내용(복호화)
                      $commentContent = $("<td>").text(decodeURIComponent(data[i].commentContent.replace(/\+/g, " ")));
-                     $commentNewContent=$("<td style='display:none;'><textarea cols='15' rows='1'>"+commentContentRead+"</textarea>");
+                     $commentNewContent=$("<td style='display:none;'><textarea cols='15' rows='1'>"+decodeURIComponent(commentContentRead.replace(/\+/g, " "))+"</textarea>");
                      //(위코드)td를 선택해서 댓글 내용 넣고 역슬래시면 공백으로 만들어줌
                      $commentWriteDate = $("<td width='200'>").text(data[i].commentWriteDate);
                      $loginId=$("#loginId").val();
                      $writerId=$("writerId").val();
-                 	 $modifyButton=$("<td>").html("<button class='btn btn-secondary' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
-                 	 $modifyConformButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'  id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
-                 	 $deleteButton=$("<td>").html("<button class='btn btn-secondary'  id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
-                 	 $cancelButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'   id='cancelComment' onclick='getCommentList()'>취소</button>");
-                 	 
-                 	 if($loginId==data[i].memberId || $loginId== $writerId){
-                 	 $tr.append($commentNo);
+                     $modifyButton=$("<td>").html("<button class='btn btn-secondary' id='modifyComment' onclick='modifyComment(this,"+commentNoRead+");'>수정</button>")
+                     $modifyConformButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'  id='modifyConformComment' onclick='modifyConformComment(this,"+commentNoRead+");'>수정완료</button>")
+                     $deleteButton=$("<td>").html("<button class='btn btn-secondary'  id='deleteComment' onclick='deleteComment(this,"+commentNoRead+");'>삭제</button>");
+                     $cancelButton=$("<td style='display:none;'>").html("<button class='btn btn-secondary'   id='cancelComment' onclick='getCommentList()'>취소</button>");
+                     
+                     if($loginId==data[i].memberId || $loginId== $writerId){
+                     $tr.append($commentNo);
                      $tr.append($memberId);
                      $tr.append($commentContent);
                      $tr.append($commentNewContent);
                      $tr.append($commentWriteDate);
                     
                      if(data[i].memberId == $loginId){ 
-                    	 $tr.append($modifyConformButton);
-                    	 $tr.append($modifyButton);
-                    	 $tr.append($deleteButton);
-                    	 $tr.append($cancelButton);
-                    		
+                        $tr.append($modifyConformButton);
+                        $tr.append($modifyButton);
+                        $tr.append($deleteButton);
+                        $tr.append($cancelButton);
+                          
                      console.log($loginId);
                      console.log(commentNoRead);
                      console.log($deleteButton);
@@ -356,34 +359,34 @@ font-weight:bold;
                   var after="&nbsp; >";
                   
                   if(currentPage <= 1) {
-                	 $td2.append(before);
+                    $td2.append(before);
                   } else if (currentPage > 1) {
-                	  $before = $("<a class='cPaging' href='javascript:getCommentList(" + (currentPage-1) + ")'> < </a> &nbsp;");
-                	  $td2.append($before);
+                     $before = $("<a class='cPaging' href='javascript:getCommentList(" + (currentPage-1) + ")'> < </a> &nbsp;");
+                     $td2.append($before);
                   }
                    
                   
                     for (var i = startPage; i <= maxPage; i++) {
-                    	if (i == currentPage) {
-                    		$link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; ");
-                    		$td2.append($link);
-                    	} else if ( i != currentPage ) {
-                    		$link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
-                    		$td2.append($link);
-                    	}
+                       if (i == currentPage) {
+                          $link = $("<b> &nbsp; [" + i + "] &nbsp; </b></font> &nbsp; ");
+                          $td2.append($link);
+                       } else if ( i != currentPage ) {
+                          $link = $("<a class='cPaging'  href='javascript:getCommentList(" + i + ")'>" + i + "</a> &nbsp;")
+                          $td2.append($link);
+                       }
                     }
                   
                       
                     if (currentPage >= maxPage) {
-                    	$td2.append(after);
+                       $td2.append(after);
                     } else if (currentPage < maxPage) {
-                    	$after = $("<a class='cPaging'  href='javascript:getCommentList(" + (currentPage+1) + ")'> &nbsp; ></a>");
-                    	$td2.append($after);
+                       $after = $("<a class='cPaging'  href='javascript:getCommentList(" + (currentPage+1) + ")'> &nbsp; ></a>");
+                       $td2.append($after);
                     }
-					
-					$tr2.append($td2);
-					
-					$tableFoot.append($tr2);
+               
+               $tr2.append($td2);
+               
+               $tableFoot.append($tr2);
                   
                }else{ //데이터가 없을때
                   $tr = $("<tr>");
@@ -401,19 +404,6 @@ font-weight:bold;
       
       
    </script>
-
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
 
 </body>
 </html>

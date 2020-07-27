@@ -4,7 +4,7 @@
      <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- 		<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+       <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <!DOCTYPE html>
 <html data-brackets-id='2665'>
@@ -68,8 +68,8 @@ h2 {
   position: relative;
   padding: 0px;
   /*-webkit-box-shadow: 0 30px 60px 0 */
-	-webkit-box-shadow: 0 10px 30px 0 
-	rgba(0,0,0,0.3);
+   -webkit-box-shadow: 0 10px 30px 0 
+   rgba(0,0,0,0.3);
   /*box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);*/
   text-align: center;
 }
@@ -369,19 +369,19 @@ a:hover {text-decoration: underline; color: black;}
 
                 <!-- Icon -->
                 <div data-brackets-id='2676' class="fadeIn first">
-                  <img data-brackets-id='2677' src="" id="icon" alt="User Icon" />
+                  <img data-brackets-id='2677' src="resources/image/logo.png" id="icon" alt="User Icon" />
                 </div>
 
                 <!-- Login Form -->
                 <form data-brackets-id='2678' action="login.tc" method="post" id="loginForm">
-	                <br data-brackets-id='2679'><br data-brackets-id='2680'>
-	                  <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="memberId" placeholder="아이디를 입력해주세요">
-	                  <br data-brackets-id='2682'><br data-brackets-id='2683'>
-	                  <input data-brackets-id='2684' type="password" id="password" class="fadeIn third" name="memberPw" placeholder="비밀번호를 입력해주세요">
-	                 <br data-brackets-id='2685'><br data-brackets-id='2686'><a data-brackets-id='2687' style="color: red"><label data-brackets-id='2688' id="idChcekArea"></label></a><!-- 중복체크 -->
-	                  
-	                  <input data-brackets-id='2689' type="button" class="fadeIn fourth" value="로그인" id="submitBtn">
-	                  <input data-brackets-id='2690' type="button" class="fadeIn fourth" value="카카오 계정으로 로그인" id="submitBtn1">
+                   <br data-brackets-id='2679'><br data-brackets-id='2680'>
+                     <input data-brackets-id='2681' type="text" id="login" class="fadeIn second" name="memberId" placeholder="아이디를 입력해주세요">
+                     <br data-brackets-id='2682'><br data-brackets-id='2683'>
+                     <input data-brackets-id='2684' type="password" id="password" class="fadeIn third" name="memberPw" placeholder="비밀번호를 입력해주세요">
+                    <br data-brackets-id='2685'><br data-brackets-id='2686'><a data-brackets-id='2687' style="color: red"><label data-brackets-id='2688' id="idChcekArea"></label></a><!-- 중복체크 -->
+                     
+                     <input data-brackets-id='2689' type="button" class="fadeIn fourth" value="로그인" id="submitBtn">
+                     <!-- <input data-brackets-id='2690' type="button" class="fadeIn fourth" value="카카오 계정으로 로그인" id="submitBtn1"> -->
                  
                 </form>
                 <ul data-brackets-id='2691'>
@@ -423,32 +423,32 @@ a:hover {text-decoration: underline; color: black;}
         </div>
         
     <script data-brackets-id='2704' type="text/javascript">
-    	$("#submitBtn").click(function () {
-    		var memberId=$("#login").val();
-    		var memberPw=$("#password").val();
-    		
-    		if($("#login").val() == ""){
-    			alert("아이디를 입력해주세요.");
-    		}else if($("#password").val()==""){
-    			alert("비밀번호를 입력해주세요.");
-    		}else{
-	    		$.ajax({
-	                url : "login.tc",
-	                type : "post",
-	                data:{memberId:memberId,
-	                      memberPw:memberPw
-	                   },
-	                success : function(data) {
-	                   if(data == "success"){
-	                	   window.location.href = "home.tc";
-	                   }else{
-	                	   $("#idChcekArea").text("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
-	                	   
-	                   }
-	                }
-	             });
-    		}
-		});
+       $("#submitBtn").click(function () {
+          var memberId=$("#login").val();
+          var memberPw=$("#password").val();
+          
+          if($("#login").val() == ""){
+             alert("아이디를 입력해주세요.");
+          }else if($("#password").val()==""){
+             alert("비밀번호를 입력해주세요.");
+          }else{
+             $.ajax({
+                   url : "login.tc",
+                   type : "post",
+                   data:{memberId:memberId,
+                         memberPw:memberPw
+                      },
+                   success : function(data) {
+                      if(data == "success"){
+                         window.location.href = "home.tc";
+                      }else{
+                         $("#idChcekArea").text("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+                         
+                      }
+                   }
+                });
+          }
+      });
     </script>
         
 </body>

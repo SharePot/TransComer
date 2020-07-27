@@ -421,7 +421,6 @@ public class MemberController {
 	@Scheduled(cron = "0 0 0 * * *")
     public String memberUpdatePrimary() {
        int result = memberService.memberUpdatePrimary();
-       
        return null;
     }
 

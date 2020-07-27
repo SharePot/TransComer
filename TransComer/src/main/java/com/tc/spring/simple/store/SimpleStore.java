@@ -40,6 +40,8 @@ public interface SimpleStore {
 	public ArrayList<SimpleResponse> sResOne(int simpleNo);
 
 	public int simpleResInsert(SimpleResponse simpleRes);
+	
+	public int selectAdoptionCount(String memberId);
 
 	public int simpleResUpdate(SimpleResponse simpleRes);
 

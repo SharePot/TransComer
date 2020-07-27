@@ -299,30 +299,10 @@
 				        </div>
 				    </div>
 				</section>
-
-			<!-- Footer -->
-				<section id="footer">
-					<div class="container">
-						<div class="row">
-							<div class="col-8 col-12-medium">
-							</div>
-							<div class="col-4 col-12-medium">
-							</div>
-							<div class="col-12">
-							</div>
-						</div>
-					</div>
-				</section>
+		<!-- Footer -->
+        <c:import url="../common/footer.jsp"/>
 
 		</div>
-
-		<!-- Scripts -->
-		<script src="/resources/js/jquery.min.js"></script>
-		<script src="/resources/js/jquery.dropotron.min.js"></script>
-		<script src="/resources/js/browser.min.js"></script>
-		<script src="/resources/js/breakpoints.min.js"></script>
-		<script src="/resources/js/util.js"></script>
-		<script src="/resources/js/main.js"></script>
 
 		<script>
 			/* 신고리스트 검색창 처리 jquery */

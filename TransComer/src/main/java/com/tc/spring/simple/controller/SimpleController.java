@@ -232,6 +232,15 @@ public class SimpleController {
 		}
 
 	}
+	
+	// 답변 채택수 가져오기
+	@RequestMapping("sCount.tc")
+	@ResponseBody
+	public String selectAdoptionCount(String memberId) {
+		
+		int result = simpleService.selectAdoptionCount(memberId);
+		return result +"";
+	}
 
 	// 단순의뢰 답변 수정
 	@RequestMapping("updateRes.tc")

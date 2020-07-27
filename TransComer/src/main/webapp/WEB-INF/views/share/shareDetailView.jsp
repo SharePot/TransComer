@@ -174,24 +174,11 @@
 		</section>
 
 		<!-- Footer -->
-		<section id="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-8 col-12-medium"></div>
-					<div class="col-4 col-12-medium"></div>
-					<div class="col-12"></div>
-				</div>
-			</div>
-		</section>
+   	  <c:import url="../common/footer.jsp"/>
 	</div>
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+
+	
 
 </body>
 
