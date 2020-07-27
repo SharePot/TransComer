@@ -142,7 +142,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 오늘 날짜 반환
 	public String currentDate() {
 		Date today = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
 		String date = dateFormat.format(today);
 		return date;
 	}
