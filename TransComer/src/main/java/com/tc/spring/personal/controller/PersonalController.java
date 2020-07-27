@@ -67,8 +67,7 @@ public class PersonalController {
 			mv.addObject("pi", pi);
 			mv.setViewName("personal/personalMain");
 		} else {
-			mv.addObject("msg", "게시글 전체조회 실패");
-			mv.setViewName("common/errorPage");
+			mv.setViewName("personal/personalMain");
 		}
 		return mv;
 	}

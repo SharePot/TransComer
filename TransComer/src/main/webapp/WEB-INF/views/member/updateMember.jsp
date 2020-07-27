@@ -97,7 +97,7 @@
 						<label for="inputEmail" class="col-sm-2 col-form-label col-md-3">이메일</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="email" placeholder="OOOOO@gmail.com"
-								class="form-control" id="inputEmail" name="memberEmail" value="${loginUser.email}">
+								class="form-control" id="inputEmail" name="email" value="${loginUser.email}">
 						</div>
 
 
@@ -109,7 +109,7 @@
 							번호</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="010-0000-0000"
-								class="form-control" id="inputPhone" maxlength="13" name="memberPhone" value="${loginUser.phone }">
+								class="form-control" id="inputPhone" maxlength="13" name="phone" value="${loginUser.phone }">
 						</div>
 						<br> <br> 
 
@@ -130,9 +130,9 @@
 									id="sample6_postcode" style="width: 70%; float: left" value="${addr}" >
 	
 	
-								<input type="button" onclick="sample6_execDaumPostcode()"
-									class="btn btn-primary" value="검색"
-									style="float: left; margin-left: 10px; height: 40px;">
+								<button onclick="sample6_execDaumPostcode();" type="button"
+									class="btn btn-primary" 
+									style="float: left; margin-left: 10px; height: 40px;">검색</button>
 							</div>
 							</c:if>
 					
@@ -236,10 +236,10 @@
 				<br> <br>
 			</div>
 				<div style="text-align: center;">
-					<input type="button" id="resetBtn" value="돌아가기"
-						style="width: 120px; height: 40px; margin-left: 10%;">
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit"
-						name="submitBtn" value="수정 하기" style="width: 120px; height: 40px;">
+					<button id="resetBtn" class="btn btn-danger" type="reset"
+						style="width: 120px; height: 40px; margin-left: 10%;" onclick="javascript:history.back();">돌아가기</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" class="btn btn-danger"
+						name="submitBtn" style="width: 120px; height: 40px;">수정하기</button>
 				</div>
 
 

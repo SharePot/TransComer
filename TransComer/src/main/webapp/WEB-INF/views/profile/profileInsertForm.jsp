@@ -159,7 +159,7 @@
                             <center>
                                 <button class="btn btn-primary" type="submit" style="margin:0 20px; width:100px;"> 등록 </button>
                                 <button class="btn btn-secondary" type="reset" style="margin:0 20px; width:100px;"> 취소 </button>
-                            	<a onclick="test()">test</a>
+                            	<button onclick="test();">test</a>
                             </center>
                             
                             <input type="hidden" name="memberId" value="${loginUser.memberId }">

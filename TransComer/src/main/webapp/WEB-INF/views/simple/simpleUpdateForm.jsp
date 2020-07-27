@@ -25,7 +25,7 @@
                 <h1 id="mainTitle">단순의뢰 수정하기</h1>
                 <hr>
                 <form action="sReqUpdate.tc" method="post">
-					<input type="hidden" id="simpleNo" value="${sReq.simpleNo }">
+					<input type="hidden" id="simpleNo" name="simpleNo" value="${sReq.simpleNo }">
                     <table id="mainTb">
                         <tr>
                             <td>개발언어</td>

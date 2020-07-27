@@ -100,7 +100,7 @@
 	                                                   			<c:param name="pReqNo" value="${doReqRep.pReqNo }"></c:param>
 	                                                   			<c:param name="personalNo" value="${doReqRep.personalNo }"></c:param>
 	                                                   		</c:url> --%>
-	                                                   		<a href="#" class="btn btn-warning" style="text-decoration: none;">결제하기</a>
+	                                                   		<a href="personalPayView.tc?memberId=${loginUser.memberId }" class="btn btn-warning" style="text-decoration: none;">결제하기</a>
 	                                                    </c:if>
 	                                                    <!--if : 승인 대기중인 상태-->
 	                                                    <c:if test="${doReqRep.pReqAccept eq 'C' }">

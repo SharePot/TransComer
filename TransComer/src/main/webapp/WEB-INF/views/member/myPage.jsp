@@ -25,6 +25,12 @@
 					<img src="/resources/css/images/user2.png" class="itemImg">
 					<a href="${detail }">내 정보 보기</a>
 				</li>
+				
+				<li>
+					<img src="/resources/css/images/login.png" class="itemImg">
+					<a href="InfoSearchMy.tc">회원정보 수정</a>
+				</li>
+				
 				<c:if test="${loginUser.profileStatus eq 'N' }">
 					<li>
 						<c:url var="insert" value="profileInsertView.tc">
@@ -36,13 +42,6 @@
 				</c:if>
 				
 				<!-- 추가 -->
-				<c:if test="${loginUser.profileStatus eq 'N' }">
-					<li>
-						<img src="/resources/css/images/login.png" class="itemImg">
-						<a href="InfoSearchMy.tc">회원정보 수정</a>
-					</li>
-				</c:if>
-					
 				<c:if test="${loginUser.profileStatus ne 'N' }">
 					<li>
 						<c:url var="profileView" value="profileDetail.tc">

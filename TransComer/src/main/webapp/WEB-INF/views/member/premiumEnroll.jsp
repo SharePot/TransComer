@@ -67,7 +67,7 @@ font-size:14px !important;
 		 </div>
 		 <div align="center">
 		 <form action="premiumPayment.tc" method="post">
-		 <input type="submit"  onclick="return check()" value="가입" >&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="취소">
+		 <input type="submit"  onclick="return check();" value="가입" >&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="취소">
 		 </form>
 		 </div>
 		   </div>
@@ -84,9 +84,15 @@ font-size:14px !important;
 				}	   
 			   })
 		   })
-		   
+		  
 		 function check(){
-			  if(($("input[name=ch]").is(":checked") )&& ($("#all").is(":checked"))){
+			  var status = "${loginUser.status}";
+			  console.log(status);
+			  if (status == "PREMIUM"){
+				  alert("이미 프리미엄 회원에 가입하셨습니다.");
+				  return false;
+			  }
+			if(($("input[name=ch]").is(":checked") )&& ($("#all").is(":checked"))){
 				  return true;
 			  }else{
 				  alert("모든 규정에 동의해야 가입이 가능 합니다.");

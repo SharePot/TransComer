@@ -74,8 +74,8 @@
 						$firstTr = $("<tr>");
 							$sendTimeTd = $("<td>").text(data[i].sendTime);
 							$btnTd = $("<td>");
-								$readBtn = $("<a id='readBtn' onclick='readBtn(this, " + data[i].alarmNo +")'>").text("읽음 ");
-								$deleteBtn = $("<a id='deleteBtn' onclick='deleteBtn(this, " + data[i].alarmNo + ")'>").text("삭제");
+								$readBtn = $("<a href='#redirect' id='readBtn' onclick='readBtn(this, " + data[i].alarmNo +");'>").text("읽음 ");
+								$deleteBtn = $("<a href='#redirect' id='deleteBtn' onclick='deleteBtn(this, " + data[i].alarmNo + ");'>").text("삭제");
 						$secondTr = $("<tr>");
 							$contentTd = $("<td colspan='3'>").text(decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
 							$simpleContentTd = $("<td colspan='3'>").html(" ' <a href='" + data[i].boardAddress + "'>" + data[i].boardTitle + " </a> ' " + decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));

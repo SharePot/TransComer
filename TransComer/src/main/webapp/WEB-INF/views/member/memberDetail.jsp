@@ -29,6 +29,17 @@
 					<td>${member.memberName }</td>
 				</tr>
 				<tr>
+					<td>프리미엄 회원</td>
+					<td>
+						<c:if test="${member.status eq 'PREMIUM' }">
+						Y
+						</c:if>	
+						<c:if test="${member.status ne 'PREMIUM' }">
+						N
+						</c:if>	
+					</td>
+				</tr>
+				<tr>
 					<td>이메일</td>
 					<td>${member.email }</td>
 				</tr>

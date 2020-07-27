@@ -22,7 +22,7 @@
    
    <!-- 로그인 -->
 	<select id="selectMemberLogin" resultMap="memberResultSet" parameterType="Member"> 
-	SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw} 
+	SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw} AND MEMBER_STATUS != 'DROP'
 	</select>
 	
    <!-- 회원 전체 리스트 -->

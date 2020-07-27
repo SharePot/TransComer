@@ -289,8 +289,7 @@ public class MemberController {
 		int result = memberService.updateMember(member);
 		if (result > 0) {
 			model.addAttribute("loginUser", member);
-			rd.addFlashAttribute("msg", "회원정보 수정이 완료되었습니다.");
-			return "redirect:home.tc"; // 경로 설정 해주기
+			return "member/myPage"; // 경로 설정 해주기
 
 		} else {
 			model.addAttribute("msg", "회원정보 수정에 실패하였습니다.");
@@ -409,7 +408,8 @@ public class MemberController {
 		      
 		      
 		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && preminumAlarm > 0){
-		         model.addAttribute("loginUser", member2);
+		    	 Member loginUser = memberService.userRefrash(member2.getMemberId());
+		         model.addAttribute("loginUser", loginUser);
 		         /*int resultPremium = memberService.memberInsertPremium(member);*/
 		         return "member/myPage";
 		      } else {
@@ -499,6 +499,7 @@ public class MemberController {
 		      int result = pesonalService.updateReqRepAccept(personalReqRep);
 		      
 		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && personalAlarm>0 && bwAlarmA > 0) { // 0726-2 수정
+		    	 model.addAttribute("loginUser", member);
 		         return "member/myPage";
 		      } else {
 		         model.addAttribute("msg", "프리미엄 가입 실패");
@@ -566,29 +567,29 @@ public class MemberController {
 		return "member/pointRefundCheckView";
 	}
 
-	// 포인트 환급 확정 및 반려
-	   @RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
-	   public String pointRefundUpdate(PointRefund pointRefund, Model model,HttpServletRequest request) {
-	      int result = memberService.updatePointRefund(pointRefund);
-	      
-	      Alarm alarm = new Alarm();
-	      alarm.setAlarmContent(pointRefund.getRefundRequestDate() + "에 신청한 " + pointRefund.getRefundPoint() + " 포인트 환급이 완료되었습니다.");
-	      alarm.setMemberId(pointRefund.getMemberId());
-	      
-	      int refundAlarm = alarmService.insertAlarm(alarm);
-	      
-	      String referer = (String)request.getHeader("REFERER");
-
-				
-	      
-	      
-	      if (result > 0 && refundAlarm > 0) {
-	    	  return "redirect:"+referer;
-	      } else {
-	         model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
-	         return "common/errorPage";
-	      }
-	   }
+	  // 포인트 환급 확정 및 반려
+	    @RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
+	    public String pointRefundUpdate(PointRefund pointRefund, Model model,HttpServletRequest request) {
+	       int result = memberService.updatePointRefund(pointRefund);
+	       
+	       Alarm alarm = new Alarm();
+	       alarm.setAlarmContent(pointRefund.getRefundPoint() + " 포인트 환급이 완료되었습니다.");
+	       alarm.setMemberId(pointRefund.getMemberId());
+	       
+	       int refundAlarm = alarmService.insertAlarm(alarm);
+	       
+	       String referer = (String)request.getHeader("REFERER");
+	
+	          
+	       
+	       
+	       if (result > 0 && refundAlarm > 0) {
+	          return "redirect:"+referer;
+	       } else {
+	          model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
+	          return "common/errorPage";
+	       }
+	    }
 
 	// =============================================================================
 
@@ -643,9 +644,12 @@ public class MemberController {
 
 		int result = memberService.insertProfile(profile, uploadFile, request);
 		int profileStatus = memberService.updateStatusY(memberNo);
-
+		
 		if (result > 0) {
 			if (profileStatus > 0) {
+				Profile myProfile = memberService.selectProfileOne(memberNo);
+				Member loginUser = memberService.userRefrash(myProfile.getMemberId());
+				model.addAttribute("loginUser", loginUser);
 				path = "redirect:profileDetail.tc?memberNo=" + profile.getMemberNo();
 			}
 			path = "redirect:profileDetail.tc?memberNo=" + profile.getMemberNo();
@@ -741,6 +745,8 @@ public class MemberController {
 				deleteFile(profile.getProfileFilePath(), request);
 
 				if (profileStatusN > 0) {
+					Member loginUser = memberService.userRefrash(profile.getMemberId());
+					model.addAttribute("loginUser", loginUser);
 					return "redirect:myPage.tc";
 				}
 			}
