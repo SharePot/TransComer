@@ -122,6 +122,23 @@
                     $("#noti").html(remain + "자");
                 })
             })
+            
+            function check() {
+		         var title = $("#simpleTitle").val();
+		         var content = $("#simpleContent").val();
+		         
+		         if (title == "") {
+		            alert("제목");
+		            $("#simpleTitle").focus();
+		            return false;
+		         } else if (content == "") {
+		            alert("내용");
+		            $("#simpleContent").focus();
+		            return false;
+		         } else {
+		            return true
+		         }
+		      }
         </script>
 
     </div>
