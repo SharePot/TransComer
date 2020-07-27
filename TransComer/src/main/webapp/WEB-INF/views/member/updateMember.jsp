@@ -24,31 +24,8 @@
 </head>
 <body class="homepage is-preload">
 <form action="mupdate.tc" method="post">
-	<div id="page-wrapper">
 
-		<!-- Header -->
-		<section id="header">
-
-			<!-- Logo -->
-			<h1>
-				<a href="index.html">SharePot</a>
-			</h1>
-
-			<!-- Nav -->
-			<nav id="nav">
-				<ul>
-					<li class="current"><a href="#">Home</a></li>
-					<li><a href="#">번역 의뢰</a>
-						<ul>
-							<li><a href="#">단순 의뢰</a></li>
-							<li><a href="#">1:1 의뢰</a></li>
-						</ul></li>
-					<li><a href="#">번역 공유</a></li>
-					<li><a href="#">스터디</a></li>
-					<li><a href="#">Q&amp;A</a></li>
-				</ul>
-			</nav>
-		</section>
+		<c:import url="../common/menuBar.jsp" />
 
 
 		<!-- Main -->
@@ -120,7 +97,7 @@
 						<label for="inputEmail" class="col-sm-2 col-form-label col-md-3">이메일</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="email" placeholder="OOOOO@gmail.com"
-								class="form-control" id="inputEmail" name="memberEmail" value="${loginUser.memberEmail}">
+								class="form-control" id="inputEmail" name="memberEmail" value="${loginUser.email}">
 						</div>
 
 
@@ -132,7 +109,7 @@
 							번호</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
 							<input type="text" placeholder="010-0000-0000"
-								class="form-control" id="inputPhone" maxlength="13" name="memberPhone" value="${loginUser.memberPhone }">
+								class="form-control" id="inputPhone" maxlength="13" name="memberPhone" value="${loginUser.phone }">
 						</div>
 						<br> <br> 
 
@@ -144,39 +121,38 @@
                               </div>-->
 
 						<!--우편번호-->
-						<c:forTokens var="addr" items="${loginUser.memberAddress }" delims="," varStatus="status">
-						<c:if test="${status.index eq 0 }">
-						<label for="inputPost" class="col-sm-2 col-form-label col-md-3">우편
-							번호</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="post" readonly
-								placeholder="우편번호를 입력해주세요." class="form-control"
-								id="sample6_postcode" style="width: 70%; float: left" value="${addr}" >
-
-
-							<input type="button" onclick="sample6_execDaumPostcode()"
-								class="btn btn-primary" value="검색"
-								style="float: left; margin-left: 10px; height: 40px;">
-						</div>
-						</c:if>
-				
-						<!--기본주소-->
-						<c:if test="${status.index eq 1 }">
-						<label for="" class="col-sm-2 col-form-label col-md-3">도로명</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="address1" readonly id="sample6_address"
-								placeholder="" class="form-control" value="${addr }">
-						</div>
-						</c:if>
-
-						<!--상세주소-->
-						<c:if test="${status.index eq 2 }">
-						<label for="" class="col-sm-2 col-form-label col-md-3">상세주소</label>
-						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="" id="sample6_detailAddress"
-								class="form-control" name="address2" value="${addr }">
-						</div>
-						</c:if>
+						<c:forTokens var="addr" items="${loginUser.address }" delims="," varStatus="status">
+							<c:if test="${status.index eq 0 }">
+							<label for="inputPost" class="col-sm-2 col-form-label col-md-3">우편번호</label>
+							<div style="float: left;" class="col-sm-10 col-md-9">
+								<input type="text" name="post" readonly
+									placeholder="우편번호를 입력해주세요." class="form-control"
+									id="sample6_postcode" style="width: 70%; float: left" value="${addr}" >
+	
+	
+								<input type="button" onclick="sample6_execDaumPostcode()"
+									class="btn btn-primary" value="검색"
+									style="float: left; margin-left: 10px; height: 40px;">
+							</div>
+							</c:if>
+					
+							<!--기본주소-->
+							<c:if test="${status.index eq 1 }">
+							<label for="" class="col-sm-2 col-form-label col-md-3">도로명</label>
+							<div style="float: left;" class="col-sm-10 col-md-9">
+								<input type="text" name="address1" readonly id="sample6_address"
+									placeholder="" class="form-control" value="${addr }">
+							</div>
+							</c:if>
+	
+							<!--상세주소-->
+							<c:if test="${status.index eq 2 }">
+							<label for="" class="col-sm-2 col-form-label col-md-3">상세주소</label>
+							<div style="float: left;" class="col-sm-10 col-md-9">
+								<input type="text" placeholder="" id="sample6_detailAddress"
+									class="form-control" name="address2" value="${addr }">
+							</div>
+							</c:if>
 						</c:forTokens>
 
 				
@@ -229,7 +205,7 @@
 						</c:forToken --%>
 						
 						<!--은행-->
-						<c:forTokens var="account" items="${loginUser.accountInfo }" delims="," varStatus="status">
+						<c:forTokens var="account" items="${loginUser.account }" delims="," varStatus="status">
 						<c:if test="${status.index eq 0 }">
 						<label for="" class="col-sm-2 col-form-label col-md-3">은행</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
@@ -281,7 +257,6 @@
 			</div>
 		</section>
 		
-	</div>
 </form>
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>

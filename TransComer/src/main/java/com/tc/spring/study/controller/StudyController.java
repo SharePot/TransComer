@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tc.spring.comment.controller.CommentController;
+import com.tc.spring.comment.domain.Comment;
+import com.tc.spring.comment.service.CommentService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.files.controller.FileController;
 import com.tc.spring.files.domain.Files;
@@ -35,6 +37,9 @@ public class StudyController {
 	
 	@Autowired
 	private CommentController cController;
+	
+	@Autowired
+	private CommentService cService;
 	
 	@Autowired
 	private FileController fController;
@@ -214,6 +219,20 @@ public class StudyController {
 	@RequestMapping("studyDelete.tc")
 	public String deleteStudy(int studyNo, Model model, HttpServletRequest request, RedirectAttributes rd, String memberId) {
 		Study study=studyService.selectStudyOne(studyNo);
+		
+		/*댓글 삭제*/
+		Comment comment=new Comment();
+		comment.setCommentCondition("study");
+		comment.setStudyNo(studyNo);
+		ArrayList<Comment>cList = cService.selectCommentList(comment);
+		
+		for(int i=0;i<cList.size();i++) {
+			Comment com=cList.get(i);
+			cService.deleteComment(com.getCommentNo());
+		}
+		
+		
+		
 		int resultStudy=studyService.deleteStudy(studyNo);
 		int resultFile=0;
 		if(resultStudy>0) {

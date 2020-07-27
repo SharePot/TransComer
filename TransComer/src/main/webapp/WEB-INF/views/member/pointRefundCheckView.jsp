@@ -70,7 +70,7 @@ text-decoration:none !important;
 				</c:forTokens>
 	
 	<tr>
-		<th align="center" colspan="2"><center><h2>-최종 환급 포인트</h2>(수수료 10% 차감)	<h1>=${pointRefund.refundPoint *0.9 } </h1></center></th>
+		<th align="center" colspan="2"><center><h2>최종 환급 포인트</h2>(수수료 10% 차감)	<h1>=${pointRefund.refundPoint *0.9 } </h1></center></th>
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
@@ -84,9 +84,9 @@ text-decoration:none !important;
                <c:param name="refundNo" value="N"/>
                <c:param name="refundNo" value="${pointRefund.refundNo }"/>
             </c:url>
-            <a  onclick="return check()" href="${conform}">승인</a> &nbsp;
-            <a onclick="return check()" href="${reject}">반려</a> &nbsp;
-            <a href="pointRefundList.tc">취소</a> &nbsp;
+           <a  onclick="return check()" href="${conform}"> <button class="btn btn-success">승인</button></a> &nbsp;
+           <a onclick="return check()" href="${reject}"> <button  class="btn btn-danger">반려</button></a> &nbsp;
+           <br> <br><a href="pointRefundList.tc"><button  class="btn btn-secondary">목록으로</button></a>  &nbsp;
 		
 		
 			</td>
@@ -98,7 +98,7 @@ text-decoration:none !important;
 </div>
 <script>
 function check(){
-	  history.go(-6);
+	  alert("처리 되었습니다.");
 }
 
 

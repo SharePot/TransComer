@@ -53,7 +53,7 @@ font-weight:bold;
             		<c:param name="memberId" value="${loginUser.memberId }"></c:param>
             	</c:url>
                <a href="${studyUpdate }">수정하기</a> &nbsp;&nbsp;
-               <a href="${studyDelete }">삭제하기</a>
+               <a href="${studyDelete }" onclick="return check()">삭제하기</a>
             </td>
          </tr>
       </c:if>
@@ -160,7 +160,9 @@ font-weight:bold;
    </section>
    </div>
        <script>
-       
+       function check(){
+    	   alert("정말 삭제 하시겠습니까?");
+       }
 
 
     		   $(function(){

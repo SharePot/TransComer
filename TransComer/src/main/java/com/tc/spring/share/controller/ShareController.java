@@ -1,12 +1,15 @@
 package com.tc.spring.share.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,40 +87,57 @@ public class ShareController {
 		return mv;
 	}
 	
-	// 글 상세보기
-	@RequestMapping(value="sdetail.tc", method=RequestMethod.GET)
-	public ModelAndView shareDetail(ModelAndView mv, int shareNo,String memberId){
-		int result = shareService.addReadCount(shareNo); // 조회수 증가
-		
-		/*Member member=new Member();
-		member.setMemberId(memberId);
-		int count=mService.updateContentCount(member);//번역공유 열람횟수 차감
-*/		
-		int count=mService.updateContentCount(memberId);//번역공유 열람횟수 차감
-		System.out.println("count : "+count);
-		System.out.println("result :" + result);
-		Share share = shareService.selectShare(shareNo);
-		
-		Files fCategory = new Files();
-		fCategory.setQnaNo(0);
-		fCategory.setShareNo(shareNo);
-		fCategory.setStudyNo(0);
-		fCategory.setpReqNo(0);
-		
-		ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
-		
-		if ( share != null ) {
-			// 메소드 체이닝 방식
-			mv.addObject("share", share);
-			mv.addObject("flist", fileList);
-			mv.setViewName("share/shareDetailView");
-		} else {
-			mv.addObject("msg", "게시글 상세조회 실패!").setViewName("common/errorPage");
-		}
-		return mv;
+	// 글 상세보기(추가)
+	   @RequestMapping(value="sdetail.tc", method=RequestMethod.GET)
+	   public ModelAndView shareDetail(ModelAndView mv, int shareNo,String memberId, HttpSession session, HttpServletResponse response) throws IOException{
+	      int result = shareService.addReadCount(shareNo); // 조회수 증가
+	      int cnt = -1;
+	      String pri ="";
+	      if(session.getAttribute("loginUser") != null) {
+	         Member loginUser = (Member)session.getAttribute("loginUser");
+	         cnt = loginUser.getContentCount();
+	         pri = loginUser.getStatus();
+	         System.out.println(pri);
+	      }
+	      /*Member member=new Member();
+	      member.setMemberId(memberId);
+	      int count=mService.updateContentCount(member);//번역공유 열람횟수 차감
+	*/      
+	      int count=mService.updateContentCount(memberId);//번역공유 열람횟수 차감
+	      System.out.println("count : "+count);
+	      System.out.println("result :" + result);
+	      Share share = shareService.selectShare(shareNo);
+	      
+	      Files fCategory = new Files();
+	      fCategory.setQnaNo(0);
+	      fCategory.setShareNo(shareNo);
+	      fCategory.setStudyNo(0);
+	      fCategory.setpReqNo(0);
+	      
+	      ArrayList<Files> fileList = fController.selectFileList(fCategory); // 해당 게시글 파일
+	      
+	      if(session.getAttribute("loginUser") == null) {
+	         response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.println("<script>alert('로그인 후 이용해주세요'); location.href='slist.tc'</script>");
+	         out.flush();
+	         return null;
+	      }else if(cnt < 0 && !pri.equals("PREMIUM")) {
+	         response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.println("<script>alert('무료 열람 횟수 초과'); location.href='slist.tc'</script>");
+	         out.flush();
+	         return null;
+	      }else {
+	         // 메소드 체이닝 방식
+	         mv.addObject("share", share);
+	         mv.addObject("flist", fileList);
+	         mv.setViewName("share/shareDetailView");
+	      }
+	      return mv;
 
-	}
-	
+	   }
+	   
 	// 게시물 등록 페이지 이동
 	@RequestMapping("shareWriterView.tc")
 	public String shareWriterView() {
@@ -189,13 +209,11 @@ public class ShareController {
 	@RequestMapping("adminShareList.tc")
 	public ModelAndView adminShareList(ModelAndView mv) {
 		ArrayList<Share> shareList = shareService.adminShareList();
-		if (!shareList.isEmpty()) {
+
 			// 리스트가 비어있지 않으면
 			mv.addObject("shareList", shareList);
 			mv.setViewName("admin/adminShareList");
-		} else {
-			mv.setViewName("common/errorPage");
-		}
+		
 		return mv;
 	}
 	
@@ -203,12 +221,10 @@ public class ShareController {
 	@RequestMapping("adminSelectShareOne.tc")
 	public String adminShareOne(int shareNo, Model model) {
 		Share share = shareService.adminSelectShareOne(shareNo);
-		if (share != null) {
+	
 			model.addAttribute("share", share);
 			return "admin/adminShareDetailCheck";
-		} else {
-			return "common/errorPage";
-		}
+	
 	}
 
 	// 관리자 - 번역공유 신청글 '승인'(Y)하기
