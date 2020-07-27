@@ -417,7 +417,7 @@
                   },
                success : function(data) {
                   Num = data;
-                  if(data >= 1){
+                  if(data != ""){
                      alert("인증번호가 전송되었습니다");
                      originId = $("#mId").val();
                      $("#mId").attr("readonly","readonly");

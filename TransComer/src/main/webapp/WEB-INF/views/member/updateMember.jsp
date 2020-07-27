@@ -227,10 +227,11 @@
 				</div>
 
 
-		<!-- Footer -->
-        <c:import url="../common/footer.jsp"/>
+		
 
 		</section>
+		<!-- Footer -->
+        <c:import url="../common/footer.jsp"/>
 		
 		
 </form>
