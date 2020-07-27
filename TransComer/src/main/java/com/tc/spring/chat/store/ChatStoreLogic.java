@@ -15,6 +15,12 @@ public class ChatStoreLogic implements ChatStore {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	// 채팅방이 있는지 확인
+	@Override
+	public int checkChatRoom(ChatRoom chatRoom) {
+		return sqlSession.selectOne("chatMapper.checkChatRoom", chatRoom);
+	}
+
 	// 유저 두명의 정보를 보내고 채팅방 번호 리턴
 	@Override
 	public int selectChatRoom(ChatRoom chatRoom) {

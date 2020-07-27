@@ -15,6 +15,12 @@ public class ChatServiceImpl implements ChatService {
 	@Autowired
 	private ChatStore chatStore;
 
+	// 채팅방이 있는지 확인
+	@Override
+	public int checkChatRoom(ChatRoom chatRoom) {
+		return chatStore.checkChatRoom(chatRoom);
+	}
+
 	// 유저두명 정보를 보내서 채팅방 번호 가져오기
 	@Override
 	public int selectChatRoom(ChatRoom chatRoom) {

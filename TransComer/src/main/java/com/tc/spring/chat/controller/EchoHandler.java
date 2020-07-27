@@ -43,18 +43,18 @@ public class EchoHandler extends TextWebSocketHandler {
 		System.out.println("-----EchoHandler.java -- afterConnectionEstablished() 함수 시작-----");
 		// 로그인 한 유저의 아이디를 (handshake, map)
 		Map<String, Object> memberMap = session.getAttributes();
-		String userId = (String) memberMap.get("userId");
-		System.out.println("memberMap.get('userId') : " + userId);
+		String memberId = (String) memberMap.get("memberId");
+		System.out.println("memberMap.get('memberId') : " + memberId);
 		System.out.println("memberMap.toString() : " + memberMap.toString());
 
 		//
 		sessionList.add(session); // 세션에 저장
 
 		boolean sessionIdCheck = false; // 세션에 해당 아이디가 없다고 가정
-		if (userId != "") {
+		if (memberId != "") {
 			// 리스트를 돌면서 해당아이디가 존재하는지 확인
 			for (int i = 0; i < memberList.size(); i++) {
-				if (userId.equals(memberList.get(i))) {
+				if (memberId.equals(memberList.get(i))) {
 					// 해당 아이디가 있으면 존재한다고 변수 변경
 					sessionIdCheck = true;
 					break;
@@ -62,9 +62,9 @@ public class EchoHandler extends TextWebSocketHandler {
 			}
 			if (!sessionIdCheck) {
 				// 해당 아이디가 없으면 아이디를 리스트에 넣어준다.
-				memberList.add(userId);
+				memberList.add(memberId);
 				// 연결이 성공되었을 때에 jsp에 데이터를 보내보자
-				session.sendMessage(new TextMessage(userId));
+				session.sendMessage(new TextMessage(memberId));
 				// 연결이 성공 되었을때, 연결이 성공된 모든 유저의 정보를 보내자
 				System.out.println(">>>>>> memberList.toString" + memberList.toString());
 				// session.sendMessage(new TextMessage(memberList.toString()));
@@ -76,7 +76,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		//
 		// 구글링방법(세션아이디)
 		// session.sendMessage(new TextMessage(session.getId() + "님 접속!"));
-		// session.sendMessage(new TextMessage(userId + "님이 입장하셨습니다!"));
+		// session.sendMessage(new TextMessage(memberId + "님이 입장하셨습니다!"));
 
 		System.out.println("sessionList(리스트) : " + sessionList);
 		System.out.println("memberList(Array리스트) : " + memberList);
@@ -108,13 +108,13 @@ public class EchoHandler extends TextWebSocketHandler {
 		//
 		// 로그인 한 유저의 아이디를 가져온다
 		Map<String, Object> memberMap = session.getAttributes();
-		String userId = (String) memberMap.get("userId");
+		String memberId = (String) memberMap.get("memberId");
 		// 메세지를 채팅에 접속한 유저한테 모두 보내준다.
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("sess : " + sess);
 			// 유저아이디, 메시지, 전송시간을 보내준다.
 			sess.sendMessage(new TextMessage(
-					userId + "," + message.getPayload() + "," + this.currentDate() + " " + this.currentTime()));
+					memberId + "," + message.getPayload() + "," + this.currentDate() + " " + this.currentTime()));
 		}
 		System.out.println("-----EchoHandler.java -- handleTextMessage() 함수 종료-----");
 	}
