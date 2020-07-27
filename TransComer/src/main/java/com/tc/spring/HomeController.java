@@ -44,12 +44,27 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		model.addAttribute("serverTime", formattedDate);
-
+		// 등록된 게시글 랭킹
 		ArrayList<Rank> rAcList = memberService.rankAdoptC();
+
+		// 별점 랭킹
+		// ArrayList, starA는 평균 별점이 높은순으로 맴버 리스트를 불러온다
 		ArrayList<Rank> sList = memberService.starA();
 
-		for (Rank rank : sList) {
-			System.out.println("sList" + sList);
+		// 만약 sList가 비어있지 않다면, sList에 대한 세팅을 한다
+		if (!sList.isEmpty()) {
+			// sList 각각의 회원에 대한 Rank 정보 세팅
+			for (Rank rank : sList) {
+				// 회원 정보 Member 세팅
+				rank.setMember(memberService.selectMemberOne(rank.getReview().getRevTargetMemberId()));
+				// System.out.println(">>> rank의 Member 정보 : " + rank.getMember());
+				// 프로필 세팅
+				rank.setProfile(memberService.selectProfileOne(rank.getMember().getMemberNo()));
+				// System.out.println(">>> rank의 Profile 정보 : " + rank.getProfile());
+				// 평균 별점 세팅
+				rank.setRageAvg(reviewService.selectMemberStarRageAvg(rank.getReview().getRevTargetMemberId()));
+				// System.out.println(">>>>> rank 객체의 rageAvg값 : " + rank.getRageAvg());
+			}
 		}
 
 		model.addAttribute("rAc", rAcList);

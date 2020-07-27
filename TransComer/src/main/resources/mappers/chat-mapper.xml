@@ -9,4 +9,43 @@
 		<result property="roomUser2" column="room_user2"></result>
 	</resultMap>
 	
+	<!-- 채팅 정보 resultMap -->
+	<resultMap type="ChatMessage" id="chatMessageResultSet">
+		<id property="chatMessageNo" column="chat_message_no"/>
+		<result property="sendUser" column="send_user"/>
+		<result property="receiveUser" column="receive_user"/>
+		<result property="chatContent" column="chat_content"/>
+		<result property="chatSendDate" column="chat_send_date"/>
+		<result property="roomNo" column="room_no"/>
+	</resultMap>
+	
+	<!-- 해당 유저들이 사용하는 채팅 방 번호 가져오기 -->
+	<select id="selectChatRoom" parameterType="ChatRoom" resultType="_int">
+		select room_no from chat_room
+		where CONCAT(room_user1,room_user2)=CONCAT(#{roomUser1},#{roomUser2})
+		or CONCAT(room_user1,room_user2)=CONCAT(#{roomUser2},#{roomUser1})
+	</select>
+	
+	<!-- 채팅 방 (번호,유저2 데이터) 삽입 -->
+	<insert id="insertChatRoom" parameterType="ChatRoom">
+		insert into chat_room
+		values(chat_room_no_seq.nextval,#{roomUser1}, #{roomUser2})	
+	</insert>
+	
+	<!-- 채팅 내용 db에 삽입 -->
+	<insert id="insertChatMessage" parameterType="ChatMessage">
+		insert into chat_message
+		values(chat_message_no_seq.nextval,#{sendUser},
+		#{receiveUser},#{chatContent},
+		to_char(SYSDATE,'YY/MM/DD AM hh:mi'),#{roomNo})
+	</insert>
+	
+	<!-- 채팅 방번호에 해당하는 채팅 내용 불러오기 -->
+	<select id="selectChatMessageList" parameterType="_int" resultMap="chatMessageResultSet">
+		select *
+		from chat_message
+		where room_no = #{roomNo}
+		order by chat_send_date
+	</select>
+	
 </mapper>
