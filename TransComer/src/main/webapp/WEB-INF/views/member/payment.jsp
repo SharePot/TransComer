@@ -54,21 +54,42 @@
                                 <div class="form-group row">
                                     <label for="5000p" class="col-sm-6 col-form-label"><span class="h4">5,000 포인트</span></label>
                                     <div class="col-sm-6 d-flex justify-content-end">
-                                        <button onclick="inputPrice(5000);">5,000 원</button>
+                                        <button onclick="inputPrice(5000);" class="payMoney">5,000 원</button>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="form-group row">
                                     <label for="10000p" class="col-sm-6 col-form-label"><span class="h4">10,000 포인트</span></label>
                                     <div class="col-sm-6 d-flex justify-content-end">
-                                        <button onclick="inputPrice(10000);">10,000 원</button>
+                                        <button onclick="inputPrice(10000);" class="payMoney">10,000 원</button>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="form-group row">
                                     <label for="inputPassword" class="col-sm-6 col-form-label"><span class="h4">20,000 포인트</span></label>
                                     <div class="col-sm-6 d-flex justify-content-end">
-                                        <button onclick="inputPrice('20000');">20,000 원</button>
+                                        <button onclick="inputPrice('20000');" class="payMoney">20,000 원</button>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-6 col-form-label"><span class="h4">30,000 포인트</span></label>
+                                    <div class="col-sm-6 d-flex justify-content-end">
+                                        <button onclick="inputPrice('30000');" class="payMoney">30,000 원</button>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-6 col-form-label"><span class="h4">40,000 포인트</span></label>
+                                    <div class="col-sm-6 d-flex justify-content-end">
+                                        <button onclick="inputPrice('40000');" class="payMoney">40,000 원</button>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-6 col-form-label"><span class="h4">50,000 포인트</span></label>
+                                    <div class="col-sm-6 d-flex justify-content-end">
+                                        <button onclick="inputPrice('50000');" class="payMoney">50,000 원</button>
                                     </div>
                                 </div>
                             </div>

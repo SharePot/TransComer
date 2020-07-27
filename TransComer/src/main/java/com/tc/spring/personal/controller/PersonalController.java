@@ -402,7 +402,7 @@ public class PersonalController {
 		
 		Alarm alarm = new Alarm(); // 0726-2 수정
 		alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
-		alarm.setAlarmContent("1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
+		alarm.setAlarmContent(" 게시물의 1:1 번역 의뢰 번역이 완료되었습니다."); // 0726-2 수정
 		alarm.setBoardTitle("결과보러가기"); // 0726-2 수정
 		alarm.setBoardAddress("pReqRepResultDetail.tc?pReqNo=" + personalReqRep.getpReqNo() + "&personalNo=" + personalReqRep.getPersonalNo() ); // 0726-2 수정
 		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정

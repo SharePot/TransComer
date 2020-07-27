@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,15 +22,9 @@ import com.google.gson.JsonIOException;
 import com.tc.spring.alarm.domain.Alarm;
 import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
-import com.tc.spring.member.controller.MemberController;
 import com.tc.spring.member.domain.Member;
-import com.tc.spring.member.domain.MemberPageInfo;
 import com.tc.spring.member.domain.PointChange;
-import com.tc.spring.member.domain.Profile;
 import com.tc.spring.member.service.MemberService;
-import com.tc.spring.personal.domain.Personal;
-import com.tc.spring.personal.domain.PersonalPageInfo;
-import com.tc.spring.personal.service.PersonalService;
 import com.tc.spring.simple.domain.SimplePageInfo;
 import com.tc.spring.simple.domain.SimpleRequest;
 import com.tc.spring.simple.domain.SimpleResponse;
@@ -50,9 +42,6 @@ public class SimpleController {
 
 	@Autowired
 	private AlarmService alarmService;
-
-	@Autowired
-	private PersonalService personalService;
 
 	// -------------------- 단순의뢰 질문 --------------------
 

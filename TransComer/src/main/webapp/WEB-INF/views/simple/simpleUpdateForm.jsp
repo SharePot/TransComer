@@ -86,9 +86,6 @@
 
         <script>
         
-      
-        
-        
         var pLang = $("#pLang").val();
         var tLang = $("#tLang").val();
         

@@ -8,8 +8,8 @@
 		<result property="sendTime" column="SEND_TIME" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="checkYN" column="CHECK_YN" />
-		<result property="etc" column="ETC" />
-		<result property="boardNo" column="BAORD_NO" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardAddress" column="BOARD_ADDRESS" />
 	</resultMap>
 	
 	<!-- 알람 조회 -->
@@ -34,7 +34,7 @@
 	
 	<!-- 알람 등록하기 -->
 	<insert id="insertAlarm" parameterType="Alarm">
-		INSERT INTO ALARM VALUES (ALARM_NO_SEQ.NEXTVAL, #{alarmContent}, to_CHAR(sysdate,'yyyy/mm/dd hh24:mi'), #{memberId}, DEFAULT, #{etc}, #{boardNo} )
+		INSERT INTO ALARM VALUES (ALARM_NO_SEQ.NEXTVAL, #{alarmContent}, to_CHAR(sysdate,'yyyy/mm/dd hh24:mi'), #{memberId}, DEFAULT,  #{boardTitle}, #{boardAddress} )
 	</insert>
 	
 </mapper>

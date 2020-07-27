@@ -179,7 +179,7 @@
 															$adoptCountTwo = $("<p class='adoptCount'>").text($adoptCount);
 														$etcTd = $("<td id='etc'>");
 															$replyDate = $("<p id='replyDate'>").text(data[i].simpleReplyDate);
-															$reportBtn = $("<a href='#' id='reportBtn'>").text(" 신고");
+															$reportBtn = $("<a href='#' id='reportBtn' onclick='reportBtn(this)'>").text(" 신고");
 															$updateWindow = $("<a href='#' id='updateWindow' onclick='updateWindow(this, " + data[i].simpleReplyNo +")'>").text(" 수정");
 															$updateBtn = $("<a id='updateBtn' style='display:none;' onclick='updateBtn(this, " + data[i].simpleReplyNo +");'>").text("등록");
 															$updateResetBtn = $("<a id='updateResetBtn' style='display:none;' onclick='getSimpleResList()'>").text("취소");
@@ -214,6 +214,7 @@
 					                     } else if ($simpleWriter == $loginId) {
 					                    	$replyDate.after($reportBtn);
 					                    	$reportBtn.after($adoptBtn);
+					                    	$adoptBtn.after($responseWriter);
 					                     } 
 										
 										if ($simpleAStatus == 'Y') {
@@ -233,7 +234,12 @@
 											$tdTwo.after($tdThree);
 											
 											$replyWrapperDiv.after($simpleReplyNo);
-											$simpleReplyNo.after($responseWriter);
+											
+											
+											var t = $("#replyWriter");
+											var target = data[i].simpleReplyWriter;
+											// console.log(target);
+											console.log(t);
 											
 										} // for 문 
 										
@@ -368,16 +374,16 @@
 	  		
 	  	}
 	  	
-	  	$(document).on('click', '#reportBtn', function() {
-	  		var url = "reportForm.tc";
+	  	function reportBtn(obj) {
+	  		var test = $(obj).parents("table").children().eq(0).children().eq(0).children().eq(0).text();
+	  		console.log(test);
 	  		var name ="SharePot - 신고하기";
 	  		var option = "width = 600, height = 415, top = 100, left = 200, location = no, toolbars = no";
-	  		window.open(url, name, option);
-	  	});
+	  		window.open("reportForm.tc?target=" + test, name, option);
+	  	}
 	  	
-	  	
-		
 	</script>
+	
 </body>
 <link rel="stylesheet" href="assets/css/main.css" />
 </html>

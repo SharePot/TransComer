@@ -24,6 +24,7 @@
 			<div id="alarmSection">
 				
 			</div>
+			<div id="alarmPage"></div>
 		</div>
 	</section>
 
@@ -31,9 +32,10 @@
 	
 	$(function() {
 		getAlarmList();
+		var cPage;
 	})
 	
-	function getAlarmList() {
+	function getAlarmList(cPage) {
 		var memberId = $("#memberId").val();
 		$.ajax({
 			url : "alarmList.tc",
@@ -43,8 +45,31 @@
 				$divSection = $("#alarmSection");
 				$divSection.html("");
 				
+				var currentPage;
+				var startPage;
+				var endPage;
+				var maxPage;
+				
+				var pageLimit = 5;
+				
+				if (cPage == null) {
+					cPage = 1;
+				}
+				
+				currentPage = cPage;
+				
 				if (data.length > 0) {
-					for (var i in data) {
+					
+					maxPage = parseInt((data.length / 5) + 0.8);
+					startPage = ((parseInt((currentPage / pageLimit) + 0.8)) - 1) * pageLimit + 1;
+					endPage = startPage + pageLimit - 1;
+					
+					for (var i = (currentPage * 5) - 5; i <currentPage * 5; i++) {
+						
+						if (data.length == i) {
+							break;
+						}
+						
 						$table = $("<table>");
 						$firstTr = $("<tr>");
 							$sendTimeTd = $("<td>").text(data[i].sendTime);
@@ -53,8 +78,8 @@
 								$deleteBtn = $("<a id='deleteBtn' onclick='deleteBtn(this, " + data[i].alarmNo + ")'>").text("삭제");
 						$secondTr = $("<tr>");
 							$contentTd = $("<td colspan='3'>").text(decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
-							$simpleContentTd = $("<td colspan='3'>").html(" ' <a href='sReqDetail.tc?simpleNo=" + data[i].boardNo + "'>" + data[i].etc + " </a> ' " + "게시물의 " + decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
-							console.log(data[i].boardNo);
+							$simpleContentTd = $("<td colspan='3'>").html(" ' <a href='" + data[i].boardAddress + "'>" + data[i].boardTitle + " </a> ' " + decodeURIComponent(data[i].alarmContent.replace(/\+/g, " ")));
+							console.log(data[i].boardTitle);
 						$divSection.append($table);
 							$table.append($firstTr);
 								$firstTr.append($sendTimeTd);
@@ -67,13 +92,52 @@
 							$table.css("color", "black");
 						}
 						
-					if (data[i].etc != null) {
-						$secondTr.append($simpleContentTd);
-					} else {
-						$secondTr.append($contentTd);
-					}
+						if (data[i].boardAddress != null) {
+							$secondTr.append($simpleContentTd);
+						} else {
+							$secondTr.append($contentTd);
+						}
 						
 					}
+					
+					/* 알림 페이징 부분 */
+					$alarmPage = $("#alarmPage");
+					$alarmPage.html("");
+					$aTable = $("<table>");
+					
+					$alarmTr = $("<tr align='center'>");
+					$alarmTd = $("<td>");
+					var before = "< &nbsp;";
+					var after = "&nbsp; >";
+					
+					if (currentPage <= 1) {
+						$alarmTd.append(before);
+					} else if (currentPage > 1) {
+						$before = $("<a href='javascript:getAlarmList(" + (currentPage - 1) + ")'><&nbsp;</a> &nbsp;");
+						$alarmTd.append($before);
+					}
+					
+					for (var i = startPage; i <= maxPage; i++) {
+						if (i == currentPage) {
+							$link = $("<font color = 'red' size='4'><b>[" + i + "]</b></font> &nbsp;");
+							$alarmTd.append($link);
+						} else if (i != currentPage) {
+							$link = $("<a href='javascript:getAlarmList(" + i + ")'>" + i + "</a> &nbsp;");
+							$alarmTd.append($link);
+						}
+					}
+					
+					if (currentPage >= maxPage) {
+						$alarmTd.append(after);
+					} else if (currentPage < maxPage) {
+						$after = $("<a href='javascript:getAlarmList( " + (currentPage + 1) + ")'>&nbsp;></a>");
+						$alarmTd.append($after);
+					}
+					
+					$alarmPage.append($aTable);
+					$aTable.append($alarmTr);
+					$alarmTr.append($alarmTd);
+					
 				} else {
 					
 					$table = $("<table>");

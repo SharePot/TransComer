@@ -7,22 +7,10 @@ public class Alarm {
 	private String sendTime;
 	private String memberId;
 	private String checkYN;
-	private String etc;
-	private int boardNo;
+	private String boardTitle;
+	private String boardAddress;
 	
 	public Alarm() {}
-
-	public Alarm(int alarmNo, String alarmContent, String sendTime, String memberId, String checkYN, String etc,
-			int boardNo) {
-		super();
-		this.alarmNo = alarmNo;
-		this.alarmContent = alarmContent;
-		this.sendTime = sendTime;
-		this.memberId = memberId;
-		this.checkYN = checkYN;
-		this.etc = etc;
-		this.boardNo = boardNo;
-	}
 
 	public int getAlarmNo() {
 		return alarmNo;
@@ -64,26 +52,27 @@ public class Alarm {
 		this.checkYN = checkYN;
 	}
 
-	public String getEtc() {
-		return etc;
+	public String getBoardTitle() {
+		return boardTitle;
 	}
 
-	public void setEtc(String etc) {
-		this.etc = etc;
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public String getBoardAddress() {
+		return boardAddress;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setBoardAddress(String boardAddress) {
+		this.boardAddress = boardAddress;
 	}
 
 	@Override
 	public String toString() {
 		return "Alarm [alarmNo=" + alarmNo + ", alarmContent=" + alarmContent + ", sendTime=" + sendTime + ", memberId="
-				+ memberId + ", checkYN=" + checkYN + ", etc=" + etc + ", boardNo=" + boardNo + "]";
+				+ memberId + ", checkYN=" + checkYN + ", boardTitle=" + boardTitle + ", boardAddress=" + boardAddress
+				+ "]";
 	}
 
 }

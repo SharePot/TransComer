@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tc.spring.alarm.domain.Alarm;
+import com.tc.spring.alarm.service.AlarmService;
 import com.tc.spring.common.Pagination;
 import com.tc.spring.member.domain.Member;
 import com.tc.spring.report.domain.BlackPageInfo;
@@ -28,6 +30,9 @@ public class ReportController {
 
 	@Autowired
 	private ReportService reportService;
+	
+	@Autowired
+	private AlarmService alarmService;
 	
 	// 관리자페이지 신고와 블랙리스트 목록 보기
 	@RequestMapping("rANDblist.tc")
@@ -117,8 +122,10 @@ public class ReportController {
 	}
 	
 	@RequestMapping("reportForm.tc")
-	public String reportForm() {
-		return "member/reportForm";
+	public ModelAndView reportForm(String target, ModelAndView mv) {
+		mv.addObject("target", target);
+		mv.setViewName("member/reportForm");
+		return mv;
 	}
 	
 	// 신고 넣기
@@ -146,17 +153,40 @@ public class ReportController {
 	// 신고 승인 후 해당 아이디 목록 어떻게 처리할지 생각
 	@ResponseBody
 	@RequestMapping("rupdate.tc")
-	public void updateReport(Report report, HttpServletRequest request) {
+	public String updateReport(Report report, HttpServletRequest request) {
 		
 		int result = reportService.updateReport(report, request);
+		
+		Alarm alarm = new Alarm();
+		alarm.setMemberId(report.getTargetMemberId());
+		alarm.setAlarmContent("회원 등급이 블랙리스트 회원으로 변경되었습니다.");
+		int warningAlarm = alarmService.insertAlarm(alarm);
+		
+		if (result > 0 && warningAlarm > 0 ) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 	
 	// 블랙리스트 해제 (ajax 처리)
 	@ResponseBody
 	@RequestMapping("bupdate.tc")
-	public void updateBlack(Member member, HttpServletRequest request) {
+	public String updateBlack(Member member, HttpServletRequest request, String memberId) {
 		
 		int result = reportService.updateBlack(member, request);
+		
+		Alarm alarm = new Alarm();
+		alarm.setMemberId(memberId);
+		alarm.setAlarmContent("회원 등급이 블랙리스트 회원에서 일반 회원으로 변경되었습니다.");
+		int warningAlarm = alarmService.insertAlarm(alarm);
+		
+		if (result > 0 && warningAlarm > 0 ) {
+			return "success";
+		} else {
+			return "fail";
+		}
 	
 	}
 	
@@ -166,5 +196,24 @@ public class ReportController {
 	public void deleteReport(int reportNo, HttpServletRequest request) {
 		
 		int result = reportService.deleteReport(reportNo);
+	}
+	
+	@ResponseBody
+	@RequestMapping("rWarning.tc")
+	public String warningReport(int reportNo, String memberId) {
+		
+		int result = reportService.deleteReport(reportNo);
+		
+		Alarm alarm = new Alarm();
+		alarm.setMemberId(memberId);
+		alarm.setAlarmContent("경고");
+		int warningAlarm = alarmService.insertAlarm(alarm);
+		
+		if (result > 0 && warningAlarm > 0 ) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 }

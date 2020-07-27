@@ -109,7 +109,7 @@
                     </tr>
                     <tr>
                         <td><label>신고자</label></td>
-                        <td><input type="text" readonly id="target" name="targetMemberId" ></td>
+                        <td><input type="text" readonly id="target" name="targetMemberId" value="${target }"></td>
                     </tr>  
                     <tr>
                         <td><label>신고사유</label></td>
@@ -135,8 +135,8 @@
 
 
 	<script>
-		document.getElementById("target").value =
-		opener.document.getElementById("responseWriter").value;
+		/* document.getElementById("target").value =
+		opener.document.getElementById("replyWriter").value; */
 	</script>
 	
 	<script>
