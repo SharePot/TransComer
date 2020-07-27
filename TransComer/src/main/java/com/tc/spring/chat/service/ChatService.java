@@ -6,6 +6,15 @@ import com.tc.spring.chat.domain.ChatMessage;
 import com.tc.spring.chat.domain.ChatRoom;
 
 public interface ChatService {
+
+	/**
+	 * 채팅방이 있는지 확인
+	 * 
+	 * @param chatRoom
+	 * @return
+	 */
+	public int checkChatRoom(ChatRoom chatRoom);
+
 	/**
 	 * 채팅방 이름 가져옴
 	 * 

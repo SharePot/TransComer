@@ -75,6 +75,12 @@
                     <li><a href="studyList.tc">스터디</a></li>
                     <li><a href="qlist.tc">Q&nbsp;&amp;&nbsp;A</a></li>
 					<li><a href="homepageinfo.jsp">About</a></li>
+					<li>
+						<c:url var="onlineUsers" value="onlineUsers.tc">
+							<%-- <c:param name="onlineUser" value="${personal.personalNo }" /> --%>
+						</c:url>
+						<a href="${onlineUsers }">실시간</a>
+					</li>
                 </ul>
             </nav>
         </section>

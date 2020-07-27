@@ -19,6 +19,13 @@
 		<result property="roomNo" column="room_no"/>
 	</resultMap>
 	
+	<!-- 채팅방이 있는지 확인(없으면 0리턴) -->
+	<select id="checkChatRoom" parameterType="ChatRoom" resultType="_int">
+		select count(*) from chat_room
+		where CONCAT(room_user1,room_user2)=CONCAT(#{roomUser1},#{roomUser2})
+		or CONCAT(room_user1,room_user2)=CONCAT(#{roomUser2},#{roomUser1})
+	</select>
+	
 	<!-- 해당 유저들이 사용하는 채팅 방 번호 가져오기 -->
 	<select id="selectChatRoom" parameterType="ChatRoom" resultType="_int">
 		select room_no from chat_room
@@ -35,7 +42,7 @@
 	<!-- 채팅 내용 db에 삽입 -->
 	<insert id="insertChatMessage" parameterType="ChatMessage">
 		insert into chat_message
-		values(chat_message_no_seq.nextval,#{sendUser},
+		values(chat_msg_no_seq.nextval,#{sendUser},
 		#{receiveUser},#{chatContent},
 		to_char(SYSDATE,'YY/MM/DD AM hh:mi'),#{roomNo})
 	</insert>
