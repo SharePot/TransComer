@@ -27,16 +27,26 @@
 			ws.onmessage = onMessage;
 
 			function onOpen() {
-				console.log("currentUser.jsp, websocket open");
+				console.log("실시간유저, 웹소켓 열림");
 			}
 		}
 		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
 		function onMessage(event) {
+			//
+			console.log("실시간유저, 웹소켓 받은 데이터");
 			// 데이터 받아오기
-			var loginUserList = event.data;
-
-			console.log(event.data);
-			console.log(loginUserList);
+			var originData = event.data.slice(1,event.data.length-1);
+			//consloe.log(originData);
+			var userList = originData.split(',');
+			
+			console.log("split data : "+userList);
+			
+			//console.log(event.data);
+			//for(var i = 0; i < loginUserList.length; i++){
+			//}
+			
+			//var loginUserList = event.data;
+			//console.log(loginUserList);
 
 			/* 
 			for(var i in splitData){
@@ -45,19 +55,6 @@
 		}
 	});
 
-	function showChatPop() {
-		// 주소
-		//url = "wsclient.tc?user1='user01'&user2='user02'";
-		//url = "wsclient.tc";
-		// 해당 이름의 윈도우(없으면 새창)
-		//name = "chatPop";
-		// 창의 크기, 위치, 기능 등 창의 특성
-		//specs = "width=400, height=600, top=200, left=200";
-		//window.open(url, name, "width=400, height=600, top=200, left=200");
-		
-		//
-		window.open("wsclient.tc", "chatPop", "width=500, height=700, left=250, top=50"); 
-	}
 </script>
 </head>
 <body class="homepage is-preload">
@@ -105,8 +102,6 @@
 											</c:url>
 											<a href="${wsclient }" onclick="window.open(this.href,'채팅','width=500, height=700, left=100, top=50');return false;" class="nav-link" style="text-decoration: none;">${loginUser.memberName }</a>
 											<br>
-											``
-											<button class="btn btn-danger" onclick="showChatPop()">버튼</button>
 										</nav>
 
 									</c:if>
@@ -125,9 +120,6 @@
 
 		<!-- Footer -->
 		<c:import url="../common/footer.jsp" />
-
-
-
 	</div>
 </body>
 
