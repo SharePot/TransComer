@@ -19,11 +19,11 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
 		//
-		System.out.println("-----HandshakeInterceptor.java -- beforeHandshake()-----");
-		System.out.println("* Before Handshake");
+		System.out.println("-----HandshakeInterceptor.java -- beforeHandshake() 함수 시작-----");
+		// System.out.println("* Before Handshake");
 
 		ServletServerHttpRequest ssreq = (ServletServerHttpRequest) request;
-		System.out.println("URI : " + request.getURI()); // 오케이
+		// System.out.println("URI : " + request.getURI()); // 오케이
 
 		HttpServletRequest req = ssreq.getServletRequest();
 
@@ -43,6 +43,7 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		// HttpSession에 저장된 이용자의 아이디를 추출하는 경우
 		// String id = (String) req.getSession().getAttribute("loginUser"); // 구글링방법
 
+		System.out.println("-----HandshakeInterceptor.java -- beforeHandshake() 함수 종료-----");
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
 
@@ -51,8 +52,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 	public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Exception ex) {
 		//
-		System.out.println("-----HandshakeInterceptor.java -- afterHandshake()-----");
-		System.out.println("** After Handshake");
+		System.out.println("-----HandshakeInterceptor.java -- afterHandshake() 함수 시작-----");
+		// System.out.println("** After Handshake");
 		super.afterHandshake(request, response, wsHandler, ex);
+		System.out.println("-----HandshakeInterceptor.java -- afterHandshake() 함수 종료-----");
 	}
 }

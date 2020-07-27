@@ -21,9 +21,15 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 현재 접속한 유저의 아이디를 저장할 리스트 생성
 	private Map<WebSocketSession, String> currentMember;
 
+	// 아이디만 저장할 리스트
+	private ArrayList<String> memberList;
+
+	// 사용자 리스트,,
+
 	public EchoHandler() {
 		// TODO Auto-generated constructor stub
 		sessionList = new ArrayList();
+		memberList = new ArrayList();
 	}
 
 	// 1. 클라이언트 접속
@@ -34,14 +40,37 @@ public class EchoHandler extends TextWebSocketHandler {
 		super.afterConnectionEstablished(session);
 
 		//
-		System.out.println("-----EchoHandler.java -- afterConnectionEstablished()-----");
-		// 로그인 한 유저의 아이디를 가져와보고싶다 가져오자 제발루 ㅠ
+		System.out.println("-----EchoHandler.java -- afterConnectionEstablished() 함수 시작-----");
+		// 로그인 한 유저의 아이디를 (handshake, map)
 		Map<String, Object> memberMap = session.getAttributes();
 		String userId = (String) memberMap.get("userId");
 		System.out.println("memberMap.get('userId') : " + userId);
 		System.out.println("memberMap.toString() : " + memberMap.toString());
+
 		//
 		sessionList.add(session); // 세션에 저장
+
+		boolean sessionIdCheck = false; // 세션에 해당 아이디가 없다고 가정
+		if (userId != "") {
+			// 리스트를 돌면서 해당아이디가 존재하는지 확인
+			for (int i = 0; i < memberList.size(); i++) {
+				if (userId.equals(memberList.get(i))) {
+					// 해당 아이디가 있으면 존재한다고 변수 변경
+					sessionIdCheck = true;
+					break;
+				}
+			}
+			if (!sessionIdCheck) {
+				// 해당 아이디가 없으면 아이디를 리스트에 넣어준다.
+				memberList.add(userId);
+				// 연결이 성공되었을 때에 jsp에 데이터를 보내보자
+				session.sendMessage(new TextMessage(userId));
+				// 연결이 성공 되었을때, 연결이 성공된 모든 유저의 정보를 보내자
+				System.out.println(">>>>>> memberList.toString" + memberList.toString());
+				// session.sendMessage(new TextMessage(memberList.toString()));
+			}
+		}
+
 		// 구글링방법(세션아이디)
 		logger.info("{} 접속(logger)", session.getId());
 		//
@@ -49,8 +78,10 @@ public class EchoHandler extends TextWebSocketHandler {
 		// session.sendMessage(new TextMessage(session.getId() + "님 접속!"));
 		// session.sendMessage(new TextMessage(userId + "님이 입장하셨습니다!"));
 
-		System.out.println("sessionList : " + sessionList);
+		System.out.println("sessionList(리스트) : " + sessionList);
+		System.out.println("memberList(Array리스트) : " + memberList);
 		System.out.println("클라이언트 접속됨");
+		System.out.println("-----EchoHandler.java -- afterConnectionEstablished() 함수 종료-----");
 	}
 
 	// 2. 클라이언트 접속 종료
@@ -70,20 +101,22 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		//
-		System.out.println("-----EchoHandler.java -- handleTextMessage()-----");
+		System.out.println("-----EchoHandler.java -- handleTextMessage() 함수 시작-----");
 
 		// httpsession handshake 찾아서 해보기!! ㅠㅠ
-		System.out.println("handleTextMessage 메소드ㅠㅠ");
 		logger.info("메세지 전송 = {} ", message.getPayload());
 		//
-		// 로그인 한 유저의 아이디를 가져와보고싶다 가져오자 제발루 ㅠ
+		// 로그인 한 유저의 아이디를 가져온다
 		Map<String, Object> memberMap = session.getAttributes();
 		String userId = (String) memberMap.get("userId");
 		// 메세지를 채팅에 접속한 유저한테 모두 보내준다.
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("sess : " + sess);
-			sess.sendMessage(new TextMessage(userId + "," + message.getPayload() + "," + this.currentTime()));
+			// 유저아이디, 메시지, 전송시간을 보내준다.
+			sess.sendMessage(new TextMessage(
+					userId + "," + message.getPayload() + "," + this.currentDate() + " " + this.currentTime()));
 		}
+		System.out.println("-----EchoHandler.java -- handleTextMessage() 함수 종료-----");
 	}
 
 	// 웹소켓 서버측에 텍스트 메시지가 접수되면 호출되는 메소드
