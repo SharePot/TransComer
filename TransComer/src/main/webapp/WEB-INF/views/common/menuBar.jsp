@@ -58,12 +58,12 @@
         <section id="header">
 			
             <!-- Logo -->
-            <h1><a href="index.html">SharePot</a></h1>
+            <h1><a href="home.tc">SharePot</a></h1>
 
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current"><a href="#">Home</a></li>
+                    <li class="current"><a href="home.tc">Home</a></li>
                     <li>
                         <a href="#">번역 의뢰</a>
                         <ul>
