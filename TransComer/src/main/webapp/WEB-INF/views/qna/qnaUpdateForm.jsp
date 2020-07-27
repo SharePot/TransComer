@@ -48,28 +48,6 @@
 		<div id="page-wrapper">
 
 			<!-- Header -->
-			<%-- <section id="header">
-
-				<!-- Logo -->
-					<h1><a href="index.html">SharePot</a></h1>
-
-				<!-- Nav -->
-				<nav id="nav">
-					<ul>
-						<li class="current"><a href="#">Home</a></li>
-						<li><c:url var="sList" value="sReqListView.tc" /> <c:url
-								var="pList" value="plist.tc" /> <c:url var="study"
-								value="studyList.tc" /> <a href="#">번역 의뢰</a>
-							<ul>
-								<li><a href="${sList }">단순의뢰</a></li>
-								<li><a href="${pList }">1:1 의뢰</a></li>
-							</ul></li>
-						<li><a href="#">번역 공유</a></li>
-						<li><a href="${study }">스터디</a></li>
-						<li><a href="qlist.tc">Q&amp;A</a></li>
-					</ul>
-				</nav>
-            </section> --%>
 
 			<!-- Main -->
 				<section id="main">
@@ -126,7 +104,7 @@
 							                    	<input type="hidden" name="memberId" value="${loginUser.memberId }" />
 							                        <button type="submit" class="btn btn-secondary" id="submitBtn">완료</button>
 							                        &nbsp;&nbsp;
-							                        <button type="reset" class="btn btn-secondary">취소</button>
+							                        <button type="reset" class="btn btn-secondary" onclick="javascript:history.back();">취소</button>
 							                    </td>
 							                </tr>
 							            </tbody>
