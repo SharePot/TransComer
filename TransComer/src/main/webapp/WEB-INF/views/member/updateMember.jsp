@@ -5,22 +5,6 @@
 <html>
 <head>
 <title>SharePot</title>
-<meta charset="utf-8" />
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="assets/css/main.css" />
-
-<style>
-
-</style>
 </head>
 <body class="homepage is-preload">
 <form action="mupdate.tc" method="post">
@@ -209,7 +193,7 @@
 						<c:if test="${status.index eq 0 }">
 						<label for="" class="col-sm-2 col-form-label col-md-3">은행</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="bankName"  placeholder="" class="form-control" value="${account }">
+							<input type="text" name="bankName"  class="form-control" value="${account }" />
 						</div>
 						</c:if>
 				
@@ -217,7 +201,7 @@
 						<c:if test="${status.index eq 1 }">
 						<label for="" class="col-sm-2 col-form-label col-md-3">계좌번호</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" name="accountNumber"  placeholder="계좌번호를 입력해주세요" class="form-control" value="${account }">
+							<input type="text" name="accountNumber"   class="form-control" value="${account }">
 						</div>
 						</c:if>
 
@@ -225,7 +209,7 @@
 						<c:if test="${status.index eq 2 }">
 						<label for="" class="col-sm-2 col-form-label col-md-3">예금주</label>
 						<div style="float: left;" class="col-sm-10 col-md-9">
-							<input type="text" placeholder="" id=""
+							<input type="text" 
 								class="form-control" name="accountName" value="${account }">
 						</div>
 						</c:if>
@@ -243,28 +227,13 @@
 				</div>
 
 
-	
+		<!-- Footer -->
+        <c:import url="../common/footer.jsp"/>
 
 		</section>
-		<!-- Footer -->
-		<section id="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-8 col-12-medium"></div>
-					<div class="col-4 col-12-medium"></div>
-					<div class="col-12"></div>
-				</div>
-			</div>
-		</section>
+		
 		
 </form>
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
 
 	<!--id 중복체크-->
 	

@@ -205,7 +205,6 @@
                                 <input type="text" id="personalPrice" name="personalPrice" style="width:120px" placeholder="" value="">&nbsp;P/100자 당
         						</div>
                             <hr>
-                            <p style="font-size: 10pt;">- 마이페이지에서 파워번역가를 등록하면 상단에 번역게시물을 띄워드립니다.</p>
 	
 
                             <br><br>

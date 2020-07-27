@@ -235,7 +235,7 @@ pagination{
 
       
       <!-- Footer -->
-   	  <c:import url="../common/footer.jsp"/>
+        <c:import url="../common/footer.jsp"/>
    </div>
    
    
@@ -263,5 +263,4 @@ pagination{
    
 </body>
 </html>
-
 

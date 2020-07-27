@@ -387,7 +387,7 @@
 
                 <!-- Remind Passowrd -->
                 <div id="formFooter">
-                  <a class="underlineHover" href="/main.jsp">메인페이지로 돌아가기</a>
+                  <a class="underlineHover" href="home.tc">메인페이지로 돌아가기</a>
                 </div>
 
               </div>

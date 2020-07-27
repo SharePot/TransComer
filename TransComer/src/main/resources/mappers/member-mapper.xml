@@ -98,8 +98,9 @@
    	<update id="memberUpdatePrimary">
       UPDATE MEMBER 
       SET MEMBER_STATUS = 'PRIMARY', CONTENTS_COUNT = 100
-  		WHERE CEIL(SYSDATE - (SELECT PREMIUM_ENROLL_DATE FROM PREMIUMINFO)) = 30 AND MEMBER_STATUS = 'PREMIUM';
+  		WHERE CEIL(SYSDATE - (SELECT PREMIUM_ENROLL_DATE FROM PREMIUMINFO)) = 30 AND MEMBER_STATUS = 'PREMIUM'
       </update>
+      
    
    <!-- 회원 한명 선택 -->
    <select id="selectMemberOne" parameterType="Member" resultMap="memberResultSet">
@@ -129,12 +130,12 @@
 	</select>
 
 	<!-- 비밀번호 찾기 -->
-	<select id="findPwd" parameterType="hashMap" resultType="_int">
-		SELECT
-		COUNT(*)
-		FROM MEMBER
-		WHERE MEMBER_ID = #{memberId} AND MEMBER_PHONE = #{phone}
-	</select>
+   <select id="findPwd" parameterType="hashmap" resultType="_int">
+      SELECT
+      COUNT(*)
+      FROM MEMBER
+      WHERE MEMBER_ID = #{memberId} AND MEMBER_PHONE = #{memberPhone}
+   </select>
 
 	<!-- 비밀번호 변경 -->
 	<update id="updatePwd" parameterType="hashMap">
@@ -284,6 +285,29 @@
    
    <select id="selectProfileOne" parameterType="_int" resultMap="profileResultSet">
          SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+   </select>
+   
+   <!-- 프로필 검색 -->
+     <select id="searchProfile" parameterType="ProfileSearch" resultMap="profileResultSet">
+   SELECT * FROM PROFILE
+   <where>
+      <choose>
+         <when test="searchCondition =='id'">
+         MEMBER_ID LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test="searchCondition =='no'">
+         AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test="searchCondition=='status'">
+         AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'           
+         </when>
+         <otherwise>
+          AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
+            OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
+            OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
+         </otherwise>
+      </choose>
+   </where>
    </select>
    
    <insert id="insertProfile" parameterType="Profile">

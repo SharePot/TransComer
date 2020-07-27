@@ -51,7 +51,7 @@
             <section id="intro" class="container">
                 <br><br>
                 <header class="major">
-                    <h2 style="color:orange; background:white;">STAR LANKING</h2>
+                    <h2 style="color:orange; background:white;">STAR RANKING</h2>
                 </header>
                 <div class="row">
                    <c:forEach var="star" items="${star }" begin="0" end="2" varStatus="status">
@@ -110,7 +110,7 @@
             <div class="container">
                 <br><br>
                 <header class="major">
-                    <h2 style="color:gold;">ADOPTION LANKING</h2>
+                    <h2 style="color:gold;">ADOPTION RANKING</h2>
                 </header>
                 <div class="row">
                    <c:forEach var="rank" items="${rAc }" begin="0" end="2" varStatus="status">

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -151,55 +152,65 @@ public class MemberController {
 	}
 
 	// 비밀번호 변경
-	@RequestMapping("PwdRe.tc")
-	public String ChangePwd(String pass, String userId) {
+	   @RequestMapping("PwdRe.tc")
+	   public String ChangePwd(String pass, String userId) {
 
-		Map<String, Object> set = new HashMap<String, Object>();
-		set.put("pass", pass);
-		set.put("userId", userId);
-		System.out.println(set);
+	      Map<String, Object> set = new HashMap<String, Object>();
+	      set.put("pass", pass);
+	      set.put("userId", userId);
+	      System.out.println(set);
 
-		int result = memberService.updatePwd(set);
+	      int result = memberService.updatePwd(set);
 
-		return "redirect:home.tc"; // 페이지 입력(추가)
-	}
+	      return "member/login"; // String형으로 리턴 뷰리졸버에서 앞 뒤 경로 뒤에 jsp 붙어서 연결해줌
+	   }
 
 	
 	
 	// 비밀번호 찾기
-	@PostMapping(value = "findPwd.tc")
-	public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/* System.out.println("컨트롤러"); */
-		String memberId = request.getParameter("mId");
-		String memberPhone = request.getParameter("mPhone");
-		Map<String, Object> vo = new HashMap<String, Object>();
-		vo.put("memberId", memberId);
-		vo.put("memberPhone", memberPhone);
-		int result = memberService.findPassword(vo);
+	@RequestMapping(value = "findPwd.tc", method = RequestMethod.POST)
+	   public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	      System.out.println("컨트롤러");
+	      String memberId = request.getParameter("mId");
+	      String phone = request.getParameter("mPhone");
+	      Map<String, Object> vo = new HashMap<String, Object>();
+	      vo.put("memberId", memberId);
+	      vo.put("memberPhone", phone);
+	      System.out.println("memberId" + memberId);
+	      System.out.println("phone" + phone);
+	      System.out.println("vo" + vo);
+	      int result = memberService.findPassword(vo);
+	      
+	      System.out.println("Controller result : " + result);
+	      if (result > 0) {
+	         int random = (int) Math.floor(Math.random() * 1000000 + 1);
+	         String num = String.valueOf(random);
+	         System.out.println("인증번호  : " + num);
 
-		if (result > 0) {
-			int random = (int) Math.floor(Math.random() * 1000000 + 1);
-			String num = String.valueOf(random);
-			System.out.println("인증번호  : " + num);
+	         String api_key = "NCSQRYFYWSSQWR9L";
+	         String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
+	         Message coolsms = new Message(api_key, api_secret);
 
-			String api_key = "NCSQRYFYWSSQWR9L";
-			String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
-			Message coolsms = new Message(api_key, api_secret);
+	         HashMap<String, String> params = new HashMap<String, String>();
+	         params.put("to", phone);
+	         params.put("from", "01022632566");
+	         params.put("type", "SMS");
+	         params.put("text", "[SharePot] - 인증번호는 : " + num + "입니다.");
 
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("to", memberPhone);
-			params.put("from", "01022632566");
-			params.put("type", "SMS");
-			params.put("text", "[Farms] - 인증번호는 : " + num + "입니다.");
+	         response.getWriter().println(num);
 
-			response.getWriter().println(num);
-		
-		} else {
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().println("올바른 인증번호를 입력해주세요");
-		}
-
-	}
+	         try {
+	            JSONObject obj = (JSONObject) coolsms.send(params);
+	            response.getWriter().println(num);
+	         } catch (CoolsmsException e) {
+	            System.out.println(e.getMessage());
+	            System.out.println(e.getCode());
+	         }
+	      } else {
+	         response.setCharacterEncoding("utf-8");
+	         response.getWriter().println("올바른 인증번호를 입력해주세요");
+	      }
+	   }
 
 	//비밀번호 찾기 화면(추가)
 	@RequestMapping("findPwPg.tc")
@@ -552,6 +563,8 @@ public class MemberController {
 		int updateMemberPhoint=memberService.updateMemberPoint(member);
 		int result = memberService.insertPointRefund(pointRefund);
 		if (result > 0  && insertPointChange>0 && updateMemberPhoint>0) {
+			 Member loginUser = memberService.userRefrash(member.getMemberId());
+	         model.addAttribute("loginUser", loginUser);
 			return "member/myPage";
 		} else {
 			model.addAttribute("msg", "포인트 환급 신청 실패");

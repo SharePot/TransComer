@@ -363,7 +363,7 @@
                   
       
                   <!-- <a class="underlineHover" href="#" onclick="hide('IdInfo')">뒤로가기</a> -->
-                  <a class="underlineHover" href="#">메인페이지로 돌아가기</a>
+                  <a class="underlineHover" href="home.tc">메인페이지로 돌아가기</a>
                 </div>
 
 				

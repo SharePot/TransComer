@@ -41,7 +41,7 @@
     </insert>
     
 
-    <!-- 검색조건 -->
+        <!-- 검색조건 -->
     <select id="getSearchListCount" parameterType="ShareSearch" resultType="_int">
       SELECT COUNT(*) FROM MATERIAL_SHARE
          <where>
@@ -55,6 +55,11 @@
               <when test="searchCondition == 'content'">
                  SHARE_CONTENT LIKE '%' || #{searchValue} || '%'
               </when>
+              <otherwise>
+          AND (MEMBER_ID LIKE '%' || #{searchValue } || '%'
+            OR SHARE_TITLE LIKE '%' || #{searchValue } ||  '%'
+            OR SHARE_CONTENT LIKE '%' || #{searchValue } || '%')
+         </otherwise>
            </choose>
            </where>
    </select>
@@ -72,6 +77,11 @@
               <when test="searchCondition == 'content'">
                  SHARE_CONTENT LIKE '%' || #{searchValue} || '%'
               </when>
+              <otherwise>
+          AND (MEMBER_ID LIKE '%' || #{searchValue } || '%'
+            OR SHARE_TITLE LIKE '%' || #{searchValue } ||  '%'
+            OR SHARE_CONTENT LIKE '%' || #{searchValue } || '%')
+         </otherwise>
            </choose>
            </where>
    </select>
