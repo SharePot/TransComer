@@ -48,6 +48,6 @@ public class ReviewStoreLogic implements ReviewStore {
 	// 해당 유저의 평균 평점을 가져온다
 	@Override
 	public double selectMemberStarRageAvg(String memberId) {
-		return 0;
+		return sqlSession.selectOne("reviewMapper.selectMemberStarRageAvg", memberId);
 	}
 }

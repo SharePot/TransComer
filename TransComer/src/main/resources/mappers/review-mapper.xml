@@ -32,21 +32,15 @@ WHERE R.MEMBER_ID = #{memberId} -->
 	<!-- 현꾸 작성 0725 ~ -->
 	
 	<!-- 해당 글의 평균 별점 수를 구한다 -->
-	<select id="selectStarRageAvg" parameterType="_int" resultType="_double">
+	<!-- <select id="selectStarRageAvg" parameterType="_int" resultType="_double">
 		SELECT ROUND(AVG(STAR_RAGE),1) FROM REVIEW
 		WHERE PERSONAL_NO = #{personalNo}
-	</select>
-	
-	<!-- 해당 유저가 별점 리뷰를 받았는지 확인-->
-	<!-- <select id="checkHasReview" parameterType="string" resultType="_int">
-		SELECT COUNT(*) FROM REVIEW
-		WHERE REV_TARGET_MEMBER_ID = #{memberId}
 	</select> -->
-
+	
 	<!-- 해당 유저의 평균 별점 값을 구한다 -->
-	<!-- <select id="selectMemberStarRageAvg" parameterType="string" resultType="_double">
+	<select id="selectMemberStarRageAvg" parameterType="string" resultType="_double">
 		SELECT ROUND(AVG(STAR_RAGE),1) FROM REVIEW
 		WHERE  REV_TARGET_MEMBER_ID = #{memberId}
-	</select> -->
+	</select>
 	
 </mapper>
