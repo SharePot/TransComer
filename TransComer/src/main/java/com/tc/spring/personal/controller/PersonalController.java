@@ -125,6 +125,7 @@ public class PersonalController {
 		model.addAttribute("profile", profile);
 		return "personal/personalWriterForm";
 	}
+	
 
 	// 1:1게시판 등록하기
 	@RequestMapping(value = "pWriterInsert.tc", method = RequestMethod.POST)
@@ -183,13 +184,16 @@ public class PersonalController {
 		return filePath;
 	}
 
-	// 1:1게시판 수정화면 이동
-	@RequestMapping("pWriterUpdateView.tc")
-	public String persoalUpdateView(int personalNo, Model model) {
+	// 1:1게시판 수정페이지 이동
+	@RequestMapping("pUpdateView.tc")
+	public String pWriterUpdateView(String memberId, Model model, int personalNo) {
+		Member mem = memberService.selectMemberOne(memberId); // 해당 유저 정보가져옴
+		Profile profile = memberService.selectProfileOne(mem.getMemberNo()); // 유저 프로필 정보
 		model.addAttribute("personal", personalService.selectOne(personalNo));
+		model.addAttribute("profile", profile);
 		return "personal/personalWriterUpdateForm";
 	}
-
+	
 	// 1:1게시판 수정
 	@RequestMapping(value = "pWriterUpdate.tc", method = RequestMethod.POST)
 	public String personalUpdate(Personal personal, Model model, String pLang1, String pLang2, String pLang3,

@@ -85,12 +85,40 @@
                         <hr>
                         <div class="card" id="introduce">
                             <div class="imgBox">
-                                <img src="" id="profileImage" alt="" />
+                            	<!-- if : 프로필 사진이 등록되어 있으면 -->
+                                <c:if test="${not empty profile.profileFilePath }">
+                                    <img class="profile" id="profileImage" src="resources/uploadFiles/${profile.profileFilePath}">
+                                </c:if>
+                                <!-- if : 프로필 사진이 등록되어 있지 않으면 -->
+                                <c:if test="${empty profile.profileFilePath }">
+                                	<img class="profile" id="profileImage" src="resources/image/defaultProfileImg.png">
+                                </c:if>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">자기소개</h5>
+                                <h5 class="card-title">${loginUser.memberId } 님의 프로필 등록 정보</h5>
                                 <hr>
-                                <p class="card-text"> </p>
+                                <!-- if : 프로필 등록되어 있으면 -->
+                                <c:if test="${not empty profile.introduce }">
+	                                <p class="card-text">${profile.introduce }</p>
+                                </c:if>
+                                <!-- if : 프로필 등록되어 있지 않으면 -->
+                                <c:if test="${empty profile.introduce }">
+	                                <p class="card-text">
+	                                	<span class="h6 font-weight-bold">※ 등록된 프로필 정보가 없습니다.</span>
+	                                	<br>
+	                                	☆ 프로필을 등록하시면, 본인에 대해서 더 자세히 알려줄 수 있어요!
+	                                	<br><br>
+	                                	<span class="h6 font-weight-bold">* 프로필 등록 방법 *</span>
+	                                	<br> 
+	                                	1. 마이페이지 클릭
+	                                	<br> 
+	                                	2. 프로필 등록하기 클릭
+	                                	<br>
+	                                	3. 프로필 작성
+	                                	<br>
+	                                	4. 프로필 등록 완료 !
+	                                </p>
+                                </c:if>
                             </div>
                         </div>
                         <form action="pWriterUpdate.tc" method="post" id="WriterForm" enctype="multipart/form-data">
