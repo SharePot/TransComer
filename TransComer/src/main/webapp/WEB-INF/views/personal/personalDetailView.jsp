@@ -130,14 +130,15 @@
                             		</c:if>
 								</c:if>
                                 <c:if test="${loginUser.memberId eq personal.memberId }">
-	                                <c:url var="pUpdate" value="pWriterUpdateView.tc">
-										<c:param name="personalNo" value="${personal.personalNo }" />
-									</c:url>
 									<c:url var="pDelete" value="pWriterDelete.tc">
 										<c:param name="personalNo" value="${personal.personalNo }" />
 									</c:url>
 									<center>
-		                                <button class="btn btn-primary" style="margin:0 10px; width:35%;" onclick="location.href = '${pUpdate }'"> 수정 </button>
+										<c:url var="update" value="pUpdateView.tc">
+		                                	<c:param name="memberId" value="${loginUser.memberId }"></c:param>
+		                                	<c:param name="personalNo" value="${personal.personalNo }"></c:param>
+		                                </c:url>
+		                                <button class="btn btn-primary" style="margin:0 10px; width:35%;" onclick="location.href = '${update}'"> 수정 </button>
 		                               	<button class="btn btn-secondary" style="margin:0 10px; width:35%;" onclick="deletePersonal()"> 삭제 </button>
 		                           	</center>
 								</c:if>
