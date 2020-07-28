@@ -366,29 +366,6 @@
    </where>
    </select>
    
-   
-   <!-- 프로필 검색 -->
-     <select id="searchProfile" parameterType="ProfileSearch" resultMap="profileResultSet">
-   SELECT * FROM PROFILE
-   <where>
-      <choose>
-         <when test="searchCondition =='id'">
-         MEMBER_ID LIKE '%' || #{searchValue} || '%'
-         </when>
-         <when test="searchCondition =='no'">
-         AND MEMBER_NO LIKE '%' || #{searchValue} || '%'
-         </when>
-         <when test="searchCondition=='status'">
-         AND PROFILE_STATUS LIKE '%' || #{searchValue} || '%'           
-         </when>
-         <otherwise>
-          AND (MEMBER_ID LIKE '%' || #{searchValue} || '%'
-            OR MEMBER_NO LIKE '%' || #{searchValue} ||  '%'
-            OR PROFILE_STATUS LIKE '%' || #{searchValue} || '%')
-         </otherwise>
-      </choose>
-   </where>
-   </select>
     <!-- 0725 추가 -->
 
    <resultMap type="Personal" id="personalResultSet">
