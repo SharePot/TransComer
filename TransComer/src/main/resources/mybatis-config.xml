@@ -25,6 +25,7 @@
 		<typeAlias type="com.tc.spring.chat.domain.Chat" alias="Chat"/>
 		<typeAlias type="com.tc.spring.chat.domain.ChatRoom" alias="ChatRoom"/>
 		<typeAlias type="com.tc.spring.chat.domain.ChatMessage" alias="ChatMessage"/>
+		<typeAlias type="com.tc.spring.chat.domain.OnlineMember" alias="OnlineMember"/>
 		
 		<typeAlias type="com.tc.spring.comment.domain.Comment" alias="Comment"/>
 		
