@@ -43,7 +43,7 @@
 	
 	<!-- 단순의뢰 질문 조회 -->
 	<select id="selectList" resultMap="simpleResultSet">
-		SELECT * FROM SIMPLE_REQUEST ORDER BY SIMPLE_DATE DESC
+		SELECT * FROM SIMPLE_REQUEST ORDER BY SIMPLE_NO DESC
 	</select>
 	
 	<!-- 단순의뢰 게시글 하나 보기 -->
