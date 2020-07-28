@@ -51,7 +51,8 @@ width:100 !important;
 		
 	</tr>
 
-	<c:if test="${loginUser.account ne null}">
+
+   <c:if test="${loginuUser.account ne ',,' }">
 	 <c:forTokens var="accountInfo" items="${loginUser.account }" delims="," varStatus="status">
 					<c:if test="${status.index eq 0 }">
 							<tr>
@@ -75,7 +76,7 @@ width:100 !important;
 					</c:if>
 				</c:forTokens>
 				</c:if>
-				<c:if test="${loginUser.account eq null}">
+			  <c:if test="${loginUser.account eq ',,' }">
 						<tr>
 							<th>은행명</th>
 							<td>
