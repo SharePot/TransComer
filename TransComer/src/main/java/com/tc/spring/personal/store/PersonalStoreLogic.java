@@ -120,6 +120,18 @@ public class PersonalStoreLogic implements PersonalStore {
 	public int updateReqRepResult(PersonalReqRep personalReqRep) {
 		return sqlSession.update("personalMapper.updateReqRepResult", personalReqRep);
 	}
+	
+	// 의뢰 결과 글 작성 날짜
+	@Override
+	public int insertConfirmDate(int pReqNo) {
+		return sqlSession.insert("personalMapper.insertConfirmDate", pReqNo);
+	}
+	
+	// 의뢰 결과 글 구매 자동 확정하기
+	@Override
+	public ArrayList<PersonalReqRep> selectAutoReqRepList() {
+		return (ArrayList)sqlSession.selectList("personalMapper.selectAutoReqRepList");
+	}
 
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
 	@Override

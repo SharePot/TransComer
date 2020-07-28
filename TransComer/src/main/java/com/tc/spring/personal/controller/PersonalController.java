@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -411,6 +412,7 @@ public class PersonalController {
 		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
 		
 		if (result > 0 && personalAlarm > 0) {
+			int resultConfirmDate = personalService.insertConfirmDate(personalReqRep.getpReqNo());
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
@@ -481,6 +483,21 @@ public class PersonalController {
 			return "redirect:/myReqRepList.tc";
 		} else {
 			return "common/errorPage";
+		}
+	}
+	
+	@Scheduled(cron = "0 0 * * * *")
+	public void autoReqCheckBuyYUpdate() {
+		
+		ArrayList<PersonalReqRep> plist = null;
+		plist = personalService.selectAutoReqRepList();
+		
+		if(!plist.isEmpty()) {
+			for(int i=0; i<plist.size(); i++) {
+				reqCheckBuyYUpdate(plist.get(i).getpReqNo());
+			}
+		} else {
+			System.out.println("스케쥴러 성공!");
 		}
 	}
 

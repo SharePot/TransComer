@@ -152,6 +152,21 @@ public interface PersonalStore {
 	 * @return
 	 */
 	public int updateReqRepResult(PersonalReqRep personalReqRep);
+	
+	/**
+	 * 의뢰 결과 글 작성 날짜
+	 * 
+	 * @param pReqNo
+	 * @return
+	 */
+	public int insertConfirmDate(int pReqNo);
+	
+	/**
+	 * 
+	 * 의뢰 결과 글 구매 자동 확정
+	 * @return
+	 */
+	public ArrayList<PersonalReqRep> selectAutoReqRepList();
 
 	/**
 	 * 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')

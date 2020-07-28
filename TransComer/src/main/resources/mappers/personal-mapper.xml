@@ -207,6 +207,18 @@
 		WHERE P_REQ_NO = #{pReqNo}
 	</update>
 	
+	<!-- 의뢰 결과 글 작성 날짜 입력하기 -->
+	<insert id="insertConfirmDate" parameterType="_int">
+		INSERT INTO PERSONAL_CONFIRM
+		VALUES(#{pReqNo}, SYSDATE)
+	</insert>
+	
+	<!-- 의뢰 결과 글 구매 자동 확정하기 -->
+	<select id="selectAutoReqRepList" resultMap="personalReqRepResultSet">
+		SELECT * FROM PERSONAL_REQ_REP
+		WHERE TRUNC(SYSDATE - (SELECT P_CONFIRM_DATE FROM PERSONAL_CONFIRM)) = 2
+	</select>
+	
 	<!-- 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y') -->
 	<update id="updateReqRepCheckBuyY" parameterType="_int">
 		UPDATE PERSONAL_REQ_REP

@@ -124,11 +124,23 @@ public class PersonalServiceImpl implements PersonalService {
 	public int updateReqRepResult(PersonalReqRep personalReqRep) {
 		return personalStore.updateReqRepResult(personalReqRep);
 	}
+	
+	// 의뢰 결과 작성 날짜 입력
+	@Override
+	public int insertConfirmDate(int pReqNo) {
+		return personalStore.insertConfirmDate(pReqNo);
+	}
 
 	// 의뢰 신청 글 상태바꾸기 (Accept : 'C', 'Y', 'R',)
 	@Override
 	public int updateReqRepAccept(PersonalReqRep personalReqRep) {
 		return personalStore.updateReqRepAccept(personalReqRep);
+	}
+	
+	// 의뢰 결과 글 구매 자동 확정
+	@Override
+	public ArrayList<PersonalReqRep> selectAutoReqRepList(){
+		return personalStore.selectAutoReqRepList();
 	}
 
 	// 의뢰 결과 글 구매 확정하기(CheckBuy : 'Y')
@@ -143,4 +155,6 @@ public class PersonalServiceImpl implements PersonalService {
 		// TODO Auto-generated method stub
 		return personalStore.checkBuyYHistory(personalReqRep);
 	}
+
+	
 }
