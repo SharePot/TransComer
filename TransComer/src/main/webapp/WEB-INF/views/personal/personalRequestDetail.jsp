@@ -42,7 +42,7 @@
                             <h3>* 번역가 정보</h3>
                             <br>
                             <label>번역가</label>
-                            <input type="text" id="personalWriter" name="personalWriter" readonly value="${personal.memberId }">
+                            <input type="text" id="pRepTranslator" name="pRepTranslator" readonly value="${pReqRep.pRepTranslator }">
                             <br><br>
                             <label>개발언어</label>
                             <input type="text" id="personalPLang" name="personalPLang" readonly value="${personal.personalPLang }">
