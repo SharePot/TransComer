@@ -16,10 +16,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class EchoHandler extends TextWebSocketHandler {
 	// 웹 소켓 세션을 저장할 리스트 생성
 	private List<WebSocketSession> sessionList;
-	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 
-	// 현재 접속한 유저의 아이디를 저장할 리스트 생성
-	private Map<WebSocketSession, String> currentMember;
+	// 콘솔에 찍을 로거
+	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 
 	// 아이디만 저장할 리스트
 	private ArrayList<String> memberList;
@@ -44,32 +43,17 @@ public class EchoHandler extends TextWebSocketHandler {
 		// 로그인 한 유저의 아이디를 (handshake, map)
 		Map<String, Object> memberMap = session.getAttributes();
 		String memberId = (String) memberMap.get("memberId");
-		System.out.println("memberMap.get('memberId') : " + memberId);
-		System.out.println("memberMap.toString() : " + memberMap.toString());
+//		System.out.println("memberMap.get('memberId') : " + memberId);
+//		System.out.println("memberMap.toString() : " + memberMap.toString());
+
+		// 로그인한 유저 리스트 받아오기
+		memberList = (ArrayList) memberMap.get("memberList");
 
 		//
 		sessionList.add(session); // 세션에 저장
 
-		boolean sessionIdCheck = false; // 세션에 해당 아이디가 없다고 가정
-		if (memberId != "") {
-			// 리스트를 돌면서 해당아이디가 존재하는지 확인
-			for (int i = 0; i < memberList.size(); i++) {
-				if (memberId.equals(memberList.get(i))) {
-					// 해당 아이디가 있으면 존재한다고 변수 변경
-					sessionIdCheck = true;
-					break;
-				}
-			}
-			if (!sessionIdCheck) {
-				// 해당 아이디가 없으면 아이디를 리스트에 넣어준다.
-				memberList.add(memberId);
-				// 연결이 성공되었을 때에 jsp에 데이터를 보내보자
-				session.sendMessage(new TextMessage(memberId));
-				// 연결이 성공 되었을때, 연결이 성공된 모든 유저의 정보를 보내자
-				System.out.println(">>>>>> memberList.toString" + memberList.toString());
-				// session.sendMessage(new TextMessage(memberList.toString()));
-			}
-		}
+		// 연결이 성공되었을 때에 jsp에 데이터를 보내보자
+		// session.sendMessage(new TextMessage(memberId));
 
 		// 구글링방법(세션아이디)
 		logger.info("{} 접속(logger)", session.getId());
@@ -79,8 +63,23 @@ public class EchoHandler extends TextWebSocketHandler {
 		// session.sendMessage(new TextMessage(memberId + "님이 입장하셨습니다!"));
 
 		System.out.println("sessionList(리스트) : " + sessionList);
-		System.out.println("memberList(Array리스트) : " + memberList);
-		System.out.println("클라이언트 접속됨");
+		System.out.println(">>> 인터셉터에서 받아온 >> memberList(Array리스트) : " + memberList);
+
+		for (WebSocketSession sess : sessionList) {
+			// System.out.println("sess : " + sess);
+			// 접속자 리스트를 보내줌
+//			if (memberList.size() == 1) {
+//				// 맴버가 한명밖에 없으면 [ ] 붙여서 전송
+//				sess.sendMessage(new TextMessage("[" + memberList.toString() + "]"));
+//			} else {
+//			}
+			sess.sendMessage(new TextMessage(memberList.toString()));
+		}
+
+		// 현재 새션에만 접속자 리스트를 보내줌
+		// session.sendMessage(new TextMessage(memberList.toString()));
+
+		// System.out.println("클라이언트 접속됨");
 		System.out.println("-----EchoHandler.java -- afterConnectionEstablished() 함수 종료-----");
 	}
 
@@ -89,29 +88,28 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		super.afterConnectionClosed(session, status);
-		//
-		System.out.println("-----EchoHandler.java -- afterConnectionClosed()-----");
-
-		//
+		// 세션에서 없애 준다.
 		sessionList.remove(session);
-		System.out.println("클라이언트 접속해제");
+
+		System.out.println("-----EchoHandler.java -- afterConnectionClosed(), 클라이언트 접속종료-----");
+		// System.out.println("클라이언트 접속해제");
 	}
 
-	// 웹 서버에 보낸다
+	// 메시지를 받으면 웹 서버에 보낸다
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		//
 		System.out.println("-----EchoHandler.java -- handleTextMessage() 함수 시작-----");
 
 		// httpsession handshake 찾아서 해보기!! ㅠㅠ
-		logger.info("메세지 전송 = {} ", message.getPayload());
+		// logger.info("메세지 전송 = {} ", message.getPayload());
 		//
 		// 로그인 한 유저의 아이디를 가져온다
 		Map<String, Object> memberMap = session.getAttributes();
 		String memberId = (String) memberMap.get("memberId");
 		// 메세지를 채팅에 접속한 유저한테 모두 보내준다.
 		for (WebSocketSession sess : sessionList) {
-			System.out.println("sess : " + sess);
+			// System.out.println("sess : " + sess);
 			// 유저아이디, 메시지, 전송시간을 보내준다.
 			sess.sendMessage(new TextMessage(
 					memberId + "," + message.getPayload() + "," + this.currentDate() + " " + this.currentTime()));
@@ -142,7 +140,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 오늘 날짜 반환
 	public String currentDate() {
 		Date today = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
 		String date = dateFormat.format(today);
 		return date;
 	}

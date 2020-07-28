@@ -27,16 +27,26 @@
 			ws.onmessage = onMessage;
 
 			function onOpen() {
-				console.log("currentUser.jsp, websocket open");
+				console.log("실시간유저, 웹소켓 열림");
 			}
 		}
 		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
 		function onMessage(event) {
+			//
+			console.log("실시간유저, 웹소켓 받은 데이터");
 			// 데이터 받아오기
-			var loginUserList = event.data;
-
-			console.log(event.data);
-			console.log(loginUserList);
+			var originData = event.data.slice(1,event.data.length-1);
+			//consloe.log(originData);
+			var userList = originData.split(',');
+			
+			console.log("split data : "+userList);
+			
+			//console.log(event.data);
+			//for(var i = 0; i < loginUserList.length; i++){
+			//}
+			
+			//var loginUserList = event.data;
+			//console.log(loginUserList);
 
 			/* 
 			for(var i in splitData){
@@ -45,19 +55,6 @@
 		}
 	});
 
-	function showChatPop() {
-		// 주소
-		//url = "wsclient.tc?user1='user01'&user2='user02'";
-		//url = "wsclient.tc";
-		// 해당 이름의 윈도우(없으면 새창)
-		//name = "chatPop";
-		// 창의 크기, 위치, 기능 등 창의 특성
-		//specs = "width=400, height=600, top=200, left=200";
-		//window.open(url, name, "width=400, height=600, top=200, left=200");
-		
-		//
-		window.open("wsclient.tc", "chatPop", "width=500, height=700, left=250, top=50"); 
-	}
 </script>
 </head>
 <body class="homepage is-preload">
@@ -80,14 +77,16 @@
 									fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
 										d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
-                                </svg>&nbsp; 아야야
+                                </svg>&nbsp; 실시간 의뢰
 							</span>
 						</div>
 						<hr>
 						<!--메인 내용 구역 2(지워도 됨, 자유롭게 추가)-->
 						<div class="d-flex justify-content-center">
 							<div class="card" style="width: 50%">
-								<div class="card-header d-flex justify-content-center">유</div>
+								<div class="card-header d-flex justify-content-center">
+									실시간 접속 유저 목록
+								</div>
 								<div class="card-body">
 									<!-- 로그인 유저 : 실시간 접속자 확인가능 -->
 									<c:if test="${!empty sessionScope.loginUser }">
@@ -99,12 +98,10 @@
 										<nav class="nav flex-column h5">
 											<c:url var="wsclient" value="wsclient.tc">
 												<c:param name="sendUser" value="${loginUser.memberId }" />
-												<c:param name="receiveUser" value="user01" />
+												<c:param name="receiveUser" value="user02" />
 											</c:url>
 											<a href="${wsclient }" onclick="window.open(this.href,'채팅','width=500, height=700, left=100, top=50');return false;" class="nav-link" style="text-decoration: none;">${loginUser.memberName }</a>
 											<br>
-											
-											<button class="btn btn-danger" onclick="showChatPop()">버튼</button>
 										</nav>
 
 									</c:if>
@@ -123,9 +120,6 @@
 
 		<!-- Footer -->
 		<c:import url="../common/footer.jsp" />
-
-
-
 	</div>
 </body>
 
