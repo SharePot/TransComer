@@ -2,6 +2,8 @@ package com.tc.spring.chat.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +15,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.tc.spring.chat.domain.ChatMessage;
 import com.tc.spring.chat.domain.ChatRoom;
+import com.tc.spring.chat.domain.OnlineMember;
 import com.tc.spring.chat.service.ChatService;
 
 @Controller
@@ -25,42 +32,73 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 
-	// 실시간 접속자 페이지로 이동
-	@RequestMapping(value = "onlineUsers.tc", method = RequestMethod.GET)
-	public String onlineUsers() {
-		return "chat/onlineUsers";
+	public void testFunc() {
+		System.out.println("채팅 컨트롤러 객체의 함수 접근");
+	}
+
+	// 실시간 접속자 추가
+	@RequestMapping(value = "addOnlineMember.tc", method = RequestMethod.GET)
+	public void addOnlineMember(String memberId) {
+		chatService.insertOnlineMember(memberId);
+	}
+
+	// 실시간 접속자 제거
+	@RequestMapping(value = "removeOnlineMember.tc", method = RequestMethod.GET)
+	public String removeOnlineMember(String memberId) {
+		int result = chatService.deleteOnlineMember(memberId);
+		if (result > 0) {
+			return "removeOnline, success" + memberId;
+		} else {
+			return "removeOnline, fail" + memberId;
+		}
+	}
+
+	// 실시간 접속자 리스트 불러오기
+	
+	@RequestMapping(value = "onlineMembers.tc", method = RequestMethod.GET)
+	public void onlineMemberList(HttpServletResponse response) throws JsonIOException, IOException {
+		ArrayList<OnlineMember> onlineList = chatService.selectOnlineMemberList();
+
+		for (OnlineMember onlineMember : onlineList) {
+			onlineMember.setMemberId(URLEncoder.encode(onlineMember.getMemberId(), "utf-8"));
+		}
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(onlineList,response.getWriter());
+
+		System.out.println(">> 챗컨 >> 실시간 유저리스트 >> onlineList : " + onlineList);
 	}
 
 	// 해당 두 유저의, 채팅 페이지로 이동시킴
 	@RequestMapping("wsclient.tc")
 	public String chatView(String sendUser, String receiveUser, Model model) {
 		// 1. 두명의 유저의 채팅방 번호(과거 채팅기록이 있는지)확인
-		int roomNo = this.checkChatRoom(sendUser, receiveUser);
+//		int roomNo = this.checkChatRoom(sendUser, receiveUser);
+//
+//		if (roomNo < 1) {
+//			// 1-1. 두명의 유저의 채팅방 기록이 없음
+//			// 1-1-1. 채팅방을 생성한다
+//			int roomNoInsert = this.insertChatRoom(sendUser, receiveUser);
+//			if (roomNoInsert < 1) {
+//				// 채팅방 번호 생성에 실패하면 에러페이지
+//				return "common/errorpage";
+//			}
+//		}
+//		roomNo = this.chatRoomNumber(sendUser, receiveUser);
+//
+//		// 채팅방 정보
+//		ChatRoom chatRoom = new ChatRoom();
+//		chatRoom.setRoomNo(roomNo);
+//		chatRoom.setRoomUser1(sendUser);
+//		chatRoom.setRoomUser2(receiveUser);
+//
+//		// 채팅방 메시지 모든 데이터 정보
+//		model.addAttribute("chatRoom", chatRoom);
+//
+//		// 채팅방, 메시지 모든 데이터 정보
+//		ArrayList<ChatMessage> chatMsgList = this.usersChatMessageList(roomNo);
+//		model.addAttribute("chatMsgList", chatMsgList);
 
-		if (roomNo < 1) {
-			// 1-1. 두명의 유저의 채팅방 기록이 없음
-			// 1-1-1. 채팅방을 생성한다
-			int roomNoInsert = this.insertChatRoom(sendUser, receiveUser);
-			if (roomNoInsert < 1) {
-				// 채팅방 번호 생성에 실패하면 에러페이지
-				return "common/errorpage";
-			}
-		}
-		roomNo = this.chatRoomNumber(sendUser, receiveUser);
-
-		// 채팅방 정보
-		ChatRoom chatRoom = new ChatRoom();
-		chatRoom.setRoomNo(roomNo);
-		chatRoom.setRoomUser1(sendUser);
-		chatRoom.setRoomUser2(receiveUser);
-
-		// 채팅방 메시지 모든 데이터 정보
-		model.addAttribute("chatRoom", chatRoom);
-		
-		// 채팅방, 메시지 모든 데이터 정보
-		ArrayList<ChatMessage> chatMsgList = this.usersChatMessageList(roomNo);
-		model.addAttribute("chatMsgList", chatMsgList);
-		
 		// 채팅 내용 정보
 		return "chat/wsclient";
 	}

@@ -8,12 +8,17 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 public class EchoHandler extends TextWebSocketHandler {
+
+	@Autowired
+	private ChatController chatController;
+
 	// 웹 소켓 세션을 저장할 리스트 생성
 	private List<WebSocketSession> sessionList;
 
@@ -21,14 +26,12 @@ public class EchoHandler extends TextWebSocketHandler {
 	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 
 	// 아이디만 저장할 리스트
-	private ArrayList<String> memberList;
-
-	// 사용자 리스트,,
+	private ArrayList<String> onlineList;
 
 	public EchoHandler() {
 		// TODO Auto-generated constructor stub
 		sessionList = new ArrayList();
-		memberList = new ArrayList();
+		onlineList = new ArrayList();
 	}
 
 	// 1. 클라이언트 접속
@@ -43,11 +46,9 @@ public class EchoHandler extends TextWebSocketHandler {
 		// 로그인 한 유저의 아이디를 (handshake, map)
 		Map<String, Object> memberMap = session.getAttributes();
 		String memberId = (String) memberMap.get("memberId");
-//		System.out.println("memberMap.get('memberId') : " + memberId);
-//		System.out.println("memberMap.toString() : " + memberMap.toString());
 
 		// 로그인한 유저 리스트 받아오기
-		memberList = (ArrayList) memberMap.get("memberList");
+		onlineList = (ArrayList) memberMap.get("onlineList");
 
 		//
 		sessionList.add(session); // 세션에 저장
@@ -57,23 +58,20 @@ public class EchoHandler extends TextWebSocketHandler {
 
 		// 구글링방법(세션아이디)
 		logger.info("{} 접속(logger)", session.getId());
-		//
-		// 구글링방법(세션아이디)
-		// session.sendMessage(new TextMessage(session.getId() + "님 접속!"));
-		// session.sendMessage(new TextMessage(memberId + "님이 입장하셨습니다!"));
 
 		System.out.println("sessionList(리스트) : " + sessionList);
-		System.out.println(">>> 인터셉터에서 받아온 >> memberList(Array리스트) : " + memberList);
+		System.out.println(">>> 인터셉터에서 받아온 >> onlineList(Array리스트) : " + onlineList);
 
 		for (WebSocketSession sess : sessionList) {
 			// System.out.println("sess : " + sess);
 			// 접속자 리스트를 보내줌
-//			if (memberList.size() == 1) {
-//				// 맴버가 한명밖에 없으면 [ ] 붙여서 전송
-//				sess.sendMessage(new TextMessage("[" + memberList.toString() + "]"));
-//			} else {
-//			}
-			sess.sendMessage(new TextMessage(memberList.toString()));
+			// if (memberList.size() == 1) {
+			// // 맴버가 한명밖에 없으면 [ ] 붙여서 전송
+			// sess.sendMessage(new TextMessage("[" + memberList.toString() + "]"));
+			// } else {
+			// }
+			// sess.sendMessage(new TextMessage(onlineList.toString()));
+			//sess.sendMessage(new TextMessage("reload"));
 		}
 
 		// 현재 새션에만 접속자 리스트를 보내줌
@@ -88,8 +86,18 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		super.afterConnectionClosed(session, status);
+		System.out.println("----- 클라이언트 접속 종료 ------");
+
 		// 세션에서 없애 준다.
 		sessionList.remove(session);
+
+		// 맴버 리스트에서 없애준다.
+		onlineList = (ArrayList) session.getAttributes().get("onlineList");
+
+		System.out.println(">> 접속 종료하고 memberList : " + onlineList);
+
+		//
+		// memberList.remove("user02");
 
 		System.out.println("-----EchoHandler.java -- afterConnectionClosed(), 클라이언트 접속종료-----");
 		// System.out.println("클라이언트 접속해제");
@@ -100,6 +108,11 @@ public class EchoHandler extends TextWebSocketHandler {
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		//
 		System.out.println("-----EchoHandler.java -- handleTextMessage() 함수 시작-----");
+
+		String receiveMsg = message.getPayload();
+		System.out.println("send함수에서 보낸 내용 : " + receiveMsg);
+		
+		String [] receiveSplit = receiveMsg.split(",");
 
 		// httpsession handshake 찾아서 해보기!! ㅠㅠ
 		// logger.info("메세지 전송 = {} ", message.getPayload());

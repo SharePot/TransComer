@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import com.tc.spring.chat.domain.ChatMessage;
 import com.tc.spring.chat.domain.ChatRoom;
+import com.tc.spring.chat.domain.OnlineMember;
 
 public interface ChatStore {
 
 	/**
-	 *  채팅방이 있는지 확인
+	 * 채팅방이 있는지 확인
+	 * 
 	 * @param chatRoom
 	 * @return
 	 */
@@ -44,4 +46,34 @@ public interface ChatStore {
 	 * @return
 	 */
 	public int insertChatMessage(ChatMessage chatMessage);
+
+	/**
+	 * 현재 실시간 접속 유저의 수를 구한다
+	 * 
+	 * @return
+	 */
+	public int selectOnlineMemberCnt();
+
+	/**
+	 * 현재 실시간 접속 유저 리스트를 가져온다
+	 * 
+	 * @return
+	 */
+	public ArrayList<OnlineMember> selectOnlineMemberList();
+
+	/**
+	 * 로그인하면, 실시간 접속 유저 목록에서 추가한다
+	 * 
+	 * @param memberId
+	 * @return
+	 */
+	public int insertOnlineMember(String memberId);
+
+	/**
+	 * 로그아웃하면, 실시간 접속 유저 목록에서 제거한다
+	 * 
+	 * @param memberId
+	 * @return
+	 */
+	public int deleteOnlineMember(String memberId);
 }

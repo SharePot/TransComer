@@ -16,12 +16,29 @@
 <link rel="stylesheet" href="../../../resources/css/chatRoom.css" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
+
+	
 	$(document).ready(function() {
-		//var chatRoomNo = "${chatRoom.roomNo }";
-		//console.log("채팅방 번호 : " + chatRoomNo);
-		
+		/* var chatRoomNo = "${chatRoom.roomNo }";
+		console.log("채팅방 번호 : " + chatRoomNo);
+	
 		var loginUser = "${loginUser.memberId }";
-		var sendUser = "${chatMsgList[0].sendUser }";
+		var roomUser1 = "${chatRoom.roomUser1 }";
+		var roomUser2 = "${chatRoom.roomUser2 }";
+		
+		var sendUser;
+		var receiveUser;
+		
+		if(loginUser == roomUser1){
+			sendUser = "${chatRoom.roomUser1 }";
+			receiveUser = "${chatRoom.roomUser2 }";
+		} else{
+			sendUser = "${chatRoom.roomUser2 }";
+			receiveUser = "${chatRoom.roomUser1 }";
+		}
+	
+		console.log("sendUser : " + sendUser);
+		console.log("receiveUser : " + receiveUser)
 		
 		if(loginUser == sendUser){
 			console.log("현재 로그인유저가 보낸이 입니다.");
@@ -30,7 +47,7 @@
 		}
 		
 		var recevieUser = "${chatMsgList[0].receiveUser }";
-		console.log("받는이 정보 : " + recevieUser);
+		console.log("받는이 정보 : " + recevieUser); */
 		
 		// 스크롤을 최하단으로 고정시키는 코드(최신 채팅 보이도록 고정)
 		$("#chatArea").scrollTop($("#chatArea")[0].scrollHeight);
@@ -56,11 +73,8 @@
 		// 웹소켓 연결이 성공 되었을 때 실행
 		function onOpen(){
 			// 연결 됨, 표시
-			$('#chatStatus').text('Info: connection 연결됨.');
+			$('#chatStatus').text('채팅방에 입장하셨습니다.');
 
-			// 
-			//loadChatList();
-			
 			// enter(keycode:13) 키를 누르면 이벤트 발생
 			$('input[name=chatInput]').on('keydown', function(evt) {
 				if (evt.keyCode == 13) {
@@ -70,13 +84,14 @@
 					ws.send(msg);
 					$('input[name=chatInput]').val('');
 					// db에 채팅 내용을 저장하는 함수
-					saveMsg(msg);
+					// saveMsg(msg);
 				}
 			});
 		}
 		
 		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
 		function onMessage(event){
+			
 			// 구글링 화면 뿌리기
 			$('textarea').eq(0).prepend(event.data + '\n');
 			
@@ -161,7 +176,6 @@
 				console.log("ajax 에러 : " + data);
 			}
 		});
-		
 	}
 	
 </script>

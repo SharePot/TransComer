@@ -8,54 +8,6 @@
 <title>ONLINE</title>
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var checkLoginUser = "${loginUser.memberId }";
-		if (checkLoginUser != "") {
-			console.log("로그인 유저 안비어 있음");
-			// 웹소켓 세팅
-			var url = window.location.host; // 웹브라우저 주소창의 포트까지
-			var pathname = window.location.pathname; /* '/'부터 오른쪽에 있는 모든 경로*/
-			var appCtx = pathname.substring(0, pathname.indexOf("/", 2));
-			var root = url + appCtx;
-
-			var ws = new WebSocket("ws://" + root + "/echo-ws.tc");
-
-			// 웹소켓 연결이 성공 되었을 때 실행
-			ws.onopen = onOpen;
-			// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
-			ws.onmessage = onMessage;
-
-			function onOpen() {
-				console.log("실시간유저, 웹소켓 열림");
-			}
-		}
-		// 웹소켓 서버에서 메시지를 보내면 자동으로 실행된다.
-		function onMessage(event) {
-			//
-			console.log("실시간유저, 웹소켓 받은 데이터");
-			// 데이터 받아오기
-			var originData = event.data.slice(1,event.data.length-1);
-			//consloe.log(originData);
-			var userList = originData.split(',');
-			
-			console.log("split data : "+userList);
-			
-			//console.log(event.data);
-			//for(var i = 0; i < loginUserList.length; i++){
-			//}
-			
-			//var loginUserList = event.data;
-			//console.log(loginUserList);
-
-			/* 
-			for(var i in splitData){
-				console.log("splitData = " + splitData[i]);
-			} */
-		}
-	});
-
-</script>
 </head>
 <body class="homepage is-preload">
 	<div id="page-wrapper">
@@ -88,22 +40,22 @@
 									실시간 접속 유저 목록
 								</div>
 								<div class="card-body">
-									<!-- 로그인 유저 : 실시간 접속자 확인가능 -->
+									<!-- 로그인 O 유저 : 실시간 접속자 확인가능 -->
 									<c:if test="${!empty sessionScope.loginUser }">
-										<!-- 실시간 접속자 중에서 본인의 이름은 보이지 않도록 한다 -->
-										<c:if test="">
-
-										</c:if>
-
 										<nav class="nav flex-column h5">
-											<c:url var="wsclient" value="wsclient.tc">
-												<c:param name="sendUser" value="${loginUser.memberId }" />
-												<c:param name="receiveUser" value="user02" />
-											</c:url>
-											<a href="${wsclient }" onclick="window.open(this.href,'채팅','width=500, height=700, left=100, top=50');return false;" class="nav-link" style="text-decoration: none;">${loginUser.memberName }</a>
-											<br>
+											<!-- 실시간 유저 리스트를 반복 출력 -->
+											<c:forEach var="online" items="${onlineList }" varStatus="i">
+												<!-- 실시간 유저 리스트는 나를 제외한 사람만 표시 -->
+												<c:if test="${online.memberId != loginUser.memberId }">
+													<c:url var="wsclient" value="wsclient.tc">
+														<c:param name="sendUser" value="${loginUser.memberId }" />
+														<c:param name="receiveUser" value="${online.memberId }" />
+													</c:url>
+													<a href="${wsclient }" onclick="window.open(this.href,'채팅','width=500, height=700, left=100, top=50');return false;" class="nav-link" style="text-decoration: none;">${loginUser.memberName }</a>
+													<br>
+												</c:if>
+											</c:forEach>
 										</nav>
-
 									</c:if>
 									<!-- 로그인 X : 실시간 접속자 확인 불가 -->
 									<c:if test="${empty sessionScope.loginUser }">

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tc.spring.chat.domain.ChatMessage;
 import com.tc.spring.chat.domain.ChatRoom;
+import com.tc.spring.chat.domain.OnlineMember;
 import com.tc.spring.chat.store.ChatStore;
 
 @Service("chatService")
@@ -30,21 +31,42 @@ public class ChatServiceImpl implements ChatService {
 	// 채팅 방 데이터 생성 삽입
 	@Override
 	public int insertChatRoom(ChatRoom chatRoom) {
-		// TODO Auto-generated method stub
 		return chatStore.insertChatRoom(chatRoom);
 	}
 
 	// 채팅방 번호로 채팅내역 리스트 가져오기
 	@Override
 	public ArrayList<ChatMessage> selectChatMessageList(int roomNo) {
-		// TODO Auto-generated method stub
 		return chatStore.selectChatMessageList(roomNo);
 	}
 
 	// 채팅 내용 데이터 삽입
 	@Override
 	public int insertChatMessage(ChatMessage chatMessage) {
-		// TODO Auto-generated method stub
 		return chatStore.insertChatMessage(chatMessage);
+	}
+
+	// 현재 실시간 접속 유저의 수를 구한다
+	@Override
+	public int selectOnlineMemberCnt() {
+		return chatStore.selectOnlineMemberCnt();
+	}
+
+	// 현재 실시간 접속 유저 리스트를 가져온다
+	@Override
+	public ArrayList<OnlineMember> selectOnlineMemberList() {
+		return chatStore.selectOnlineMemberList();
+	}
+
+	// 로그인하면, 실시간 접속 유저 목록에서 추가한다
+	@Override
+	public int insertOnlineMember(String memberId) {
+		return chatStore.insertOnlineMember(memberId);
+	}
+
+	// 로그아웃하면, 실시간 접속 유저 목록에서 제거한다
+	@Override
+	public int deleteOnlineMember(String memberId) {
+		return chatStore.deleteOnlineMember(memberId);
 	}
 }

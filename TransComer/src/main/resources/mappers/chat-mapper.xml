@@ -19,6 +19,12 @@
 		<result property="roomNo" column="room_no"/>
 	</resultMap>
 	
+	<!-- 실시간 유저 정보 resultMap -->
+	<resultMap type="OnlineMember" id="onlineMemberResultSet">
+		<id property="onlineNo" column="online_no"/>
+		<result property="memberId" column="member_id"/>
+	</resultMap>
+	
 	<!-- 채팅방이 있는지 확인(없으면 0리턴) -->
 	<select id="checkChatRoom" parameterType="ChatRoom" resultType="_int">
 		select count(*) from chat_room
@@ -54,5 +60,28 @@
 		where room_no = #{roomNo}
 		order by chat_send_date
 	</select>
+	
+	<!-- 현재 실시간 접속 유저의 수를 구한다 -->
+	<select id="selectOnlineMemberCnt" resultMap="onlineMemberResultSet">
+		select count(*) from online_member
+	</select>
+	
+	<!-- 현재 실시간 접속 유저 리스트를 가져온다 -->
+	<select id="selectOnlineMemberList" resultMap="onlineMemberResultSet">
+		select * from online_member
+	</select>
+	
+	<!-- 로그인하면, 실시간 접속 유저 목록에서 추가한다 -->
+	<insert id="insertOnlineMember" parameterType="string">
+		insert into online_member
+		values(online_no_seq.nextval, #{memberId})
+	</insert>
+	
+	<!-- 로그아웃하면, 실시간 접속 유저 목록에서 제거한다 -->
+	<delete id="deleteOnlineMember" parameterType="string">
+		delete from online_member
+		where member_id = #{memberId}
+	</delete>
+	
 	
 </mapper>
