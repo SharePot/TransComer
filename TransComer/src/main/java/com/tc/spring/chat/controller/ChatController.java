@@ -34,32 +34,32 @@ public class ChatController {
 	// 해당 두 유저의, 채팅 페이지로 이동시킴
 	@RequestMapping("wsclient.tc")
 	public String chatView(String sendUser, String receiveUser, Model model) {
-		// 1. 두명의 유저의 채팅방 번호(과거 채팅기록이 있는지)확인
-		int roomNo = this.checkChatRoom(sendUser, receiveUser);
-
-		if (roomNo < 1) {
-			// 1-1. 두명의 유저의 채팅방 기록이 없음
-			// 1-1-1. 채팅방을 생성한다
-			int roomNoInsert = this.insertChatRoom(sendUser, receiveUser);
-			if (roomNoInsert < 1) {
-				// 채팅방 번호 생성에 실패하면 에러페이지
-				return "common/errorpage";
-			}
-		}
-		roomNo = this.chatRoomNumber(sendUser, receiveUser);
-
-		// 채팅방 정보
-		ChatRoom chatRoom = new ChatRoom();
-		chatRoom.setRoomNo(roomNo);
-		chatRoom.setRoomUser1(sendUser);
-		chatRoom.setRoomUser2(receiveUser);
-
-		// 채팅방 메시지 모든 데이터 정보
-		model.addAttribute("chatRoom", chatRoom);
-		
-		// 채팅방, 메시지 모든 데이터 정보
-		ArrayList<ChatMessage> chatMsgList = this.usersChatMessageList(roomNo);
-		model.addAttribute("chatMsgList", chatMsgList);
+//		// 1. 두명의 유저의 채팅방 번호(과거 채팅기록이 있는지)확인
+//		int roomNo = this.checkChatRoom(sendUser, receiveUser);
+//
+//		if (roomNo < 1) {
+//			// 1-1. 두명의 유저의 채팅방 기록이 없음
+//			// 1-1-1. 채팅방을 생성한다
+//			int roomNoInsert = this.insertChatRoom(sendUser, receiveUser);
+//			if (roomNoInsert < 1) {
+//				// 채팅방 번호 생성에 실패하면 에러페이지
+//				return "common/errorpage";
+//			}
+//		}
+//		roomNo = this.chatRoomNumber(sendUser, receiveUser);
+//
+//		// 채팅방 정보
+//		ChatRoom chatRoom = new ChatRoom();
+//		chatRoom.setRoomNo(roomNo);
+//		chatRoom.setRoomUser1(sendUser);
+//		chatRoom.setRoomUser2(receiveUser);
+//
+//		// 채팅방 메시지 모든 데이터 정보
+//		model.addAttribute("chatRoom", chatRoom);
+//		
+//		// 채팅방, 메시지 모든 데이터 정보
+//		ArrayList<ChatMessage> chatMsgList = this.usersChatMessageList(roomNo);
+//		model.addAttribute("chatMsgList", chatMsgList);
 		
 		// 채팅 내용 정보
 		return "chat/wsclient";

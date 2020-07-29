@@ -68,13 +68,12 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, memberListCount);
 		ArrayList<Member> list = memberService.selectMemberList(pi);
 
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.setViewName("member/memberList");
-		
+		mv.addObject("list", list);
+		mv.addObject("pi", pi);
+		mv.setViewName("member/memberList");
+
 		return mv;
 	}
-
 
 	// 로그인
 	@RequestMapping(value = "login.tc", method = RequestMethod.POST)
@@ -83,8 +82,12 @@ public class MemberController {
 		Member loginUser = memberService.loginMember(member);
 
 		if (loginUser != null) {
-			model.addAttribute("loginUser", loginUser);
-			return "success";
+			if (loginUser.getStatus().equals("BLACKLIST")) {
+				return "black";
+			} else {
+				model.addAttribute("loginUser", loginUser);
+				return "success";
+			}
 		} else {
 			return "fail";
 		}
@@ -152,72 +155,70 @@ public class MemberController {
 	}
 
 	// 비밀번호 변경
-	   @RequestMapping("PwdRe.tc")
-	   public String ChangePwd(String pass, String userId) {
+	@RequestMapping("PwdRe.tc")
+	public String ChangePwd(String pass, String userId) {
 
-	      Map<String, Object> set = new HashMap<String, Object>();
-	      set.put("pass", pass);
-	      set.put("userId", userId);
-	      System.out.println(set);
+		Map<String, Object> set = new HashMap<String, Object>();
+		set.put("pass", pass);
+		set.put("userId", userId);
+		System.out.println(set);
 
-	      int result = memberService.updatePwd(set);
+		int result = memberService.updatePwd(set);
 
-	      return "member/login"; // String형으로 리턴 뷰리졸버에서 앞 뒤 경로 뒤에 jsp 붙어서 연결해줌
-	   }
+		return "member/login"; // String형으로 리턴 뷰리졸버에서 앞 뒤 경로 뒤에 jsp 붙어서 연결해줌
+	}
 
-	
-	
 	// 비밀번호 찾기
 	@RequestMapping(value = "findPwd.tc", method = RequestMethod.POST)
-	   public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	      System.out.println("컨트롤러");
-	      String memberId = request.getParameter("mId");
-	      String phone = request.getParameter("mPhone");
-	      Map<String, Object> vo = new HashMap<String, Object>();
-	      vo.put("memberId", memberId);
-	      vo.put("memberPhone", phone);
-	      System.out.println("memberId" + memberId);
-	      System.out.println("phone" + phone);
-	      System.out.println("vo" + vo);
-	      int result = memberService.findPassword(vo);
-	      
-	      System.out.println("Controller result : " + result);
-	      if (result > 0) {
-	         int random = (int) Math.floor(Math.random() * 1000000 + 1);
-	         String num = String.valueOf(random);
-	         System.out.println("인증번호  : " + num);
+	public void sendSms(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("컨트롤러");
+		String memberId = request.getParameter("mId");
+		String phone = request.getParameter("mPhone");
+		Map<String, Object> vo = new HashMap<String, Object>();
+		vo.put("memberId", memberId);
+		vo.put("memberPhone", phone);
+		System.out.println("memberId" + memberId);
+		System.out.println("phone" + phone);
+		System.out.println("vo" + vo);
+		int result = memberService.findPassword(vo);
 
-	         String api_key = "NCSQRYFYWSSQWR9L";
-	         String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
-	         Message coolsms = new Message(api_key, api_secret);
+		System.out.println("Controller result : " + result);
+		if (result > 0) {
+			int random = (int) Math.floor(Math.random() * 1000000 + 1);
+			String num = String.valueOf(random);
+			System.out.println("인증번호  : " + num);
 
-	         HashMap<String, String> params = new HashMap<String, String>();
-	         params.put("to", phone);
-	         params.put("from", "01022632566");
-	         params.put("type", "SMS");
-	         params.put("text", "[SharePot] - 인증번호는 : " + num + "입니다.");
+			String api_key = "NCSQRYFYWSSQWR9L";
+			String api_secret = "5HDDHICZIJNB6CLPJ2ICEV3A7DRQSMVW";
+			Message coolsms = new Message(api_key, api_secret);
 
-	         response.getWriter().println(num);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("to", phone);
+			params.put("from", "01022632566");
+			params.put("type", "SMS");
+			params.put("text", "[SharePot] - 인증번호는 : " + num + "입니다.");
 
-	         try {
-	            JSONObject obj = (JSONObject) coolsms.send(params);
-	            response.getWriter().println(num);
-	         } catch (CoolsmsException e) {
-	            System.out.println(e.getMessage());
-	            System.out.println(e.getCode());
-	         }
-	      } else {
-	         response.setCharacterEncoding("utf-8");
-	         response.getWriter().println("올바른 인증번호를 입력해주세요");
-	      }
-	   }
+			response.getWriter().println(num);
 
-	//비밀번호 찾기 화면(추가)
+			try {
+				JSONObject obj = (JSONObject) coolsms.send(params);
+				response.getWriter().println(num);
+			} catch (CoolsmsException e) {
+				System.out.println(e.getMessage());
+				System.out.println(e.getCode());
+			}
+		} else {
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().println("올바른 인증번호를 입력해주세요");
+		}
+	}
+
+	// 비밀번호 찾기 화면(추가)
 	@RequestMapping("findPwPg.tc")
 	public String findPwPg() {
 		return "member/findPw";
 	}
-	
+
 	// 아이디 찾기
 	@RequestMapping(value = "findID.tc", method = RequestMethod.GET)
 	public void findId(String memberEmail, HttpServletResponse res) throws JsonIOException, IOException {
@@ -237,13 +238,12 @@ public class MemberController {
 		gson.toJson(map, res.getWriter());
 
 	}
-	
-	//아이디 찾기 화면(추가)
-		@RequestMapping("findIdPg.tc")
-		public String findIdPg() {
-			return "member/findId";
-		}
-		
+
+	// 아이디 찾기 화면(추가)
+	@RequestMapping("findIdPg.tc")
+	public String findIdPg() {
+		return "member/findId";
+	}
 
 	// 회원가입 페이지
 	@RequestMapping("erollView.tc")
@@ -251,45 +251,43 @@ public class MemberController {
 		return "member/enroll";
 	}
 
-
 	// 회원가입(계좌 정보 null값으로 넣어주기 추가-알람mapper에서 오류)
-		@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
-		public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
-				String bankName, String accountNumber, String accountName) {
-			member.setAddress(post + "," + address1 + "," + address2);
-			member.setAccount(bankName + "," + accountNumber + "," + accountName);
-			// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
-			
-			Alarm alarm = new Alarm(); // 수정
-			alarm.setAlarmContent("SharePot 회원가입을 축하드립니다."); // 수정
-			alarm.setMemberId(member.getMemberId()); // 수정
-			
-			
-			int adoptAlarm = alarmService.insertAlarm(alarm); // 수정
-			
-			if(member.getAccount() == null) {
-				member.setAccount("계좌정보 없음,0,0");
-			}
-			
-			int result = memberService.insertMember(member);
-			System.out.println("result 값은 ? : " + result);
-			if (result > 0 && adoptAlarm > 0 ) { // 수정
-				mv.setViewName("home");
-				// model과 mv의 차이점: https://hongku.tistory.com/116
-			} else {
-				mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
-				mv.setViewName("common/errorPage");
-				// model 비즈니스로직 수행하는 곳
-			}
-			return mv;
+	@RequestMapping(value = "minsert.tc", method = RequestMethod.POST)
+	public ModelAndView memberInsert(Member member, ModelAndView mv, String post, String address1, String address2,
+			String bankName, String accountNumber, String accountName) {
+		member.setAddress(post + "," + address1 + "," + address2);
+		member.setAccount(bankName + "," + accountNumber + "," + accountName);
+		// vo에 넣기전에 하나로 붙여서 집어 넣어준다.
+
+		Alarm alarm = new Alarm(); // 수정
+		alarm.setAlarmContent("SharePot 회원가입을 축하드립니다."); // 수정
+		alarm.setMemberId(member.getMemberId()); // 수정
+
+		int adoptAlarm = alarmService.insertAlarm(alarm); // 수정
+
+		if (member.getAccount() == null) {
+			member.setAccount("계좌정보 없음,0,0");
 		}
 
-		//회원정보 수정(추가)
-		@RequestMapping("InfoSearchMy.tc")
-		public String myInfos() {
-			System.out.println("ddd");
-			return "member/updateMember";
+		int result = memberService.insertMember(member);
+		System.out.println("result 값은 ? : " + result);
+		if (result > 0 && adoptAlarm > 0) { // 수정
+			mv.setViewName("home");
+			// model과 mv의 차이점: https://hongku.tistory.com/116
+		} else {
+			mv.addObject("msg", "다시 회원가입을 시도해 주세요.");
+			mv.setViewName("common/errorPage");
+			// model 비즈니스로직 수행하는 곳
 		}
+		return mv;
+	}
+
+	// 회원정보 수정(추가)
+	@RequestMapping("InfoSearchMy.tc")
+	public String myInfos() {
+		System.out.println("ddd");
+		return "member/updateMember";
+	}
 
 	// 회원정보 수정
 	@RequestMapping(value = "mupdate.tc", method = RequestMethod.POST)
@@ -347,95 +345,90 @@ public class MemberController {
 
 	// 포인트 충전(결제 api)
 	@RequestMapping("payment.tc")
-	public String payMent(String userId, int amounts, Model model,HttpServletRequest request) {
-		
-		/*포인트 변동 내역 추가 및 업데이트를 위한 코드*/
-		PointChange pointChange= new PointChange();
+	public String payMent(String userId, int amounts, Model model, HttpServletRequest request) {
+
+		/* 포인트 변동 내역 추가 및 업데이트를 위한 코드 */
+		PointChange pointChange = new PointChange();
 		pointChange.setPointContent("포인트 충전");
 		pointChange.setPointAmount(amounts);
 		pointChange.setPointStatus("ADD");
 		pointChange.setMemberId(userId);
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("amount", amounts);
 		int result = memberService.payMent(map);
-		int insertPointChange=memberService.insertPointChange(pointChange);
-		
+		int insertPointChange = memberService.insertPointChange(pointChange);
+
 		Member loginUser = memberService.userRefrash(userId);
 		model.addAttribute("loginUser", loginUser);
-		String referer = (String)request.getHeader("REFERER");
+		String referer = (String) request.getHeader("REFERER");
 
-		
 		Alarm alarm = new Alarm();
 		alarm.setMemberId(userId);
 		alarm.setAlarmContent(amounts + "포인트가 결제되었습니다.");
 		int payAlarm = alarmService.insertAlarm(alarm);
 
-		if (result > 0 && insertPointChange>0 && payAlarm > 0) {
-			return "redirect:"+referer;
+		if (result > 0 && insertPointChange > 0 && payAlarm > 0) {
+			return "redirect:" + referer;
 		} else { // 실패 했을때
 			return "common/errorPage";
 		}
 	}
-	
-	
-	
-	//프리미엄 가입 화면
+
+	// 프리미엄 가입 화면
 	@RequestMapping("premiumEnrollView.tc")
 	public String premiupEnrollView() {
 		return "member/premiumEnroll";
 	}
-	
-	//프리미엄 결제 화면
-		@RequestMapping("premiumPayment.tc")
-		public String premiumPayment() {
-			return "member/premiumPointPayment";
-		}
-		
-		   //프리미엄 가입 메소드
-		   @RequestMapping(value = "memberUpdatePreminum.tc", method = RequestMethod.POST)
-		   public String memberUpdatePreminum(Member member, Model model) {
-		      member.setStatus("PREMIUM");
-		      
-		      PointChange pointChange= new PointChange();
-		      pointChange.setPointContent("프리미엄 가입");
-		      pointChange.setPointAmount(13000);
-		      pointChange.setPointStatus("LESS");
-		      pointChange.setMemberId(member.getMemberId());
-		      
-		      Member member2 = memberService.selectMemberOne(member.getMemberId());
-		      member2.setPoint(member2.getPoint()-13000);
-		      
-		      int insertPointChange=memberService.insertPointChange(pointChange);
-		      int updateMemberPhoint=memberService.updateMemberPoint(member2);
-		      int result = memberService.memberUpdatePreminum(member);
-		      
-		      Alarm alarm = new Alarm();
-				alarm.setMemberId(member.getMemberId());
-				alarm.setAlarmContent("회원 등급이 프리미엄 회원으로 변경되었습니다.");
-				int preminumAlarm = alarmService.insertAlarm(alarm);
-		   
-		      
-		      
-		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && preminumAlarm > 0){
-		    	 Member loginUser = memberService.userRefrash(member2.getMemberId());
-		         model.addAttribute("loginUser", loginUser);
-		         /*int resultPremium = memberService.memberInsertPremium(member);*/
-		         return "member/myPage";
-		      } else {
-		         model.addAttribute("msg", "프리미엄 가입 실패");
-		         return "common/errorPage";
-		      }
-		   }
-	//프리미엄 해지 메소드
-	@Scheduled(cron = "0 0 0 * * *")
-    public String memberUpdatePrimary() {
-       int result = memberService.memberUpdatePrimary();
-       return null;
-    }
 
-	
+	// 프리미엄 결제 화면
+	@RequestMapping("premiumPayment.tc")
+	public String premiumPayment() {
+		return "member/premiumPointPayment";
+	}
+
+	// 프리미엄 가입 메소드
+	@RequestMapping(value = "memberUpdatePreminum.tc", method = RequestMethod.POST)
+	public String memberUpdatePreminum(Member member, Model model) {
+		member.setStatus("PREMIUM");
+
+		PointChange pointChange = new PointChange();
+		pointChange.setPointContent("프리미엄 가입");
+		pointChange.setPointAmount(13000);
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(member.getMemberId());
+
+		Member member2 = memberService.selectMemberOne(member.getMemberId());
+		member2.setPoint(member2.getPoint() - 13000);
+
+		int insertPointChange = memberService.insertPointChange(pointChange);
+		int updateMemberPhoint = memberService.updateMemberPoint(member2);
+		int result = memberService.memberUpdatePreminum(member);
+
+		Alarm alarm = new Alarm();
+		alarm.setMemberId(member.getMemberId());
+		alarm.setAlarmContent("회원 등급이 프리미엄 회원으로 변경되었습니다.");
+		int preminumAlarm = alarmService.insertAlarm(alarm);
+
+		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0 && preminumAlarm > 0) {
+			Member loginUser = memberService.userRefrash(member2.getMemberId());
+			model.addAttribute("loginUser", loginUser);
+			/* int resultPremium = memberService.memberInsertPremium(member); */
+			return "member/myPage";
+		} else {
+			model.addAttribute("msg", "프리미엄 가입 실패");
+			return "common/errorPage";
+		}
+	}
+
+	// 프리미엄 해지 메소드
+	@Scheduled(cron = "0 0 0 * * *")
+	public String memberUpdatePrimary() {
+		int result = memberService.memberUpdatePrimary();
+		return null;
+	}
+
 	// 포인트변동=============================================================================
 
 	// 관리자페이지에서 포인트 변동리스트 전체
@@ -447,20 +440,20 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeListCount);
 		ArrayList<PointChange> list = memberService.selectPointChangeList(pi);
 
-		
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.setViewName("member/pointChangeList");
-		
+		mv.addObject("list", list);
+		mv.addObject("pi", pi);
+		mv.setViewName("member/pointChangeList");
+
 		return mv;
 	}
 
 	// 회원 마이페이지에서 포인트 변동리스트 전체
 	@RequestMapping("pointChangeMemberList.tc")
-	public String pointChageMemberList(String memberId, Model model,@RequestParam(value = "page", required = false) Integer page) {
+	public String pointChageMemberList(String memberId, Model model,
+			@RequestParam(value = "page", required = false) Integer page) {
 		int currentPage = (page != null) ? page : 1;
 		int pointChangeMemberListCount = memberService.getPointChangeMemberCount(memberId);
-		
+
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointChangeMemberListCount);
 		ArrayList<PointChange> list = memberService.selectPointChangeMemberList(pi, memberId);
 
@@ -469,57 +462,57 @@ public class MemberController {
 		model.addAttribute("pi", pi);
 		return "member/memberPointChangeList";
 	}
-	
-	
-	
-	// 1:1 의뢰 승인 및 포인트 업데이트 
-	// 1:1 의뢰 승인 및 포인트 업데이트 
-		// 1:1 의뢰 포인트 업데이트
-		   @RequestMapping(value="personalPayUpdate.tc",method=RequestMethod.POST)
-		   public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
-		      System.out.println("member"+personalReqRep);
-		      PointChange pointChange= new PointChange();
-		      pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
-		      pointChange.setPointAmount(personalReqRep.getpReqPrice());
-		      pointChange.setPointStatus("LESS");
-		      pointChange.setMemberId(personalReqRep.getMemberId());
-		      
-		      Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
-		      member.setPoint(member.getPoint()-personalReqRep.getpReqPrice());
-		      
-		      Personal personal = pesonalService.selectOne(personalReqRep.getPersonalNo());
-		      
-		      Alarm alarm = new Alarm(); // 0726-2 수정
-		      alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
-		      alarm.setAlarmContent(" 게시물의 1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
-		      alarm.setBoardTitle(personal.getPersonalTitle()); // 0726-2 수정
-		      alarm.setBoardAddress("pDetail.tc?personalNo=" + personalReqRep.getPersonalNo() + "&memberId=" + personal.getMemberId() ); // 0726-2 수정
-		      int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
-		      
-		      Alarm bwAlarm = new Alarm(); // 0726-2 수정
-		      bwAlarm.setMemberId(personal.getMemberId()); // 0726-2 수정
-		      bwAlarm.setAlarmContent(" 게시물의 1:1 의뢰가 들어왔습니다. 승인여부를 선택해주세요!"); // 0726-2 수정
-		      bwAlarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
-		      bwAlarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
-		      int bwAlarmA = alarmService.insertAlarm(bwAlarm); // 0726-2 수정
-		      
-		      personalReqRep.setpReqAccept("C");
-		      int insertPointChange=memberService.insertPointChange(pointChange);
-		      int updateMemberPhoint=memberService.updateMemberPoint(member);
-		      int result = pesonalService.updateReqRepAccept(personalReqRep);
-		      
-		      if (result > 0 && insertPointChange>0&& updateMemberPhoint>0 && personalAlarm>0 && bwAlarmA > 0) { // 0726-2 수정
-		    	 model.addAttribute("loginUser", member);
-		         return "member/myPage";
-		      } else {
-		         model.addAttribute("msg", "프리미엄 가입 실패");
-		         return "common/errorPage";
-		      }
-		   }
-	
 
-	
-	// 포인트 환급=============================================================================
+	// 1:1 의뢰 승인 및 포인트 업데이트
+	// 1:1 의뢰 승인 및 포인트 업데이트
+	// 1:1 의뢰 포인트 업데이트
+	@RequestMapping(value = "personalPayUpdate.tc", method = RequestMethod.POST)
+	public String personalPointUpdate(PersonalReqRep personalReqRep, Model model) {
+		System.out.println("member" + personalReqRep);
+		PointChange pointChange = new PointChange();
+		pointChange.setPointContent("1:1 번역 의뢰 포인트 결제");
+		pointChange.setPointAmount(personalReqRep.getpReqPrice());
+		pointChange.setPointStatus("LESS");
+		pointChange.setMemberId(personalReqRep.getMemberId());
+
+		Member member = memberService.selectMemberOne(personalReqRep.getMemberId());
+		member.setPoint(member.getPoint() - personalReqRep.getpReqPrice());
+
+		Personal personal = pesonalService.selectOne(personalReqRep.getPersonalNo());
+
+		Alarm alarm = new Alarm(); // 0726-2 수정
+		alarm.setMemberId(personalReqRep.getMemberId()); // 0726-2 수정
+		alarm.setAlarmContent(" 게시물의 1:1 번역 의뢰 신청이 완료되었습니다. 번역가의 승인을 기다려주세요!"); // 0726-2 수정
+		alarm.setBoardTitle(personal.getPersonalTitle()); // 0726-2 수정
+		alarm.setBoardAddress(
+				"pDetail.tc?personalNo=" + personalReqRep.getPersonalNo() + "&memberId=" + personal.getMemberId()); // 0726-2
+																													// 수정
+		int personalAlarm = alarmService.insertAlarm(alarm); // 0726-2 수정
+
+		Alarm bwAlarm = new Alarm(); // 0726-2 수정
+		bwAlarm.setMemberId(personal.getMemberId()); // 0726-2 수정
+		bwAlarm.setAlarmContent(" 게시물의 1:1 의뢰가 들어왔습니다. 승인여부를 선택해주세요!"); // 0726-2 수정
+		bwAlarm.setBoardTitle("내 의뢰 페이지 가기"); // 0726-2 수정
+		bwAlarm.setBoardAddress("myReqRepList.tc"); // 0726-2 수정
+		int bwAlarmA = alarmService.insertAlarm(bwAlarm); // 0726-2 수정
+
+		personalReqRep.setpReqAccept("C");
+		int insertPointChange = memberService.insertPointChange(pointChange);
+		int updateMemberPhoint = memberService.updateMemberPoint(member);
+		int result = pesonalService.updateReqRepAccept(personalReqRep);
+
+		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0 && personalAlarm > 0 && bwAlarmA > 0) { // 0726-2
+																													// 수정
+			model.addAttribute("loginUser", member);
+			return "member/myPage";
+		} else {
+			model.addAttribute("msg", "프리미엄 가입 실패");
+			return "common/errorPage";
+		}
+	}
+
+	// 포인트
+	// 환급=============================================================================
 
 	// 포인트 환급 리스트 조회
 	@RequestMapping("pointRefundList.tc")
@@ -530,11 +523,10 @@ public class MemberController {
 		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, pointRefundListCount);
 		ArrayList<PointRefund> list = memberService.selectPointRefundList(pi);
 
-		
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.setViewName("member/pointRefundList");
-		
+		mv.addObject("list", list);
+		mv.addObject("pi", pi);
+		mv.setViewName("member/pointRefundList");
+
 		return mv;
 	}
 
@@ -549,22 +541,22 @@ public class MemberController {
 	public String pointRefundInsert(PointRefund pointRefund, Model model, String bank, String accountOwner,
 			String account) {
 		pointRefund.setAccountInfo(bank + "," + accountOwner + "," + account);
-		
-		PointChange pointChange= new PointChange();
+
+		PointChange pointChange = new PointChange();
 		pointChange.setPointContent("포인트 환급");
 		pointChange.setPointAmount(pointRefund.getRefundPoint());
 		pointChange.setPointStatus("LESS");
 		pointChange.setMemberId(pointRefund.getMemberId());
-		
-		Member member=memberService.selectMemberOne(pointRefund.getMemberId());
-		member.setPoint(member.getPoint()-pointRefund.getRefundPoint());
-		
-		int insertPointChange=memberService.insertPointChange(pointChange);
-		int updateMemberPhoint=memberService.updateMemberPoint(member);
+
+		Member member = memberService.selectMemberOne(pointRefund.getMemberId());
+		member.setPoint(member.getPoint() - pointRefund.getRefundPoint());
+
+		int insertPointChange = memberService.insertPointChange(pointChange);
+		int updateMemberPhoint = memberService.updateMemberPoint(member);
 		int result = memberService.insertPointRefund(pointRefund);
-		if (result > 0  && insertPointChange>0 && updateMemberPhoint>0) {
-			 Member loginUser = memberService.userRefrash(member.getMemberId());
-	         model.addAttribute("loginUser", loginUser);
+		if (result > 0 && insertPointChange > 0 && updateMemberPhoint > 0) {
+			Member loginUser = memberService.userRefrash(member.getMemberId());
+			model.addAttribute("loginUser", loginUser);
 			return "member/myPage";
 		} else {
 			model.addAttribute("msg", "포인트 환급 신청 실패");
@@ -579,60 +571,58 @@ public class MemberController {
 		return "member/pointRefundCheckView";
 	}
 
-	  // 포인트 환급 확정 및 반려
-	    @RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
-	    public String pointRefundUpdate(PointRefund pointRefund, Model model,HttpServletRequest request) {
-	       int result = memberService.updatePointRefund(pointRefund);
-	       
-	       Alarm alarm = new Alarm();
-	       alarm.setAlarmContent(pointRefund.getRefundPoint() + " 포인트 환급이 완료되었습니다.");
-	       alarm.setMemberId(pointRefund.getMemberId());
-	       
-	       int refundAlarm = alarmService.insertAlarm(alarm);
-	       
-	       String referer = (String)request.getHeader("REFERER");
-	
-	          
-	       
-	       
-	       if (result > 0 && refundAlarm > 0) {
-	          return "redirect:"+referer;
-	       } else {
-	          model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
-	          return "common/errorPage";
-	       }
-	    }
+	// 포인트 환급 확정 및 반려
+	@RequestMapping(value = "pointRefundUpdate.tc", method = RequestMethod.GET)
+	public String pointRefundUpdate(PointRefund pointRefund, Model model, HttpServletRequest request) {
+		int result = memberService.updatePointRefund(pointRefund);
+
+		Alarm alarm = new Alarm();
+		alarm.setAlarmContent(pointRefund.getRefundPoint() + " 포인트 환급이 완료되었습니다.");
+		alarm.setMemberId(pointRefund.getMemberId());
+
+		int refundAlarm = alarmService.insertAlarm(alarm);
+
+		String referer = (String) request.getHeader("REFERER");
+
+		if (result > 0 && refundAlarm > 0) {
+			return "redirect:" + referer;
+		} else {
+			model.addAttribute("msg", "포인트 환급 확정 및 반려 실패");
+			return "common/errorPage";
+		}
+	}
 
 	// =============================================================================
 
-
 	// 프로필 등록 회원 전체 리스트
-		@RequestMapping("profileList.tc")
-		public ModelAndView profileList(ModelAndView mv, @RequestParam(value = "page", required = false)Integer page) {
-			
-			int currentPage = (page != null) ? page : 1;
-			int listCount = memberService.getPfListCount();
-			MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
-			ArrayList<Profile> pfList = memberService.selectProfileList(pi);
-			
-				mv.addObject("pi", pi);
-				mv.addObject("pfList", pfList);
-				mv.setViewName("profile/profileList");
-			
-			return mv;
+	@RequestMapping("profileList.tc")
+	public ModelAndView profileList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
 
+		int currentPage = (page != null) ? page : 1;
+		int listCount = memberService.getPfListCount();
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
+		ArrayList<Profile> pfList = memberService.selectProfileList(pi);
+
+		mv.addObject("pi", pi);
+		mv.addObject("pfList", pfList);
+		mv.setViewName("profile/profileList");
+
+		return mv;
+
+	}
+
+	// 프로필 상세보기
+	@RequestMapping("profileDetail.tc")
+	public String profileDetail(int memberNo, Model model) {
+		Profile profile = memberService.selectProfileOne(memberNo);
+		if (profile != null) {
+			model.addAttribute("profile", profile);
+			return "profile/profileDetail"; // 0726 수정
+		} else {
+			return "common/errorPage";
 		}
-		// 프로필 상세보기
-		   @RequestMapping("profileDetail.tc")
-		   public String profileDetail(int memberNo, Model model) {
-		      Profile profile = memberService.selectProfileOne(memberNo);
-		      if (profile != null) {
-		         model.addAttribute("profile", profile);
-		         return "profile/profileDetail"; // 0726 수정
-		      } else {
-		         return "common/errorPage";
-		      }
-		   }
+	}
+
 	// 프로필 등록 화면 열기
 	@RequestMapping("profileInsertView.tc")
 	public String profileInsertView() {
@@ -656,7 +646,7 @@ public class MemberController {
 
 		int result = memberService.insertProfile(profile, uploadFile, request);
 		int profileStatus = memberService.updateStatusY(memberNo);
-		
+
 		if (result > 0) {
 			if (profileStatus > 0) {
 				Profile myProfile = memberService.selectProfileOne(memberNo);
@@ -671,6 +661,7 @@ public class MemberController {
 
 		return path;
 	}
+
 	// 파일 저장
 	public String saveFile(MultipartFile file, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -767,39 +758,38 @@ public class MemberController {
 
 		return "common/errorPage";
 	}
-	
+
 	// 프로필 등록 회원 검색
 
-	   @RequestMapping("profileSearch.tc")
-	   public String profileSearch(ProfileSearch pfSearch, Model model,
-	         @RequestParam(value = "page", required = false) Integer page) {
+	@RequestMapping("profileSearch.tc")
+	public String profileSearch(ProfileSearch pfSearch, Model model,
+			@RequestParam(value = "page", required = false) Integer page) {
 
-	      int currentPage = (page != null) ? page : 1;
-	      int listCount = memberService.getPfSearchListCount(pfSearch);
-	      MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
-	      ArrayList<Profile> pfSearchList = memberService.searchProfile(pfSearch, pi);
+		int currentPage = (page != null) ? page : 1;
+		int listCount = memberService.getPfSearchListCount(pfSearch);
+		MemberPageInfo pi = Pagination.getMemberPageInfo(currentPage, listCount);
+		ArrayList<Profile> pfSearchList = memberService.searchProfile(pfSearch, pi);
 
-	      model.addAttribute("pfList", pfSearchList); // 0726 수정
-	      model.addAttribute("search", pfSearch);
-	      model.addAttribute("pi", pi);
+		model.addAttribute("pfList", pfSearchList); // 0726 수정
+		model.addAttribute("search", pfSearch);
+		model.addAttribute("pi", pi);
 
-	      return "profile/profileList";
+		return "profile/profileList";
 
-	   }
-		   // -------------- 0725추가 -------------- 랭킹관련테스트중
+	}
+	// -------------- 0725추가 -------------- 랭킹관련테스트중
 
-	   @RequestMapping("rank.tc")
-	   public ModelAndView ranking(ModelAndView mv) {
+	@RequestMapping("rank.tc")
+	public ModelAndView ranking(ModelAndView mv) {
 
-	      ArrayList<Rank> rAcList = memberService.rankAdoptC();
-	      ArrayList<Rank> sList = memberService.starA();
+		ArrayList<Rank> rAcList = memberService.rankAdoptC();
+		ArrayList<Rank> sList = memberService.starA();
 
-	      mv.addObject("rAc", rAcList);
-	      mv.addObject("star", sList);
-	      mv.setViewName("common/main");
+		mv.addObject("rAc", rAcList);
+		mv.addObject("star", sList);
+		mv.setViewName("common/main");
 
-	      return mv;
-	   }
-
+		return mv;
+	}
 
 }

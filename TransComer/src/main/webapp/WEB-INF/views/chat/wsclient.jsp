@@ -17,21 +17,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		//var chatRoomNo = "${chatRoom.roomNo }";
-		//console.log("채팅방 번호 : " + chatRoomNo);
-		
-		var loginUser = "${loginUser.memberId }";
-		var sendUser = "${chatMsgList[0].sendUser }";
-		
-		if(loginUser == sendUser){
-			console.log("현재 로그인유저가 보낸이 입니다.");
-		} else{
-			console.log("현재 로그인유저가 받는이 입니다.")
-		}
-		
-		var recevieUser = "${chatMsgList[0].receiveUser }";
-		console.log("받는이 정보 : " + recevieUser);
-		
 		// 스크롤을 최하단으로 고정시키는 코드(최신 채팅 보이도록 고정)
 		$("#chatArea").scrollTop($("#chatArea")[0].scrollHeight);
 		
@@ -56,7 +41,7 @@
 		// 웹소켓 연결이 성공 되었을 때 실행
 		function onOpen(){
 			// 연결 됨, 표시
-			$('#chatStatus').text('Info: connection 연결됨.');
+			$('#chatStatus').text('채팅방에 입장하셨습니다.');
 
 			// 
 			//loadChatList();
@@ -69,8 +54,6 @@
 					// websocket으로 메시지를 보내는 함수
 					ws.send(msg);
 					$('input[name=chatInput]').val('');
-					// db에 채팅 내용을 저장하는 함수
-					saveMsg(msg);
 				}
 			});
 		}
@@ -119,50 +102,6 @@
 			$('#chatStatus').text('Info: connection 연결닫힘.');
 		}
    	});
-	
-	// 채팅 기록 리스트 불러오는 함수
-	/* function loadChatList(){
-		var roomNo = "${chatMsgList[0].roomNo }";
-	    $.ajax({
-	        url: "chatMsgList.tc",
-	        type: 'POST',
-	        data : {
-	        	roomNo : roomNo
-	        },
-	        success: function(result) {
-	        	consloe.log("채팅 데이터 불러오기 성공");
-	            //doWhatEver();
-	        },
-	        error: function(e){
-	        	consloe.log("채팅 데이터 불러오기 실패");
-	            //alert('Error in Processing');
-	        }
-	    });
-	} */
-	
-	// 채팅을 DB 데이터 저장 ajax 함수
-	function saveMsg(chatInput){
-		var sender = "${loginUser.memberId }";
-		var receiver = "user02";
-		//var chatInput = $("#chatInput").val();
-		console.log("ajax 함수 에서 input값 불러오기 : " +chatInput);
-		$.ajax({
-			url : "chatMsgInsert.tc",
-			data : {
-				sendUser : sender,
-				receiveUser : receiver,
-				chatContent : chatInput
-			},
-			type : "POST",
-			success : function(data){
-				console.log("ajax 성공 : " + data);
-			},
-			error : function(data){
-				console.log("ajax 에러 : " + data);
-			}
-		});
-		
-	}
 	
 </script>
 </head>
