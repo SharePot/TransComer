@@ -65,16 +65,16 @@ public class EchoHandler extends TextWebSocketHandler {
 		System.out.println("sessionList(리스트) : " + sessionList);
 		System.out.println(">>> 인터셉터에서 받아온 >> memberList(Array리스트) : " + memberList);
 
-		for (WebSocketSession sess : sessionList) {
-			// System.out.println("sess : " + sess);
-			// 접속자 리스트를 보내줌
-//			if (memberList.size() == 1) {
-//				// 맴버가 한명밖에 없으면 [ ] 붙여서 전송
-//				sess.sendMessage(new TextMessage("[" + memberList.toString() + "]"));
-//			} else {
-//			}
-			sess.sendMessage(new TextMessage(memberList.toString()));
-		}
+//		for (WebSocketSession sess : sessionList) {
+//			// System.out.println("sess : " + sess);
+//			// 접속자 리스트를 보내줌
+////			if (memberList.size() == 1) {
+////				// 맴버가 한명밖에 없으면 [ ] 붙여서 전송
+////				sess.sendMessage(new TextMessage("[" + memberList.toString() + "]"));
+////			} else {
+////			}
+//			//sess.sendMessage(new TextMessage(memberList.toString()));
+//		}
 
 		// 현재 새션에만 접속자 리스트를 보내줌
 		// session.sendMessage(new TextMessage(memberList.toString()));
